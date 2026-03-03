@@ -98,7 +98,6 @@ export default function PipelinePage() {
 
       if (error) throw error;
 
-      // Fecha modal e reseta form
       setShowModal(false);
       setFormData({
         title: '',
@@ -107,11 +106,11 @@ export default function PipelinePage() {
         stage: INITIAL_COLUMNS[0],
       });
 
-      // Recarrega oportunidades
       await fetchOpportunities();
-    } catch (err: any) {
-      console.error('Erro ao criar oportunidade:', err);
-      alert('Erro ao criar oportunidade: ' + (err.message || 'Erro desconhecido'));
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Erro ao criar oportunidade:', error);
+      alert('Erro ao criar oportunidade: ' + (error.message || 'Erro desconhecido'));
     } finally {
       setSubmitting(false);
     }
@@ -121,7 +120,6 @@ export default function PipelinePage() {
     try {
       const currentIndex = INITIAL_COLUMNS.indexOf(currentStage);
       
-      // Se for a última etapa, não permite avançar
       if (currentIndex >= INITIAL_COLUMNS.length - 1) {
         alert('Esta oportunidade já está na última etapa');
         return;
@@ -137,9 +135,10 @@ export default function PipelinePage() {
       if (error) throw error;
 
       await fetchOpportunities();
-    } catch (err: any) {
-      console.error('Erro ao mover oportunidade:', err);
-      alert('Erro ao mover oportunidade: ' + (err.message || 'Erro desconhecido'));
+    } catch (err: unknown) {
+      const caughtError = err as Error;
+      console.error('Erro ao mover oportunidade:', caughtError);
+      alert('Erro ao mover oportunidade: ' + (caughtError.message || 'Erro desconhecido'));
     }
   }
 
@@ -157,9 +156,10 @@ export default function PipelinePage() {
       if (error) throw error;
 
       await fetchOpportunities();
-    } catch (err: any) {
-      console.error('Erro ao deletar oportunidade:', err);
-      alert('Erro ao deletar oportunidade: ' + (err.message || 'Erro desconhecido'));
+    } catch (err: unknown) {
+      const caughtError = err as Error;
+      console.error('Erro ao deletar oportunidade:', caughtError);
+      alert('Erro ao deletar oportunidade: ' + (caughtError.message || 'Erro desconhecido'));
     }
   }
 
@@ -209,7 +209,7 @@ export default function PipelinePage() {
                 const isLastStage = stage === INITIAL_COLUMNS[INITIAL_COLUMNS.length - 1];
                 return (
                   <div
-                    key={opportunity.id || `temp-${Math.random()}`}
+                    key={opportunity.id}
                     className="rounded-xl border border-white/10 bg-[#03050a]/40 backdrop-blur-md overflow-hidden"
                   >
                     <div className="p-3">
@@ -221,7 +221,6 @@ export default function PipelinePage() {
                       </p>
                     </div>
 
-                    {/* Ação Rápida (Rodapé do Card) */}
                     <div className="border-t border-white/10 px-3 py-2 flex items-center justify-between bg-white/5">
                       <button
                         onClick={() => handleMoveStage(opportunity.id, stage)}

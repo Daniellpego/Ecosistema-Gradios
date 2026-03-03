@@ -95,7 +95,7 @@ export default function SLAsPage() {
     try {
       setSubmitting(true);
 
-      const insertData: any = {
+      const insertData: Record<string, string | number> = {
         account_id: formData.account_id,
         monthly_value: parseFloat(formData.monthly_value),
         start_date: formData.start_date,
@@ -111,7 +111,6 @@ export default function SLAsPage() {
 
       if (error) throw error;
 
-      // Fecha modal e reseta form
       setShowModal(false);
       setFormData({
         account_id: '',
@@ -121,11 +120,11 @@ export default function SLAsPage() {
         end_date: '',
       });
 
-      // Recarrega SLAs
       await fetchSLAs();
-    } catch (err: any) {
-      console.error('Erro ao criar SLA:', err);
-      alert('Erro ao criar SLA: ' + (err.message || 'Erro desconhecido'));
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Erro ao criar SLA:', error);
+      alert('Erro ao criar SLA: ' + (error.message || 'Erro desconhecido'));
     } finally {
       setSubmitting(false);
     }
@@ -145,9 +144,10 @@ export default function SLAsPage() {
       if (supabaseError) throw supabaseError;
 
       setSlas((data as unknown as SLA[]) || []);
-    } catch (err: any) {
-      console.error('Erro ao buscar SLAs:', err);
-      setError(err.message || 'Erro ao carregar contratos');
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Erro ao buscar SLAs:', error);
+      setError(error.message || 'Erro ao carregar contratos');
     } finally {
       setLoading(false);
     }
@@ -155,10 +155,11 @@ export default function SLAsPage() {
 
   const calculateDaysRemaining = (endDate: string) => {
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const end = new Date(endDate);
+    end.setHours(0, 0, 0, 0);
     const diff = end.getTime() - today.getTime();
-    const daysRemaining = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    return daysRemaining;
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
   };
 
   const getStatusStyle = (daysRemaining: number) => {
@@ -243,7 +244,7 @@ export default function SLAsPage() {
             Nenhum contrato ativo
           </h2>
           <p className="mt-2 text-sm text-slate-400">
-            Clique em "Novo Contrato" para cadastrar
+            Clique em &quot;Novo Contrato&quot; para cadastrar
           </p>
         </div>
       )}
@@ -258,7 +259,7 @@ export default function SLAsPage() {
 
             return (
               <article
-                key={sla.id || `temp-${Math.random()}`}
+                key={sla.id}
                 className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition hover:border-sky-400/30 hover:bg-white/[0.08]"
               >
                 <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
@@ -330,7 +331,6 @@ export default function SLAsPage() {
                   </div>
                 </div>
 
-                {/* Indicador Visual de Progresso */}
                 <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/10">
                   <div
                     className={`h-full transition-all duration-500 ${statusStyle.dot === 'bg-emerald-500' ? 'bg-emerald-500' : statusStyle.dot === 'bg-yellow-500' ? 'bg-yellow-500' : 'bg-rose-500'}`}
@@ -345,7 +345,6 @@ export default function SLAsPage() {
         </div>
       )}
 
-      {/* Modal de Novo Contrato SLA */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#03050a] p-8 shadow-2xl">
@@ -364,7 +363,6 @@ export default function SLAsPage() {
 
             <form onSubmit={handleCreateSLA} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
-                {/* Conta */}
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
                     Conta *
@@ -386,7 +384,6 @@ export default function SLAsPage() {
                   </select>
                 </div>
 
-                {/* Oportunidade Origem */}
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
                     Oportunidade Origem (opcional)
@@ -408,7 +405,6 @@ export default function SLAsPage() {
                 </div>
               </div>
 
-              {/* Valor Mensal */}
               <div>
                 <label className="block text-sm font-medium text-white mb-2">
                   Valor Mensal (R$) *
@@ -426,7 +422,6 @@ export default function SLAsPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {/* Data de Início */}
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
                     Data de Início *
@@ -440,7 +435,6 @@ export default function SLAsPage() {
                   />
                 </div>
 
-                {/* Data de Vencimento */}
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
                     Data de Vencimento *
@@ -455,7 +449,6 @@ export default function SLAsPage() {
                 </div>
               </div>
 
-              {/* Botões */}
               <div className="flex gap-3 pt-4 border-t border-white/10">
                 <button
                   type="button"

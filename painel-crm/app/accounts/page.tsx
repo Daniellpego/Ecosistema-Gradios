@@ -66,9 +66,10 @@ export default function AccountsPage() {
       if (supabaseError) throw supabaseError;
 
       setAccounts((data as Account[]) || []);
-    } catch (err: any) {
-      console.error('Erro ao buscar contas:', err);
-      setError(err.message || 'Erro ao carregar contas');
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Erro ao buscar contas:', error);
+      setError(error.message || 'Erro ao carregar contas');
     } finally {
       setLoading(false);
     }
@@ -85,7 +86,6 @@ export default function AccountsPage() {
     try {
       setSubmitting(true);
 
-      // 1. Insert na tabela crm_accounts
       const { data: accountData, error: accountError } = await supabase
         .from('crm_accounts')
         .insert([
@@ -101,7 +101,6 @@ export default function AccountsPage() {
 
       const newAccountId = accountData[0]?.id;
 
-      // 2. Se houver contato principal, inseri-lo na tabela crm_contacts
       if (formData.contact_first_name.trim() && formData.contact_email.trim()) {
         const { error: contactError } = await supabase
           .from('crm_contacts')
@@ -118,7 +117,6 @@ export default function AccountsPage() {
         if (contactError) throw contactError;
       }
 
-      // 3. Fechar modal e resetar form
       setShowModal(false);
       setFormData({
         company_name: '',
@@ -130,11 +128,11 @@ export default function AccountsPage() {
         contact_role: '',
       });
 
-      // 4. Recarregar contas
       await fetchAccounts();
-    } catch (err: any) {
-      console.error('Erro ao criar conta:', err);
-      alert('Erro ao criar conta: ' + (err.message || 'Erro desconhecido'));
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Erro ao criar conta:', error);
+      alert('Erro ao criar conta: ' + (error.message || 'Erro desconhecido'));
     } finally {
       setSubmitting(false);
     }
@@ -230,7 +228,7 @@ export default function AccountsPage() {
             Nenhuma conta cadastrada
           </h2>
           <p className="mt-2 text-sm text-slate-400">
-            Clique em "Nova Conta" para começar
+            Clique em &quot;Nova Conta&quot; para começar
           </p>
         </div>
       )}
@@ -242,7 +240,7 @@ export default function AccountsPage() {
             const colors = getStatusColor(account.status);
             return (
               <article
-                key={account.id || `temp-${Math.random()}`}
+                key={account.id}
                 className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition hover:border-sky-400/30 hover:bg-white/[0.08]"
               >
                 {/* Cabeçalho do Card */}
@@ -280,7 +278,7 @@ export default function AccountsPage() {
                     <ul className="space-y-2">
                       {account.crm_contacts.map((contact) => (
                         <li
-                          key={contact.id || `temp-${Math.random()}`}
+                          key={contact.id}
                           className="rounded-lg bg-white/5 p-3 text-xs"
                         >
                           <p className="font-semibold text-slate-100">

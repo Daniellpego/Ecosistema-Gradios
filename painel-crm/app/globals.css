@@ -22,46 +22,45 @@ body {
 
 /* O Efeito Glassmorphism Base */
 .glass-card {
-  background-color: rgb(15 23 42 / 0.4);
+  background-color: rgb(15 23 42 / 0.6);
   border: 1px solid rgb(255 255 255 / 0.1);
-  backdrop-filter: blur(12px);
-  border-radius: 1rem;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.35), 0 8px 10px -6px rgb(0 0 0 / 0.35);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.2);
   transition: all 0.3s ease;
 }
 .glass-card:hover {
   border-color: rgb(14 165 233 / 0.3);
-  box-shadow: 0 10px 40px -10px rgb(14 165 233 / 0.15);
-  transform: translateY(-0.25rem);
+  box-shadow: 0 8px 16px rgb(14 165 233 / 0.1);
+  transform: translateY(-0.125rem);
 }
 
-/* Animação dos Orbs Flutuantes */
+/* Animação dos Orbs de Fundo */
 @keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, -30px) scale(1.05); }
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -20px); }
 }
 .orb {
   position: fixed;
   border-radius: 50%;
-  filter: blur(140px);
+  filter: blur(120px);
   z-index: 0;
-  opacity: 0.5;
-  animation: float 20s ease-in-out infinite;
+  opacity: 0.3;
+  animation: float 25s ease-in-out infinite;
   pointer-events: none;
 }
 .orb-1 {
-  width: 900px;
-  height: 900px;
-  background: rgba(14, 165, 233, 0.15);
-  top: -300px;
+  width: 700px;
+  height: 700px;
+  background: rgba(14, 165, 233, 0.1);
+  top: -250px;
   right: -200px;
 }
 .orb-2 {
-  width: 800px;
-  height: 800px;
-  background: rgba(16, 185, 129, 0.08);
-  bottom: -200px;
-  left: -200px;
+  width: 600px;
+  height: 600px;
+  background: rgba(16, 185, 129, 0.06);
+  bottom: -150px;
+  left: -150px;
   animation-delay: -10s;
 }
 
@@ -73,20 +72,20 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   font-weight: 700;
   font-size: 0.875rem;
   color: white;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  box-shadow: 0 4px 20px var(--primary-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px var(--primary-glow);
   transition: all 0.3s ease;
   border: none;
   cursor: pointer;
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--primary-glow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  filter: brightness(1.1);
+  box-shadow: 0 4px 16px var(--primary-glow);
+  filter: brightness(1.05);
 }
 
 /* Scrollbar elegante */

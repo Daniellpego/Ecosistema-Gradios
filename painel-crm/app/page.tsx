@@ -25,7 +25,6 @@ export default function VisaoExecutiva() {
       try {
         setLoading(true);
 
-        // Buscar todas as oportunidades com campos necessários
         const { data: opportunities, error } = await supabase
           .from('crm_opportunities')
           .select('id, value, stage, created_at, updated_at');
@@ -37,31 +36,27 @@ export default function VisaoExecutiva() {
         }
 
         if (opportunities) {
-          // 1. Oportunidades Abertas (não Closed Won e não Closed Lost)
           const activeOpportunities = opportunities.filter(
             (op) => op.stage !== 'Closed Won' && op.stage !== 'Closed Lost'
           );
 
-          // 2. Valor do Pipeline (soma dos valores das oportunidades abertas)
           const totalPipelineValue = activeOpportunities.reduce(
             (sum, op) => sum + (op.value || 0),
             0
           );
 
-          // 3. Oportunidades Fechadas Ganhas
           const closedWonOpportunities = opportunities.filter(
             (op) => op.stage === 'Closed Won'
           );
 
-          // 4. Ciclo Médio de Vendas (média de dias entre created_at e updated_at para Closed Won)
           let avgCycleDays = 0;
           if (closedWonOpportunities.length > 0) {
             const totalDays = closedWonOpportunities.reduce((sum, op) => {
               if (op.created_at && op.updated_at) {
                 const createdDate = new Date(op.created_at);
-                const updatedDate = new Date(op.updated_at);
-                const diffInMs = updatedDate.getTime() - createdDate.getTime();
-                const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+                const closedDate = new Date(op.updated_at);
+                const diffInMs = closedDate.getTime() - createdDate.getTime();
+                const diffInDays = Math.max(0, Math.floor(diffInMs / (1000 * 60 * 60 * 24)));
                 return sum + diffInDays;
               }
               return sum;
@@ -87,7 +82,6 @@ export default function VisaoExecutiva() {
     fetchDashboardData();
   }, []);
 
-  // Formatar valor em reais
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -149,22 +143,20 @@ export default function VisaoExecutiva() {
 
   return (
     <section className="animate-in fade-in duration-500">
-      {/* Banner de Boas-vindas */}
       <div className="mb-8 flex items-center gap-5 rounded-r-xl border-b border-l-4 border-l-sky-500 border-b-white/10 bg-gradient-to-r from-sky-500/15 to-black/50 p-5 animate-in slide-in-from-top-4 duration-500">
         <div className="flex-shrink-0 rounded-full bg-sky-500/20 p-3">
           <TrendingUp className="h-8 w-8 text-sky-400" />
         </div>
         <div>
           <h2 className="mb-1 text-2xl font-black text-white">
-            Bem vindo, Brayan, o CSO mais baladeiro de Londrina! 🚀
+            Visão Executiva em Tempo Real
           </h2>
           <p className="text-sm font-semibold text-sky-400">
-            Seu cockpit de vendas da BG Tech está 100% sincronizado e pronto para bater a meta.
+            Dashboard sincronizado com métricas consolidadas
           </p>
         </div>
       </div>
 
-      {/* Cabeçalho */}
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-slate-100">
           Visão Executiva

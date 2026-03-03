@@ -84,9 +84,10 @@ export default function ProposalsPage() {
       if (supabaseError) throw supabaseError;
 
       setProposals((data as Proposal[]) || []);
-    } catch (err: any) {
-      console.error('Erro ao buscar propostas:', err);
-      setError(err.message || 'Erro ao carregar propostas');
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Erro ao buscar propostas:', error);
+      setError(error.message || 'Erro ao carregar propostas');
     } finally {
       setLoading(false);
     }
@@ -131,7 +132,6 @@ export default function ProposalsPage() {
 
       if (error) throw error;
 
-      // Fecha modal e reseta form
       setIsModalOpen(false);
       setFormData({
         title: '',
@@ -141,11 +141,11 @@ export default function ProposalsPage() {
         content: '',
       });
 
-      // Recarrega propostas
       await fetchProposals();
-    } catch (err: any) {
-      console.error('Erro ao criar proposta:', err);
-      alert('Erro ao criar proposta: ' + (err.message || 'Erro desconhecido'));
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Erro ao criar proposta:', error);
+      alert('Erro ao criar proposta: ' + (error.message || 'Erro desconhecido'));
     } finally {
       setSubmitting(false);
     }
@@ -164,9 +164,10 @@ export default function ProposalsPage() {
       if (error) throw error;
 
       await fetchProposals();
-    } catch (err: any) {
-      console.error('Erro ao atualizar status:', err);
-      alert('Erro ao atualizar status: ' + (err.message || 'Erro desconhecido'));
+    } catch (err: unknown) {
+      const caughtError = err as Error;
+      console.error('Erro ao atualizar status:', caughtError);
+      alert('Erro ao atualizar status: ' + (caughtError.message || 'Erro desconhecido'));
     }
   }
 
@@ -184,9 +185,10 @@ export default function ProposalsPage() {
       if (error) throw error;
 
       await fetchProposals();
-    } catch (err: any) {
-      console.error('Erro ao deletar proposta:', err);
-      alert('Erro ao deletar proposta: ' + (err.message || 'Erro desconhecido'));
+    } catch (err: unknown) {
+      const caughtError = err as Error;
+      console.error('Erro ao deletar proposta:', caughtError);
+      alert('Erro ao deletar proposta: ' + (caughtError.message || 'Erro desconhecido'));
     }
   }
   const getStatusStyle = (status: string) => {
@@ -277,7 +279,7 @@ export default function ProposalsPage() {
             Nenhuma proposta cadastrada
           </h2>
           <p className="mt-2 text-sm text-slate-400">
-            Clique em "Gerar Proposta" para começar
+            Clique em &quot;Gerar Proposta&quot; para começar
           </p>
         </div>
       )}
@@ -311,7 +313,6 @@ export default function ProposalsPage() {
                 </tr>
               </thead>
 
-              {/* Corpo da Tabela */}
               <tbody className="divide-y divide-white/10">
                 {proposals.map((proposal) => {
                   const statusStyle = getStatusStyle(proposal.status);
@@ -406,7 +407,6 @@ export default function ProposalsPage() {
             </table>
           </div>
 
-          {/* Resumo de Estatísticas */}
           <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-4">
             <div className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
@@ -449,7 +449,6 @@ export default function ProposalsPage() {
         </>
       )}
 
-      {/* Modal de Criação */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#03050a] p-8 shadow-2xl">
@@ -471,7 +470,6 @@ export default function ProposalsPage() {
             </div>
 
             <form onSubmit={handleCreateProposal} className="space-y-6">
-              {/* Título */}
               <div>
                 <label className="mb-2 block text-sm font-medium text-white">
                   Título da Proposta *
@@ -489,7 +487,6 @@ export default function ProposalsPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {/* Oportunidade */}
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Oportunidade Origem *
@@ -521,7 +518,6 @@ export default function ProposalsPage() {
                   </select>
                 </div>
 
-                {/* Valor */}
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Valor (R$) *
@@ -541,7 +537,6 @@ export default function ProposalsPage() {
                 </div>
               </div>
 
-              {/* Status */}
               <div>
                 <label className="mb-2 block text-sm font-medium text-white">
                   Status Inicial
@@ -575,7 +570,6 @@ export default function ProposalsPage() {
                 </select>
               </div>
 
-              {/* Conteúdo/Escopo */}
               <div>
                 <label className="mb-2 block text-sm font-medium text-white">
                   Conteúdo / Escopo
@@ -591,7 +585,6 @@ export default function ProposalsPage() {
                 />
               </div>
 
-              {/* Botões */}
               <div className="flex items-center justify-end gap-3 border-t border-white/10 pt-4">
                 <button
                   type="button"

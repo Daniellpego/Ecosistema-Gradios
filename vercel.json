@@ -1,5 +1,6 @@
 {
-  "buildCommand": "echo 'Static site'",
+  "buildCommand": null,
+  "installCommand": null,
   "outputDirectory": "site-principal",
   "cleanUrls": true,
   "trailingSlash": false,
