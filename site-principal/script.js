@@ -410,6 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.js-open-quiz').forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); openQuiz(); }));
   const closeBtn = document.querySelector('.js-close-quiz');
   if(closeBtn) closeBtn.addEventListener('click', closeQuiz);
+
 });
 
 let currentStep = -1;
