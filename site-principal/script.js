@@ -182,6 +182,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.3 });
 
   counters.forEach(c => counterObserver.observe(c));
+  
+  // FALLBACK: Se nenhum counter animou após 5 segundos, força a animação
+  setTimeout(() => {
+    counters.forEach(c => {
+      if (c.innerText === '0' || c.innerText.startsWith('0')) {
+        animateCounter(c);
+      }
+    });
+  }, 5000);
 
   // Menu Mobile
   const menuBtn = document.querySelector('.js-toggle-menu');
@@ -506,31 +515,42 @@ function runLoading() {
   let i = 0;
   const tick = () => {
     if (i > 0) {
-      const prevStep = document.getElementById(`dls-${i - 1}`);
-      if(prevStep) {
-          prevStep.classList.replace('active', 'done');
-          prevStep.querySelector('.diag-step-icon').innerHTML = '<i data-lucide="check" width="16"></i>';
-      }
-      if (steps[i - 1].special) {
+      const prevEl = document.getElementById(`dls-${i - 1}`);
+      if (prevEl) {
+        prevEl.classList.replace('active', 'done');
+        const icon = prevEl.querySelector('.diag-step-icon');
+        if (icon) icon.innerHTML = '<i data-lucide="check" width="16"></i>';
+        if (steps[i - 1].special) {
           const flashNum = document.getElementById('flash-num');
-          if(flashNum) flashNum.style.display = 'none';
+          if (flashNum) flashNum.style.display = 'none';
+        }
       }
     }
     if (i < steps.length) {
-      const currStep = document.getElementById(`dls-${i}`);
-      if(currStep) currStep.classList.add('active');
-      
-      if (steps[i].special) {
+      const currEl = document.getElementById(`dls-${i}`);
+      if (currEl) {
+        currEl.classList.add('active');
+        if (steps[i].special) {
           const flashNum = document.getElementById('flash-num');
-          if(flashNum) flashNum.style.display = 'block';
+          if (flashNum) flashNum.style.display = 'block';
+        }
       }
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
       i++;
       setTimeout(tick, 1000); 
     } else {
       setTimeout(showResult, 500);
     }
   };
+  
+  // TIMEOUT DE SEGURANÇA: Se não terminar em 10s, força showResult
+  setTimeout(() => {
+    if (i < steps.length) {
+      console.warn('Quiz loading timeout - forcing result');
+      setTimeout(showResult, 100);
+    }
+  }, 10000);
+  
   tick();
 }
 
