@@ -15,7 +15,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="style.css">
-
   <style>
     /* ========================================================
        CSS DA SEÇÃO: QUEM ATENDEMOS (SEGMENTOS)
@@ -25,7 +24,8 @@
     .segment-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.1), transparent 70%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
     .segment-card:hover { background: rgba(14, 165, 233, 0.03); border-color: rgba(14, 165, 233, 0.4); transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5); }
     .segment-card:hover::before { opacity: 1; }
-    .segment-icon-wrap { width: 56px; height: 56px; border-radius: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 8px; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+    .segment-icon-wrap { width: 56px; height: 56px; border-radius: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 8px; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+    .segment-icon-wrap i { width: 28px; height: 28px; }
     .segment-card:hover .segment-icon-wrap { background: rgba(14, 165, 233, 0.15); border-color: rgba(14, 165, 233, 0.4); transform: scale(1.05) rotate(-5deg); }
     .segment-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px; color: #f8fafc; letter-spacing: -0.01em; }
     .segment-desc { font-size: 14px; color: #94a3b8; line-height: 1.6; font-weight: 500; }
@@ -62,9 +62,9 @@
       </div>
     </a>
     <nav class="nav-links" aria-label="Navegação Principal">
-      <a href="#segments" class="nav-link">Para Quem</a>
+      <a href="#problems" class="nav-link">O Desafio</a>
       <a href="#services" class="nav-link">Arquitetura</a>
-      <a href="#process" class="nav-link">Automação</a>
+      <a href="#segments" class="nav-link">Para Quem</a>
       <a href="#faq" class="nav-link">Dúvidas</a>
     </nav>
     <button class="header-cta js-open-quiz">Diagnóstico Inteligente</button>
@@ -74,19 +74,19 @@
   </header>
 
   <nav class="mobile-menu" id="mobile-menu" aria-label="Menu Mobile">
-    <a href="#segments" class="mobile-link js-close-menu">Para Quem</a>
+    <a href="#problems" class="mobile-link js-close-menu">O Desafio</a>
     <a href="#services" class="mobile-link js-close-menu">Arquitetura</a>
-    <a href="#process" class="mobile-link js-close-menu">Automação</a>
+    <a href="#segments" class="mobile-link js-close-menu">Para Quem</a>
     <a href="#faq" class="mobile-link js-close-menu">Dúvidas</a>
     <button class="btn-primary js-open-quiz js-close-menu" style="margin-top: 32px;">Diagnóstico Inteligente</button>
   </nav>
 
   <main id="main-content">
+    
     <section id="hero" class="dark-section">
       <div class="grid-overlay"></div>
       <div class="hero-glow-left"></div>
       <div class="hero-glow-right"></div>
-      <div class="particle p1"></div><div class="particle p2"></div><div class="particle p3"></div><div class="particle p4"></div><div class="particle p5"></div>
       
       <div class="hero-content">
         <div class="hero-badge reveal">
@@ -94,15 +94,12 @@
           <span class="badge-text-desktop">SISTEMAS QUE PENSAM. NEGÓCIOS QUE ESCALAM.</span>
           <span class="badge-text-mobile">DIAGNÓSTICO B2B · 3 MINUTOS</span>
         </div>
-
         <h1 class="hero-title reveal delay-1">
-          Automatizamos o que trava<br>a sua <span class="hero-highlight">empresa.</span>
+          Engenharia digital para blindar a<br><span class="hero-highlight">margem da sua operação.</span>
         </h1>
-
         <p class="hero-subtitle reveal delay-2">
-          Em 3 minutos nossa inteligência calcula quanto você perde por mês e mostra exatamente o que estruturar para recuperar sua margem.
+          Mapeamos processos manuais, integramos sistemas isolados e construímos a infraestrutura exata para sua empresa escalar sem aumentar o custo operacional.
         </p>
-
         <div class="hero-actions reveal delay-3">
           <div class="btn-group">
             <button class="btn-primary btn-shimmer js-open-quiz">
@@ -156,69 +153,12 @@
       </div>
     </section>
 
-    <section id="segments" class="dark-section section-spacing" style="background: #03050a; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05);">
-      <div class="grid-overlay" style="opacity: 0.05;"></div>
-      <div class="section-inner" style="position: relative; z-index: 10;">
-        <span class="eyebrow reveal" style="color: #0ea5e9; background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); margin-inline: auto; display: table;">QUEM ATENDEMOS</span>
-        <h2 class="section-title reveal" style="color: white; text-align: center; margin-bottom: 16px;">Se você tem uma operação para escalar, a BG Tech foi feita para você.</h2>
-        
-        <div class="segments-grid reveal delay-1">
-          <div class="segment-card">
-            <div class="segment-icon-wrap">🏭</div>
-            <div>
-              <h3 class="segment-title">Distribuição e Varejo</h3>
-              <p class="segment-desc">Fechamento de comissão, controle de estoque e integração com ERP automatizados.</p>
-            </div>
-          </div>
-          
-          <div class="segment-card">
-            <div class="segment-icon-wrap">🏥</div>
-            <div>
-              <h3 class="segment-title">Saúde e Clínicas</h3>
-              <p class="segment-desc">Roteamento de leads, agendamento inteligente e fluxo de atendimento sem gargalo.</p>
-            </div>
-          </div>
-          
-          <div class="segment-card">
-            <div class="segment-icon-wrap">🏗️</div>
-            <div>
-              <h3 class="segment-title">Construção Civil</h3>
-              <p class="segment-desc">Controle de obra, gestão de fornecedor e relatório automático para a diretoria.</p>
-            </div>
-          </div>
-          
-          <div class="segment-card">
-            <div class="segment-icon-wrap">⚙️</div>
-            <div>
-              <h3 class="segment-title">Indústria e Manufatura</h3>
-              <p class="segment-desc">Integração de sistemas de produção, qualidade e logística em um único fluxo.</p>
-            </div>
-          </div>
-          
-          <div class="segment-card">
-            <div class="segment-icon-wrap">💼</div>
-            <div>
-              <h3 class="segment-title">Serviços B2B</h3>
-              <p class="segment-desc">Automação de proposta, onboarding de cliente e suporte técnico sem retrabalho.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="segment-footer-box reveal delay-2">
-          <h3 class="segment-footer-text">Não atendemos todo mundo. Atendemos quem está pronto para <span>parar de crescer no limite.</span></h3>
-          <button class="btn-primary btn-large btn-shimmer js-open-quiz" style="margin: 0 auto;">
-            Verificar se minha empresa tem perfil <i data-lucide="arrow-right"></i>
-          </button>
-        </div>
-      </div>
-    </section>
-
+    <!-- SEÇÃO PROBLEMAS: Agora vem antes das Soluções e Segmentos -->
     <section id="problems" class="light-section section-spacing">
       <div class="section-inner">
         <span class="eyebrow reveal">O GARGALO INVISÍVEL</span>
         <h2 class="section-title reveal">Sua empresa está perdendo dinheiro. E você sabe disso.</h2>
         <p class="section-subtitle reveal">Três problemas estruturais destroem até 40% da capacidade de lucro de operações consolidadas todos os dias.</p>
-
         <div class="problems-grid">
           <div class="problem-card reveal delay-1">
             <div class="problem-card-top">
@@ -230,7 +170,6 @@
             </div>
             <div class="problem-stat">87% das PMEs perdem +15h por semana</div>
           </div>
-
           <div class="problem-card reveal delay-2">
             <div class="problem-card-top">
               <div class="problem-icon icon-red-bg"><i data-lucide="user-minus"></i></div>
@@ -241,7 +180,6 @@
             </div>
             <div class="problem-stat">67% compram do 1º que atende</div>
           </div>
-
           <div class="problem-card reveal delay-3">
             <div class="problem-card-top">
               <div class="problem-icon icon-yellow-bg"><i data-lucide="cable"></i></div>
@@ -256,12 +194,12 @@
       </div>
     </section>
 
+    <!-- SEÇÃO SERVIÇOS: Sem preços abertos, focada em valor premium -->
     <section id="services" class="light-section bg-light-alt section-spacing">
       <div class="section-inner">
-        <span class="eyebrow reveal">A SOLUÇÃO</span>
-        <h2 class="section-title reveal">Nós não vendemos software. Nós vendemos escala estruturada.</h2>
+        <span class="eyebrow reveal">A ARQUITETURA</span>
+        <h2 class="section-title reveal">Nós não vendemos software. Vendemos escala estruturada.</h2>
         <p class="section-subtitle reveal">Criamos a arquitetura tecnológica exata que o seu negócio precisa para ganhar performance e controle absoluto.</p>
-
         <div class="services-grid">
           <div class="service-card reveal delay-1" style="position: relative;">
             <div class="popular-badge">Mais Contratado</div>
@@ -272,7 +210,7 @@
               </div>
               <p class="service-desc">Conectamos ferramentas e automatizamos fluxos complexos. O sistema trabalha pela sua equipe para você focar no controle da receita.</p>
             </div>
-            <div class="service-anchor">Projetos a partir de R$ 3.500</div>
+            <div class="service-anchor">Integração Ponta a Ponta</div>
           </div>
           
           <div class="service-card reveal delay-2">
@@ -283,9 +221,8 @@
               </div>
               <p class="service-desc">Sistemas que resolvem problemas reais com precisão. Código modular feito exclusivamente para blindar a sua estrutura de negócio.</p>
             </div>
-            <div class="service-anchor">Projetos a partir de R$ 8.000</div>
+            <div class="service-anchor">Arquitetura Proprietária</div>
           </div>
-
           <div class="service-card reveal delay-1">
             <div class="service-card-top">
               <div class="service-header">
@@ -294,9 +231,8 @@
               </div>
               <p class="service-desc">Monitoramento contínuo e suporte de segurança. Focamos em manter sua operação rodando 24 horas. A estabilidade é garantida.</p>
             </div>
-            <div class="service-anchor">Mensalidades a partir de R$ 1.500</div>
+            <div class="service-anchor">SLA de 99.9% Garantido</div>
           </div>
-
           <div class="service-card reveal delay-2">
             <div class="service-card-top">
               <div class="service-header">
@@ -305,12 +241,70 @@
               </div>
               <p class="service-desc">Desenho do roadmap tecnológico. Sentamos com a diretoria para mapear onde investir a inteligência para crescer com segurança.</p>
             </div>
-            <div class="service-anchor">Sessões a partir de R$ 1.200</div>
+            <div class="service-anchor">Roadmap de Crescimento</div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- SEÇÃO SEGMENTOS: Validação para o cliente, sem Emojis -->
+    <section id="segments" class="dark-section section-spacing" style="background: #03050a; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05);">
+      <div class="grid-overlay" style="opacity: 0.05;"></div>
+      <div class="section-inner" style="position: relative; z-index: 10;">
+        <span class="eyebrow reveal" style="color: #0ea5e9; background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); margin-inline: auto; display: table;">QUEM ATENDEMOS</span>
+        <h2 class="section-title reveal" style="color: white; text-align: center; margin-bottom: 16px;">Se você tem uma operação para escalar, nós construímos a ponte.</h2>
+        
+        <div class="segments-grid reveal delay-1">
+          <div class="segment-card">
+            <div class="segment-icon-wrap"><i data-lucide="factory" style="color: #0ea5e9;"></i></div>
+            <div>
+              <h3 class="segment-title">Distribuição e Varejo</h3>
+              <p class="segment-desc">Fechamento de comissão, controle de estoque e integração com ERP automatizados.</p>
+            </div>
+          </div>
+          
+          <div class="segment-card">
+            <div class="segment-icon-wrap"><i data-lucide="hospital" style="color: #0ea5e9;"></i></div>
+            <div>
+              <h3 class="segment-title">Saúde e Clínicas</h3>
+              <p class="segment-desc">Roteamento de leads, agendamento inteligente e fluxo de atendimento sem gargalo.</p>
+            </div>
+          </div>
+          
+          <div class="segment-card">
+            <div class="segment-icon-wrap"><i data-lucide="hard-hat" style="color: #0ea5e9;"></i></div>
+            <div>
+              <h3 class="segment-title">Construção Civil</h3>
+              <p class="segment-desc">Controle de obra, gestão de fornecedor e relatório automático para a diretoria.</p>
+            </div>
+          </div>
+          
+          <div class="segment-card">
+            <div class="segment-icon-wrap"><i data-lucide="settings" style="color: #0ea5e9;"></i></div>
+            <div>
+              <h3 class="segment-title">Indústria e Manufatura</h3>
+              <p class="segment-desc">Integração de sistemas de produção, qualidade e logística em um único fluxo.</p>
+            </div>
+          </div>
+          
+          <div class="segment-card">
+            <div class="segment-icon-wrap"><i data-lucide="briefcase" style="color: #0ea5e9;"></i></div>
+            <div>
+              <h3 class="segment-title">Serviços B2B</h3>
+              <p class="segment-desc">Automação de proposta, onboarding de cliente e suporte técnico sem retrabalho.</p>
+            </div>
+          </div>
+        </div>
+        <div class="segment-footer-box reveal delay-2">
+          <h3 class="segment-footer-text">Não atendemos todo mundo. Atendemos quem está pronto para <span>parar de crescer no limite.</span></h3>
+          <button class="btn-primary btn-large btn-shimmer js-open-quiz" style="margin: 0 auto;">
+            Verificar se minha empresa tem perfil <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Restante da Página segue exatamente igual... -->
     <section id="process" class="light-section section-spacing">
       <div class="section-inner">
         <span class="eyebrow reveal">AUTOMAÇÃO COM ARQUITETURA</span>
@@ -320,26 +314,22 @@
           <div class="process-line-wrap">
              <div class="process-line-fill" id="process-line"></div>
           </div>
-          
           <div class="process-step">
             <div class="process-circle">01</div>
             <h3 class="process-step-title">Diagnóstico Preciso</h3>
             <p class="process-step-desc">Você mapeia sua maturidade em 3 minutos e nossa inteligência cruza seus dados operacionais na hora.</p>
           </div>
-          
           <div class="process-step">
             <div class="process-circle">02</div>
             <h3 class="process-step-title">Desenho do Fluxo</h3>
             <p class="process-step-desc">Apresentamos a arquitetura digital exata para resolver as travas da sua empresa com alta performance.</p>
           </div>
-          
           <div class="process-step">
             <div class="process-circle">03</div>
-            <h3 class="process-step-title">Go-Live em 7 Dias</h3>
-            <p class="process-step-desc">Implementamos o código e entregamos a organização invisível para você escalar.</p>
+            <h3 class="process-step-title">Implantação Ágil</h3>
+            <p class="process-step-desc">Entregamos a infraestrutura em ciclos modulares. O primeiro impacto no caixa ocorre em semanas, não meses.</p>
           </div>
         </div>
-
         <div class="after-diag-box reveal delay-2">
           <h3>O que acontece após iniciar o Diagnóstico?</h3>
           <ul>
@@ -369,7 +359,7 @@
             <div class="case-body">
               <div class="case-topic"><strong>O Problema:</strong> O fechamento de comissão levava 3 dias e ocorria de forma 100% manual com planilhas densas.</div>
               <div class="case-topic"><strong>A Solução:</strong> Engenharia de integração automatizada entre o ERP da empresa e o sistema bancário.</div>
-              <div class="case-topic highlight"><strong>O Resultado:</strong> O processo roda de forma silenciosa em 15 minutos. Lucro devolvido e ROI no primeiro mês.</div>
+              <div class="case-topic highlight"><strong>O Resultado:</strong> O processo roda de forma silenciosa em 15 minutos. ROI garantido no primeiro mês de operação.</div>
             </div>
           </div>
           
@@ -398,7 +388,6 @@
             <span class="eyebrow">A LIDERANÇA</span>
             <h2 class="section-title" style="text-align: left;">Engenharia com visão de negócios.</h2>
             <p class="section-subtitle" style="text-align: left; margin-left: 0;">Entendemos perfeitamente que você não quer comprar código. Você quer controle absoluto e redução de dor de cabeça. A BG Tech nasceu para ser o parceiro tecnológico da sua empresa.</p>
-            
             <ul class="founders-list">
               <li>
                 <i data-lucide="check-circle-2"></i> 
@@ -410,7 +399,6 @@
               </li>
             </ul>
           </div>
-
           <div class="founders-cards">
             <div class="founder-card reveal delay-1">
               <img src="daniel.png" alt="Daniel Pego" class="founder-photo" loading="lazy" width="90" height="90" style="object-fit: cover; object-position: top; border-radius: 50%; aspect-ratio: 1/1;">
@@ -420,7 +408,6 @@
                 <p class="founder-bio">Sua missão é entender a fundo a dor do empresário e desenhar o caminho exato de como a tecnologia vai devolver o lucro e a paz para a operação.</p>
               </div>
             </div>
-            
             <div class="founder-card reveal delay-2">
               <img src="gu.png" alt="Gustavo Batista" class="founder-photo" loading="lazy" width="90" height="90" style="object-fit: cover; object-position: top; border-radius: 50%; aspect-ratio: 1/1;">
               <div class="founder-info">
@@ -429,7 +416,6 @@
                 <p class="founder-bio">Especialista em transformar gargalos complexos em soluções digitais simples. Focado em criar inteligências que a sua equipe realmente goste de usar no dia a dia.</p>
               </div>
             </div>
-
             <div class="founder-card reveal delay-3">
               <img src="bryan.png" alt="Bryan Gradi" class="founder-photo" loading="lazy" width="90" height="90" style="object-fit: cover; object-position: top; border-radius: 50%; aspect-ratio: 1/1;">
               <div class="founder-info">
@@ -448,7 +434,6 @@
       <div class="section-inner" style="position: relative; z-index: 10;">
         <span class="eyebrow reveal" style="color: #0ea5e9; background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); margin-inline: auto; display: table;">DÚVIDAS FREQUENTES</span>
         <h2 class="section-title reveal" style="color: white; text-align: center; margin-bottom: 24px;">Respostas diretas para quem não gosta de perder tempo.</h2>
-        
         <div class="faq-list reveal delay-1">
           <div class="faq-item">
             <div class="faq-question">
@@ -459,7 +444,6 @@
               <p>Não existe empresa pequena demais para automatizar. Existe empresa com processo manual custando mais do que deveria. A maioria das empresas que atendemos tem entre 5 e 50 funcionários. O diagnóstico foi feito exatamente para mostrar se faz sentido para o seu tamanho, sem achismo, com número real.</p>
             </div>
           </div>
-
           <div class="faq-item">
             <div class="faq-question">
               Preciso trocar meus sistemas atuais?
@@ -469,17 +453,15 @@
               <p>Na maioria dos casos, não. A arquitetura da BG Tech é feita para integrar o que você já usa: ERP, planilha, CRM, WhatsApp, sistema bancário. Conectamos os pontos que não se falam sem precisar jogar fora o que já funciona.</p>
             </div>
           </div>
-
           <div class="faq-item">
             <div class="faq-question">
               Quanto tempo leva para ver resultado?
               <i data-lucide="chevron-down"></i>
             </div>
             <div class="faq-answer">
-              <p>Depende do projeto. Automações simples entram em produção em 7 dias. Projetos de engenharia de software levam entre 3 e 6 semanas. Em ambos os casos, o ROI aparece no primeiro mês, porque o custo que você elimina começa no dia em que o sistema vai ao ar.</p>
+              <p>Depende do projeto. Automações entram em produção rapidamente. Projetos de engenharia complexos levam semanas. Em ambos os casos, o ROI aparece muito rápido, porque o custo invisível que você elimina começa no dia em que o sistema vai ao ar.</p>
             </div>
           </div>
-
           <div class="faq-item">
             <div class="faq-question">
               O que acontece depois que faço o diagnóstico?
@@ -489,7 +471,6 @@
               <p>Você preenche 5 pontos da sua operação em 3 minutos. O resultado aparece na tela na hora, com o custo invisível calculado para o seu negócio. Um consultor entra em contato em até 2 horas para apresentar a arquitetura exata. Você decide se avança. Sem pressão, sem compromisso.</p>
             </div>
           </div>
-
           <div class="faq-item">
             <div class="faq-question">
               Como funciona o contrato?
@@ -499,7 +480,6 @@
               <p>Simples e transparente. Escopo fechado antes de começar, você sabe exatamente o que vai ser entregue, em quanto tempo e por quanto. 50% na assinatura, 50% na entrega. Se não cumprirmos o escopo acordado, você não paga a fatura final. O risco é nosso.</p>
             </div>
           </div>
-
           <div class="faq-item">
             <div class="faq-question">
               Vocês atendem fora de Londrina?
@@ -538,7 +518,6 @@
   
   <footer class="site-footer dark-section" style="padding: 64px 0 24px 0; background: var(--bg-main);">
     <div class="section-inner footer-grid">
-      
       <div class="footer-brand">
         <div class="mobile-hide-logo" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
           <img src="logo-bgtech.png" alt="Logo BG Tech" class="brand-logo" width="36" height="36" style="height: 36px; width: 36px; object-fit: contain;" loading="lazy" onerror="this.style.display='none'">
@@ -547,29 +526,24 @@
         <p style="color: rgba(230, 242, 255, 0.55); line-height: 1.6; font-size: 14px;">Engenharia Digital para Empresas Inteligentes.</p>
         <p style="margin-top: 12px; font-size: 13px; color: rgba(230, 242, 255, 0.3);">CNPJ: 54.551.488/0001-20</p>
       </div>
-      
       <div class="footer-links">
         <h3 style="color: white; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 20px;">Empresa</h3>
-        <a href="/#segments" style="display: block; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Para Quem</a>
+        <a href="/#problems" style="display: block; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">O Desafio</a>
         <a href="/#services" style="display: block; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Arquitetura</a>
-        <a href="/#process" style="display: block; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">A Jornada</a>
+        <a href="/#segments" style="display: block; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Para Quem</a>
         <a href="/#cases" style="display: block; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Casos de Sucesso</a>
         <a href="/#faq" style="display: block; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Dúvidas (FAQ)</a>
       </div>
-
       <div class="footer-links">
         <h3 style="color: white; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 20px;">Contato</h3>
-        
         <a href="https://wa.me/55439XXXXXXXX" target="_blank" style="display: flex; align-items: center; gap: 8px; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;" rel="noopener noreferrer">
           <i data-lucide="phone" style="width: 16px;"></i> WhatsApp Comercial
         </a>
-        
         <a href="mailto:contato@bgtechsolucoes.com.br" style="display: flex; align-items: center; gap: 8px; color: rgba(230, 242, 255, 0.55); margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">
           <i data-lucide="mail" style="width: 16px;"></i> contato@bgtechsolucoes.com.br
         </a>
       </div>
     </div>
-    
     <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 24px; margin-top: 24px;">
       <div class="section-inner" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; color: rgba(230, 242, 255, 0.3);">
         <span>© 2026 BG Tecnologia e Automação LTDA. Todos os direitos reservados.</span>
@@ -598,7 +572,6 @@
 
   <script src="https://unpkg.com/lucide@latest" defer></script>
   <script src="script.js" defer></script>
-  
   <script>
     // Script da Seção de FAQ (Accordion)
     document.addEventListener('DOMContentLoaded', () => {
@@ -608,16 +581,14 @@
           const isActive = item.classList.contains('active');
           const answer = item.querySelector('.faq-answer');
           
-          // Fecha todas as opções que estiverem abertas
           document.querySelectorAll('.faq-item').forEach(faq => {
             faq.classList.remove('active');
             faq.querySelector('.faq-answer').style.maxHeight = null;
           });
           
-          // Se a que o usuário clicou não estava ativa, abre ela suavemente
           if (!isActive) {
             item.classList.add('active');
-            answer.style.maxHeight = answer.scrollHeight + 40 + "px"; // Altura do conteúdo + margem interna
+            answer.style.maxHeight = answer.scrollHeight + 40 + "px"; 
           }
         });
       });
