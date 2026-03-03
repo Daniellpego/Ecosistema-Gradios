@@ -987,10 +987,6 @@ function showResult() {
     }
   };
 
-  const priorityBtn = document.querySelector('.js-priority-contact');
-  if (priorityBtn) {
-    const newPriorityBtn = priorityBtn.cloneNode(true);
-    priorityBtn.parentNode.replaceChild(newPriorityBtn, priorityBtn);
-    newPriorityBtn.addEventListener('click', openPriorityWpp);
-  }
+  const priorityBtn = body.querySelector('.js-priority-contact');
+  if (priorityBtn) priorityBtn.addEventListener('click', openPriorityWpp);
 }
