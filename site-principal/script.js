@@ -1,7 +1,7 @@
 // ==== CONFIGURAÇÕES BG TECH ====
 const CONFIG = {
   whatsappNumber: '5511999998888', // LEMBRE DE COLOCAR O SEU NÚMERO AQUI
-  webhookUrl: '', // Deixe vazio, vamos usar o Supabase
+  webhookUrl: '', 
   supabaseUrl: 'https://urpuiznydrlwmaqhdids.supabase.co', 
   supabaseKey: 'sb_publishable_9G6JUKnfZ1mekk7qUKdTQA_TXbARtR0'
 };
@@ -30,7 +30,7 @@ const QUESTIONS = [
       { icon: 'hard-hat', title: 'Construção Civil', sub: 'Obras, projetos e gestão de equipe de campo' },
       { icon: 'scale', title: 'Jurídico e Contabilidade', sub: 'Escritórios, processos e clientes recorrentes' },
       { icon: 'store', title: 'Comércio e Varejo', sub: 'Loja física, e-commerce ou distribuidora' },
-      { icon: 'factory', title: 'Indústria e Manufatura', sub: 'Produção, estoque e operação fabril' },
+      { icon: 'factory', title: 'Indústria e Manufatura', sub: 'Produção, estoque e operation fabril' },
       { icon: 'stethoscope', title: 'Saúde', sub: 'Clínicas, laboratórios e prestadores de saúde' },
       { icon: 'briefcase', title: 'Serviços e Consultoria', sub: 'Agências, consultorias e empresas de serviço' }
     ]
@@ -81,7 +81,7 @@ const QUESTIONS = [
       { icon: 'file-text', iconColor: 'icon-red', title: 'No papel ou Excel', sub: 'Tudo manual dependente de pessoas' },
       { icon: 'box', iconColor: 'icon-orange', title: 'Sistemas básicos', sub: 'Até tem ferramenta mas ninguém usa direito' },
       { icon: 'boxes', iconColor: 'icon-yellow', title: 'Sistemas sem integração', sub: 'Dados espalhados e muito retrabalho' },
-      { icon: 'server', iconColor: 'icon-blue-light', title: 'Sistemas razoáveis', sub: 'Funciona mas tem muito espaço pra evoluir' },
+      { icon: 'server', iconColor: 'icon-blue-light', title: 'Sistemas razoáveis', sub: 'Funciona mas tem espaço pra evoluir' },
       { icon: 'rocket', iconColor: 'icon-cyan', title: 'Tecnologia boa', sub: 'Base sólida, preciso de um parceiro estratégico' }
     ]
   },
@@ -121,7 +121,7 @@ const echos = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  lucide.createIcons();
+  if (typeof lucide !== 'undefined') lucide.createIcons();
   
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeQuiz(); });
   document.getElementById('quiz-overlay').addEventListener('click', (e) => {
@@ -133,45 +133,72 @@ document.addEventListener('DOMContentLoaded', () => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
         if (entry.target.classList.contains('process-steps')) {
-           setTimeout(() => { document.getElementById('process-line').style.width = '100%'; }, 500);
+           setTimeout(() => { 
+             const line = document.getElementById('process-line');
+             if(line) line.style.width = '100%'; 
+           }, 500);
         }
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+  // FIX CRÍTICO QA: Counter Animado de Alta Performance (Apple Smooth Easing)
   const counters = document.querySelectorAll('.counter');
-  const counterObserver = new IntersectionObserver((entries) => {
+  const animateCounters = (counter) => {
+    const targetAttr = counter.getAttribute('data-target');
+    const target = parseFloat(targetAttr) || 0;
+    const isFloat = targetAttr.includes('.'); 
+    const duration = 2000; 
+    let startTime = null;
+    
+    const update = (currentTime) => {
+      if (!startTime) startTime = currentTime;
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const currentVal = easeOut * target;
+      
+      counter.innerText = isFloat ? currentVal.toFixed(1) : Math.ceil(currentVal);
+      
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        counter.innerText = target;
+      }
+    };
+    requestAnimationFrame(update);
+  };
+
+  const counterObserver = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const counter = entry.target;
-        const target = parseFloat(counter.getAttribute('data-target'));
-        const isFloat = counter.getAttribute('data-target').includes('.');
-        let startTime = null;
-        const duration = 1800;
-        const updateCount = (timestamp) => {
-          if (!startTime) startTime = timestamp;
-          const progress = Math.min((timestamp - startTime) / duration, 1);
-          const ease = 1 - Math.pow(1 - progress, 3);
-          const current = target * ease;
-          
-          counter.innerText = isFloat ? current.toFixed(1) : Math.floor(current);
-          
-          if (progress < 1) requestAnimationFrame(updateCount);
-          else counter.innerText = target;
-        };
-        requestAnimationFrame(updateCount);
-        counterObserver.unobserve(counter);
+        animateCounters(entry.target);
+        obs.unobserve(entry.target); 
       }
     });
-  }, { threshold: 0 }); 
+  }, { threshold: 0.3 });
+
   counters.forEach(c => counterObserver.observe(c));
 
-  document.querySelector('.js-toggle-menu').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('open'));
-  document.querySelectorAll('.js-close-menu').forEach(btn => btn.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open')));
+  // Menu Mobile
+  const menuBtn = document.querySelector('.js-toggle-menu');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (menuBtn) {
+      menuBtn.addEventListener('click', () => {
+          const isOpen = mobileMenu.classList.contains('open');
+          mobileMenu.classList.toggle('open', !isOpen);
+          menuBtn.setAttribute('aria-expanded', !isOpen);
+      });
+  }
+  document.querySelectorAll('.js-close-menu').forEach(btn => btn.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+  }));
   
+  // Header Scroll
   window.addEventListener('scroll', () => {
     const header = document.getElementById('site-header');
     const progress = document.getElementById('reading-progress');
@@ -179,11 +206,31 @@ document.addEventListener('DOMContentLoaded', () => {
     else header.classList.remove('scrolled');
     
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.width = scrollable > 0 ? (window.scrollY / scrollable) * 100 + '%' : '0%';
+    if (progress) progress.style.width = scrollable > 0 ? (window.scrollY / scrollable) * 100 + '%' : '0%';
+  });
+
+  // Accordion FAQ (Correção SVG integrada)
+  document.querySelectorAll('.faq-question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const isActive = item.classList.contains('active');
+      const answer = item.querySelector('.faq-answer');
+      
+      document.querySelectorAll('.faq-item').forEach(faq => {
+        faq.classList.remove('active');
+        faq.querySelector('.faq-answer').style.maxHeight = null;
+      });
+      
+      if (!isActive) {
+        item.classList.add('active');
+        answer.style.maxHeight = answer.scrollHeight + 40 + "px"; 
+      }
+    });
   });
 
   document.querySelectorAll('.js-open-quiz').forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); openQuiz(); }));
-  document.querySelector('.js-close-quiz').addEventListener('click', closeQuiz);
+  const closeBtn = document.querySelector('.js-close-quiz');
+  if(closeBtn) closeBtn.addEventListener('click', closeQuiz);
 });
 
 let currentStep = -1;
@@ -200,20 +247,50 @@ function openQuiz() {
   } else {
     currentStep = -1; answers = {}; textData = {};
   }
-  document.getElementById('quiz-overlay').classList.add('open');
-  document.body.classList.add('modal-open');
+  
+  const quizOverlay = document.getElementById('quiz-overlay');
+  const quizBody = document.getElementById('quiz-body');
+  
+  if(quizOverlay) {
+      quizOverlay.classList.add('open');
+      document.body.classList.add('modal-open');
+      
+      // FIX CRÍTICO QA: Fallback de Segurança
+      if (quizBody.innerHTML.trim() === '') {
+          quizBody.innerHTML = `
+             <div style="text-align:center; padding: 60px 20px;">
+               <div class="diag-loading-ring"></div>
+               <p style="font-weight: 600;">Calibrando motor de diagnóstico...</p>
+             </div>`;
+          setTimeout(() => {
+              if (quizBody.innerHTML.includes('Calibrando motor')) { 
+                  quizBody.innerHTML = `
+                     <div style="text-align:center; padding: 60px 20px;">
+                       <p style="color: #ef4444; font-weight: 800; margin-bottom: 16px;">O diagnóstico encontrou um gargalo na rede.</p>
+                       <a href="https://wa.me/55439XXXXXXXX" target="_blank" class="btn-primary" style="display:inline-flex;">Continuar via WhatsApp</a>
+                     </div>`;
+              }
+          }, 4000);
+      }
+  }
+  
   if (currentStep === -1) renderIntro(); else renderStep();
 }
 
 function closeQuiz() {
-  document.getElementById('quiz-overlay').classList.remove('open');
-  document.body.classList.remove('modal-open');
+  const quizOverlay = document.getElementById('quiz-overlay');
+  if(quizOverlay) {
+      quizOverlay.classList.remove('open');
+      document.body.classList.remove('modal-open');
+  }
   if (currentStep >= QUESTIONS.length) sessionStorage.removeItem('bgtech_quiz');
 }
 
 function renderIntro() {
   const body = document.getElementById('quiz-body');
-  document.getElementById('quiz-progress-fill').style.width = '0%';
+  const progressFill = document.getElementById('quiz-progress-fill');
+  if(progressFill) progressFill.style.width = '0%';
+  
   body.innerHTML = `
     <div class="quiz-intro reveal visible">
       <h2 style="color: var(--text-1);">O Diagnóstico BG Tech</h2>
@@ -231,21 +308,25 @@ function renderIntro() {
       <button class="btn-primary btn-large js-start-quiz" style="width: 100%;">Estou pronto <i data-lucide="arrow-right"></i></button>
     </div>
   `;
-  lucide.createIcons();
-  body.querySelector('.js-start-quiz').addEventListener('click', () => { nextStep(); });
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+  
+  const startBtn = body.querySelector('.js-start-quiz');
+  if(startBtn) startBtn.addEventListener('click', () => { nextStep(); });
 }
 
 function renderStep() {
   const q = QUESTIONS[currentStep];
   const body = document.getElementById('quiz-body');
   const bar = document.getElementById('quiz-progress-fill');
-
-  if (q.id === 'contato') {
-    bar.style.width = '80%';
-    bar.classList.add('pulse-progress');
-  } else {
-    bar.style.width = `${(currentStep / (QUESTIONS.length - 1)) * 100}%`;
-    bar.classList.remove('pulse-progress');
+  
+  if(bar) {
+      if (q.id === 'contato') {
+        bar.style.width = '80%';
+        bar.classList.add('pulse-progress');
+      } else {
+        bar.style.width = `${(currentStep / (QUESTIONS.length - 1)) * 100}%`;
+        bar.classList.remove('pulse-progress');
+      }
   }
 
   if (q.type === 'options') {
@@ -264,7 +345,7 @@ function renderStep() {
     if (currentStep > 0) html += `<div class="q-nav"><button class="btn-ghost js-prev"><i data-lucide="arrow-left" width="16"></i> Voltar</button></div>`;
     html += `</div>`;
     body.innerHTML = html;
-
+    
     body.querySelectorAll('.q-option').forEach(opt => {
       opt.addEventListener('click', function () {
         const idx = parseInt(this.getAttribute('data-index'));
@@ -274,7 +355,7 @@ function renderStep() {
         if (q.id === 'segmento') {
           const segName = q.options[idx].title;
           body.innerHTML = `<div class="micro-validation"><i data-lucide="check-circle-2" style="margin-bottom:12px;width:32px;height:32px;"></i><br>Calibrando diagnóstico para ${segName}...</div>`;
-          lucide.createIcons();
+          if (typeof lucide !== 'undefined') lucide.createIcons();
           setTimeout(() => { nextStep(); }, 1200);
         } else if (ecoText) {
           body.innerHTML = `
@@ -282,7 +363,7 @@ function renderStep() {
               <i data-lucide="zap" style="color:var(--blue); width: 48px; height: 48px; margin-bottom: 24px; animation: pulse 2s infinite;"></i>
               <p style="color: var(--text-1); font-size: 20px; font-weight: 800; line-height: 1.5;">${ecoText}</p>
             </div>`;
-          lucide.createIcons();
+          if (typeof lucide !== 'undefined') lucide.createIcons();
           setTimeout(() => { nextStep(); }, 2500); 
         } else {
           nextStep();
@@ -309,7 +390,7 @@ function renderStep() {
       </div></div>`;
     
     body.innerHTML = html;
-
+    
     const wppInput = document.getElementById('inp-whatsapp');
     if(wppInput) {
       wppInput.addEventListener('input', function() {
@@ -321,47 +402,56 @@ function renderStep() {
         document.getElementById('err-whatsapp').style.display = 'none';
       });
     }
+    
+    const nextBtn = body.querySelector('.js-next');
+    if(nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          let hasError = false;
+          
+          const elNome = document.getElementById('inp-nome');
+          const nomeVal = elNome.value.trim();
+          if (nomeVal.length < 3) {
+            hasError = true; elNome.classList.add('error');
+            document.getElementById('err-nome').innerText = "Insira um nome válido";
+            document.getElementById('err-nome').style.display = 'block';
+          } else { textData.nome = capitalize(nomeVal); }
 
-    body.querySelector('.js-next').addEventListener('click', () => {
-      let hasError = false;
-      
-      const elNome = document.getElementById('inp-nome');
-      const nomeVal = elNome.value.trim();
-      if (nomeVal.length < 3) {
-        hasError = true; elNome.classList.add('error');
-        document.getElementById('err-nome').innerText = "Insira um nome válido";
-        document.getElementById('err-nome').style.display = 'block';
-      } else { textData.nome = capitalize(nomeVal); }
+          const elEmpresa = document.getElementById('inp-empresa');
+          const empVal = elEmpresa.value.trim();
+          if (empVal.length < 2) {
+            hasError = true; elEmpresa.classList.add('error');
+            document.getElementById('err-empresa').innerText = "Informe a empresa";
+            document.getElementById('err-empresa').style.display = 'block';
+          } else { textData.empresa = empVal; } 
 
-      const elEmpresa = document.getElementById('inp-empresa');
-      const empVal = elEmpresa.value.trim();
-      if (empVal.length < 2) {
-        hasError = true; elEmpresa.classList.add('error');
-        document.getElementById('err-empresa').innerText = "Informe a empresa";
-        document.getElementById('err-empresa').style.display = 'block';
-      } else { textData.empresa = empVal; } 
+          const wppVal = wppInput.value.trim().replace(/\D/g, ''); 
+          if (wppVal.length < 10 || wppVal.length > 13) {
+            hasError = true; wppInput.classList.add('error');
+            document.getElementById('err-whatsapp').innerText = "Número inválido. Inclua o DDD.";
+            document.getElementById('err-whatsapp').style.display = 'block';
+          } else { textData.whatsapp = wppInput.value; }
 
-      const wppVal = wppInput.value.trim().replace(/\D/g, ''); 
-      if (wppVal.length < 10 || wppVal.length > 13) {
-        hasError = true; wppInput.classList.add('error');
-        document.getElementById('err-whatsapp').innerText = "Número inválido. Inclua o DDD.";
-        document.getElementById('err-whatsapp').style.display = 'block';
-      } else { textData.whatsapp = wppInput.value; }
-
-      if (!hasError) runLoading();
-    });
-
+          if (!hasError) runLoading();
+        });
+    }
+    
     q.fields.forEach(f => {
       if(f.id !== 'whatsapp') { 
-        document.getElementById(`inp-${f.id}`).addEventListener('input', function () {
-          this.classList.remove('error'); document.getElementById(`err-${f.id}`).style.display = 'none';
-        });
+        const inputEl = document.getElementById(`inp-${f.id}`);
+        if(inputEl) {
+            inputEl.addEventListener('input', function () {
+              this.classList.remove('error'); 
+              document.getElementById(`err-${f.id}`).style.display = 'none';
+            });
+        }
       }
     });
   }
-
-  if (body.querySelector('.js-prev')) body.querySelector('.js-prev').addEventListener('click', () => { currentStep--; renderStep(); });
-  lucide.createIcons();
+  
+  const prevBtn = body.querySelector('.js-prev');
+  if (prevBtn) prevBtn.addEventListener('click', () => { currentStep--; renderStep(); });
+  
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 function nextStep() {
@@ -372,9 +462,10 @@ function nextStep() {
 
 function runLoading() {
   const bar = document.getElementById('quiz-progress-fill');
-  bar.classList.remove('pulse-progress');
-  bar.style.width = '100%';
-
+  if(bar) {
+      bar.classList.remove('pulse-progress');
+      bar.style.width = '100%';
+  }
   const body = document.getElementById('quiz-body');
   
   const segName = QUESTIONS[0].options[answers.segmento].title;
@@ -409,19 +500,31 @@ function runLoading() {
         `).join('')}
       </div>
     </div>`;
-  lucide.createIcons();
+    
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 
   let i = 0;
   const tick = () => {
     if (i > 0) {
-      document.getElementById(`dls-${i - 1}`).classList.replace('active', 'done');
-      document.getElementById(`dls-${i - 1}`).querySelector('.diag-step-icon').innerHTML = '<i data-lucide="check" width="16"></i>';
-      if (steps[i - 1].special) document.getElementById('flash-num').style.display = 'none';
+      const prevStep = document.getElementById(`dls-${i - 1}`);
+      if(prevStep) {
+          prevStep.classList.replace('active', 'done');
+          prevStep.querySelector('.diag-step-icon').innerHTML = '<i data-lucide="check" width="16"></i>';
+      }
+      if (steps[i - 1].special) {
+          const flashNum = document.getElementById('flash-num');
+          if(flashNum) flashNum.style.display = 'none';
+      }
     }
     if (i < steps.length) {
-      document.getElementById(`dls-${i}`).classList.add('active');
-      if (steps[i].special) document.getElementById('flash-num').style.display = 'block';
-      lucide.createIcons();
+      const currStep = document.getElementById(`dls-${i}`);
+      if(currStep) currStep.classList.add('active');
+      
+      if (steps[i].special) {
+          const flashNum = document.getElementById('flash-num');
+          if(flashNum) flashNum.style.display = 'block';
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
       i++;
       setTimeout(tick, 1000); 
     } else {
@@ -431,22 +534,13 @@ function runLoading() {
   tick();
 }
 
-// ==== SHOW RESULT OTMIZADO E ANIMADO ====
 function showResult() {
   const body = document.getElementById('quiz-body');
-  
   const nome = textData.nome.split(' ')[0];
   const empresa = textData.empresa;
-  const dorPrincipal = QUESTIONS[2].options[answers.dor].title;
-  
-  const segTexts = [
-    "Sua construtora", "Seu escritório", "Sua operação", "Sua indústria", "Sua clínica", "Sua agência"
-  ];
-  let empresaTipo = segTexts[answers.segmento] || "Sua empresa";
   
   const fatIndex = answers.faturamento;
   const matIndex = answers.maturidade;
-
   let minLoss = 4200, maxLoss = 8500;
   if (fatIndex === 1) { minLoss = 14500; maxLoss = 22000; }
   if (fatIndex === 2) { minLoss = 28500; maxLoss = 42000; }
@@ -454,7 +548,6 @@ function showResult() {
   
   const lostValueStr = `R$ ${(minLoss / 1000).toFixed(0)}k a R$ ${(maxLoss / 1000).toFixed(0)}k`;
   const workersEquiv = (maxLoss / 3500).toFixed(1);
-
   let score = 38; 
   if (matIndex === 1) score = 52;
   if (matIndex === 2) score = 61;
@@ -469,7 +562,6 @@ function showResult() {
     { max: 100, label: 'Alta Performance', color: '#10b981' },
   ];
   const scoreCat = scoreLabels.find(s => score <= s.max);
-
   const circleOffset = 251 - (251 * (score / 100));
   
   const recupAuto = (maxLoss * 0.6 / 1000).toFixed(1);
@@ -540,19 +632,16 @@ function showResult() {
     </div>
   `;
   
-  lucide.createIcons();
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 
-  // ATIVA AS ANIMAÇÕES DE FORMA SEGURA E ASSÍNCRONA
   setTimeout(() => {
-    // 1. Reflow mágico pro SVG do Score animar do zero
     const elCirc = document.getElementById('anim-circle');
     if (elCirc) {
-      elCirc.getBoundingClientRect(); // <--- O SEGREDO TÁ AQUI
+      elCirc.getBoundingClientRect(); 
       elCirc.style.transition = 'stroke-dashoffset 1.5s ease-out';
       elCirc.style.strokeDashoffset = circleOffset;
     }
-
-    // 2. Barras de oportunidade descendo em "escadinha"
+    
     [0, 1, 2].forEach((i, index) => {
       setTimeout(() => {
         const barEl = document.getElementById(`bar-${i}`);
@@ -564,7 +653,6 @@ function showResult() {
     });
   }, 100);
 
-  // Buscando Título + Descrição para dar mais contexto à IA do CRM
   const segOpt = QUESTIONS[0].options[answers.segmento];
   const horasOpt = QUESTIONS[1].options[answers.horas_perdidas];
   const dorOpt = QUESTIONS[2].options[answers.dor];
@@ -584,8 +672,6 @@ function showResult() {
     custo_mensal: `R$ ${(minLoss / 1000).toFixed(0)}k a R$ ${(maxLoss / 1000).toFixed(0)}k`
   };
 
-
-  // 🔥 FLUXO PADRÃO BG TECH: SALVA DIRETAMENTE E COM SEGURANÇA NO SUPABASE NA TABELA "LEADS"
   if (CONFIG.supabaseUrl && CONFIG.supabaseKey) {
     fetch(`${CONFIG.supabaseUrl}/rest/v1/leads`, {
       method: 'POST',
@@ -597,28 +683,23 @@ function showResult() {
       },
       body: JSON.stringify(supabasePayload)
     })
-    .then(() => console.log("✅ Sucesso! Lead capturado e blindado no banco de dados."))
-    .catch(err => console.error("❌ Erro ao salvar no banco:", err));
+    .then(() => console.log("✅ Sucesso! Lead salvo."))
+    .catch(err => console.error("❌ Erro ao salvar:", err));
   }
 
-  // O botão agora apenas redireciona, porque o dado já está seguro.
   const openWpp = () => {
     const msg = `Olá! Fiz o diagnóstico da BG Tech agora. Score ${score}/100, custo estimado de R$ ${(minLoss / 1000).toFixed(0)}k a R$ ${(maxLoss / 1000).toFixed(0)}k mensais em ineficiências. Quero agendar a conversa de 20 min para a ${empresa}.`;
     window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
-  // Previne duplicação de cliques
   const wppBtn = document.querySelector('.js-wpp');
   const wppDirectBtn = document.querySelector('.js-wpp-direct');
-
   if (wppBtn && wppDirectBtn) {
     const newWppBtn = wppBtn.cloneNode(true);
     const newWppDirectBtn = wppDirectBtn.cloneNode(true);
-    
     wppBtn.parentNode.replaceChild(newWppBtn, wppBtn);
     wppDirectBtn.parentNode.replaceChild(newWppDirectBtn, wppDirectBtn);
-
     newWppBtn.addEventListener('click', openWpp);
     newWppDirectBtn.addEventListener('click', openWpp);
   }
-} // Fim do script.js
+}
