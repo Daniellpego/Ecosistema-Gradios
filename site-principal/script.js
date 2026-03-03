@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     counters.forEach(c => {
       if (c.innerText === '0' || c.innerText.startsWith('0')) {
-        animateCounter(c);
+        animateCounters(c);
       }
     });
   }, 5000);
