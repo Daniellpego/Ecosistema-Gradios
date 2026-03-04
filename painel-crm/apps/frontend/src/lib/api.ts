@@ -12,7 +12,7 @@ import type {
   Lead,
 } from '@/types';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 function getToken(): string | null {
   if (typeof window === 'undefined') return null;
@@ -53,15 +53,18 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
 // ── Auth ────────────────────────────────────────────────
 export async function login(email: string, password: string) {
-  return request<{ token: string; user: { id: string; name: string; email: string; role: string } }>(
+  const res = await request<{ accessToken: string; user: { id: string; name: string; email: string; role: string } }>(
     '/auth/login',
     { method: 'POST', body: JSON.stringify({ email, password }) }
   );
+  return { token: res.accessToken, user: res.user };
 }
 
 // ── Accounts ────────────────────────────────────────────
 export async function getAccounts() {
-  return request<{ data: Account[] }>('/accounts');
+  const raw = await request<Account[] | { data: Account[] }>('/accounts');
+  const list = Array.isArray(raw) ? raw : (raw.data || []);
+  return { data: list as Account[] };
 }
 
 export async function getAccount(id: string) {
@@ -70,7 +73,16 @@ export async function getAccount(id: string) {
 
 // ── Opportunities ───────────────────────────────────────
 export async function getOpportunities() {
-  return request<{ data: Opportunity[] }>('/opportunities');
+  const raw = await request<Opportunity[] | { data: Opportunity[] }>('/opportunities');
+  const list = Array.isArray(raw) ? raw : (raw.data || []);
+  return {
+    data: list.map((o: any) => ({
+      ...o,
+      created_at: o.created_at || o.createdAt,
+      updated_at: o.updated_at || o.updatedAt,
+      account_name: o.account_name || o.account?.name,
+    })) as Opportunity[],
+  };
 }
 
 export async function getOpportunity(id: string) {
@@ -79,7 +91,9 @@ export async function getOpportunity(id: string) {
 
 // ── Projects ────────────────────────────────────────────
 export async function getProjects() {
-  return request<{ data: Project[] }>('/projects');
+  const raw = await request<Project[] | { data: Project[] }>('/projects');
+  const list = Array.isArray(raw) ? raw : (raw.data || []);
+  return { data: list as Project[] };
 }
 
 export async function getProject(id: string) {
@@ -88,16 +102,30 @@ export async function getProject(id: string) {
 
 // ── SLAs ────────────────────────────────────────────────
 export async function getSlas() {
-  return request<{ data: SLA[] }>('/slas');
+  const raw = await request<SLA[] | { data: SLA[] }>('/sla');
+  const list = Array.isArray(raw) ? raw : (raw.data || []);
+  return {
+    data: list.map((s: any) => ({
+      ...s,
+      renewal_date: s.renewal_date || s.renewAt,
+      is_active: s.is_active ?? (s.status === 'active'),
+      account_name: s.account_name || s.account?.name,
+      monthly_value: s.monthly_value ?? (s.metrics as any)?.monthlyPrice ?? 0,
+      created_at: s.created_at || s.createdAt,
+      updated_at: s.updated_at || s.updatedAt,
+    })) as SLA[],
+  };
 }
 
 export async function getSla(id: string) {
-  return request<SLA>(`/slas/${id}`);
+  return request<SLA>(`/sla/${id}`);
 }
 
 // ── Proposals ───────────────────────────────────────────
 export async function getProposals() {
-  return request<{ data: Proposal[] }>('/proposals');
+  const raw = await request<Proposal[] | { data: Proposal[] }>('/proposals');
+  const list = Array.isArray(raw) ? raw : (raw.data || []);
+  return { data: list as Proposal[] };
 }
 
 export async function getProposal(id: string) {
@@ -110,7 +138,9 @@ export async function updateProposal(id: string, data: Partial<Proposal>) {
 
 // ── Contracts ───────────────────────────────────────────
 export async function getContracts() {
-  return request<{ data: Contract[] }>('/contracts');
+  const raw = await request<Contract[] | { data: Contract[] }>('/contracts');
+  const list = Array.isArray(raw) ? raw : (raw.data || []);
+  return { data: list as Contract[] };
 }
 
 export async function getContract(id: string) {
@@ -140,7 +170,9 @@ export async function runAgent(agentType: string, params: Record<string, unknown
 
 // ── Leads ───────────────────────────────────────────────
 export async function getLeads() {
-  return request<{ data: Lead[] }>('/leads');
+  const raw = await request<Lead[] | { data: Lead[] }>('/leads');
+  const list = Array.isArray(raw) ? raw : (raw.data || []);
+  return { data: list as Lead[] };
 }
 
 export async function getLead(id: string) {
