@@ -384,3 +384,86 @@ docker compose up -d --build
 # Re-rodar migrations e seed
 cd painel-crm/packages/backend && npx prisma migrate dev && npx prisma db seed
 ```
+
+---
+
+## 8. Quiz Leads — Integração Supabase
+
+O pipeline de **Quiz Leads** captura respostas de quizzes do Facebook (via webhook → Supabase) e qualifica automaticamente via agente de IA.
+
+### 8.1 Variáveis de Ambiente Adicionais
+
+Adicione ao seu `.env` no backend:
+
+```env
+# Supabase (usado pelo listener de leads)
+SUPABASE_URL=https://<project>.supabase.co
+SUPABASE_SERVICE_KEY=eyJ...
+
+# Tenant padrão para leads sem tenant_id (usa o seed ACME)
+DEFAULT_TENANT_ID=tenant-001
+
+# LLM Provider (mock | openai | anthropic)
+LLM_PROVIDER=mock
+```
+
+### 8.2 Iniciar o Listener de Leads
+
+O listener fica escutando INSERTs na tabela `leads` via Supabase Realtime:
+
+```bash
+cd painel-crm/packages/backend
+
+# Em modo standalone (para dev/debug)
+npx ts-node src/supabase/supabase-listener.ts
+
+# Ou com variáveis explícitas
+SUPABASE_URL=https://xxx.supabase.co \
+SUPABASE_SERVICE_KEY=eyJ... \
+npx ts-node src/supabase/supabase-listener.ts
+```
+
+### 8.3 Testar com INSERT Manual
+
+```sql
+-- Inserir um lead de exemplo no Supabase (SQL Editor)
+INSERT INTO leads (id, tenant_id, nome, empresa, email, whatsapp, segmento,
+  horas_perdidas, dor_principal, faturamento, maturidade, janela_decisao,
+  lead_temperature, custo_mensal, consent, lead_status, lead_tags)
+VALUES (
+  gen_random_uuid(), 'tenant-001', 'Teste Dev', 'DevCorp',
+  'dev@test.com', '+5511999990000', 'Tecnologia',
+  '20h/mês', 'Processos manuais', 'R$ 500K - R$ 1M',
+  'Intermediário', '1-3 meses', 'warm', 'R$ 5.000',
+  true, 'new', '{}'
+);
+```
+
+O listener vai:
+1. Receber o INSERT via Realtime
+2. Normalizar o telefone (+55...)
+3. Verificar duplicidade (whatsapp → email)
+4. Criar/atualizar o lead via Prisma
+5. Enfileirar job `qualification` no BullMQ
+6. O worker qualifica com IA e atualiza score/status
+7. Se score ≥ 75 → cria Account + Opportunity automaticamente
+
+### 8.4 Fluxo Completo
+
+```
+Facebook Quiz → Webhook → Supabase INSERT
+  → Listener (supabase-listener.ts) → dedupe → Prisma
+    → BullMQ job → qualification-worker.ts
+      → LLM (mock/openai) → score + category
+        → Se hot: Account + Opportunity
+        → Se warm/cold: lead atualizado, aguarda nurture
+```
+
+### 8.5 Testes de Leads
+
+```bash
+# Rodar testes de ingestão e qualificação
+cd painel-crm/packages/backend
+npx jest test/ingest/ingest.spec.ts --verbose
+npx jest test/agents/qualification-lead.spec.ts --verbose
+```
