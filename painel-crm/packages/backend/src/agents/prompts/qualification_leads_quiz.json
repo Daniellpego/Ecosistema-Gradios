@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QuizLeadQualificationPrompt",
+  "description": "Prompt + schema for qualifying leads from the Facebook quiz funnel",
+
+  "system": "Você é um Agente de Qualificação técnico para BG Tech, empresa de software sob demanda. Analise a resposta do quiz do lead (campos abaixo) e retorne APENAS JSON válido seguindo estritamente o schema de output. Não inclua texto fora do JSON.",
+
+  "instructions": "Entrada contém: nome, empresa, whatsapp, segmento, horas_perdidas, dor_principal, faturamento, maturidade, janela_decisao, lead_temperature, score, custo_mensal, diagnostico_id. Calcule lead_score entre 0-100 considerando: budget (faturamento/custo_mensal peso=30%), timing (janela_decisao peso=25%), maturidade (peso=20%), intensidade da dor (dor_principal peso=15%), segmento fit (peso=10%). Score >=75 => hot; 50-74 => warm; <50 => cold. Se o lead não tiver budget viável ou mostrar sinais de desqualificação, marque 'disqualified'. Para nurture, use quando score 30-49 e existe potencial futuro.",
+
+  "schema": {
+    "type": "object",
+    "required": [
+      "lead_score",
+      "lead_category",
+      "recommended_stage",
+      "summary"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "lead_score": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 100,
+        "description": "Score de qualificação 0-100"
+      },
+      "lead_category": {
+        "type": "string",
+        "enum": ["hot", "warm", "cold", "disqualified"],
+        "description": "Classificação do lead (hot >= 75, warm 50-74, cold < 50)"
+      },
+      "recommended_stage": {
+        "type": "string",
+        "enum": ["lead", "qualified", "disqualified", "nurture"],
+        "description": "Estágio recomendado no pipeline"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Resumo conciso (2-3 frases) do lead e razão da classificação"
+      },
+      "budget_estimate_brl": {
+        "type": ["number", "null"],
+        "description": "Estimativa de budget do lead em BRL (baseado em faturamento/custo_mensal)"
+      },
+      "decision_makers": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Decisores identificados ou inferidos"
+      },
+      "must_have_reqs": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Requisitos obrigatórios inferidos"
+      },
+      "risk_flags": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Sinais de risco identificados"
+      },
+      "recommended_actions": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Próximos passos recomendados"
+      },
+      "pain_intensity": {
+        "type": "string",
+        "enum": ["low", "medium", "high", "critical"],
+        "description": "Intensidade da dor principal"
+      },
+      "timing_urgency": {
+        "type": "string",
+        "enum": ["immediate", "short_term", "medium_term", "long_term"],
+        "description": "Urgência baseada na janela de decisão"
+      }
+    }
+  }
+}
