@@ -202,6 +202,28 @@ CREATE POLICY "agent_logs_tenant_insert" ON agent_logs
   WITH CHECK (tenant_id = public.get_current_tenant_id());
 
 -- ============================================================================
+-- LEADS (Quiz / Facebook)
+-- ============================================================================
+ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "leads_tenant_select" ON leads
+  FOR SELECT TO authenticated
+  USING (tenant_id = public.get_current_tenant_id());
+
+CREATE POLICY "leads_tenant_insert" ON leads
+  FOR INSERT TO authenticated
+  WITH CHECK (tenant_id = public.get_current_tenant_id());
+
+CREATE POLICY "leads_tenant_update" ON leads
+  FOR UPDATE TO authenticated
+  USING (tenant_id = public.get_current_tenant_id())
+  WITH CHECK (tenant_id = public.get_current_tenant_id());
+
+CREATE POLICY "leads_tenant_delete" ON leads
+  FOR DELETE TO authenticated
+  USING (tenant_id = public.get_current_tenant_id());
+
+-- ============================================================================
 -- VERIFICATION: Test queries to confirm RLS isolation
 -- ============================================================================
 -- Run as user from tenant-001:

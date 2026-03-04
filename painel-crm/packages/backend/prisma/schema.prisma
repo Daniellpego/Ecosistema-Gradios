@@ -28,6 +28,7 @@ model Tenant {
   proposals     Proposal[]
   contracts     Contract[]
   agentLogs     AgentLog[]
+  leads         Lead[]
 
   @@map("tenants")
 }
@@ -262,6 +263,8 @@ model AgentLog {
   tenant          Tenant   @relation(fields: [tenantId], references: [id])
   opportunityId   String?  @map("opportunity_id")
   opportunity     Opportunity? @relation(fields: [opportunityId], references: [id])
+  leadId          String?  @map("lead_id")
+  lead            Lead?    @relation(fields: [leadId], references: [id])
   agentName       String   @map("agent_name")
   action          String
   input           Json?
@@ -270,10 +273,49 @@ model AgentLog {
   latencyMs       Int?     @map("latency_ms")
   status          String   @default("success") // success, error, timeout
   errorMessage    String?  @map("error_message")
+  model           String?
   createdAt       DateTime @default(now()) @map("created_at")
 
   @@index([tenantId])
   @@index([opportunityId])
+  @@index([leadId])
   @@index([agentName])
   @@map("agent_logs")
+}
+
+// ────────────────────────────── LEADS (Quiz / Facebook) ──────────────────────────────
+
+model Lead {
+  id                String   @id @default(uuid())
+  tenantId          String   @map("tenant_id")
+  tenant            Tenant   @relation(fields: [tenantId], references: [id])
+  nome              String?
+  empresa           String?
+  email             String?
+  whatsapp          String?
+  segmento          String?
+  horasPerdidas     String?  @map("horas_perdidas")
+  dorPrincipal      String?  @map("dor_principal")
+  faturamento       String?
+  maturidade        String?
+  janelaDecisao     String?  @map("janela_decisao")
+  leadTemperature   String?  @map("lead_temperature")
+  score             Int?
+  custoMensal       String?  @map("custo_mensal")
+  diagnosticoId     String?  @map("diagnostico_id")
+  rawQuizResponse   Json?    @map("raw_quiz_response")
+  leadStatus        String   @default("new") @map("lead_status") // new, qualified, nurture, disqualified, converted
+  leadTags          String[] @default([]) @map("lead_tags")
+  consent           Boolean  @default(true)
+  opportunityId     String?  @map("opportunity_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  agentLogs         AgentLog[]
+
+  @@index([tenantId])
+  @@index([whatsapp])
+  @@index([email])
+  @@index([leadStatus])
+  @@map("leads")
 }
