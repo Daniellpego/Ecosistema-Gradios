@@ -1,0 +1,48 @@
+# docker-compose.staging.yml — Staging with real OpenAI
+#
+# Usage:
+#   cp .env.staging.example .env.staging
+#   # Edit .env.staging with real OPENAI_API_KEY + JWT_SECRET
+#   docker compose -f docker-compose.yaml -f docker-compose.staging.yml --env-file .env.staging up -d
+#
+# This overlay overrides the base docker-compose.yaml:
+#  - Injects staging env vars (OpenAI key, budget, model)
+#  - Adds the agent worker as a separate service
+#  - Mounts the monitoring stack
+
+services:
+  backend:
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      LLM_MONTHLY_BUDGET_USD: ${LLM_MONTHLY_BUDGET_USD:-10}
+      PORT: ${PORT:-3001}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+
+  worker:
+    build:
+      context: ./packages/backend
+      dockerfile: ../../infra/docker/Dockerfile.backend
+    command: ["node", "dist/agents/agent-worker-runner.js"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      LLM_MONTHLY_BUDGET_USD: ${LLM_MONTHLY_BUDGET_USD:-10}
+      WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-2}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001/api}

@@ -4,6 +4,7 @@ import { AgentsService } from './agents.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { CurrentTenant } from '../common/decorators/tenant.decorator';
 import { enqueueAgentJob, getAgentQueue } from './queue';
+import { getTenantSpend, getBudgetLimitUsd } from '../common/middleware/budget.middleware';
 
 const VALID_AGENTS = ['qualification', 'proposal', 'risk', 'churn', 'negotiation', 'lead-to-proposal'];
 
@@ -213,6 +214,58 @@ export class AgentsController {
   }
 
   /* ---------- generic endpoint ---------- */
+
+  /* ---------- budget status ---------- */
+
+  @Get('budget')
+  @ApiOperation({ summary: 'Get current LLM budget usage for tenant' })
+  @ApiResponse({ status: 200, description: 'Budget status with spend, limit, and percentage' })
+  async getBudgetStatus(@CurrentTenant() tenantId: string) {
+    const currentSpendUsd = await getTenantSpend(tenantId);
+    const budgetUsd = getBudgetLimitUsd();
+    return {
+      tenantId,
+      currentSpendUsd: +currentSpendUsd.toFixed(4),
+      budgetUsd,
+      usagePercent: +((currentSpendUsd / budgetUsd) * 100).toFixed(1),
+      exceeded: currentSpendUsd >= budgetUsd,
+    };
+  }
+
+  /* ---------- generic run endpoint ---------- */
+
+  @Post('run')
+  @HttpCode(202)
+  @ApiOperation({ summary: 'Generic agent execution — enqueues job by agentName in body' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        agentName: { type: 'string' },
+        action: { type: 'string' },
+        payload: { type: 'object' },
+      },
+    },
+  })
+  @ApiResponse({ status: 202, description: 'Job enqueued — poll via GET /agents/jobs/:jobId' })
+  async runAgent(
+    @CurrentTenant() tenantId: string,
+    @Body() body: { agentName: string; action: string; payload: Record<string, any> },
+  ) {
+    if (!VALID_AGENTS.includes(body.agentName)) {
+      throw new BadRequestException({
+        error: `Unknown agent: ${body.agentName}`,
+        availableAgents: VALID_AGENTS,
+      });
+    }
+
+    return enqueueAgentJob({
+      tenantId,
+      agentName: body.agentName,
+      action: body.action,
+      payload: body.payload,
+    });
+  }
 
   @Post(':agentName/run')
   @HttpCode(202)
