@@ -16,6 +16,9 @@ import { createAgentWorker, AgentJobData, AgentJobResult } from './queue';
 import { createLlmAdapter } from './adapters/llm.factory';
 import { AGENT_PROMPTS } from './prompts';
 import { processLeadQualification } from './qualification-worker';
+import { estimateCost } from './token-utils';
+import { isBudgetExceeded, addTenantSpend, getBudgetLimitUsd } from '../common/middleware/budget.middleware';
+import { closeRedisClient } from '../common/redis.client';
 
 const prisma = new PrismaClient();
 const llm = createLlmAdapter();
@@ -33,6 +36,29 @@ async function processJob(
   );
 
   try {
+    // ── Budget guard — reject job before calling LLM ──
+    const budgetCheck = await isBudgetExceeded(tenantId);
+    if (budgetCheck.exceeded) {
+      const msg = `Budget exceeded for tenant ${tenantId}: $${budgetCheck.currentSpendUsd.toFixed(2)} / $${budgetCheck.budgetUsd}. Skipping LLM call.`;
+      console.warn(`[worker] ${msg}`);
+
+      // Persist budget-exceeded log
+      await prisma.agentLog.create({
+        data: {
+          tenantId,
+          opportunityId: payload.opportunityId || null,
+          agentName,
+          action,
+          input: payload,
+          status: 'error',
+          errorMessage: msg,
+          latencyMs: Date.now() - startMs,
+        },
+      });
+
+      throw new Error(msg);
+    }
+
     // Set tenant context for RLS
     await prisma.$executeRawUnsafe(
       `SELECT set_config('my.tenant', $1, true)`,
@@ -67,6 +93,15 @@ async function processJob(
         break;
       default:
         throw new Error(`Unknown agent: ${agentName}`);
+    }
+
+    // ── Track LLM spend in Redis ──
+    if (result.tokensUsed > 0) {
+      const cost = estimateCost(result.model, result.tokensUsed, result.tokensUsed);
+      const newTotal = await addTenantSpend(tenantId, cost.totalCostUsd);
+      console.log(
+        `[worker] Tenant ${tenantId} spend: +$${cost.totalCostUsd.toFixed(4)} → total $${newTotal.toFixed(4)} / $${getBudgetLimitUsd()}`,
+      );
     }
 
     // Persist AgentLog
@@ -372,6 +407,7 @@ process.on('SIGINT', async () => {
   console.log('[worker] Shutting down...');
   await worker.close();
   await prisma.$disconnect();
+  await closeRedisClient();
   process.exit(0);
 });
 
@@ -379,6 +415,7 @@ process.on('SIGTERM', async () => {
   console.log('[worker] Shutting down...');
   await worker.close();
   await prisma.$disconnect();
+  await closeRedisClient();
   process.exit(0);
 });
 
