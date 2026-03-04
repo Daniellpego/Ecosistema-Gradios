@@ -49,11 +49,11 @@ const SAMPLE_QUIZ_ROW = {
 
 describe('handleLeadInsert', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
     mockPrisma.lead.findFirst.mockResolvedValue(null); // no duplicates by default
     mockPrisma.lead.create.mockResolvedValue({
-      id: 'lead-new-001',
       ...SAMPLE_QUIZ_ROW,
+      id: 'lead-new-001',
       tenantId: 'tenant-001',
       leadStatus: 'new',
       leadTags: [],
@@ -117,10 +117,9 @@ describe('handleLeadInsert', () => {
       rawQuizResponse: {},
     };
 
-    // First call (whatsapp) returns null, second (email) returns existing
-    mockPrisma.lead.findFirst
-      .mockResolvedValueOnce(null)
-      .mockResolvedValueOnce(existingLead);
+    // When whatsapp is null, normalizePhone returns null, so only ONE
+    // findFirst call happens (the email lookup). Return existing on that call.
+    mockPrisma.lead.findFirst.mockResolvedValueOnce(existingLead);
 
     await handleLeadInsert(rowNoPhone);
 
