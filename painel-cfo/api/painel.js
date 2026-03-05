@@ -91,6 +91,15 @@ module.exports = async function handler(req, res) {
       if (!projecoes || typeof projecoes !== 'object') {
         return res.status(400).json({ error: 'projecoes must be an object' });
       }
+      if (!Array.isArray(projecoes.entradas || []) || !Array.isArray(projecoes.saidas || [])) {
+        return res.status(400).json({ error: 'projecoes.entradas and projecoes.saidas must be arrays' });
+      }
+      if (updated_at && Number.isNaN(Date.parse(updated_at))) {
+        return res.status(400).json({ error: 'updated_at must be ISO date string' });
+      }
+      if (expected_updated_at && Number.isNaN(Date.parse(expected_updated_at))) {
+        return res.status(400).json({ error: 'expected_updated_at must be ISO date string' });
+      }
 
       const payload = {
         fixos,
