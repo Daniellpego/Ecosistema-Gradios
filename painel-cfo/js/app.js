@@ -105,7 +105,17 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 });
 
 // App Init
-Auth.onAuthChange(user => {
+async function checkInitialAuth() {
+    try {
+        const session = await Auth.getSession();
+        handleAuthStatus(session?.user || null);
+    } catch (err) {
+        console.warn('Initial session check failed:', err);
+        handleAuthStatus(null);
+    }
+}
+
+function handleAuthStatus(user) {
     if (user) {
         const overlay = document.getElementById('welcome-overlay');
         overlay.classList.add('active');
@@ -116,14 +126,17 @@ Auth.onAuthChange(user => {
             setTimeout(() => {
                 overlay.classList.remove('active');
                 initApp();
-            }, 2500);
-        }, 1200);
+            }, 2000);
+        }, 1000);
     } else {
         isInitialized = false;
         loginScreen.style.display = 'flex';
         appEl.style.display = 'none';
     }
-});
+}
+
+Auth.onAuthChange(handleAuthStatus);
+checkInitialAuth();
 
 // Money masks
 document.querySelectorAll('.money-mask').forEach(i => i.addEventListener('input', maskMoney));

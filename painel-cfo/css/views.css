@@ -6,11 +6,12 @@
 #login-screen {
     position: fixed;
     inset: 0;
-    z-index: 9000;
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at center, rgba(15, 23, 42, 0.5), #020617);
+    background: #020617;
+    /* Fundo sólido para garantir visibilidade */
     overflow: hidden;
 }
 
@@ -26,9 +27,7 @@
     box-shadow: var(--shadow-premium);
     text-align: center;
     position: relative;
-    z-index: 100;
-    opacity: 0;
-    /* Start hidden for animation */
+    z-index: 101;
     animation: loginCardReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -73,16 +72,15 @@
 /* Form Styling - Premium */
 #login-form .form-group {
     margin-bottom: 24px;
-    opacity: 0;
     animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 #login-form .form-group:nth-child(1) {
-    animation-delay: 0.6s;
+    animation-delay: 0.1s;
 }
 
 #login-form .form-group:nth-child(2) {
-    animation-delay: 0.7s;
+    animation-delay: 0.2s;
 }
 
 #login-form .form-input {
