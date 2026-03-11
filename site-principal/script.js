@@ -1212,18 +1212,44 @@ function showResult() {
     }
   };
 
-  if (CONFIG.supabaseUrl && CONFIG.supabaseKey) {
-    fetch(`${CONFIG.supabaseUrl}/rest/v1/leads`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': CONFIG.supabaseKey,
-        'Authorization': `Bearer ${CONFIG.supabaseKey}`,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(supabasePayload)
-    }).catch(err => console.error("❌ Erro ao salvar:", err));
+  // D+F: Retry automático (3 tentativas) + localStorage fallback
+  const saveLeadWithRetry = async (payload, attempt = 1) => {
+    if (!CONFIG.supabaseUrl || !CONFIG.supabaseKey) return;
+    try {
+      const res = await fetch(`${CONFIG.supabaseUrl}/rest/v1/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': CONFIG.supabaseKey,
+          'Authorization': `Bearer ${CONFIG.supabaseKey}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      // Sucesso: remove do localStorage se estava salvo offline
+      localStorage.removeItem('bgtech_lead_offline');
+    } catch (err) {
+      if (attempt < 3) {
+        setTimeout(() => saveLeadWithRetry(payload, attempt + 1), attempt * 1500);
+      } else {
+        // Fallback: salva no localStorage para tentar novamente depois
+        localStorage.setItem('bgtech_lead_offline', JSON.stringify({ payload, savedAt: Date.now() }));
+        console.error('❌ Lead salvo offline após 3 tentativas:', err);
+      }
+    }
+  };
+
+  // Tenta sync de lead offline anterior (ex: usuário voltou com conexão)
+  const offlineLead = localStorage.getItem('bgtech_lead_offline');
+  if (offlineLead) {
+    try {
+      const { payload: oldPayload } = JSON.parse(offlineLead);
+      saveLeadWithRetry(oldPayload);
+    } catch (_) { localStorage.removeItem('bgtech_lead_offline'); }
   }
+
+  saveLeadWithRetry(supabasePayload);
 
   if (leadTemperature === 'Quente') {
     notifyHotLead('resultado_quiz');
