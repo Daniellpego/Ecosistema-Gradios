@@ -2,7 +2,7 @@
 // CFO Dashboard v2 — Service Worker (PWA + Cache)
 // ═══════════════════════════════════════════════
 
-const CACHE_NAME = 'cfo-dashboard-v2-v2'; // Bumped version
+const CACHE_NAME = 'cfo-dashboard-v2-v3'; // Bumped to clear broken config.js cache
 const STATIC_ASSETS = [
     '/',
     '/index.html',
@@ -11,7 +11,7 @@ const STATIC_ASSETS = [
     '/css/layout.css',
     '/css/components.css',
     '/css/views.css',
-    '/js/config.js', // Added dynamic config
+    // config.js intentionally excluded — contains credentials, must always be network-fresh
     '/js/app.js',
     '/js/auth.js',
     '/js/db.js',
@@ -59,6 +59,9 @@ self.addEventListener('fetch', event => {
         url.hostname.includes('fonts')) {
         return;
     }
+
+    // config.js must always come from network (contains build-time credentials)
+    if (url.pathname === '/js/config.js') return;
 
     // Cache-first for static assets
     event.respondWith(
