@@ -58,7 +58,9 @@ export function filterData(arr, m, y, ytd = false, client = '', project = '') {
     if (!x.data) return false;
     const [xy, xm] = x.data.split('-');
     const matchYear = xy === String(y);
-    const matchMonth = ytd ? parseInt(xm) <= parseInt(m) : (m === 'anual' || xm === String(parseInt(m) + 1).padStart(2, '0'));
+    // m is 0-based (0=Jan), xm is 1-based from DB date string ("01"=Jan)
+    const m1 = parseInt(m) + 1; // convert to 1-based for comparison
+    const matchMonth = ytd ? parseInt(xm) <= m1 : (m === 'anual' || xm === String(m1).padStart(2, '0'));
     const matchClient = !client || x.cliente === client;
     const matchProj = !project || x.projeto === project;
     return matchYear && matchMonth && matchClient && matchProj;

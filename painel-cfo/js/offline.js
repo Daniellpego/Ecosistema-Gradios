@@ -52,14 +52,14 @@ export async function getCachedConfig() {
 
 // ─── Offline Mutations ─────────────────────────
 
-export async function offlinePutLancamento(item) {
+export async function offlinePutLancamento(item, userId) {
     const d = getDB();
     await d.lancamentos.put(item);
     await d.syncQueue.add({
         table: 'cfo_lancamentos',
         action: 'upsert',
         itemId: item.id,
-        payload: item,
+        payload: { ...item, user_id: userId },
         timestamp: Date.now()
     });
 }
@@ -75,14 +75,14 @@ export async function offlineDeleteLancamento(id) {
     });
 }
 
-export async function offlinePutProjecao(item) {
+export async function offlinePutProjecao(item, userId) {
     const d = getDB();
     await d.projecoes.put(item);
     await d.syncQueue.add({
         table: 'cfo_projecoes',
         action: 'upsert',
         itemId: item.id,
-        payload: item,
+        payload: { ...item, user_id: userId },
         timestamp: Date.now()
     });
 }
