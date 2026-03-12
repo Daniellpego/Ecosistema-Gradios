@@ -12,6 +12,7 @@ import { renderDRE } from './views/dre.js';
 import { renderLancamentosTable } from './views/lancamentos.js';
 import { renderAnnual } from './views/annual.js';
 import { renderProjecoes } from './views/projecoes.js';
+import { renderRelatorios } from './views/relatorios.js';
 
 const loginScreen = document.getElementById('login-screen');
 const appEl = document.getElementById('app');
@@ -56,6 +57,13 @@ async function initApp() {
 
     try {
         await State.loadAll();
+
+        // Sync filter dropdowns with state
+        const fMonth = document.getElementById('fMonth');
+        const fYear = document.getElementById('fYear');
+        if (fMonth) fMonth.value = State.getFilters().m;
+        if (fYear) fYear.value = State.getFilters().y;
+
         navigate('overview');
 
         try {
@@ -129,6 +137,7 @@ function navigate(tab, opts) {
         fixos: ['Custos Fixos', 'Despesas recorrentes da operação.'],
         unicos: ['Gastos Variáveis', 'Despesas pontuais e variáveis.'],
         projecoes: ['Projeções', 'Simulação de cenários futuros.'],
+        relatorios: ['Relatórios', 'Relatório gerencial e exportação de dados.'],
         academia: ['Academia CFO', 'Entenda cada indicador do dashboard.'],
     };
     const [title, sub] = titles[tab] || [tab, ''];
@@ -146,8 +155,8 @@ function navigate(tab, opts) {
     if (btnGasto) btnGasto.style.display = (tab === 'fixos' || tab === 'unicos') ? '' : 'none';
     if (btnReceita) btnReceita.style.display = (tab === 'entradas') ? '' : 'none';
     if (btnProj) btnProj.style.display = (tab === 'projecoes') ? '' : 'none';
-    if (btnExport) btnExport.style.display = ['overview', 'dre', 'annual'].includes(tab) ? '' : 'none';
-    if (filterBar) filterBar.style.display = ['overview', 'dre', 'annual', 'entradas', 'fixos', 'unicos'].includes(tab) ? 'flex' : 'none';
+    if (btnExport) btnExport.style.display = ['overview', 'dre', 'annual', 'relatorios'].includes(tab) ? '' : 'none';
+    if (filterBar) filterBar.style.display = ['overview', 'dre', 'annual', 'entradas', 'fixos', 'unicos', 'relatorios'].includes(tab) ? 'flex' : 'none';
 
     if (tab === 'academia') refreshTaxDisplay();
     renderActiveView();
@@ -161,6 +170,7 @@ function renderActiveView() {
         else if (tab === 'annual') renderAnnual();
         else if (['entradas', 'fixos', 'unicos'].includes(tab)) renderLancamentosTable();
         else if (tab === 'projecoes') renderProjecoes();
+        else if (tab === 'relatorios') renderRelatorios();
     } catch (err) {
         console.error(`Error rendering ${tab}:`, err);
     }

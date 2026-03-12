@@ -29,7 +29,7 @@ export function renderRelatorios() {
     const periodoLabel = m === 'anual' ? `Ano ${y}` : `${MONTHS[parseInt(m)]} ${y}`;
 
     container.innerHTML = `
-        <div style="margin-bottom:1.5rem">
+        <div style="margin-bottom:24px">
             <h3 style="font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.25rem">
                 Relatório Gerencial — ${esc(periodoLabel)}
             </h3>
@@ -58,9 +58,9 @@ export function renderRelatorios() {
         </div>
 
         <!-- Breakdown Table -->
-        <div class="card" style="margin-bottom:1.5rem">
-            <h4 style="font-size:0.85rem;font-weight:600;margin-bottom:1rem">DRE Simplificado</h4>
-            <table class="table" style="font-size:0.82rem">
+        <div class="card" style="margin-bottom:24px;padding:20px 22px">
+            <h4 style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text)">DRE Simplificado</h4>
+            <table class="dre-table" style="font-size:0.82rem;min-width:auto">
                 <tbody>
                     <tr><td style="font-weight:600">Receita Bruta</td><td style="text-align:right;color:var(--success);font-weight:700">${fmtR(totalReceita)}</td></tr>
                     <tr><td style="padding-left:1.5rem;color:var(--text-dim)">(-) Custos Fixos</td><td style="text-align:right;color:var(--danger)">${fmtR(totalFixo)}</td></tr>
@@ -72,8 +72,8 @@ export function renderRelatorios() {
         </div>
 
         <!-- Category Breakdown -->
-        <div class="card" style="margin-bottom:1.5rem">
-            <h4 style="font-size:0.85rem;font-weight:600;margin-bottom:1rem">Despesas por Categoria</h4>
+        <div class="card" style="margin-bottom:24px;padding:20px 22px">
+            <h4 style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text)">Despesas por Categoria</h4>
             ${_renderCategoryBreakdown([...fFiltered, ...vFiltered])}
         </div>
 
@@ -111,7 +111,7 @@ function _renderCategoryBreakdown(despesas) {
                         <span style="font-size:0.78rem;font-weight:500">${esc(cat)}</span>
                         <span style="font-size:0.78rem;color:var(--text-dim)">${fmtR(val)} (${pct}%)</span>
                     </div>
-                    <div style="height:6px;background:var(--bg-card);border-radius:3px;overflow:hidden">
+                    <div style="height:6px;background:var(--bg-elevated);border-radius:3px;overflow:hidden">
                         <div style="height:100%;width:${pct}%;background:var(--danger);border-radius:3px;transition:width 0.3s"></div>
                     </div>
                 </div>

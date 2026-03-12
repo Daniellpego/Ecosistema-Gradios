@@ -2,7 +2,7 @@
 // CFO Dashboard v2 — Lançamentos Table View
 // ═══════════════════════════════════════════════
 
-import { fmtR, fmtD, esc } from '../utils.js';
+import { fmtR, fmtD, esc, filterData } from '../utils.js';
 import * as State from '../state.js';
 
 const TBODY_IDS = {
@@ -26,11 +26,7 @@ export function renderLancamentosTable() {
     else if (tab === 'fixos') data = State.getFixos();
     else if (tab === 'unicos') data = State.getVariaveis();
 
-    const filtered = data.filter(l => {
-        if (!l.data) return false;
-        const [ly, lm] = l.data.split('-');
-        return ly === String(y) && (m === 'anual' || lm === String(parseInt(m) + 1).padStart(2, '0'));
-    });
+    const filtered = filterData(data, m, y);
 
     const tbodyId = TBODY_IDS[tab];
     const emptyId = EMPTY_IDS[tab];
