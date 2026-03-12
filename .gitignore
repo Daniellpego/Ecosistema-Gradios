@@ -24,3 +24,8 @@ estrutura.txt
 
 # Auto-generated config (contains Supabase credentials)
 painel-cfo/js/config.js
+apps/painel-crm/js/config.js
+apps/painel-projetos/js/config.js
+
+# Turbo
+.turbo/

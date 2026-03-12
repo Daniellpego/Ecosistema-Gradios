@@ -1,0 +1,22 @@
+{
+  "name": "ecosistema-bg-tech-2026",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "painel-cfo",
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:crm": "npm run dev --workspace=apps/painel-crm",
+    "dev:cfo": "npm run dev --workspace=painel-cfo",
+    "dev:projetos": "npm run dev --workspace=apps/painel-projetos",
+    "build": "turbo run build",
+    "build:crm": "npm run build --workspace=apps/painel-crm",
+    "build:cfo": "npm run build --workspace=painel-cfo",
+    "build:projetos": "npm run build --workspace=apps/painel-projetos"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  }
+}
