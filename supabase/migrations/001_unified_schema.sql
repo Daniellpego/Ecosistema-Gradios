@@ -162,30 +162,30 @@ BEGIN
 
     -- Insert revenue entry in CFO lancamentos
     INSERT INTO public.cfo_lancamentos (
-      descricao, valor, tipo, categoria, data, recorrente, origem, user_id
+      nome, valor, tipo, categoria, data, recorrencia, status, user_id
     ) VALUES (
       'Deal fechado: ' || NEW.titulo,
       NEW.valor,
       'receita',
-      NEW.categoria,
+      COALESCE(NEW.categoria, 'Projetos Avulsos'),
       COALESCE(NEW.data_fechamento, CURRENT_DATE),
-      CASE WHEN NEW.mrr > 0 THEN true ELSE false END,
-      'crm_deal_' || NEW.id::TEXT,
+      CASE WHEN NEW.mrr > 0 THEN 'mensal' ELSE 'unico' END,
+      'Confirmado',
       NEW.user_id
     );
 
     -- If deal has MRR, also register recurrent entry
     IF NEW.mrr > 0 THEN
       INSERT INTO public.cfo_lancamentos (
-        descricao, valor, tipo, categoria, data, recorrente, origem, user_id
+        nome, valor, tipo, categoria, data, recorrencia, status, user_id
       ) VALUES (
         'MRR: ' || NEW.titulo,
         NEW.mrr,
         'receita',
-        'mrr',
+        'Mensalidade',
         COALESCE(NEW.data_fechamento, CURRENT_DATE),
-        true,
-        'crm_mrr_' || NEW.id::TEXT,
+        'mensal',
+        'Confirmado',
         NEW.user_id
       );
     END IF;
@@ -224,15 +224,15 @@ BEGIN
   IF NEW.status = 'entregue' AND (OLD.status IS NULL OR OLD.status != 'entregue') THEN
 
     INSERT INTO public.cfo_lancamentos (
-      descricao, valor, tipo, categoria, data, recorrente, origem, user_id
+      nome, valor, tipo, categoria, data, recorrencia, status, user_id
     ) VALUES (
       'Projeto entregue: ' || NEW.titulo,
       NEW.valor,
       'receita',
-      'projeto_entregue',
+      'Projetos Avulsos',
       CURRENT_DATE,
-      false,
-      'projeto_' || NEW.id::TEXT,
+      'unico',
+      'Confirmado',
       NEW.user_id
     );
 
@@ -256,15 +256,15 @@ BEGIN
   IF NEW.origem = 'meta_ads' AND NEW.valor_estimado > 0 THEN
 
     INSERT INTO public.cfo_lancamentos (
-      descricao, valor, tipo, categoria, data, recorrente, origem, user_id
+      nome, valor, tipo, categoria, data, recorrencia, status, user_id
     ) VALUES (
       'Meta Ads — Lead: ' || NEW.nome,
       NEW.valor_estimado * 0.10,  -- estimated ad cost (10% of deal value)
-      'despesa',
-      'ads',
+      'variavel',
+      'Marketing',
       CURRENT_DATE,
-      false,
-      'ads_lead_' || NEW.id::TEXT,
+      'unico',
+      'Confirmado',
       NEW.user_id
     );
 
