@@ -422,7 +422,6 @@ async function save() {
         const _subtypeMap = { fixos: 'fixo', unicos: 'variavel' };
         let tipo = isReceita ? 'receita' : (_subtypeMap[State._drawerSubType] || 'fixo');
 
-        console.log('[DEBUG Save] Decision:', { drawerTitle, isReceita, modo, tipo });
 
         const item = {
             id: editId || `off_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,

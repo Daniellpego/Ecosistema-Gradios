@@ -21,3 +21,6 @@ desktop.ini
 
 # Build artifacts
 estrutura.txt
+
+# Auto-generated config (contains Supabase credentials)
+painel-cfo/js/config.js

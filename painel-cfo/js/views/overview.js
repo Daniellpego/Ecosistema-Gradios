@@ -63,17 +63,19 @@ export function renderOverview() {
     // Status banner de saúde financeira
     const banner = document.getElementById('status-banner');
     if (banner) {
-        let cls, icon, msg;
+        let cls, iconName, msg;
         if (runway >= 99 && burnRate === 0) {
-            cls = 'verde'; icon = '✅'; msg = 'Sem custos confirmados no período — sem queima de caixa.';
+            cls = 'verde'; iconName = 'check-circle-2'; msg = 'Sem custos confirmados no período — sem queima de caixa.';
         } else if (runway >= 6) {
-            cls = 'verde'; icon = '✅'; msg = `Financeiramente saudável — Runway de ${runway >= 99 ? '99+' : runway.toFixed(1)} meses. Margem líquida: ${(margemLiq * 100).toFixed(1)}%.`;
+            cls = 'verde'; iconName = 'check-circle-2'; msg = `Financeiramente saudável — Runway de ${runway >= 99 ? '99+' : runway.toFixed(1)} meses. Margem líquida: ${(margemLiq * 100).toFixed(1)}%.`;
         } else if (runway >= 3) {
-            cls = 'amarelo'; icon = '⚠️'; msg = `Atenção: Runway de ${runway.toFixed(1)} meses. Considere reduzir custos ou aumentar receitas.`;
+            cls = 'amarelo'; iconName = 'alert-triangle'; msg = `Atenção: Runway de ${runway.toFixed(1)} meses. Considere reduzir custos ou aumentar receitas.`;
         } else {
-            cls = 'vermelho'; icon = '🚨'; msg = `CRÍTICO: Runway de ${runway.toFixed(1)} meses. Caixa em risco — ação imediata necessária.`;
+            cls = 'vermelho'; iconName = 'alert-octagon'; msg = `CRÍTICO: Runway de ${runway.toFixed(1)} meses. Caixa em risco — ação imediata necessária.`;
         }
         banner.className = `status-banner ${cls}`;
-        banner.innerHTML = `<span style="font-size:18px">${icon}</span><span>${msg}</span>`;
+        banner.style.display = '';
+        banner.innerHTML = `<i data-lucide="${iconName}" width="16" height="16" style="flex-shrink:0"></i><span>${msg}</span>`;
+        if (window.lucide) lucide.createIcons();
     }
 }

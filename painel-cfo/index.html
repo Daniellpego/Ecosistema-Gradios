@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
@@ -44,34 +44,62 @@
 
     <!-- ═══ LOGIN SCREEN ═══ -->
     <div id="login-screen">
+        <div class="login-glow"></div>
         <div id="login-card" class="card">
             <div class="login-brand">
                 <div class="brand-logo-premium">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="44" height="44" rx="12" fill="rgba(0,200,240,0.1)" stroke="rgba(0,200,240,0.25)" stroke-width="1"/>
+                        <!-- Neural brain nodes -->
+                        <circle cx="22" cy="14" r="2.5" fill="#00C8F0"/>
+                        <circle cx="14" cy="22" r="2.5" fill="#00C8F0"/>
+                        <circle cx="30" cy="22" r="2.5" fill="#00C8F0"/>
+                        <circle cx="17" cy="30" r="2.5" fill="#00C8F0" opacity="0.7"/>
+                        <circle cx="27" cy="30" r="2.5" fill="#00C8F0" opacity="0.7"/>
+                        <!-- Center node -->
+                        <circle cx="22" cy="22" r="3.5" fill="rgba(0,200,240,0.2)" stroke="#00C8F0" stroke-width="1.5"/>
+                        <!-- Connections -->
+                        <line x1="22" y1="16.5" x2="22" y2="18.5" stroke="#00C8F0" stroke-width="1.2" opacity="0.6"/>
+                        <line x1="16.5" y1="22" x2="18.5" y2="22" stroke="#00C8F0" stroke-width="1.2" opacity="0.6"/>
+                        <line x1="25.5" y1="22" x2="27.5" y2="22" stroke="#00C8F0" stroke-width="1.2" opacity="0.6"/>
+                        <line x1="20" y1="24.8" x2="18" y2="28" stroke="#00C8F0" stroke-width="1.2" opacity="0.5"/>
+                        <line x1="24" y1="24.8" x2="26" y2="28" stroke="#00C8F0" stroke-width="1.2" opacity="0.5"/>
+                        <line x1="16" y1="19.5" x2="19.5" y2="16.5" stroke="#00C8F0" stroke-width="1" opacity="0.4"/>
+                        <line x1="28" y1="19.5" x2="24.5" y2="16.5" stroke="#00C8F0" stroke-width="1" opacity="0.4"/>
                     </svg>
                 </div>
-                <h1 class="font-serif">BG Tech</h1>
+                <div class="login-brand-text">
+                    <h1 class="font-title">BG <span>Tech</span></h1>
+                    <p class="login-brand-sub">Inteligência Financeira</p>
+                </div>
             </div>
-            <div class="login-badge-premium">CFO Dashboard v2</div>
+
+            <div class="login-card-divider"></div>
+
+            <p class="login-welcome">Acesse o painel CFO</p>
+
             <form id="login-form" style="text-align:left">
                 <div class="form-group">
-                    <label class="form-label"><i data-lucide="user" width="14" height="14"></i> Usuário</label>
+                    <label class="form-label"><i data-lucide="user" width="13" height="13"></i> Usuário</label>
                     <input type="text" id="login-email" class="form-input" placeholder="bgtech"
                         autocomplete="username" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label"><i data-lucide="lock" width="14" height="14"></i> Senha</label>
+                    <label class="form-label"><i data-lucide="lock" width="13" height="13"></i> Senha</label>
                     <input type="password" id="login-pass" class="form-input" placeholder="••••••••"
                         autocomplete="current-password" required>
                 </div>
                 <div id="login-error"></div>
                 <button type="submit" id="btn-login" class="btn-primary"
-                    style="width:100%;justify-content:center;padding:16px;font-size:16px">
-                    <i data-lucide="log-in" width="20" height="20"></i> Entrar
+                    style="width:100%;justify-content:center;margin-top:4px">
+                    <i data-lucide="log-in" width="16" height="16"></i> Entrar no Painel
                 </button>
             </form>
+
+            <p class="login-security-note">
+                <i data-lucide="shield-check" width="12" height="12"></i>
+                Acesso restrito · Dados protegidos com criptografia
+            </p>
         </div>
     </div>
 
@@ -87,9 +115,21 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                <svg width="28" height="28" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="44" height="44" rx="10" fill="rgba(0,200,240,0.1)" stroke="rgba(0,200,240,0.25)" stroke-width="1"/>
+                    <circle cx="22" cy="14" r="2.5" fill="#00C8F0"/>
+                    <circle cx="14" cy="22" r="2.5" fill="#00C8F0"/>
+                    <circle cx="30" cy="22" r="2.5" fill="#00C8F0"/>
+                    <circle cx="17" cy="30" r="2.5" fill="#00C8F0" opacity="0.7"/>
+                    <circle cx="27" cy="30" r="2.5" fill="#00C8F0" opacity="0.7"/>
+                    <circle cx="22" cy="22" r="3.5" fill="rgba(0,200,240,0.2)" stroke="#00C8F0" stroke-width="1.5"/>
+                    <line x1="22" y1="16.5" x2="22" y2="18.5" stroke="#00C8F0" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="16.5" y1="22" x2="18.5" y2="22" stroke="#00C8F0" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="25.5" y1="22" x2="27.5" y2="22" stroke="#00C8F0" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="20" y1="24.8" x2="18" y2="28" stroke="#00C8F0" stroke-width="1.2" opacity="0.5"/>
+                    <line x1="24" y1="24.8" x2="26" y2="28" stroke="#00C8F0" stroke-width="1.2" opacity="0.5"/>
+                    <line x1="16" y1="19.5" x2="19.5" y2="16.5" stroke="#00C8F0" stroke-width="1" opacity="0.4"/>
+                    <line x1="28" y1="19.5" x2="24.5" y2="16.5" stroke="#00C8F0" stroke-width="1" opacity="0.4"/>
                 </svg>
                 <h1>BG <span>Tech</span></h1>
             </div>
@@ -187,42 +227,46 @@
 
                 <!-- ═══ VIEW: OVERVIEW ═══ -->
                 <div id="view-overview" class="view active">
-                    <div id="status-banner" class="status-banner verde"></div>
-                    <div class="stats-grid">
-                        <div class="card stat-card c-primary" style="cursor:pointer" onclick="window.CFO.editCaixa()">
+                    <div id="status-banner" class="status-banner verde" style="display:none"></div>
+                    <!-- Featured KPIs — primary hierarchy -->
+                    <div class="stats-grid" style="margin-bottom:16px">
+                        <div class="card stat-card stat-featured c-primary" style="cursor:pointer" onclick="window.CFO.editCaixa()">
                             <div class="stat-label"><span><i data-lucide="wallet" width="13" height="13" style="margin-right:5px;vertical-align:middle"></i>Caixa Disponível</span><i data-lucide="edit" width="14" height="14" style="opacity:.5"></i></div>
                             <div id="v-caixa" class="stat-value font-title">R$ 0,00</div>
                         </div>
-                        <div class="card stat-card c-warning">
+                        <div class="card stat-card stat-featured c-warning">
                             <div class="stat-label"><i data-lucide="timer" width="14" height="14"></i> Runway</div>
                             <div id="v-runway" class="stat-value font-title">-- Meses</div>
                         </div>
-                        <div class="card stat-card c-success">
+                        <div class="card stat-card stat-featured c-success">
                             <div class="stat-label"><i data-lucide="trending-up" width="14" height="14"></i> Receita Bruta</div>
                             <div id="v-receita-ov" class="stat-value font-title">R$ 0,00</div>
                             <div id="t-receita-ov" class="stat-sub"></div>
                         </div>
-                        <div id="card-res-liq" class="card stat-card c-success">
+                        <div id="card-res-liq" class="card stat-card stat-featured c-success">
                             <div class="stat-label"><i data-lucide="bar-chart-2" width="14" height="14"></i> Resultado Líquido</div>
                             <div id="v-res-liq" class="stat-value font-title">R$ 0,00</div>
                             <div id="v-res-liq-sub" class="stat-sub"></div>
                         </div>
-                        <div class="card stat-card c-success">
+                    </div>
+                    <!-- Secondary KPIs -->
+                    <div class="stats-grid stats-grid-secondary">
+                        <div class="card stat-card stat-secondary c-success">
                             <div class="stat-label"><i data-lucide="repeat-2" width="14" height="14"></i> MRR</div>
                             <div id="v-mrr-ov" class="stat-value font-title">R$ 0,00</div>
                             <div id="t-mrr-ov" class="stat-sub"></div>
                         </div>
-                        <div class="card stat-card c-danger">
+                        <div class="card stat-card stat-secondary c-danger">
                             <div class="stat-label"><i data-lucide="flame" width="14" height="14"></i> Burn Rate</div>
                             <div id="v-burn-ov" class="stat-value font-title">R$ 0,00</div>
                             <div id="t-burn-ov" class="stat-sub"></div>
                         </div>
-                        <div class="card stat-card c-warning">
+                        <div class="card stat-card stat-secondary c-warning">
                             <div class="stat-label"><i data-lucide="building" width="14" height="14"></i> Custos Fixos</div>
                             <div id="v-fixos-ov" class="stat-value font-title">R$ 0,00</div>
                             <div id="t-fixos-ov" class="stat-sub"></div>
                         </div>
-                        <div class="card stat-card c-purple">
+                        <div class="card stat-card stat-secondary c-purple">
                             <div class="stat-label"><i data-lucide="zap" width="14" height="14"></i> Variáveis + Impostos</div>
                             <div id="v-var-ov" class="stat-value font-title">R$ 0,00</div>
                             <div id="t-var-ov" class="stat-sub"></div>
@@ -266,7 +310,7 @@
                             <div id="chart-dre-line" class="chart-area"></div>
                         </div>
                     </div>
-                    <div class="card" style="overflow:hidden">
+                    <div class="card">
                         <div class="table-wrap">
                             <table class="dre-table">
                                 <thead>
@@ -303,12 +347,14 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table-entradas"></tbody>
+                                <tfoot id="tfoot-entradas"></tfoot>
                             </table>
                         </div>
-                        <div id="entradas-empty"
-                            style="display:none;text-align:center;padding:60px 24px;color:var(--text-dim)"><i
-                                data-lucide="inbox" width="48" height="48" style="opacity:.3;margin-bottom:16px"></i>
-                            <p style="font-weight:700;font-size:15px">Nenhuma receita encontrada no período.</p>
+                        <div id="entradas-empty" class="empty-state">
+                            <div class="empty-state-icon"><i data-lucide="trending-up" width="28" height="28"></i></div>
+                            <p class="empty-state-title">Nenhuma receita no período</p>
+                            <p class="empty-state-desc">Registre sua primeira receita para começar a acompanhar o faturamento da empresa.</p>
+                            <button class="btn-success" onclick="window.CFO.openDrawer(null,'entrada')"><i data-lucide="plus" width="15" height="15"></i> Adicionar Receita</button>
                         </div>
                     </div>
                 </div>
@@ -334,12 +380,14 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table-body"></tbody>
+                                <tfoot id="tfoot-fixos"></tfoot>
                             </table>
                         </div>
-                        <div id="table-empty"
-                            style="display:none;text-align:center;padding:60px 24px;color:var(--text-dim)"><i
-                                data-lucide="inbox" width="48" height="48" style="opacity:.3;margin-bottom:16px"></i>
-                            <p style="font-weight:700;font-size:15px">Nenhum lançamento encontrado.</p>
+                        <div id="table-empty" class="empty-state">
+                            <div class="empty-state-icon"><i data-lucide="building-2" width="28" height="28"></i></div>
+                            <p class="empty-state-title">Nenhum custo fixo no período</p>
+                            <p class="empty-state-desc">Adicione seus custos recorrentes — salários, contabilidade, hospedagem — para calcular o Burn Rate.</p>
+                            <button class="btn-primary" onclick="window.CFO.openDrawer(null,'despesa')"><i data-lucide="plus" width="15" height="15"></i> Adicionar Custo Fixo</button>
                         </div>
                     </div>
                 </div>
@@ -365,20 +413,20 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table-body-unicos"></tbody>
+                                <tfoot id="tfoot-unicos"></tfoot>
                             </table>
                         </div>
-                        <div id="table-empty-unicos"
-                            style="display:none;text-align:center;padding:60px 24px;color:var(--text-dim)"><i
-                                data-lucide="inbox" width="48" height="48" style="opacity:.3;margin-bottom:16px"></i>
-                            <p style="font-weight:700;font-size:15px">Nenhum gasto variável encontrado.</p>
+                        <div id="table-empty-unicos" class="empty-state">
+                            <div class="empty-state-icon"><i data-lucide="zap" width="28" height="28"></i></div>
+                            <p class="empty-state-title">Nenhum gasto variável registrado</p>
+                            <p class="empty-state-desc">Registre gastos variáveis — marketing, freelancers, taxas — para ter visibilidade completa dos seus custos.</p>
+                            <button class="btn-primary" onclick="window.CFO.openDrawer(null,'despesa')"><i data-lucide="plus" width="15" height="15"></i> Adicionar Gasto Variável</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ═══ VIEW: ANNUAL ═══ -->
                 <div id="view-annual" class="view">
-                    <h3 id="annual-title" class="font-title" style="font-size:24px;font-weight:900;margin-bottom:24px">
-                        Balanço Anual</h3>
                     <div class="annual-summary" style="margin-bottom:32px">
                         <div class="annual-summary-card income card">
                             <div
@@ -415,7 +463,7 @@
                             <option value="12">12 meses</option>
                         </select>
                     </div>
-                    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+                    <div class="stats-grid">
                         <div class="card stat-card c-success">
                             <div class="stat-label"><i data-lucide="trending-up" width="14" height="14"></i> Entradas Projetadas</div>
                             <div id="p-v-entradas" class="stat-value font-title">R$ 0</div>
@@ -443,13 +491,14 @@
                                     </tr>
                                 </thead>
                                 <tbody id="p-table-body"></tbody>
+                                <tfoot id="tfoot-proj"></tfoot>
                             </table>
                         </div>
-                        <div id="p-table-empty"
-                            style="display:none;text-align:center;padding:60px 24px;color:var(--text-dim)"><i
-                                data-lucide="telescope" width="48" height="48"
-                                style="opacity:.3;margin-bottom:16px"></i>
-                            <p style="font-weight:700;font-size:15px">Nenhuma projeção cadastrada.</p>
+                        <div id="p-table-empty" class="empty-state">
+                            <div class="empty-state-icon"><i data-lucide="telescope" width="28" height="28"></i></div>
+                            <p class="empty-state-title">Nenhuma projeção cadastrada</p>
+                            <p class="empty-state-desc">Crie projeções de receitas e despesas para simular cenários financeiros futuros e planejar melhor.</p>
+                            <button class="btn-primary" onclick="window.CFO.openProjDrawer()"><i data-lucide="plus" width="15" height="15"></i> Criar Primeira Projeção</button>
                         </div>
                     </div>
                     <div id="p-quarterly-breakdown" class="card quarterly-breakdown"></div>
@@ -457,30 +506,32 @@
 
                 <!-- ═══ VIEW: ACADEMIA CFO ═══ -->
                 <div id="view-academia" class="view">
-                    <div class="academia-hero">
-                        <div class="academia-hero-icon"><i data-lucide="graduation-cap" width="56" height="56" style="color:var(--primary);filter:drop-shadow(0 0 20px rgba(14,165,233,0.4))"></i></div>
-                        <h3 class="font-title" style="font-size:28px;font-weight:900;margin-bottom:8px">Academia CFO
-                        </h3>
-                        <p style="color:var(--text-muted);font-size:14px;max-width:600px">Entenda cada indicador do seu
-                            dashboard. Conhecimento é a base de decisões financeiras inteligentes.</p>
+                    <!-- Hero -->
+                    <div class="academia-hero-banner">
+                        <div class="academia-hero-content">
+                            <div class="academia-hero-icon-wrap">
+                                <i data-lucide="graduation-cap" width="28" height="28"></i>
+                            </div>
+                            <div>
+                                <h3 class="academia-hero-title">Academia CFO</h3>
+                                <p class="academia-hero-desc">Entenda cada indicador do seu dashboard. Conhecimento é a base de decisões financeiras inteligentes.</p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Config: Alíquota -->
-                    <div class="card academia-config-card" style="margin-bottom:32px">
-                        <div
-                            style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-                            <div>
-                                <div
-                                    style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px">
-                                    <i data-lucide="settings" width="11" height="11" style="margin-right:4px;vertical-align:middle"></i>Configuração Fiscal</div>
-                                <div style="font-size:18px;font-weight:900;color:white" class="font-title">Regime: <span
-                                        id="cfg-regime" style="color:var(--primary)">Simples Nacional</span></div>
-                                <div style="font-size:14px;color:var(--text-muted);margin-top:4px">Alíquota atual:
-                                    <strong id="cfg-aliquota" style="color:var(--warning)">6.0%</strong>
+                    <div class="academia-tax-card card" style="margin-bottom:28px">
+                        <div class="academia-tax-inner">
+                            <div class="academia-tax-left">
+                                <div class="academia-tax-label">
+                                    <i data-lucide="landmark" width="12" height="12"></i>
+                                    Configuração Fiscal
                                 </div>
+                                <div class="academia-tax-regime">Regime: <span id="cfg-regime">Simples Nacional</span></div>
+                                <div class="academia-tax-rate">Alíquota atual: <strong id="cfg-aliquota">6.0%</strong></div>
                             </div>
-                            <button class="btn-primary" onclick="window.CFO.openTaxModal()" style="padding:12px 20px">
-                                <i data-lucide="settings" width="16" height="16"></i> Alterar Alíquota
+                            <button class="btn-primary" onclick="window.CFO.openTaxModal()">
+                                <i data-lucide="sliders-horizontal" width="15" height="15"></i> Alterar Alíquota
                             </button>
                         </div>
                     </div>
@@ -488,120 +539,87 @@
                     <div class="academia-grid">
                         <!-- Card: Caixa Disponível -->
                         <div class="card academia-card">
-                            <div class="academia-card-icon"
-                                style="background:rgba(14,165,233,0.15);color:var(--primary)"><i data-lucide="wallet"
-                                    width="24" height="24"></i></div>
-                            <h4 class="font-title" style="font-size:18px;font-weight:800;margin-bottom:8px">💰 Caixa
-                                Disponível</h4>
-                            <p style="color:var(--text-muted);font-size:13px;line-height:1.7">O dinheiro que a empresa
-                                tem <strong style="color:white">disponível agora</strong> para pagar contas, investir ou
-                                operar. Não inclui valores a receber — é o saldo real na conta.</p>
+                            <div class="academia-card-icon" style="background:var(--primary-surface);color:var(--primary)">
+                                <i data-lucide="wallet" width="22" height="22"></i>
+                            </div>
+                            <h4 class="academia-card-title">Caixa Disponível</h4>
+                            <p class="academia-card-text">O dinheiro que a empresa tem <strong>disponível agora</strong> para pagar contas, investir ou operar. Não inclui valores a receber — é o saldo real na conta.</p>
                             <div class="academia-formula">Caixa = Saldo bancário atual</div>
                         </div>
 
                         <!-- Card: Runway -->
                         <div class="card academia-card">
-                            <div class="academia-card-icon"
-                                style="background:rgba(245,158,11,0.15);color:var(--warning)"><i data-lucide="hourglass"
-                                    width="24" height="24"></i></div>
-                            <h4 class="font-title" style="font-size:18px;font-weight:800;margin-bottom:8px">🔥 Runway
-                            </h4>
-                            <p style="color:var(--text-muted);font-size:13px;line-height:1.7">"Quanto tempo a empresa
-                                <strong style="color:white">sobrevive</strong> sem nenhuma receita nova?" Se o Runway é
-                                3 meses, você tem 3 meses de caixa para cobrir todas as despesas. Abaixo de 3 meses =
-                                <span style="color:var(--danger);font-weight:700">alerta vermelho</span>.
-                            </p>
+                            <div class="academia-card-icon" style="background:var(--warning-surface);color:var(--warning)">
+                                <i data-lucide="hourglass" width="22" height="22"></i>
+                            </div>
+                            <h4 class="academia-card-title">Runway</h4>
+                            <p class="academia-card-text">Quanto tempo a empresa <strong>sobrevive</strong> sem nenhuma receita nova? Se o Runway é 3 meses, você tem 3 meses de caixa para cobrir todas as despesas. Abaixo de 3 meses = <span style="color:var(--danger);font-weight:600">alerta vermelho</span>.</p>
                             <div class="academia-formula">Runway = Caixa ÷ Burn Rate mensal</div>
                         </div>
 
                         <!-- Card: Receita Bruta vs Líquida -->
                         <div class="card academia-card">
-                            <div class="academia-card-icon"
-                                style="background:rgba(16,185,129,0.15);color:var(--success)"><i
-                                    data-lucide="trending-up" width="24" height="24"></i></div>
-                            <h4 class="font-title" style="font-size:18px;font-weight:800;margin-bottom:8px">📈 Receita
-                                Bruta vs Líquida</h4>
-                            <p style="color:var(--text-muted);font-size:13px;line-height:1.7"><strong
-                                    style="color:white">Bruta</strong> é tudo que entrou. <strong
-                                    style="color:white">Líquida</strong> é o que sobra após impostos. A diferença é
-                                crucial: faturar R$100k com imposto de 6% significa que você realmente tem R$94k.</p>
+                            <div class="academia-card-icon" style="background:var(--success-surface);color:var(--success)">
+                                <i data-lucide="trending-up" width="22" height="22"></i>
+                            </div>
+                            <h4 class="academia-card-title">Receita Bruta vs Líquida</h4>
+                            <p class="academia-card-text"><strong>Bruta</strong> é tudo que entrou. <strong>Líquida</strong> é o que sobra após impostos. A diferença é crucial: faturar R$100k com imposto de 6% significa que você realmente tem R$94k.</p>
                             <div class="academia-formula">Líquida = Bruta − Impostos</div>
                         </div>
 
                         <!-- Card: MRR -->
                         <div class="card academia-card">
-                            <div class="academia-card-icon"
-                                style="background:rgba(14,165,233,0.15);color:var(--primary)"><i data-lucide="repeat"
-                                    width="24" height="24"></i></div>
-                            <h4 class="font-title" style="font-size:18px;font-weight:800;margin-bottom:8px">🔄 MRR
-                                (Receita Mensal Recorrente)</h4>
-                            <p style="color:var(--text-muted);font-size:13px;line-height:1.7">Quanto dinheiro entra
-                                <strong style="color:white">todo mês de forma previsível</strong>. Mensalidades de
-                                clientes SaaS, contratos recorrentes. Quanto maior o MRR, mais previsível e saudável é o
-                                negócio. Setup e projetos avulsos <span style="color:var(--warning)">não contam</span>.
-                            </p>
+                            <div class="academia-card-icon" style="background:var(--primary-surface);color:var(--primary)">
+                                <i data-lucide="repeat" width="22" height="22"></i>
+                            </div>
+                            <h4 class="academia-card-title">MRR — Receita Mensal Recorrente</h4>
+                            <p class="academia-card-text">Quanto dinheiro entra <strong>todo mês de forma previsível</strong>. Mensalidades SaaS, contratos recorrentes. Quanto maior o MRR, mais previsível e saudável é o negócio. Setup e projetos avulsos <span style="color:var(--warning)">não contam</span>.</p>
                             <div class="academia-formula">MRR = Soma das receitas com recorrência "mensal"</div>
                         </div>
 
                         <!-- Card: Burn Rate -->
                         <div class="card academia-card">
-                            <div class="academia-card-icon" style="background:rgba(239,68,68,0.15);color:var(--danger)">
-                                <i data-lucide="flame" width="24" height="24"></i>
+                            <div class="academia-card-icon" style="background:var(--danger-surface);color:var(--danger)">
+                                <i data-lucide="flame" width="22" height="22"></i>
                             </div>
-                            <h4 class="font-title" style="font-size:18px;font-weight:800;margin-bottom:8px">🔻 Burn Rate
-                            </h4>
-                            <p style="color:var(--text-muted);font-size:13px;line-height:1.7">Quanto a empresa <strong
-                                    style="color:white">gasta por mês</strong> para existir. Inclui custos fixos
-                                (escritório, salários), variáveis (marketing, freelancers) e impostos. Se o Burn Rate é
-                                maior que a receita, a empresa está <span
-                                    style="color:var(--danger);font-weight:700">queimando caixa</span>.</p>
+                            <h4 class="academia-card-title">Burn Rate</h4>
+                            <p class="academia-card-text">Quanto a empresa <strong>gasta por mês</strong> para existir. Inclui custos fixos (escritório, salários), variáveis (marketing, freelancers) e impostos. Se o Burn Rate é maior que a receita, a empresa está <span style="color:var(--danger);font-weight:600">queimando caixa</span>.</p>
                             <div class="academia-formula">Burn Rate = Fixos + Variáveis + Impostos</div>
                         </div>
 
                         <!-- Card: Fixos vs Variáveis -->
                         <div class="card academia-card">
-                            <div class="academia-card-icon" style="background:rgba(168,85,247,0.15);color:#a855f7"><i
-                                    data-lucide="layers" width="24" height="24"></i></div>
-                            <h4 class="font-title" style="font-size:18px;font-weight:800;margin-bottom:8px">🏢 Custos
-                                Fixos vs ⚡ Variáveis</h4>
-                            <p style="color:var(--text-muted);font-size:13px;line-height:1.7"><strong
-                                    style="color:white">Fixos</strong>: gastos que existem todo mês independente do
-                                faturamento (contabilidade, hospedagem, pró-labore). <strong
-                                    style="color:white">Variáveis</strong>: gastos que flutuam (marketing, freelancers
-                                por projeto, taxas de pagamento).</p>
-                            <div class="academia-formula">Flexibilidade → Variáveis são mais fáceis de cortar em crise
+                            <div class="academia-card-icon" style="background:var(--purple-surface);color:var(--purple)">
+                                <i data-lucide="layers" width="22" height="22"></i>
                             </div>
+                            <h4 class="academia-card-title">Custos Fixos vs Variáveis</h4>
+                            <p class="academia-card-text"><strong>Fixos</strong>: gastos que existem todo mês independente do faturamento (contabilidade, hospedagem, pró-labore). <strong>Variáveis</strong>: gastos que flutuam (marketing, freelancers por projeto, taxas de pagamento).</p>
+                            <div class="academia-formula">Flexibilidade → Variáveis são mais fáceis de cortar em crise</div>
                         </div>
 
-                        <!-- Card: DRE -->
-                        <div class="card academia-card" style="grid-column: 1 / -1">
-                            <div class="academia-card-icon"
-                                style="background:rgba(14,165,233,0.15);color:var(--primary)"><i
-                                    data-lucide="file-bar-chart" width="24" height="24"></i></div>
-                            <h4 class="font-title" style="font-size:18px;font-weight:800;margin-bottom:8px">📊 DRE
-                                Gerencial (Demonstrativo de Resultado)</h4>
-                            <p style="color:var(--text-muted);font-size:13px;line-height:1.7;margin-bottom:16px">O DRE é
-                                o "raio-x financeiro" da empresa. Ele mostra de onde o dinheiro veio e para onde foi,
-                                linha a linha. Se o Resultado Líquido é positivo, a operação é lucrativa. Se é negativo,
-                                ação urgente é necessária.</p>
+                        <!-- Card: DRE — span full width -->
+                        <div class="card academia-card academia-card-full">
+                            <div class="academia-dre-header">
+                                <div class="academia-card-icon" style="background:var(--primary-surface);color:var(--primary);flex-shrink:0">
+                                    <i data-lucide="file-bar-chart-2" width="22" height="22"></i>
+                                </div>
+                                <div>
+                                    <h4 class="academia-card-title" style="margin-bottom:4px">DRE Gerencial — Demonstrativo de Resultado</h4>
+                                    <p class="academia-card-text">O DRE é o "raio-x financeiro" da empresa. Ele mostra de onde o dinheiro veio e para onde foi, linha a linha. Resultado Líquido positivo = operação lucrativa.</p>
+                                </div>
+                            </div>
                             <div class="academia-dre-flow">
-                                <div class="dre-flow-step success"><span>1. Receita Bruta</span><small>Tudo que
-                                        entrou</small></div>
+                                <div class="dre-flow-step success"><span>1. Receita Bruta</span><small>Tudo que entrou</small></div>
                                 <div class="dre-flow-arrow">→</div>
-                                <div class="dre-flow-step danger"><span>2. (−) Variáveis</span><small>Marketing,
-                                        taxas</small></div>
+                                <div class="dre-flow-step danger"><span>2. (−) Variáveis</span><small>Marketing, taxas</small></div>
                                 <div class="dre-flow-arrow">→</div>
-                                <div class="dre-flow-step primary"><span>3. = Margem Bruta</span><small>Receita −
-                                        Variáveis</small></div>
+                                <div class="dre-flow-step primary"><span>3. = Margem Bruta</span><small>Receita − Variáveis</small></div>
                                 <div class="dre-flow-arrow">→</div>
-                                <div class="dre-flow-step warning"><span>4. (−) Fixos</span><small>Salários,
-                                        office</small></div>
+                                <div class="dre-flow-step warning"><span>4. (−) Fixos</span><small>Salários, office</small></div>
                                 <div class="dre-flow-arrow">→</div>
-                                <div class="dre-flow-step danger"><span>5. (−) Impostos</span><small>Simples
-                                        Nacional</small></div>
+                                <div class="dre-flow-step danger"><span>5. (−) Impostos</span><small>Simples Nacional</small></div>
                                 <div class="dre-flow-arrow">→</div>
-                                <div class="dre-flow-step highlight"><span>6. = Resultado</span><small>Lucro ou
-                                        prejuízo</small></div>
+                                <div class="dre-flow-step highlight"><span>6. = Resultado</span><small>Lucro ou prejuízo</small></div>
                             </div>
                         </div>
                     </div>

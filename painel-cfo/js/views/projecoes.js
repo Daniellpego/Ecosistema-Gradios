@@ -45,27 +45,37 @@ export function renderProjecoes() {
 
     if (!tbody) return;
 
+    const tfoot = document.getElementById('tfoot-proj');
+
     if (proj.length === 0) {
         tbody.innerHTML = '';
-        if (emptyEl) emptyEl.style.display = 'block';
+        if (tfoot) tfoot.innerHTML = '';
+        if (emptyEl) { emptyEl.classList.add('visible'); if (window.lucide) lucide.createIcons(); }
         return;
     }
 
-    if (emptyEl) emptyEl.style.display = 'none';
+    if (emptyEl) emptyEl.classList.remove('visible');
+
+    const netTotal = totalIn - totalOut;
+    if (tfoot) {
+        tfoot.innerHTML = `<tr class="tfoot-row"><td colspan="3"><span class="tfoot-count">${proj.length} ${proj.length === 1 ? 'projeção' : 'projeções'}</span></td><td></td><td class="tfoot-amount ${netTotal >= 0 ? 'pos' : 'neg'}">${fmtR(netTotal)}</td><td></td></tr>`;
+    }
 
     tbody.innerHTML = proj.map(p => `
         <tr>
             <td>${esc(p.mes || p.data || '—')}</td>
             <td>
                 <div class="table-main-text">${esc(p.nome)}</div>
-                <span class="badge ${p.tipo === 'entrada' ? 'success' : 'danger'}">${p.tipo === 'entrada' ? '📈 Entrada' : '📉 Saída'}</span>
+                <span class="badge ${p.tipo === 'entrada' ? 'success' : 'danger'}">${p.tipo === 'entrada' ? 'Entrada' : 'Saída'}</span>
             </td>
             <td>${esc(p.categoria || '—')}</td>
             <td><span class="badge ${(p.status || '').toLowerCase()}">${esc(p.status || 'Previsto')}</span></td>
             <td style="text-align:right" class="font-title ${p.tipo === 'entrada' ? 'pos' : 'neg'}">${fmtR(p.valor)}</td>
             <td style="text-align:center">
-                <button class="btn-icon" onclick="window.CFO.openProjDrawer('${p.tipo}','${p.id}')"><i data-lucide="edit-3"></i></button>
-                <button class="btn-icon danger" onclick="window.CFO.deleteProjecao('${p.id}','${esc(p.nome)}')" style="margin-left:4px"><i data-lucide="trash-2"></i></button>
+                <div class="row-actions">
+                    <button class="btn-icon" onclick="window.CFO.openProjDrawer('${p.tipo}','${p.id}')"><i data-lucide="edit-3"></i></button>
+                    <button class="btn-icon danger" onclick="window.CFO.deleteProjecao('${p.id}','${esc(p.nome)}')"><i data-lucide="trash-2"></i></button>
+                </div>
             </td>
         </tr>
     `).join('');

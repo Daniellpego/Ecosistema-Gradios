@@ -39,13 +39,22 @@ export function renderLancamentosTable() {
 
     if (!tbody) return;
 
+    const tfootMap = { entradas: 'tfoot-entradas', fixos: 'tfoot-fixos', unicos: 'tfoot-unicos' };
+    const tfoot = document.getElementById(tfootMap[tab]);
+
     if (filtered.length === 0) {
         tbody.innerHTML = '';
-        if (emptyEl) emptyEl.style.display = 'block';
+        if (tfoot) tfoot.innerHTML = '';
+        if (emptyEl) { emptyEl.classList.add('visible'); if (window.lucide) lucide.createIcons(); }
         return;
     }
 
-    if (emptyEl) emptyEl.style.display = 'none';
+    if (emptyEl) emptyEl.classList.remove('visible');
+
+    const total = filtered.reduce((sum, l) => sum + Number(l.valor || 0), 0);
+    if (tfoot) {
+        tfoot.innerHTML = `<tr class="tfoot-row"><td colspan="5"><span class="tfoot-count">${filtered.length} ${filtered.length === 1 ? 'item' : 'itens'}</span></td><td class="tfoot-amount">${fmtR(total)}</td><td></td></tr>`;
+    }
 
     tbody.innerHTML = filtered.map(l => `
         <tr>
@@ -59,8 +68,10 @@ export function renderLancamentosTable() {
             <td><span class="badge ${(l.status || '').toLowerCase()}">${esc(l.status)}</span></td>
             <td style="text-align:right" class="font-title">${fmtR(l.valor)}</td>
             <td style="text-align:center">
-                <button class="btn-icon" onclick="window.CFO.openDrawer('${l.id}')"><i data-lucide="edit-3"></i></button>
-                <button class="btn-icon danger" onclick="window.CFO.deleteLancamento('${l.id}', '${esc(l.nome)}')" style="margin-left:4px"><i data-lucide="trash-2"></i></button>
+                <div class="row-actions">
+                    <button class="btn-icon" onclick="window.CFO.openDrawer('${l.id}')"><i data-lucide="edit-3"></i></button>
+                    <button class="btn-icon danger" onclick="window.CFO.deleteLancamento('${l.id}', '${esc(l.nome)}')"><i data-lucide="trash-2"></i></button>
+                </div>
             </td>
         </tr>
     `).join('');

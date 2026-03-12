@@ -7,59 +7,79 @@ import * as State from './state.js';
 
 let charts = { area: null, donut: null, dreBar: null, dreLine: null };
 
+const LABEL_COLOR = '#94A3B8';
+const GRID_COLOR  = 'rgba(255,255,255,0.04)';
+const BG_STROKE   = '#0A1628';
+
 const baseOpts = {
-    chart: { background: 'transparent', fontFamily: 'Poppins', toolbar: { show: false }, animations: { enabled: true, speed: 800 } },
+    chart: { background: 'transparent', fontFamily: 'Poppins', toolbar: { show: false }, animations: { enabled: true, speed: 700, easing: 'easeinout' } },
     theme: { mode: 'dark' }
 };
+
+const tooltip = (extraY = {}) => ({
+    theme: 'dark',
+    style: { fontSize: '12px', fontFamily: 'Poppins' },
+    y: { formatter: v => fmtR(v), ...extraY }
+});
+
+const grid = { borderColor: GRID_COLOR, strokeDashArray: 3, padding: { left: 4, right: 4 } };
+
+const xaxis = (cats = []) => ({
+    categories: cats,
+    labels: { style: { colors: LABEL_COLOR, fontSize: '11px', fontWeight: 500 } },
+    axisBorder: { show: false }, axisTicks: { show: false }
+});
+
+const yaxis = { labels: { style: { colors: LABEL_COLOR, fontSize: '11px' }, formatter: v => `R$${(v / 1000).toFixed(0)}k` } };
+
+const legend = { position: 'bottom', labels: { colors: LABEL_COLOR }, fontSize: '11px', fontFamily: 'Poppins' };
 
 export function initCharts() {
     charts.area = new ApexCharts(document.querySelector('#chart-area'), {
         ...baseOpts,
         series: [], chart: { ...baseOpts.chart, type: 'area', height: 280 },
-        colors: ['#10b981', '#ef4444'],
-        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0, stops: [0, 100] } },
-        stroke: { curve: 'smooth', width: 3 }, dataLabels: { enabled: false },
-        grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 4 },
-        xaxis: { categories: [], labels: { style: { colors: '#94a3b8', fontWeight: 600 } }, axisBorder: { show: false }, axisTicks: { show: false } },
-        yaxis: { labels: { style: { colors: '#94a3b8' }, formatter: v => `R$${(v / 1000).toFixed(0)}k` } },
-        legend: { labels: { colors: '#94a3b8' } },
-        tooltip: { theme: 'dark', y: { formatter: v => fmtR(v) } }
+        colors: ['#10B981', '#EF4444'],
+        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.02, stops: [0, 100] } },
+        stroke: { curve: 'smooth', width: 2 }, dataLabels: { enabled: false },
+        grid, xaxis: xaxis(), yaxis,
+        legend,
+        tooltip: tooltip()
     });
 
     charts.donut = new ApexCharts(document.querySelector('#chart-donut'), {
         ...baseOpts,
         series: [], labels: [], chart: { ...baseOpts.chart, type: 'donut', height: 280 },
-        colors: ['#0ea5e9', '#38bdf8', '#7dd3fc', '#bae6fd', '#0284c7', '#0369a1'],
-        stroke: { show: true, colors: ['#0a0f1a'], width: 4 },
+        colors: ['#00C8F0', '#2B7AB5', '#1A6AAA', '#153B5F'],
+        stroke: { show: true, colors: [BG_STROKE], width: 3 },
         dataLabels: { enabled: false },
-        legend: { position: 'bottom', labels: { colors: '#94a3b8' } },
-        plotOptions: { pie: { donut: { size: '75%', labels: { show: true, name: { color: '#94a3b8' }, value: { color: 'white', fontSize: '24px', fontWeight: 900, formatter: v => fmtR(v) }, total: { show: true, label: 'Total Fixos', color: '#94a3b8', formatter: w => fmtR(w.globals.seriesTotals.reduce((a, b) => a + b, 0)) } } } } },
-        tooltip: { theme: 'dark' }
+        legend,
+        plotOptions: { pie: { donut: { size: '68%', labels: { show: true, name: { color: LABEL_COLOR, fontSize: '11px', fontFamily: 'Poppins' }, value: { color: '#FFFFFF', fontSize: '22px', fontWeight: 700, formatter: v => fmtR(v) }, total: { show: true, label: 'Total Fixos', color: LABEL_COLOR, fontSize: '11px', fontFamily: 'Poppins', formatter: w => fmtR(w.globals.seriesTotals.reduce((a, b) => a + b, 0)) } } } } },
+        tooltip: tooltip()
     });
 
     charts.dreBar = new ApexCharts(document.querySelector('#chart-dre-bar'), {
         ...baseOpts,
         series: [], chart: { ...baseOpts.chart, type: 'bar', height: 280 },
-        colors: ['#10b981', '#f59e0b', '#ef4444'],
-        plotOptions: { bar: { borderRadius: 4, columnWidth: '50%' } },
+        colors: ['#10B981', '#F59E0B', '#EF4444'],
+        plotOptions: { bar: { borderRadius: 6, borderRadiusApplication: 'end', columnWidth: '48%' } },
         dataLabels: { enabled: false },
-        xaxis: { categories: [], labels: { style: { colors: '#94a3b8' } }, axisBorder: { show: false }, axisTicks: { show: false } },
-        yaxis: { labels: { style: { colors: '#94a3b8' }, formatter: v => `R$${(v / 1000).toFixed(0)}k` } },
-        grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 4 },
-        tooltip: { theme: 'dark', y: { formatter: v => fmtR(v) } }
+        xaxis: xaxis(), yaxis,
+        grid,
+        legend,
+        tooltip: tooltip()
     });
 
     charts.dreLine = new ApexCharts(document.querySelector('#chart-dre-line'), {
         ...baseOpts,
         series: [], chart: { ...baseOpts.chart, type: 'area', height: 280 },
-        colors: ['#0ea5e9'],
-        fill: { type: 'gradient', gradient: { opacityFrom: 0.4, opacityTo: 0 } },
-        stroke: { curve: 'smooth', width: 3 }, dataLabels: { enabled: false },
-        markers: { size: 4, colors: ['#0ea5e9'], strokeColors: '#0a0f1a', strokeWidth: 2 },
-        xaxis: { categories: [], labels: { style: { colors: '#94a3b8' } } },
-        yaxis: { labels: { style: { colors: '#94a3b8' }, formatter: v => `R$${(v / 1000).toFixed(0)}k` } },
-        grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 4 },
-        tooltip: { theme: 'dark', y: { formatter: v => fmtR(v) } }
+        colors: ['#00C8F0'],
+        fill: { type: 'gradient', gradient: { opacityFrom: 0.35, opacityTo: 0.02, stops: [0, 100] } },
+        stroke: { curve: 'smooth', width: 2 }, dataLabels: { enabled: false },
+        markers: { size: 4, colors: ['#00C8F0'], strokeColors: BG_STROKE, strokeWidth: 2, hover: { size: 6 } },
+        xaxis: xaxis(), yaxis,
+        grid,
+        legend,
+        tooltip: tooltip()
     });
 
     Object.values(charts).forEach(c => c.render());

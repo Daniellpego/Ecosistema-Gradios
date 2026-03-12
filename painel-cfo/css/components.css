@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════
    CFO Dashboard v2 — Components
+   Identity: BG Tech — premium SaaS
    ═══════════════════════════════════════════════ */
 
 /* ─── Buttons ────────────────────────────────── */
@@ -21,19 +22,44 @@
     white-space: nowrap;
     position: relative;
     text-decoration: none;
+    letter-spacing: 0.01em;
 }
 
+/* Primary CTA — solid Electric Cyan with shimmer */
 .btn-primary {
-    background: var(--primary-dark);
-    color: #fff;
-    border-color: rgba(56, 189, 248, 0.3);
-    box-shadow: 0 0 0 0 var(--primary-glow);
+    background: var(--primary);
+    color: #0A1628;
+    border-color: transparent;
+    font-weight: 700;
+    overflow: hidden;
+}
+
+/* Shimmer layer — site-principal pattern */
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-20deg);
+    pointer-events: none;
 }
 
 .btn-primary:hover {
-    background: var(--primary);
-    box-shadow: 0 0 20px var(--primary-glow);
-    transform: translateY(-1px);
+    background: var(--primary-light);
+    box-shadow: 0 8px 24px -4px rgba(0,200,240,0.45), 0 0 0 3px rgba(0,200,240,0.12);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.btn-primary:hover::after {
+    animation: btnShimmer 0.8s ease-out forwards;
+}
+
+.btn-primary:active {
+    transform: translateY(-1px) scale(0.98);
+    transition-duration: 0.08s;
 }
 
 .btn-success {
@@ -43,7 +69,7 @@
 }
 
 .btn-success:hover {
-    filter: brightness(1.12);
+    filter: brightness(1.1);
     transform: translateY(-1px);
 }
 
@@ -54,25 +80,25 @@
 }
 
 .btn-danger:hover {
-    filter: brightness(1.12);
+    filter: brightness(1.1);
     transform: translateY(-1px);
 }
 
 .btn-ghost {
-    background: var(--surface-2);
-    color: var(--text-muted);
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
     border-color: var(--border);
 }
 
 .btn-ghost:hover {
-    background: var(--surface-3);
+    background: var(--bg-hover);
     color: var(--text);
     border-color: var(--border-hover);
 }
 
 .btn-ghost.active {
     background: var(--primary-surface);
-    border-color: rgba(56, 189, 248, 0.25);
+    border-color: var(--border-cyan);
     color: var(--primary);
 }
 
@@ -81,22 +107,33 @@
     border: none;
     color: var(--text-dim);
     cursor: pointer;
-    padding: 6px;
+    padding: 7px;
     border-radius: var(--radius-xs);
     transition: all 0.15s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
 }
 
 .btn-icon:hover {
-    color: var(--text);
-    background: var(--surface-3);
+    color: var(--primary);
+    background: var(--primary-surface);
 }
 
 .btn-icon.danger:hover {
     color: var(--danger);
     background: var(--danger-surface);
+}
+
+/* Focus state — accessibility */
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.btn-success:focus-visible,
+.btn-danger:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 /* Loading state */
@@ -110,8 +147,8 @@
     position: absolute;
     inset: 50%;
     transform: translate(-50%, -50%);
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border: 2px solid rgba(255,255,255,0.25);
     border-radius: 50%;
     border-top-color: #fff;
@@ -120,29 +157,46 @@
 
 /* ─── Cards ──────────────────────────────────── */
 .card {
-    background: var(--surface);
+    background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
-    transition: border-color 0.2s var(--transition),
-                box-shadow    0.2s var(--transition),
-                transform     0.2s var(--transition);
+    transition: all 0.4s var(--ease-spring);
     position: relative;
     overflow: hidden;
 }
 
-.card:hover {
-    border-color: var(--border-hover);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+/* Radial glow overlay — site-principal pattern */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(0,200,240,0.05), transparent 65%);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-spring);
+    pointer-events: none;
+    z-index: 0;
 }
+
+.card:hover {
+    border-color: rgba(0, 200, 240, 0.22);
+    box-shadow: var(--shadow-blue-lg);
+    transform: translateY(-5px) scale(1.01);
+}
+
+.card:hover::before { opacity: 1; }
 
 /* ─── Stat Cards ─────────────────────────────── */
 .stat-card {
-    padding: 20px 22px 22px;
+    padding: 22px 24px 24px;
+    cursor: default;
 }
 
-/* Top accent stripe replaces left border */
+.clickable, [onclick] {
+    cursor: pointer;
+}
+
+/* Top accent stripe */
 .stat-card::before {
     content: '';
     position: absolute;
@@ -152,7 +206,7 @@
     height: 2px;
     border-radius: var(--radius) var(--radius) 0 0;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.25s;
 }
 
 .stat-card:hover::before { opacity: 1; }
@@ -163,34 +217,51 @@
 .stat-card.c-warning::before  { background: var(--warning); }
 .stat-card.c-purple::before   { background: var(--purple); }
 
-/* Hover glow per variant */
-.stat-card.c-primary:hover  { box-shadow: var(--shadow-md), 0 0 20px rgba(56,189,248,0.08); }
-.stat-card.c-success:hover  { box-shadow: var(--shadow-md), 0 0 20px rgba(16,185,129,0.08); }
-.stat-card.c-danger:hover   { box-shadow: var(--shadow-md), 0 0 20px rgba(239,68,68,0.08); }
-.stat-card.c-warning:hover  { box-shadow: var(--shadow-md), 0 0 20px rgba(245,158,11,0.08); }
-.stat-card.c-purple:hover   { box-shadow: var(--shadow-md), 0 0 20px rgba(167,139,250,0.08); }
+/* Stat cards — override generic card scale with tighter lift */
+.stat-card:hover { transform: translateY(-4px) scale(1.005); }
+.stat-card.c-primary:hover  { box-shadow: 0 12px 40px -8px rgba(0,200,240,0.25); border-color: var(--border-cyan); }
+.stat-card.c-success:hover  { box-shadow: 0 12px 40px -8px rgba(16,185,129,0.22); border-color: rgba(16,185,129,0.28); }
+.stat-card.c-danger:hover   { box-shadow: 0 12px 40px -8px rgba(239,68,68,0.20); border-color: rgba(239,68,68,0.28); }
+.stat-card.c-warning:hover  { box-shadow: 0 12px 40px -8px rgba(245,158,11,0.20); border-color: rgba(245,158,11,0.28); }
+.stat-card.c-purple:hover   { box-shadow: 0 12px 40px -8px rgba(167,139,250,0.20); border-color: rgba(167,139,250,0.28); }
 
+/* Stat label row: icon container + text */
 .stat-label {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.1em;
     color: var(--text-dim);
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     justify-content: space-between;
 }
 
+/* Icon container — color per variant */
 .stat-label i {
-    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-xs);
     flex-shrink: 0;
+    opacity: 1;
+    background: var(--primary-surface);
+    color: var(--primary);
+    order: -1;
 }
+
+.stat-card.c-success .stat-label i  { background: var(--success-surface); color: var(--success); }
+.stat-card.c-danger  .stat-label i  { background: var(--danger-surface);  color: var(--danger); }
+.stat-card.c-warning .stat-label i  { background: var(--warning-surface); color: var(--warning); }
+.stat-card.c-purple  .stat-label i  { background: var(--purple-surface);  color: var(--purple); }
 
 .stat-value {
     font-family: var(--font-title);
-    font-size: clamp(22px, 2.8vw, 30px);
+    font-size: clamp(22px, 2.5vw, 28px);
     font-weight: 700;
     letter-spacing: -0.03em;
     color: var(--text);
@@ -198,6 +269,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+    line-height: 1.2;
 }
 
 .stat-sub {
@@ -208,6 +280,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-wrap: wrap;
 }
 
 /* ─── Chart cards ────────────────────────────── */
@@ -224,8 +297,8 @@
 
 .chart-title {
     font-family: var(--font-title);
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -240,8 +313,8 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 3px 9px;
-    border-radius: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
@@ -282,7 +355,7 @@
     align-items: center;
     gap: 4px;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: 20px;
     font-size: 11px;
     font-weight: 700;
 }
@@ -301,12 +374,12 @@
     font-weight: 700;
     background: var(--primary-surface);
     color: var(--primary);
-    border: 1px solid rgba(56,189,248,0.15);
+    border: 1px solid var(--border-cyan);
 }
 
 /* ─── Status Banner ──────────────────────────── */
 .status-banner {
-    padding: 12px 18px;
+    padding: 13px 18px;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
@@ -314,17 +387,54 @@
     font-size: 13px;
     font-weight: 600;
     border: 1px solid transparent;
+    border-left-width: 4px;
     margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
 }
 
-.status-banner.verde   { background: var(--success-surface); border-color: rgba(16,185,129,0.2); color: var(--success); }
-.status-banner.amarelo { background: var(--warning-surface); border-color: rgba(245,158,11,0.2); color: var(--warning); }
-.status-banner.vermelho{ background: var(--danger-surface);  border-color: rgba(239,68,68,0.2);  color: var(--danger); }
+/* Pulse indicator dot on alert banners */
+.status-banner::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.status-banner.verde   {
+    background: var(--green-subtle);
+    border-color: rgba(16,185,129,0.15);
+    border-left-color: var(--green);
+    color: var(--green);
+}
+.status-banner.verde::before { background: var(--green); }
+
+.status-banner.amarelo {
+    background: var(--amber-subtle);
+    border-color: rgba(245,158,11,0.15);
+    border-left-color: var(--amber);
+    color: var(--amber);
+    animation: alertPulse 3s ease-in-out infinite;
+}
+.status-banner.amarelo::before { background: var(--amber); animation: glowPulse 2s ease-in-out infinite; }
+
+.status-banner.vermelho {
+    background: var(--red-subtle);
+    border-color: rgba(239,68,68,0.15);
+    border-left-color: var(--red);
+    color: var(--red);
+    animation: alertPulse 2s ease-in-out infinite;
+}
+.status-banner.vermelho::before { background: var(--red); animation: glowPulse 1.5s ease-in-out infinite; }
 
 /* ─── Tables ─────────────────────────────────── */
 .table-wrap {
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius);
 }
 
 .data-table {
@@ -335,26 +445,47 @@
 
 .data-table th {
     padding: 12px 20px;
+    font-family: var(--font-body);
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-dim);
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--border);
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border-subtle);
     text-align: left;
     white-space: nowrap;
 }
 
 .data-table td {
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-subtle);
     vertical-align: middle;
     font-size: 13px;
+    color: var(--text-secondary);
+    transition: background 0.15s;
 }
 
+/* Premium row hover: reveal row, show action buttons */
 .data-table tr:hover td {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(0, 200, 240, 0.04);
+    transition: background 0.18s var(--ease-spring);
+}
+
+/* Action buttons inside table cells: hidden until row hover */
+.data-table td .row-actions {
+    display: inline-flex;
+    gap: 4px;
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity 0.18s ease, transform 0.18s var(--ease-spring);
+    pointer-events: none;
+}
+
+.data-table tr:hover td .row-actions {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
 }
 
 .data-table tr:last-child td {
@@ -363,10 +494,11 @@
 
 .amount-cell {
     font-family: var(--font-title);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     text-align: right;
     font-variant-numeric: tabular-nums;
+    color: var(--text);
 }
 
 /* ─── DRE Table ──────────────────────────────── */
@@ -377,14 +509,15 @@
 
 .dre-table th {
     padding: 12px 16px;
+    font-family: var(--font-body);
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-dim);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-subtle);
     text-align: right;
-    background: var(--surface-2);
+    background: var(--bg-elevated);
 }
 
 .dre-table th:first-child { text-align: left; }
@@ -401,10 +534,10 @@
 .dre-row-sub {
     font-size: 13px;
     color: var(--text-muted);
-    font-weight: 500;
+    font-weight: 400;
 }
 
-.dre-row-sub td { padding: 11px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.dre-row-sub td { padding: 11px 16px; border-bottom: 1px solid var(--border-subtle); }
 
 .dre-val {
     text-align: right;
@@ -442,25 +575,25 @@
     width: 100%;
     padding: 11px 14px;
     border-radius: var(--radius-sm);
-    background: var(--surface-2);
+    background: var(--bg-elevated);
     border: 1px solid var(--border);
     color: var(--text);
     font-family: var(--font-body);
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     transition: border-color 0.15s, box-shadow 0.15s;
     outline: none;
 }
 
 .form-input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+    box-shadow: 0 0 0 3px rgba(0, 200, 240, 0.1);
 }
 
 select.form-input {
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2352525B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234A6080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 14px;
@@ -488,9 +621,9 @@ select.form-input {
 }
 
 .toast {
-    background: var(--surface-2);
+    background: var(--bg-elevated);
     border: 1px solid var(--border-hover);
-    border-left: 3px solid var(--primary);
+    border-left: 3px solid var(--cyan);
     padding: 14px 18px;
     border-radius: var(--radius-sm);
     color: var(--text);
@@ -514,9 +647,9 @@ select.form-input {
 .skeleton {
     background: linear-gradient(
         90deg,
-        var(--surface-2) 25%,
-        var(--surface-3) 50%,
-        var(--surface-2) 75%
+        var(--bg-elevated) 25%,
+        var(--bg-floating) 50%,
+        var(--bg-elevated) 75%
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite linear;
@@ -526,7 +659,7 @@ select.form-input {
 
 /* ─── Month tile ─────────────────────────────── */
 .month-tile {
-    padding: 20px;
+    padding: 18px;
     border-radius: var(--radius-sm);
     cursor: pointer;
     border: 1px solid var(--border);
@@ -536,13 +669,14 @@ select.form-input {
 
 .month-tile:hover {
     background: var(--primary-surface);
-    border-color: rgba(56, 189, 248, 0.2);
+    border-color: var(--border-cyan);
     transform: translateY(-2px);
 }
 
 .month-tile.current {
-    border-color: rgba(56, 189, 248, 0.35);
+    border-color: var(--primary);
     background: var(--primary-surface);
+    box-shadow: 0 0 16px rgba(0, 200, 240, 0.1);
 }
 
 /* ─── Tags input ─────────────────────────────── */
@@ -561,7 +695,7 @@ select.form-input {
 
 .tags-input-wrap:focus-within {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+    box-shadow: 0 0 0 3px rgba(0, 200, 240, 0.1);
 }
 
 .tag-chip {
@@ -570,7 +704,7 @@ select.form-input {
     gap: 5px;
     padding: 3px 9px;
     background: var(--primary-surface);
-    border: 1px solid rgba(56,189,248,0.2);
+    border: 1px solid var(--border-cyan);
     border-radius: 4px;
     color: var(--primary);
     font-size: 11px;
@@ -594,9 +728,128 @@ select.form-input {
     flex: 1;
     min-width: 100px;
     outline: none;
+    font-family: var(--font-body);
 }
 
 .tags-input::placeholder { color: var(--text-dim); }
+
+/* ─── Empty State ─── Premium version ───────── */
+.empty-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 72px 32px 64px;
+    gap: 0;
+}
+
+.empty-state.visible { display: flex; }
+
+.empty-state-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    position: relative;
+    /* Glow behind icon */
+    box-shadow: 0 0 40px rgba(0, 200, 240, 0.06);
+}
+
+.empty-state-icon::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle, rgba(0, 200, 240, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+.empty-state-title {
+    font-family: var(--font-title);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+}
+
+.empty-state-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0 0 28px;
+    max-width: 320px;
+}
+
+/* ─── Table Footer Total ─────────────────────── */
+.tfoot-row td {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border-hover);
+    background: var(--surface-2);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.tfoot-amount {
+    text-align: right;
+    font-family: var(--font-title);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text) !important;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+}
+
+.tfoot-count {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 600;
+}
+
+/* ─── ApexCharts overrides ───────────────────── */
+.apexcharts-tooltip {
+    background: #162240 !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,200,240,0.06) !important;
+    font-family: 'Poppins', sans-serif !important;
+    color: #F1F5F9 !important;
+    padding: 2px !important;
+    backdrop-filter: blur(8px) !important;
+}
+.apexcharts-tooltip-title {
+    background: rgba(255,255,255,0.04) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #94A3B8 !important;
+    padding: 6px 12px !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    border-radius: 10px 10px 0 0 !important;
+}
+.apexcharts-tooltip-series-group {
+    padding: 6px 12px !important;
+    background: transparent !important;
+}
+.apexcharts-tooltip-text-y-value {
+    font-weight: 700 !important;
+    color: #F1F5F9 !important;
+}
+.apexcharts-tooltip-marker {
+    border-radius: 50% !important;
+}
 
 /* ─── Mobile table sticky ────────────────────── */
 @media (max-width: 768px) {
@@ -605,7 +858,7 @@ select.form-input {
         position: sticky;
         left: 0;
         z-index: 5;
-        background: var(--surface);
+        background: var(--bg-surface);
         box-shadow: 2px 0 8px rgba(0,0,0,0.4);
     }
 }
