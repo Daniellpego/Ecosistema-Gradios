@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /config.js
 
 Sitemap: https://www.bgtechsolucoes.com.br/sitemap.xml

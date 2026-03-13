@@ -4,9 +4,14 @@
 // ══════════════════════════════════════════════════════════
 
 const SITE_CONFIG = {
-  // WhatsApp — trocar pelo número real da empresa
-  whatsapp: '5543999751504',
+  // WhatsApp — número comercial da empresa
+  whatsapp: '5543997800051',
   whatsappMensagem: 'Olá! Vi o site da BG Tech e quero saber mais sobre automação para minha empresa.',
+
+  // Dados da empresa
+  cnpj: '65.663.208/0001-36',
+  razaoSocial: 'BG Tech Soluções em Tecnologia LTDA',
+  endereco: 'R. Joaquim Antônio dos Santos, 148 - Jardim Tarumã, Londrina/PR - CEP 86.038-610',
 
   // Números exibidos no site (manter consistentes)
   empresasAtendidas: '47+',
