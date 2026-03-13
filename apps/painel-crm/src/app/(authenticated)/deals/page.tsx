@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/select'
 import { useDeals, useCreateDeal, type DealInsert } from '@/hooks/use-deals'
 import { useAllLeads } from '@/hooks/use-leads'
+import { useToast } from '@/components/toast-provider'
 import { formatCurrency, formatDate } from '@/lib/format'
 import type { DealStatus, TipoServico } from '@/types/database'
 
@@ -75,6 +76,7 @@ const initialFormData: DealFormData = {
 
 export default function DealsPage() {
   const router = useRouter()
+  const { addToast } = useToast()
   const [formOpen, setFormOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<DealStatus | 'all'>('all')
@@ -153,6 +155,7 @@ export default function DealsPage() {
         setFormOpen(false)
         setFormData(initialFormData)
         setFormErrors({})
+        addToast('Deal criado com sucesso!', 'success')
       },
     })
   }

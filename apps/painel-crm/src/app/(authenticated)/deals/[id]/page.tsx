@@ -43,6 +43,7 @@ import {
 } from '@/components/ui/select'
 import { useDealById, useUpdateDeal, useDeleteDeal, useDealActivities } from '@/hooks/use-deals'
 import { useLeadById, useCreateActivity } from '@/hooks/use-leads'
+import { useToast } from '@/components/toast-provider'
 import { formatCurrency, formatDate, formatTimeAgo } from '@/lib/format'
 import type { DealStatus, TipoServico, AtividadeTipo } from '@/types/database'
 
@@ -100,6 +101,7 @@ export default function DealDetailPage() {
   const deleteDeal = useDeleteDeal()
   const createActivity = useCreateActivity()
 
+  const { addToast } = useToast()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [perdidoDialogOpen, setPerdidoDialogOpen] = useState(false)
   const [motivoPerda, setMotivoPerda] = useState('')
@@ -112,12 +114,15 @@ export default function DealDetailPage() {
 
   function handleMarkGanho() {
     if (!deal) return
-    updateDeal.mutate({
-      id: deal.id,
-      status: 'ganho' as DealStatus,
-      probabilidade: 100,
-      data_previsao_fechamento: new Date().toISOString().split('T')[0],
-    })
+    updateDeal.mutate(
+      {
+        id: deal.id,
+        status: 'ganho' as DealStatus,
+        probabilidade: 100,
+        data_previsao_fechamento: new Date().toISOString().split('T')[0],
+      },
+      { onSuccess: () => addToast('Deal marcado como Ganho!', 'success') }
+    )
   }
 
   function handleMarkPerdido() {
@@ -132,6 +137,7 @@ export default function DealDetailPage() {
         onSuccess: () => {
           setPerdidoDialogOpen(false)
           setMotivoPerda('')
+          addToast('Deal marcado como Perdido.', 'warning')
         },
       }
     )
@@ -139,13 +145,19 @@ export default function DealDetailPage() {
 
   function handleUpdateProbabilidade() {
     if (!deal || probabilidade === null) return
-    updateDeal.mutate({ id: deal.id, probabilidade })
+    updateDeal.mutate(
+      { id: deal.id, probabilidade },
+      { onSuccess: () => addToast('Probabilidade atualizada.', 'info') }
+    )
   }
 
   function handleDelete() {
     if (!deal) return
     deleteDeal.mutate(deal.id, {
-      onSuccess: () => router.push('/deals'),
+      onSuccess: () => {
+        addToast('Deal excluído.', 'info')
+        router.push('/deals')
+      },
     })
   }
 
@@ -167,6 +179,7 @@ export default function DealDetailPage() {
           setActivityDescricao('')
           setActivityTipo('nota')
           setActivitySubmitting(false)
+          addToast('Atividade registrada.', 'success')
         },
         onError: () => {
           setActivitySubmitting(false)

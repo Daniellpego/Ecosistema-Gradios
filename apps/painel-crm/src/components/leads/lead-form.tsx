@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { useToast } from '@/components/toast-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -43,6 +44,7 @@ interface LeadFormProps {
 
 export function LeadForm({ open, onOpenChange, onSuccess }: LeadFormProps) {
   const createLead = useCreateLead()
+  const { addToast } = useToast()
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const [form, setForm] = useState({
@@ -114,6 +116,7 @@ export function LeadForm({ open, onOpenChange, onSuccess }: LeadFormProps) {
     resetForm()
     onOpenChange(false)
     onSuccess?.()
+    addToast('Lead criado com sucesso!', 'success')
   }
 
   return (

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -21,6 +21,8 @@ import { cn } from '@/lib/utils'
 import { Logo } from '@/components/logo'
 import { Separator } from '@/components/ui/separator'
 import { createClient } from '@/lib/supabase/client'
+import { useQuizRealtime } from '@/hooks/use-quiz-realtime'
+import { useToast } from '@/components/toast-provider'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Visão Geral', icon: LayoutDashboard },
@@ -38,6 +40,13 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [hasNewLeads, setHasNewLeads] = useState(false)
+  const { addToast } = useToast()
+
+  // Quiz → CRM: auto-create lead when quiz_sessions receives INSERT
+  useQuizRealtime(useCallback(() => {
+    setHasNewLeads(true)
+    addToast('Novo lead criado via Quiz!', 'success')
+  }, [addToast]))
 
   // Check for leads created in the last hour
   useEffect(() => {

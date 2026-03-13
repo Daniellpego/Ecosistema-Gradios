@@ -48,6 +48,7 @@ import {
   type LeadTemperatura,
   type AtividadeTipo,
 } from '@/types/database'
+import { useToast } from '@/components/toast-provider'
 import { formatCurrency, formatDate, formatTimeAgo, formatWhatsAppUrl, formatPhone } from '@/lib/format'
 
 const ACTIVITY_ICONS: Record<string, typeof FileText> = {
@@ -74,6 +75,7 @@ export default function LeadDetailPage() {
   const deleteLead = useDeleteLead()
   const createActivity = useCreateActivity()
 
+  const { addToast } = useToast()
   const [editOpen, setEditOpen] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState(false)
   const [activityType, setActivityType] = useState<AtividadeTipo>('nota')
@@ -82,16 +84,19 @@ export default function LeadDetailPage() {
   async function handleStatusChange(status: LeadStatus) {
     if (!lead) return
     await updateLead.mutateAsync({ id: lead.id, status })
+    addToast(`Status atualizado para ${LEAD_STATUS_LABELS[status]}.`, 'info')
   }
 
   async function handleTemperaturaChange(temperatura: LeadTemperatura) {
     if (!lead) return
     await updateLead.mutateAsync({ id: lead.id, temperatura })
+    addToast('Temperatura atualizada.', 'info')
   }
 
   async function handleDelete() {
     if (!lead) return
     await deleteLead.mutateAsync(lead.id)
+    addToast('Lead excluído.', 'info')
     router.push('/leads')
   }
 
@@ -105,6 +110,7 @@ export default function LeadDetailPage() {
       autor: 'Bryan',
     })
     setActivityDesc('')
+    addToast('Atividade registrada.', 'success')
   }
 
   if (isLoading) {

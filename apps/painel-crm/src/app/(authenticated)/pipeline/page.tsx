@@ -9,6 +9,7 @@ import { PIPELINE_STAGES, LEAD_STATUS_LABELS, LEAD_STATUS_COLORS } from '@/types
 import type { Lead, LeadStatus } from '@/types/database'
 import { PageTransition } from '@/components/motion'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useToast } from '@/components/toast-provider'
 import { formatCurrency, formatTimeAgo } from '@/lib/format'
 import {
   DndContext,
@@ -280,6 +281,7 @@ function PipelineSkeleton() {
 
 export default function PipelinePage() {
   const router = useRouter()
+  const { addToast } = useToast()
   const { data: leads, isLoading } = usePipelineLeads()
   const updateLead = useUpdateLead()
   const [activeLead, setActiveLead] = useState<Lead | null>(null)
@@ -359,9 +361,12 @@ export default function PipelinePage() {
       if (!draggedLead || draggedLead.status === targetStage) return
 
       // Update lead status
-      updateLead.mutate({ id: leadId, status: targetStage })
+      updateLead.mutate(
+        { id: leadId, status: targetStage },
+        { onSuccess: () => addToast(`Movido para ${LEAD_STATUS_LABELS[targetStage]}`, 'success') }
+      )
     },
-    [leads, updateLead]
+    [leads, updateLead, addToast]
   )
 
   const handleCardClick = useCallback(
