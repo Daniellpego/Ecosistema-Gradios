@@ -12,6 +12,7 @@ import {
   Receipt,
   LineChart,
   CalendarRange,
+  FileBarChart,
   GraduationCap,
   LogOut,
   Menu,
@@ -31,6 +32,7 @@ const NAV_ITEMS = [
   { href: '/gastos-variaveis', label: 'Gastos Variáveis', icon: Receipt },
   { href: '/projecoes', label: 'Projeções', icon: LineChart },
   { href: '/balanco-anual', label: 'Balanço Anual', icon: CalendarRange },
+  { href: '/relatorios', label: 'Relatórios', icon: FileBarChart },
   { href: '/academy', label: 'Academy', icon: GraduationCap },
 ] as const
 
