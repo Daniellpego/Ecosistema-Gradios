@@ -14,7 +14,7 @@ const SITE_CONFIG = {
 
   // Supabase (anon key pública — segura para client-side)
   supabaseUrl: 'https://urpuiznydrlwmaqhdids.supabase.co',
-  supabaseAnonKey: '', // ← COLAR A ANON KEY AQUI (painel Supabase > Settings > API > anon public)
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVycHVpem55ZHJsd21hcWhkaWRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjQ0OTIsImV4cCI6MjA4NzIwMDQ5Mn0.qSoyYmBTvgdOAickkuLCYCveOj2ELIZt85LFZb6veQ8',
 };
 
 // Atualiza automaticamente todos os links com classe js-wpp-link
