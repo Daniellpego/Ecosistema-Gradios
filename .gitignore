@@ -22,6 +22,8 @@ desktop.ini
 
 # Build artifacts
 estrutura.txt
+.next/
+tsconfig.tsbuildinfo
 
 # Auto-generated config (contains Supabase credentials)
 painel-cfo/js/config.js

@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-brand-blue-deep/30;
+  }
+
+  body {
+    @apply bg-bg-navy text-text-primary font-poppins antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0F1D32;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brand-blue-deep rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-brand-blue;
+  }
+}
+
+@layer components {
+  .card-glass {
+    @apply bg-bg-card border border-brand-blue-deep/20 p-5;
+    border-radius: 14px;
+  }
+
+  .card-glass-hover {
+    @apply card-glass transition-all hover:bg-bg-hover;
+    transform: translateY(0);
+  }
+  .card-glass-hover:hover {
+    transform: translateY(-1px);
+  }
+
+  .gradient-cyan {
+    background: linear-gradient(135deg, #153B5F, #00C8F0);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #153B5F, #00C8F0);
+  }
+
+  /* Badge styles */
+  .badge-positive {
+    @apply text-status-positive text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(16, 185, 129, 0.18);
+    border-radius: 6px;
+  }
+  .badge-negative {
+    @apply text-status-negative text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(239, 68, 68, 0.18);
+    border-radius: 6px;
+  }
+  .badge-warning {
+    @apply text-status-warning text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(245, 158, 11, 0.18);
+    border-radius: 6px;
+  }
+  .badge-cyan {
+    @apply text-brand-cyan text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(0, 200, 240, 0.18);
+    border-radius: 6px;
+  }
+  .badge-blue {
+    @apply text-xs font-semibold px-2.5 py-0.5;
+    color: #2B7AB5;
+    background: rgba(43, 122, 181, 0.18);
+    border-radius: 6px;
+  }
+  .badge-purple {
+    @apply text-xs font-semibold px-2.5 py-0.5;
+    color: #A78BFA;
+    background: rgba(167, 139, 250, 0.18);
+    border-radius: 6px;
+  }
+
+  /* Table styles */
+  .table-header {
+    @apply bg-bg-input text-text-secondary text-xs font-semibold uppercase tracking-wider;
+  }
+  .table-row {
+    @apply border-b transition-colors;
+    border-color: rgba(21, 59, 95, 0.2);
+  }
+  .table-row:hover {
+    @apply bg-bg-hover;
+  }
+
+  /* Kanban */
+  .kanban-column {
+    @apply bg-bg-card/50 rounded-xl border border-brand-blue-deep/20 p-3;
+    min-height: 400px;
+  }
+
+  .kanban-card {
+    @apply bg-bg-card border border-brand-blue-deep/20 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all;
+  }
+  .kanban-card:hover {
+    @apply border-brand-cyan/30 bg-bg-hover;
+  }
+
+  /* Pulse badge for new leads */
+  .pulse-badge {
+    @apply absolute -top-1 -right-1 h-3 w-3 rounded-full bg-brand-cyan;
+    animation: pulse-ring 1.5s infinite;
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(0, 200, 240, 0.5); }
+    70% { box-shadow: 0 0 0 6px rgba(0, 200, 240, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 200, 240, 0); }
+  }
+
+  /* Toast notification */
+  .toast {
+    @apply fixed bottom-4 right-4 z-[100] card-glass shadow-2xl;
+    animation: slide-up 0.3s ease-out;
+  }
+  @keyframes slide-up {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .tooltip-brand {
+    @apply text-sm text-text-primary;
+    background: #0F1D32;
+    border: 1px solid #153B5F;
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+}
