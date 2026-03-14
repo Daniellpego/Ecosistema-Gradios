@@ -36,9 +36,8 @@
   <meta name="twitter:image" content="https://www.bgtechsolucoes.com.br/logo-bgtech.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
 
   <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -163,6 +162,14 @@
         "mainEntity": [
           {
             "@type": "Question",
+            "name": "Vocês fazem só automação ou também desenvolvem software?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "As duas coisas. Automação, integração e software sob medida — a BG Tech resolve o que precisar."
+            }
+          },
+          {
+            "@type": "Question",
             "name": "Minha empresa é pequena demais para automação?",
             "acceptedAnswer": {
               "@type": "Answer",
@@ -207,20 +214,6 @@
   }
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type": "Question", "name": "Vocês fazem só automação ou também desenvolvem software?", "acceptedAnswer": {"@type": "Answer", "text": "As duas coisas. Automação, integração e software sob medida — a BG Tech resolve o que precisar."}},
-      {"@type": "Question", "name": "Minha empresa é pequena demais para automatizar?", "acceptedAnswer": {"@type": "Answer", "text": "Não existe empresa pequena demais. A maioria das empresas que atendemos tem entre 5 e 50 funcionários."}},
-      {"@type": "Question", "name": "Preciso trocar meus sistemas atuais?", "acceptedAnswer": {"@type": "Answer", "text": "Na maioria dos casos, não. Conectamos ERP, CRM, WhatsApp e planilhas sem jogar nada fora."}},
-      {"@type": "Question", "name": "Quanto tempo para ver resultado?", "acceptedAnswer": {"@type": "Answer", "text": "Automações entram em produção em 7 dias. A LogMax teve ROI no primeiro mês."}},
-      {"@type": "Question", "name": "Como funciona o contrato?", "acceptedAnswer": {"@type": "Answer", "text": "50% na assinatura, 50% na entrega. Se não cumprirmos o escopo, você não paga a fatura final."}}
-    ]
-  }
-  </script>
-
   <!-- Preload fonte crítica para eliminar FOUT -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -229,6 +222,7 @@
 </head>
 
 <body>
+  <a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
   <div class="reading-progress" id="reading-progress"></div>
 
   <header id="site-header">
@@ -428,6 +422,8 @@
       </div>
     </section>
 
+    <div class="sec-glow--subtle" aria-hidden="true"></div>
+
     <section class="clients-sec" aria-label="Clientes BG Tech">
       <p class="sec-label">Empresas que confiam na BG Tech</p>
       <div class="logo-wall">
@@ -446,6 +442,8 @@
       </div>
     </section>
 
+    <div class="sec-glow--subtle" aria-hidden="true"></div>
+
     <section id="partners" class="light-section" style="padding-top: 0px;">
       <p class="partners-label" data-anim="fade-in">FERRAMENTAS QUE OPERAMOS EM PRODUÇÃO PARA CLIENTES</p>
       <div class="partners-row">
@@ -462,6 +460,8 @@
         <div class="authority-item"><i data-lucide="clock-4"></i> Primeiros ganhos visíveis em semanas</div>
       </div>
     </section>
+
+    <div class="sec-glow" aria-hidden="true"></div>
 
     <section id="problems" class="light-section section-spacing">
       <div class="section-inner">
@@ -515,6 +515,8 @@
       </div>
     </section>
 
+    <div class="sec-glow--subtle" aria-hidden="true"></div>
+
     <section id="urgency" class="light-section urgency-section">
       <div class="section-inner">
         <span class="section-label" data-anim="fade-in">CÁLCULO DE IMPACTO</span>
@@ -539,6 +541,8 @@
         <p class="urgency-copy" data-anim="fade-up" data-delay="400">O diagnóstico calcula o número exato para o seu cenário e aponta as 3 automações com maior retorno imediato de caixa.</p>
       </div>
     </section>
+
+    <div class="sec-glow" aria-hidden="true"></div>
 
     <section id="cases" class="light-section bg-light-alt section-spacing">
       <div class="section-inner">
@@ -595,6 +599,8 @@
           Tech entre 2024 e 2026, com contexto específico de cada operação.</p>
       </div>
     </section>
+
+    <div class="sec-glow--subtle" aria-hidden="true"></div>
 
     <section id="services" class="light-section bg-light-alt section-spacing">
       <div class="section-inner">
@@ -665,8 +671,11 @@
       </div>
     </section>
 
+    <div class="sec-glow--strong" aria-hidden="true"></div>
+    <div class="sec-fade sec-fade--into-deep" aria-hidden="true"></div>
+
     <section id="segments" class="dark-section section-spacing"
-      style="background: #03050a; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05);">
+      style="background: #03050a; position: relative;">
       <div class="grid-overlay" style="opacity: 0.05;"></div>
       <div class="section-inner" style="position: relative; z-index: 10;">
         <span class="eyebrow" data-anim="fade-in"
@@ -726,6 +735,9 @@
       </div>
     </section>
 
+    <div class="sec-fade sec-fade--from-deep" aria-hidden="true"></div>
+    <div class="sec-glow--strong" aria-hidden="true"></div>
+
     <section id="process" class="light-section section-spacing">
       <div class="section-inner">
         <span class="eyebrow" data-anim="fade-in">COMO FUNCIONA</span>
@@ -766,6 +778,8 @@
         </div>
       </div>
     </section>
+
+    <div class="sec-glow--subtle" aria-hidden="true"></div>
 
     <section id="founders" class="light-section section-spacing">
       <div class="section-inner">
@@ -825,8 +839,11 @@
       </div>
     </section>
 
+    <div class="sec-glow--strong" aria-hidden="true"></div>
+    <div class="sec-fade sec-fade--into-deep" aria-hidden="true"></div>
+
     <section id="faq" class="dark-section section-spacing"
-      style="position: relative; border-bottom: 1px solid rgba(255,255,255,0.05);">
+      style="position: relative;">
       <div class="grid-overlay" style="opacity: 0.05;"></div>
       <div class="section-inner" style="position: relative; z-index: 10;">
         <span class="eyebrow" data-anim="fade-in"
@@ -895,6 +912,9 @@
         </div>
       </div>
     </section>
+
+    <div class="sec-fade sec-fade--from-deep" aria-hidden="true"></div>
+    <div class="sec-glow" aria-hidden="true"></div>
 
     <section id="cta-final" class="dark-section" style="padding-top: 100px; padding-bottom: 100px;">
       <div class="cta-glow"></div>
@@ -1016,7 +1036,7 @@
   </div>
 
   <div class="mobile-cta-bar">
-    <p>Diagnóstico gratuito em 2 min</p>
+    <p>Diagnóstico gratuito em 3 min</p>
     <a href="#quiz" class="btn-primary btn-sm js-open-quiz">Fazer Diagnóstico</a>
   </div>
 
@@ -1034,7 +1054,7 @@
   </a>
 
 
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="https://unpkg.com/lucide@0.344.0" defer></script>
   <script src="config.js"></script>
   <script src="script.js" defer></script>
 </body>

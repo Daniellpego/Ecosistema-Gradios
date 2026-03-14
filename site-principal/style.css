@@ -4,8 +4,8 @@
 
 :root {
   /* === FONTES === */
-  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Poppins', system-ui, -apple-system, sans-serif;
+  --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
   --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
 
   /* === SISTEMA DE CORES PREMIUM (Escala 50-950) === */
@@ -330,17 +330,6 @@ a:focus-visible {
   padding: 100px 0;
 }
 
-.section-divider {
-  height: 60px;
-  background: linear-gradient(to bottom, var(--bg-light) 0%, var(--bg-main) 100%);
-  position: relative;
-}
-
-.section-divider-reverse {
-  height: 60px;
-  background: linear-gradient(to bottom, var(--bg-main) 0%, var(--bg-light) 100%);
-  position: relative;
-}
 
 .light-section {
   background: linear-gradient(180deg, #F0F6FF 0%, #F8FAFF 100%);
@@ -4941,8 +4930,6 @@ body {
 
 .light-section.bg-light-alt {
   background: linear-gradient(180deg, var(--navy-mid) 0%, rgba(13,31,60,0.95) 100%) !important;
-  border-top: 1px solid rgba(0,200,240,0.07) !important;
-  border-bottom: 1px solid rgba(0,200,240,0.07) !important;
 }
 
 /* --- Cards dark mode --- */
@@ -5103,7 +5090,6 @@ header.scrolled {
 /* --- Partners/tools dark --- */
 #partners {
   background: var(--navy-mid) !important;
-  border-bottom: 1px solid rgba(0,200,240,0.07) !important;
 }
 
 .partners-label {
@@ -5353,8 +5339,6 @@ footer, .site-footer {
 .clients-sec {
   background: linear-gradient(180deg, var(--navy-mid) 0%, var(--navy-dark) 100%);
   padding: 48px 40px;
-  border-top: 1px solid rgba(0,200,240,0.07);
-  border-bottom: 1px solid rgba(0,200,240,0.07);
   display: flex; flex-direction: column;
   align-items: center; gap: 24px;
 }
@@ -5530,8 +5514,169 @@ footer, .site-footer {
   border-bottom: none !important;
 }
 
+/* --- Skip link (accessibility) --- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 99999;
+  padding: 12px 24px;
+  background: var(--cyan);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 /* --- Reading progress color fix --- */
 .reading-progress {
   background: var(--cyan) !important;
   box-shadow: 0 0 10px var(--cyan) !important;
+}
+
+/* ============================================================
+   SECTION DIVIDERS — Premium glow-line transition system
+   ============================================================ */
+
+/* Base divider: thin horizontal glow line */
+.sec-glow {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0,200,240,0.06) 15%,
+    rgba(0,200,240,0.35) 50%,
+    rgba(0,200,240,0.06) 85%,
+    transparent 100%
+  );
+  overflow: visible;
+  z-index: 5;
+}
+
+/* Centered radial bloom behind the line */
+.sec-glow::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 80px;
+  background: radial-gradient(ellipse at center,
+    rgba(0,200,240,0.07) 0%,
+    rgba(0,200,240,0.02) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Stronger variant for major section transitions */
+.sec-glow--strong {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  overflow: visible;
+  z-index: 5;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0,200,240,0.1) 10%,
+    rgba(0,200,240,0.5) 50%,
+    rgba(0,200,240,0.1) 90%,
+    transparent 100%
+  );
+}
+
+.sec-glow--strong::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 120px;
+  background: radial-gradient(ellipse at center,
+    rgba(0,200,240,0.1) 0%,
+    rgba(0,200,240,0.03) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Gradient fade zone: smooth background blend over ~60px */
+.sec-fade {
+  position: relative;
+  height: 60px;
+  width: 100%;
+  z-index: 4;
+}
+
+/* Dark-to-deeper transition (entering #segments, #faq) */
+.sec-fade--into-deep {
+  background: linear-gradient(180deg,
+    var(--navy) 0%,
+    #060E1C 40%,
+    #03050a 100%
+  );
+}
+
+/* Deeper-to-dark transition (exiting #segments, #faq) */
+.sec-fade--from-deep {
+  background: linear-gradient(180deg,
+    #03050a 0%,
+    #060E1C 60%,
+    var(--navy) 100%
+  );
+}
+
+/* Subtle spacer between same-tone sections */
+.sec-glow--subtle {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  overflow: visible;
+  z-index: 5;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0,200,240,0.04) 20%,
+    rgba(0,200,240,0.18) 50%,
+    rgba(0,200,240,0.04) 80%,
+    transparent 100%
+  );
+}
+
+.sec-glow--subtle::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50px;
+  background: radial-gradient(ellipse at center,
+    rgba(0,200,240,0.04) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+/* Reduced motion: remove bloom animations */
+@media (prefers-reduced-motion: reduce) {
+  .sec-glow::before,
+  .sec-glow--strong::before,
+  .sec-glow--subtle::before {
+    display: none;
+  }
+}
+
+/* Mobile: reduce fade zone height */
+@media (max-width: 768px) {
+  .sec-fade {
+    height: 40px;
+  }
 }

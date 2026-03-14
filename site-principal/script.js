@@ -13,9 +13,9 @@ function getUTM(param) {
 }
 
 function getOrigem() {
-  var source = getUTM('utm_source');
+  const source = getUTM('utm_source');
   if (!source) return 'site_organico';
-  var s = source.toLowerCase();
+  const s = source.toLowerCase();
   if (s.includes('meta') || s.includes('facebook') || s.includes('instagram')) return 'meta_ads';
   if (s.includes('google')) return 'google_ads';
   if (s.includes('indicacao')) return 'indicacao';
@@ -77,6 +77,12 @@ fetch('https://ipapi.co/json/', { signal: controller.signal })
 
 const capitalize = (str) => {
   return str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+};
+
+const escapeHTML = (str) => {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 };
 
 // ── Score & Cost calculation ─────────────────────────────
@@ -946,7 +952,7 @@ function runLoading() {
   body.innerHTML = `
     <div class="diag-loading reveal visible">
       <div class="diag-loading-ring"></div>
-      <h2 class="q-title" style="margin-bottom: 32px;">Compilando o diagnóstico da ${textData.empresa || 'sua empresa'}...</h2>
+      <h2 class="q-title" style="margin-bottom: 32px;">Compilando o diagnóstico da ${escapeHTML(textData.empresa || 'sua empresa')}...</h2>
       <div class="diag-loading-steps">
         ${steps.map((s, i) => `
           <div class="diag-step" id="dls-${i}">
@@ -1005,8 +1011,8 @@ function runLoading() {
 
 function showResult() {
   const body = document.getElementById('quiz-body');
-  const nome = (textData.nome || 'Você').split(' ')[0];
-  const empresa = textData.empresa || 'sua empresa';
+  const nome = escapeHTML((textData.nome || 'Você').split(' ')[0]);
+  const empresa = escapeHTML(textData.empresa || 'sua empresa');
 
   const fatIndex = answers.faturamento;
   const horasIndex = answers.horas_perdidas;

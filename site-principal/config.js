@@ -25,8 +25,8 @@ const SITE_CONFIG = {
 
 // Atualiza automaticamente todos os links com classe js-wpp-link
 document.addEventListener('DOMContentLoaded', function () {
-  var links = document.querySelectorAll('.js-wpp-link');
-  for (var i = 0; i < links.length; i++) {
+  const links = document.querySelectorAll('.js-wpp-link');
+  for (let i = 0; i < links.length; i++) {
     links[i].href = SITE_CONFIG.whatsappLink + '?text=' + encodeURIComponent(SITE_CONFIG.whatsappMensagem);
   }
 });
