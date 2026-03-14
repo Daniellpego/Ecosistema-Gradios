@@ -17,10 +17,10 @@
   --primary-400: #40D8EE;
   --primary-500: #00C8F0;
   --primary-600: #1A6AAA;
-  --primary-700: #153B5F;
-  --primary-800: #153B5F;
-  --primary-900: #153B5F;
-  --primary-950: #153B5F;
+  --primary-700: #0A3D91;
+  --primary-800: #0A3D91;
+  --primary-900: #0A3D91;
+  --primary-950: #0A3D91;
 
   /* Accent (Cyan Bright) */
   --accent-400: #40D8EE;
@@ -79,16 +79,16 @@
   --green-wpp: var(--success-500);
 
   /* === GRADIENTES NÃO-GENÉRICOS (Evitar azul→roxo tradicional) === */
-  --grad-hero: linear-gradient(135deg, #153B5F 0%, #1A6AAA 50%, #00C8F0 100%);
-  --grad-hero-orb-1: radial-gradient(circle at center, rgba(0, 200, 240, 0.15), transparent 70%);
-  --grad-hero-orb-2: radial-gradient(circle at center, rgba(64, 216, 238, 0.12), transparent 65%);
+  --grad-hero: linear-gradient(135deg, #0A3D91 0%, #1A6AAA 50%, #00E5FF 100%);
+  --grad-hero-orb-1: radial-gradient(circle at center, rgba(0, 229, 255, 0.15), transparent 70%);
+  --grad-hero-orb-2: radial-gradient(circle at center, rgba(0, 200, 240, 0.12), transparent 65%);
 
-  --grad-btn: linear-gradient(135deg, #153B5F 0%, #00C8F0 100%);
-  --grad-btn-hover: linear-gradient(135deg, #1A6AAA 0%, #40D8EE 100%);
-  --grad-cta: linear-gradient(135deg, #162240 0%, #0A1628 100%);
-  --grad-cta-primary: linear-gradient(135deg, #1A6AAA 0%, #00C8F0 100%);
-  --grad-cta-hover: linear-gradient(135deg, #00C8F0 0%, #40D8EE 100%);
-  --grad-cta-active: linear-gradient(135deg, #153B5F 0%, #1A6AAA 100%);
+  --grad-btn: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%);
+  --grad-btn-hover: linear-gradient(135deg, #1A6AAA 0%, #00E5FF 100%);
+  --grad-cta: linear-gradient(135deg, #1B2138 0%, #0A1628 100%);
+  --grad-cta-primary: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%);
+  --grad-cta-hover: linear-gradient(135deg, #00C8F0 0%, #00E5FF 100%);
+  --grad-cta-active: linear-gradient(135deg, #0A3D91 0%, #1A6AAA 100%);
 
   --grad-subtle: linear-gradient(180deg, rgba(0, 200, 240, 0.03) 0%, transparent 100%);
   --grad-card-border: linear-gradient(135deg, rgba(0, 200, 240, 0.3), rgba(64, 216, 238, 0.15));
@@ -4849,21 +4849,22 @@ header.scrolled {
 /* --- Brand Variables Override --- */
 :root {
   --navy: #0A1628;
-  --navy-mid: #0D1F3C;
+  --navy-mid: #1B2138;
   --navy-card: #0F2240;
   --navy-dark: #060E1C;
-  --blue-dk: #153B5F;
+  --blue-dk: #0A3D91;
   --blue-br: #1A6AAA;
   --blue-mid: #2B7AB5;
   --cyan: #00C8F0;
+  --cyan-neon: #00E5FF;
   --cyan-lt: #40D8EE;
   --cyan-gw: #80EEFF;
-  /* Override old aliases to match brand palette */
-  --blue: #1A6AAA;
-  --blue-dark: #153B5F;
+  /* Override old aliases to match brand palette (logo oficial v2) */
+  --blue: #0A3D91;
+  --blue-dark: #0A3D91;
   --green-wpp: #10B981;
-  --grad-brand: linear-gradient(135deg, #153B5F 0%, #00C8F0 100%);
-  --grad-cyan: linear-gradient(135deg, #00C8F0 0%, #40D8EE 100%);
+  --grad-brand: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%);
+  --grad-cyan: linear-gradient(135deg, #00C8F0 0%, #00E5FF 100%);
   --grad-cta-new: linear-gradient(135deg, #0B1E3A 0%, #0F2850 35%, #091C38 70%, #0C2444 100%);
   --grad-card-new: linear-gradient(145deg, rgba(0,200,240,0.07) 0%, rgba(0,100,200,0.03) 100%);
   --grad-hero-new: radial-gradient(ellipse 120% 80% at 10% 110%, rgba(0,200,240,0.13) 0%, transparent 55%),
