@@ -4,9 +4,32 @@
 
 :root {
   /* === FONTES === */
-  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Poppins', system-ui, -apple-system, sans-serif;
+  --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
   --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+
+  /* === BRAND SYSTEM BG TECH === */
+  --navy: #0A1628;
+  --navy-mid: #0D1F3C;
+  --navy-card: #0F2240;
+  --navy-dark: #060E1C;
+  --blue-dk: #153B5F;
+  --blue-br: #1A6AAA;
+  --blue-mid: #2B7AB5;
+  --cyan-lt: #40D8EE;
+  --cyan-gw: #80EEFF;
+  --t-white: #FFFFFF;
+  --t-muted: rgba(255,255,255,0.55);
+  --t-dim: rgba(255,255,255,0.28);
+  --rp: 300px;
+  --rc: 20px;
+  --ri: 12px;
+  --grad-brand: linear-gradient(135deg, #153B5F 0%, #00C8F0 100%);
+  --grad-cyan: linear-gradient(135deg, #00C8F0 0%, #40D8EE 100%);
+  --grad-cta-dark: linear-gradient(135deg, #0B1E3A 0%, #0F2850 35%, #091C38 70%, #0C2444 100%);
+  --grad-card: linear-gradient(145deg, rgba(0,200,240,0.07) 0%, rgba(0,100,200,0.03) 100%);
+  --grad-hero-new: radial-gradient(ellipse 120% 80% at 10% 110%, rgba(0,200,240,0.13) 0%, transparent 55%), radial-gradient(ellipse 80% 60% at 90% 0%, rgba(26,106,170,0.10) 0%, transparent 50%);
+  --grad-feature: linear-gradient(160deg, rgba(0,200,240,0.06) 0%, rgba(26,106,170,0.02) 100%);
 
   /* === SISTEMA DE CORES PREMIUM (Escala 50-950) === */
   /* Primary (Blue/Cyan Electric) */
@@ -130,7 +153,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-family: var(--font-body);
+  font-family: 'Poppins', sans-serif;
   background: #ffffff;
   color: var(--text-1);
 }
@@ -4861,4 +4884,355 @@ header.scrolled {
   .segments-scroll {
     -webkit-overflow-scrolling: touch;
   }
+}
+
+/* ============================================
+   BRAND OVERHAUL — Março 2026
+   ============================================ */
+
+/* Logo SVG + Text */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-logo-txt {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  font-family: 'Poppins', sans-serif;
+}
+.nav-logo-txt em {
+  font-style: normal;
+  color: var(--cyan, #00C8F0);
+}
+
+/* H1 highlight gradient text */
+.h1-highlight {
+  background: linear-gradient(135deg, #00C8F0 0%, #80EEFF 50%, #40D8EE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 0.85em;
+}
+
+/* Price anchor */
+.price-anchor {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--t-dim, rgba(255,255,255,0.28));
+  text-align: center;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+.price-anchor em {
+  font-style: normal;
+  color: var(--cyan, #00C8F0);
+  font-weight: 500;
+}
+
+/* Grid background in hero */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,200,240,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,240,0.025) 1px, transparent 1px);
+  background-size: 54px 54px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero glow elements */
+.hero-glow-1 {
+  position: absolute;
+  bottom: -120px;
+  left: -160px;
+  width: 900px;
+  height: 700px;
+  background: radial-gradient(ellipse, rgba(0,200,240,0.09) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  animation: gdrift 9s ease-in-out infinite alternate;
+}
+.hero-glow-2 {
+  position: absolute;
+  top: -80px;
+  right: -120px;
+  width: 700px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(26,106,170,0.08) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+  animation: gdrift 12s ease-in-out infinite alternate-reverse;
+}
+@keyframes gdrift {
+  0% { transform: translate(0,0) scale(1); }
+  100% { transform: translate(40px, 24px) scale(1.05); }
+}
+
+/* CTA nav button gradient */
+.btn-cta-nav {
+  background: linear-gradient(135deg, #00C8F0 0%, #40D8EE 100%) !important;
+  color: #060E1C !important;
+  font-weight: 700 !important;
+  border-radius: 300px !important;
+  padding: 9px 20px !important;
+  box-shadow: 0 4px 20px rgba(0,200,240,0.28) !important;
+  transition: all 0.25s !important;
+  border: none !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  font-size: 13px !important;
+}
+.btn-cta-nav:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 28px rgba(0,200,240,0.45) !important;
+  background: linear-gradient(135deg, #40D8EE 0%, #00C8F0 100%) !important;
+  color: #060E1C !important;
+  border-color: transparent !important;
+}
+
+/* ── CLIENTS / LOGO WALL ── */
+.clients-sec {
+  background: linear-gradient(180deg, var(--navy-mid, #0D1F3C) 0%, var(--navy-dark, #060E1C) 100%);
+  padding: 48px 40px;
+  border-top: 1px solid rgba(0,200,240,0.07);
+  border-bottom: 1px solid rgba(0,200,240,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.sec-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--t-dim, rgba(255,255,255,0.28));
+  font-family: 'Poppins', sans-serif;
+}
+.logo-wall {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.25s;
+}
+.logo-item:last-child { border-right: none; }
+.logo-item:hover { background: rgba(0,200,240,0.04); }
+.logo-item img {
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(0) invert(.55);
+  opacity: .6;
+  transition: all 0.25s;
+  max-width: 100px;
+}
+.logo-item:hover img {
+  filter: brightness(0) invert(.85);
+  opacity: .9;
+}
+.logo-txt {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: .3px;
+  white-space: nowrap;
+  transition: color 0.25s;
+  font-family: 'Poppins', sans-serif;
+}
+.logo-item:hover .logo-txt {
+  color: rgba(255,255,255,0.65);
+}
+
+/* ── WHATSAPP FLOATING BUTTON ── */
+.wha-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+  text-decoration: none;
+}
+.wha-tooltip {
+  background: var(--navy-dark, #060E1C);
+  border: 1px solid rgba(0,200,240,0.2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+  margin-right: 10px;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all 0.25s;
+  pointer-events: none;
+  font-family: 'Poppins', sans-serif;
+}
+.wha-float:hover .wha-tooltip { opacity: 1; transform: translateX(0); }
+.wha-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25D366 0%, #20BB5C 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 24px rgba(37,211,102,0.35);
+  transition: all 0.25s;
+  color: #fff;
+  animation: wha-pulse 2.5s ease-in-out 3s infinite;
+}
+.wha-float:hover .wha-btn {
+  transform: scale(1.08);
+  box-shadow: 0 10px 32px rgba(37,211,102,0.5);
+}
+@keyframes wha-pulse {
+  0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,0.35); }
+  50% { box-shadow: 0 6px 24px rgba(37,211,102,0.35), 0 0 0 8px rgba(37,211,102,0.12); }
+}
+
+/* ── EXIT-INTENT POPUP ── */
+.exit-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0);
+  pointer-events: none;
+  transition: background 0.3s;
+}
+.exit-overlay.show {
+  background: rgba(0,0,0,0.72);
+  pointer-events: all;
+}
+.exit-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -46%);
+  width: min(520px, 92vw);
+  background: linear-gradient(145deg, #0D2040 0%, #091828 100%);
+  border: 1px solid rgba(0,200,240,0.25);
+  border-radius: 24px;
+  padding: 44px;
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(.22,1,.36,1);
+}
+.exit-popup::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,200,240,0.5), transparent);
+}
+.exit-overlay.show .exit-popup {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+.exit-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t-muted, rgba(255,255,255,0.55));
+  transition: all 0.2s;
+}
+.exit-close:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+.exit-popup h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -.5px;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+.exit-popup h3 em {
+  font-style: normal;
+  background: linear-gradient(135deg, #00C8F0, #40D8EE);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.exit-popup p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--t-muted, rgba(255,255,255,0.55));
+  line-height: 1.65;
+  margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+.exit-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.exit-btn-main {
+  flex: 1;
+  min-width: 200px;
+  background: linear-gradient(135deg, #00C8F0 0%, #40D8EE 100%);
+  color: #060E1C;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  border-radius: 300px;
+  padding: 14px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 20px rgba(0,200,240,0.3);
+  transition: all 0.2s;
+}
+.exit-btn-main:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(0,200,240,0.45);
+}
+.exit-btn-skip {
+  background: transparent;
+  border: none;
+  color: var(--t-dim, rgba(255,255,255,0.28));
+  font-size: 13px;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+}
+
+/* ── MOBILE OVERRIDES FOR NEW COMPONENTS ── */
+@media (max-width: 800px) {
+  .wha-tooltip { display: none; }
+  .logo-wall { flex-wrap: wrap; }
+  .logo-item { padding: 10px 16px; width: 50%; }
+  .exit-popup { padding: 32px 24px; }
 }
