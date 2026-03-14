@@ -25,16 +25,8 @@ function getOrigem() {
 }
 
 const getRuntimeWebhookConfig = () => {
-  const params = new URLSearchParams(window.location.search);
-  const queryWebhook = params.get('webhook');
-  const queryToken = params.get('token');
-
-  if (queryWebhook) localStorage.setItem('bgtech_webhook_url', queryWebhook);
-  if (queryToken) localStorage.setItem('bgtech_webhook_token', queryToken);
-
-  const webhookUrl = queryWebhook || localStorage.getItem('bgtech_webhook_url') || CONFIG.webhookUrl;
-  const webhookToken = queryToken || localStorage.getItem('bgtech_webhook_token') || CONFIG.webhookToken;
-
+  const webhookUrl = CONFIG.webhookUrl;
+  const webhookToken = CONFIG.webhookToken;
   return { webhookUrl, webhookToken };
 };
 
@@ -851,8 +843,9 @@ function renderStep() {
       const inputMode = f.id === 'whatsapp' ? ' inputmode="numeric"' : '';
       const autoCompleteMap = { nome: 'name', empresa: 'organization', whatsapp: 'tel' };
       const autoComplete = autoCompleteMap[f.id] || 'off';
+      const safeValue = escapeHTML(textData[f.id] || '');
       html += `<div class="q-input-group">
-                <input type="${inputType}"${inputMode} class="q-input" id="inp-${f.id}" placeholder="${f.placeholder}" autocomplete="${autoComplete}" value="${textData[f.id] || ''}">
+                <input type="${inputType}"${inputMode} class="q-input" id="inp-${f.id}" placeholder="${f.placeholder}" autocomplete="${autoComplete}" value="${safeValue}">
                 <div class="q-error-msg" id="err-${f.id}"></div>
                </div>`;
     });
@@ -1637,9 +1630,7 @@ function showResult() {
       numEl.dataset.done = '1';
       const target = parseFloat(numEl.dataset.count);
       const dec = numEl.dataset.decimal === 'true';
-      const orig = numEl.textContent;
       animCounter(numEl, target, dec);
-      setTimeout(() => { numEl.textContent = orig; }, 1900);
       cobs.unobserve(e.target);
     });
   }, { threshold: 0.4 });
