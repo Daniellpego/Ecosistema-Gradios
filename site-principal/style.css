@@ -3243,7 +3243,7 @@ header.scrolled {
 /* BUG 7: Botão diagnóstico com efeito pulsante */
 .btn-priority-contact {
   position: relative;
-  background: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%);
+  background: linear-gradient(135deg, #1B2138 0%, #00E5FF 100%);
   color: #F0F4F8;
   padding: 16px 40px;
   border-radius: 12px;
@@ -3266,7 +3266,7 @@ header.scrolled {
   position: absolute;
   inset: -4px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%);
+  background: linear-gradient(135deg, #1B2138 0%, #00E5FF 100%);
   opacity: 0.3;
   z-index: -1;
   animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -3278,7 +3278,7 @@ header.scrolled {
   position: absolute;
   inset: -4px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%);
+  background: linear-gradient(135deg, #1B2138 0%, #00E5FF 100%);
   opacity: 0.15;
   z-index: -1;
   animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -4912,7 +4912,7 @@ header.scrolled {
   --blue: #0A3D91;
   --blue-dark: #0A3D91;
   --green-wpp: #10B981;
-  --grad-brand: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%);
+  --grad-brand: linear-gradient(135deg, #1B2138 0%, #00E5FF 100%);
   --grad-cyan: linear-gradient(135deg, #00C8F0 0%, #00E5FF 100%);
   --grad-cta-new: linear-gradient(135deg, #0B1E3A 0%, #0F2850 35%, #091C38 70%, #0C2444 100%);
   --grad-card-new: linear-gradient(145deg, rgba(0,200,240,0.07) 0%, rgba(0,100,200,0.03) 100%);
@@ -5103,7 +5103,7 @@ header.scrolled {
 
 /* Header CTA gradient */
 .header-cta {
-  background: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%) !important;
+  background: linear-gradient(135deg, #1B2138 0%, #00E5FF 100%) !important;
   color: #F0F4F8 !important;
   font-weight: 700 !important;
   border-radius: 300px !important;
@@ -5312,14 +5312,14 @@ footer, .site-footer {
 
 /* --- Buttons pill style --- */
 .btn-primary {
-  background: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%) !important;
+  background: linear-gradient(135deg, #1B2138 0%, #00E5FF 100%) !important;
   color: #F0F4F8 !important;
   border-radius: 300px !important;
   box-shadow: 0 4px 20px rgba(0,229,255,0.28) !important;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #1A6AAA 0%, #00E5FF 100%) !important;
+  background: linear-gradient(135deg, #2B7AB5 0%, #00E5FF 100%) !important;
   transform: translateY(-2px) scale(1.02) !important;
   box-shadow: 0 8px 32px rgba(0,229,255,0.42) !important;
 }
@@ -5336,7 +5336,7 @@ footer, .site-footer {
 
 /* --- H1 highlight --- */
 .h1-highlight {
-  background: linear-gradient(135deg, #0A3D91 0%, #00E5FF 50%, #80EEFF 100%);
+  background: linear-gradient(135deg, #1B2138 0%, #00E5FF 50%, #80EEFF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -5548,7 +5548,7 @@ footer, .site-footer {
 .drawer-panel a:hover { color: var(--cyan); }
 .drawer-cta {
   margin-top: auto;
-  background: linear-gradient(135deg, #0A3D91 0%, #00E5FF 100%) !important;
+  background: linear-gradient(135deg, #1B2138 0%, #00E5FF 100%) !important;
   border-radius: 300px !important;
   padding: 14px 20px !important;
   text-align: center;
