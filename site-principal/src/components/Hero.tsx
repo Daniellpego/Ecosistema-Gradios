@@ -131,7 +131,7 @@ export function Hero() {
             }`}
             style={{ transitionDelay: '700ms' }}
           >
-            <Link href="#contato" className="bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:shadow-lg hover:shadow-[#0A1B5C]/25 hover:opacity-90 transition-all text-center w-full sm:w-auto relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700">
+            <Link href="/diagnostico" className="bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:shadow-lg hover:shadow-[#0A1B5C]/25 hover:opacity-90 transition-all text-center w-full sm:w-auto relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700">
               Diagnóstico Gratuito
             </Link>
             <Link href="#como-funciona" className="text-text font-medium px-6 py-4 hover:text-primary transition-colors flex items-center gap-2">

@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "#solucoes", label: "Soluções" },
   { href: "#como-funciona", label: "Como Funciona" },
   { href: "#cases", label: "Cases" },
+  { href: "/diagnostico", label: "Diagnóstico" },
   { href: "#contato", label: "Contato" },
 ];
 
@@ -99,7 +100,7 @@ export function Navbar() {
 
           {/* CTA */}
           <div className="hidden md:flex items-center">
-            <Link href="#contato" className="bg-brand-gradient text-white rounded-pill py-2.5 px-6 font-bold text-center text-sm relative overflow-hidden hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700">
+            <Link href="/diagnostico" className="bg-brand-gradient text-white rounded-pill py-2.5 px-6 font-bold text-center text-sm relative overflow-hidden hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700">
               Diagnóstico Gratuito
             </Link>
           </div>
@@ -134,7 +135,7 @@ export function Navbar() {
             </Link>
           ))}
           <div className="mt-2">
-            <Link href="#contato" onClick={() => setMenuOpen(false)}
+            <Link href="/diagnostico" onClick={() => setMenuOpen(false)}
               className="bg-brand-gradient text-white rounded-pill px-6 py-3 font-bold text-center block relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700">
               Diagnóstico Gratuito
             </Link>
