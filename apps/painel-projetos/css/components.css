@@ -20,7 +20,7 @@
 
 .btn-primary {
   background: var(--cyan);
-  color: #080E1A;
+  color: #FFFFFF;
 }
 .btn-primary:hover {
   background: #1ad2f8;
@@ -29,13 +29,13 @@
 }
 
 .btn-secondary {
-  background: var(--bg-elevated);
+  background: #F8FAFC;
   color: var(--text-primary);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
 }
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--border-light);
+  background: #F1F5F9;
+  border-color: var(--border);
 }
 
 .btn-danger {
@@ -83,7 +83,7 @@
 .spinner {
   display: inline-block;
   width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,0.2);
+  border: 2px solid rgba(10, 27, 92, 0.1);
   border-top-color: currentColor;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
@@ -105,8 +105,9 @@
   cursor: pointer;
 }
 .card-clickable:hover {
-  background: var(--bg-elevated);
+  background: #F8FAFC;
   box-shadow: var(--shadow-md);
+  border-color: var(--cyan);
 }
 
 /* ── Stat Cards ── */
@@ -197,8 +198,8 @@
 .form-group textarea {
   width: 100%;
   padding: 0.65rem 0.85rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: #F8FAFC;
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: 0.88rem;
@@ -243,8 +244,8 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(10, 27, 92, 0.3);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,8 +255,8 @@
 }
 
 .modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 560px;
@@ -295,7 +296,7 @@
 .progress-bar {
   width: 100%;
   height: 6px;
-  background: rgba(255,255,255,0.06);
+  background: #F1F5F9;
   border-radius: var(--radius-full);
   overflow: hidden;
 }
@@ -326,7 +327,7 @@
 
 .progress-ring-bg {
   fill: none;
-  stroke: rgba(255,255,255,0.06);
+  stroke: #F1F5F9;
 }
 
 .progress-ring-fill {
@@ -354,10 +355,10 @@
   padding: 0.15rem 0.5rem;
   font-size: 0.68rem;
   font-weight: 500;
-  background: rgba(255,255,255,0.05);
+  background: #F1F5F9;
   color: var(--text-secondary);
   border-radius: var(--radius-full);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
 }
 
 /* ── Toast ── */
@@ -377,8 +378,8 @@
   align-items: center;
   gap: 0.65rem;
   padding: 0.75rem 1.15rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
   font-size: 0.85rem;
@@ -444,8 +445,8 @@
 }
 
 .kanban-column {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: #F8FAFC;
+  border: 1px solid var(--border-light);
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
@@ -473,11 +474,11 @@
   align-items: center;
   justify-content: center;
   min-width: 22px; height: 22px;
-  background: rgba(255,255,255,0.06);
+  background: #E2E8F0;
   border-radius: var(--radius-full);
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .kanban-column-dot {
@@ -498,8 +499,8 @@
 }
 
 .kanban-card {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   padding: 0.85rem;
   cursor: pointer;
@@ -622,7 +623,7 @@
   display: flex;
   align-items: center;
   height: 48px;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(10, 27, 92, 0.03);
   position: relative;
 }
 
@@ -696,7 +697,7 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(10, 27, 92, 0.03);
   z-index: 1;
 }
 
@@ -713,8 +714,8 @@
 }
 
 .project-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
   border-radius: var(--radius);
   padding: 1.25rem;
   cursor: pointer;
@@ -722,10 +723,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  box-shadow: var(--shadow-sm);
 }
 .project-card:hover {
-  border-color: var(--border-light);
-  background: var(--bg-elevated);
+  border-color: var(--cyan);
+  background: #F8FAFC;
   box-shadow: var(--shadow-md);
 }
 
@@ -789,7 +791,7 @@
   display: flex;
   gap: 0.85rem;
   padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(10, 27, 92, 0.04);
 }
 .activity-item:last-child { border-bottom: none; }
 

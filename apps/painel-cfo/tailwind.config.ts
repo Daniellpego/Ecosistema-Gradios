@@ -8,10 +8,11 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          navy: '#0A1B5C',
-          card: '#122573',
-          hover: '#182C8A',
-          input: '#0E1E66',
+          base: '#FFFFFF',
+          sidebar: '#F8FAFC',
+          card: '#FFFFFF',
+          hover: '#F1F5F9',
+          input: '#F8FAFC',
         },
         brand: {
           blue: '#0A1B5C',
@@ -27,9 +28,10 @@ const config: Config = {
           warning: '#F59E0B',
         },
         text: {
-          primary: '#F0F4F8',
-          secondary: '#94A3B8',
-          dark: '#475569',
+          primary: '#0F172A',
+          secondary: '#64748B',
+          muted: '#94A3B8',
+          dark: '#0F172A',
         },
       },
       fontFamily: {

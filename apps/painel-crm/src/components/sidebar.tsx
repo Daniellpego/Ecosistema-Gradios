@@ -101,7 +101,7 @@ export function Sidebar() {
         <Logo collapsed={collapsed} />
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-colors"
+          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:text-brand-cyan hover:bg-slate-100 transition-colors"
         >
           <ChevronLeft className={cn('h-4 w-4 transition-transform', collapsed && 'rotate-180')} />
         </button>
@@ -122,12 +122,12 @@ export function Sidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all relative',
                 isActive
-                  ? 'bg-brand-cyan/10 text-brand-cyan border-l-[3px] border-brand-cyan'
-                  : 'text-text-secondary hover:bg-bg-hover hover:text-text-primary'
+                  ? 'bg-brand-cyan text-white shadow-lg shadow-brand-cyan/20'
+                  : 'text-slate-500 hover:bg-slate-50 hover:text-brand-blue'
               )}
             >
               <div className="relative shrink-0">
-                <Icon className={cn('h-5 w-5', isActive && 'text-brand-cyan')} />
+                <Icon className={cn('h-5 w-5', isActive ? 'text-white' : 'text-current')} />
                 {'hasBadge' in item && item.hasBadge && hasNewLeads && (
                   <span className="pulse-badge" />
                 )}
@@ -144,7 +144,7 @@ export function Sidebar() {
       <div className="p-4">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:bg-bg-hover hover:text-status-negative transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-slate-500 hover:bg-red-50 hover:text-status-negative transition-colors"
         >
           <LogOut className="h-5 w-5 shrink-0" />
           {!collapsed && <span>Sair</span>}
@@ -158,7 +158,7 @@ export function Sidebar() {
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 h-10 w-10 flex items-center justify-center rounded-lg bg-bg-card border border-brand-blue-deep/30 text-text-primary"
+        className="lg:hidden fixed top-4 left-4 z-50 h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-slate-200/60 shadow-sm text-slate-600"
       >
         <Menu className="h-5 w-5" />
       </button>
@@ -179,7 +179,7 @@ export function Sidebar() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-bg-card border-r border-brand-blue-deep/20"
+              className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-white border-r border-slate-200/50"
             >
               <button
                 onClick={() => setMobileOpen(false)}
@@ -196,7 +196,7 @@ export function Sidebar() {
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          'hidden lg:flex flex-col fixed left-0 top-0 bottom-0 bg-bg-card border-r border-brand-blue-deep/20 transition-all duration-300 z-30',
+          'hidden lg:flex flex-col fixed left-0 top-0 bottom-0 bg-white/70 backdrop-blur-xl border-r border-slate-200/50 transition-all duration-300 z-30',
           collapsed ? 'w-[72px]' : 'w-[260px]'
         )}
       >

@@ -10,7 +10,20 @@
   }
 
   body {
-    @apply bg-bg-navy text-text-primary font-inter antialiased;
+    @apply bg-bg-base text-text-primary font-inter antialiased;
+    background-color: #ffffff;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: 
+      linear-gradient(rgba(10, 27, 92, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10, 27, 92, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
 
   ::-webkit-scrollbar {
@@ -19,7 +32,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #0A1B5C;
+    background: #F8FAFC;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -33,18 +46,17 @@
 
 @layer components {
   .card-glass {
-    @apply bg-bg-card border border-brand-blue-deep/20 p-5;
+    @apply bg-white border border-slate-200/60 p-5 shadow-sm;
     border-radius: 14px;
-    backdrop-filter: blur(10px);
   }
 
   .card-glass-hover {
-    @apply card-glass transition-all hover:bg-bg-hover;
+    @apply card-glass transition-all hover:bg-slate-50/50 hover:shadow-md;
     transform: translateY(0);
   }
   .card-glass-hover:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 30px -10px rgba(0, 191, 255, 0.2);
+    transform: translateY(-2px);
+    border-color: rgba(0, 191, 255, 0.2);
   }
 
   .gradient-cyan {
@@ -90,31 +102,31 @@
     border-radius: 6px;
   }
 
-  /* Table styles — Gradios */
+  /* Table styles — Gradios Light */
   .table-header {
-    @apply bg-bg-input text-text-secondary text-xs font-semibold uppercase tracking-wider;
+    @apply bg-slate-50/80 text-text-secondary text-xs font-semibold uppercase tracking-wider;
   }
   .table-row {
-    @apply border-b transition-colors;
-    border-color: rgba(0, 191, 255, 0.05);
+    @apply border-b transition-colors bg-white;
+    border-color: #F1F5F9;
   }
   .table-row:hover {
-    @apply bg-bg-hover;
+    @apply bg-slate-50/50;
   }
 
-  /* Kanban — Gradios */
+  /* Kanban — Gradios Light */
   .kanban-column {
-    @apply bg-bg-card/50 rounded-xl border border-brand-blue-deep/20 p-3;
+    @apply bg-slate-50/50 rounded-xl border border-slate-200/60 p-3;
     min-height: 400px;
-    backdrop-filter: blur(5px);
   }
 
   .kanban-card {
-    @apply bg-bg-card border border-brand-blue-deep/20 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all;
+    @apply bg-white border border-slate-200/80 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all shadow-sm;
   }
   .kanban-card:hover {
-    @apply border-brand-cyan/40 bg-bg-hover;
-    box-shadow: 0 4px 20px -5px rgba(0, 191, 255, 0.15);
+    @apply border-brand-cyan/40 bg-white;
+    box-shadow: 0 4px 12px rgba(0, 191, 255, 0.1);
+    transform: translateY(-1px);
   }
 
   /* Pulse badge for new leads */
@@ -138,10 +150,10 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
+  /* Tooltip — Gradios Light */
   .tooltip-brand {
-    @apply text-sm text-text-primary;
-    background: #0A1B5C;
-    border: 1px solid rgba(0, 191, 255, 0.3);
+    @apply text-sm text-text-primary bg-white shadow-xl;
+    border: 1px solid #E2E8F0;
     border-radius: 8px;
     padding: 8px 12px;
   }

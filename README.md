@@ -123,7 +123,7 @@ Offline     Dexie.js (IndexedDB) + Sync Queue
 PWA         Service Worker (network-first)
 Monorepo    Turborepo + npm Workspaces
 Deploy      Vercel (zero-config)
-Design      Dark theme Gradios (Poppins, 4-tier depth system)
+Design      Light Mode Gradios (Inter, Glassmorphism, Premium Grid)
 ```
 
 ---
@@ -131,40 +131,12 @@ Design      Dark theme Gradios (Poppins, 4-tier depth system)
 ## Estrutura do Projeto
 
 ```
-Ecosistema-BG-Tech-2026/
-│
-├── painel-cfo/                 # Dashboard CFO (financeiro)
-│   ├── css/                    # Design tokens + componentes
-│   │   ├── variables.css       # Paleta, tipografia, espaçamento
-│   │   ├── base.css            # Reset + estilos globais
-│   │   ├── layout.css          # Sidebar, grid, modais
-│   │   ├── components.css      # Cards, tabelas, badges
-│   │   └── views.css           # Estilos específicos por view
-│   ├── js/
-│   │   ├── app.js              # Controller principal + routing
-│   │   ├── auth.js             # Login com alias
-│   │   ├── db.js               # CRUD Supabase
-│   │   ├── state.js            # State management
-│   │   ├── charts.js           # ApexCharts config
-│   │   ├── utils.js            # Formatação, filtros, helpers
-│   │   ├── offline.js          # IndexedDB + sync
-│   │   └── views/              # Módulos de cada view
-│   │       ├── overview.js     # KPIs + trends
-│   │       ├── dre.js          # DRE Gerencial
-│   │       ├── lancamentos.js  # Tabela de lançamentos
-│   │       ├── projecoes.js    # Simulações financeiras
-│   │       ├── relatorios.js   # Relatórios + export
-│   │       └── annual.js       # Balanço anual
-│   ├── sw.js                   # Service Worker
-│   └── index.html              # App shell
+Ecosistema-Gradios-2026/
 │
 ├── apps/
-│   ├── painel-crm/             # Dashboard CRM
-│   │   ├── js/views/           # leads, deals, pipeline, analytics
-│   │   └── ...
-│   └── painel-projetos/        # Dashboard Projetos
-│       ├── js/views/           # dashboard, kanban, projetos, timeline
-│       └── ...
+│   ├── painel-cfo/                 # Dashboard CFO (financeiro) - Next.js
+│   ├── painel-crm/                 # Dashboard CRM - Next.js
+│   └── painel-projetos/            # Dashboard Projetos - Static HTML/JS/CSS
 │
 ├── packages/
 │   ├── db/                     # Shared database utilities
@@ -174,7 +146,7 @@ Ecosistema-BG-Tech-2026/
 │   └── migrations/
 │       └── 001_unified_schema.sql   # Schema + triggers + RLS
 │
-├── site-principal/             # Site institucional Gradios
+├── site-principal/             # Novo Site Institucional Gradios (Next.js)
 ├── turbo.json                  # Turborepo config
 └── package.json                # Monorepo workspaces
 ```

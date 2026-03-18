@@ -14,7 +14,7 @@ export default function AuthenticatedLayoutClient({ children }: { children: Reac
           <Sidebar />
           <main className="lg:pl-[260px] transition-all duration-300">
             {/* Header with period filter */}
-            <header className="sticky top-0 z-20 bg-bg-navy/80 backdrop-blur-lg border-b border-brand-blue-deep/20 px-4 sm:px-6 py-3">
+            <header className="sticky top-0 z-20 bg-white/70 backdrop-blur-md border-b border-slate-200/50 px-4 sm:px-6 py-3">
               <div className="flex items-center justify-between">
                 <div className="pl-12 lg:pl-0">
                   <PeriodFilter />

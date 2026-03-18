@@ -78,9 +78,9 @@ const HEALTH_CONFIG: Record<
   sem_dados: {
     label: 'SEM DADOS',
     emoji: 'ℹ️',
-    bg: 'bg-brand-blue/10',
-    text: 'text-brand-cyan',
-    border: 'border-brand-cyan/30',
+    bg: 'bg-slate-50',
+    text: 'text-slate-500',
+    border: 'border-slate-200',
   },
 }
 
@@ -203,7 +203,7 @@ function AlertCard({
       ? 'bg-status-negative/5'
       : alert.type === 'warning'
         ? 'bg-status-warning/5'
-        : 'bg-brand-blue/5'
+        : 'bg-slate-50'
 
   return (
     <div className={cn('rounded-xl border p-4 flex items-start gap-3', borderColor, bgColor)}>
@@ -445,11 +445,11 @@ export default function DashboardPage() {
         ) : (
           <ResponsiveContainer width="100%" height={300}>
             <ComposedChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#153B5F" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
               <XAxis
                 dataKey="month"
                 tick={{ fill: '#94A3B8', fontSize: 12 }}
-                axisLine={{ stroke: '#153B5F' }}
+                axisLine={{ stroke: '#F1F5F9' }}
                 tickLine={false}
               />
               <YAxis
@@ -523,11 +523,12 @@ export default function DashboardPage() {
                 <RechartsTooltip
                   formatter={(value: number) => formatCurrency(value)}
                   contentStyle={{
-                    backgroundColor: '#0F1D32',
-                    border: '1px solid #153B5F',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid #E2E8F0',
                     borderRadius: '8px',
                     fontSize: 12,
-                    color: '#F0F4F8',
+                    color: '#0F172A',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
                   }}
                 />
               </PieChart>

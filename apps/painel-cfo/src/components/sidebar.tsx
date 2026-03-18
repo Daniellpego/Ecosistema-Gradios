@@ -107,7 +107,7 @@ export function Sidebar() {
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 h-10 w-10 flex items-center justify-center rounded-lg bg-bg-card border border-brand-blue-deep/30 text-text-primary"
+        className="lg:hidden fixed top-4 left-4 z-50 h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-slate-200 text-slate-900 shadow-sm"
       >
         <Menu className="h-5 w-5" />
       </button>
@@ -128,7 +128,7 @@ export function Sidebar() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-bg-card border-r border-brand-blue-deep/20"
+               className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-white border-r border-slate-200"
             >
               <button
                 onClick={() => setMobileOpen(false)}
@@ -142,10 +142,9 @@ export function Sidebar() {
         )}
       </AnimatePresence>
 
-      {/* Desktop sidebar */}
       <aside
         className={cn(
-          'hidden lg:flex flex-col fixed left-0 top-0 bottom-0 bg-bg-card border-r border-brand-blue-deep/20 transition-all duration-300 z-30',
+          'hidden lg:flex flex-col fixed left-0 top-0 bottom-0 bg-white/70 backdrop-blur-xl border-r border-slate-200/50 transition-all duration-300 z-30',
           collapsed ? 'w-[72px]' : 'w-[260px]'
         )}
       >

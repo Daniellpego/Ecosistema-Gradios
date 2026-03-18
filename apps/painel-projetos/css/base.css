@@ -22,6 +22,19 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(10, 27, 92, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 27, 92, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
 a {
@@ -54,14 +67,14 @@ textarea::placeholder {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #F8FAFC;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #E2E8F0;
   border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: #CBD5E1;
 }
 
 ::selection {

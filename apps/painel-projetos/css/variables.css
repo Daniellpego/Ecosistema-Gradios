@@ -6,17 +6,19 @@
   /* ── Typography ── */
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* ── Surfaces ── */
-  --bg-base:     #0A1B5C;
-  --bg-card:     #122573;
-  --bg-elevated: #182C8A;
-  --bg-hover:    rgba(255, 255, 255, 0.05);
+  /* ── Surfaces (Light Mode) ── */
+  --bg-base:     #FFFFFF;
+  --bg-sidebar:  #F8FAFC;
+  --bg-card:     #FFFFFF;
+  --bg-elevated: #F1F5F9;
+  --bg-hover:    #F8FAFC;
   --bg-active:   rgba(0, 191, 255, 0.08);
 
   /* ── Brand / Accent ── */
   --cyan:    #00BFFF;
   --cyan-10: rgba(0, 191, 255, 0.10);
   --cyan-20: rgba(0, 191, 255, 0.20);
+  --brand-blue: #0A1B5C;
 
   /* ── Semantic ── */
   --green:     #10B981;
@@ -29,13 +31,13 @@
   --purple-10: rgba(167, 139, 250, 0.10);
 
   /* ── Text ── */
-  --text-primary:   #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted:     #64748B;
+  --text-primary:   #0F172A;
+  --text-secondary: #64748B;
+  --text-muted:     #94A3B8;
 
   /* ── Borders ── */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-light: rgba(0, 191, 255, 0.15);
+  --border: rgba(10, 27, 92, 0.08);
+  --border-light: rgba(10, 27, 92, 0.05);
 
   /* ── Radius ── */
   --radius:    12px;
@@ -45,10 +47,10 @@
   --radius-full: 9999px;
 
   /* ── Shadows ── */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(0, 191, 255, 0.1);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 20px rgba(0, 191, 255, 0.05);
 
   /* ── Transitions ── */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);

@@ -9,10 +9,7 @@
   justify-content: center;
   min-height: 100vh;
   padding: 1.5rem;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(0, 200, 240, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(167, 139, 250, 0.04) 0%, transparent 50%),
-    var(--bg-base);
+  background: var(--bg-base);
 }
 
 .login-card {
@@ -75,8 +72,8 @@
   position: fixed;
   top: 0; left: 0; bottom: 0;
   width: var(--sidebar-width);
-  background: var(--bg-card);
-  border-right: 1px solid var(--border);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -122,11 +119,12 @@
   background: var(--bg-hover);
 }
 .nav-item.active {
-  color: var(--cyan);
-  background: var(--bg-active);
+  color: #FFFFFF;
+  background: var(--cyan);
+  box-shadow: 0 4px 12px rgba(0, 191, 255, 0.2);
 }
 .nav-item.active svg {
-  stroke: var(--cyan);
+  stroke: #FFFFFF;
 }
 
 .sidebar-footer {
@@ -184,8 +182,9 @@
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--header-height);
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-light);
   padding: 0 1rem;
   align-items: center;
   gap: 0.75rem;
