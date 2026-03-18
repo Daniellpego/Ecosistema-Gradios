@@ -367,8 +367,12 @@ export default function DiagnosticoPage() {
       const tierInfo = getTier(finalScore);
       const setor = answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "Não informado";
       const tempoIdx = answers.tempo?.[0] ?? 0;
-      const tempoLabel = QUESTIONS[6].opcoes[tempoIdx];
-      const horasMes = QUESTIONS[6].horasMap?.[tempoIdx] ?? "não informado";
+      const tempoExpandido = [
+        "menos de 5h/semana (~20h/mês)",
+        "5 a 15h/semana (~40-60h/mês)",
+        "16 a 40h/semana (~65-160h/mês)",
+        "mais de 40h/semana (+160h/mês — equivale a uma pessoa inteira)",
+      ][tempoIdx] ?? "não informado";
 
       const gargalosLabels =
         answers.gargalos?.map((i) => QUESTIONS[3].opcoes[i]).join(", ") || "Nenhum";
@@ -390,7 +394,7 @@ PERFIL:
 - Gargalos: ${gargalosLabels}
 - Processos manuais: ${answers.processos?.[0] != null ? QUESTIONS[4].opcoes[answers.processos[0]] : "Não informado"}
 - Sistemas desconectados: ${answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : "Não informado"}
-- Tempo perdido/semana: ${tempoLabel} — equivale a ${horasMes}/mês
+- Tempo perdido: ${tempoExpandido}
 - Impactos: ${impactosLabels}
 - Urgência: ${answers.urgencia?.[0] != null ? QUESTIONS[8].opcoes[answers.urgencia[0]] : "Não informado"}
 - Prioridade: ${answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : "Não informado"}
