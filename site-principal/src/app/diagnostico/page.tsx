@@ -218,11 +218,16 @@ function calculateScore(answers: Record<string, number[]>): number {
 
   let score = Math.min(100, Math.round((raw / 94) * 100));
 
-  // Regra: Analista/Operação → max 50
+  // Hard filter 1: Analista/Operação → score máximo = 50
   if (answers.cargo?.[0] === 4) score = Math.min(score, 50);
 
-  // Regra: Prioridade imediata → tier B mínimo (score >= 55)
+  // Soft override: Prioridade imediata → tier B mínimo (score >= 55)
   if (answers.urgencia?.[0] === 4) score = Math.max(score, 55);
+
+  // Hard filter 2: Até 10 colaboradores + Só estou mapeando → tier D direto
+  if (answers.tamanho?.[0] === 0 && answers.urgencia?.[0] === 0) {
+    score = Math.min(score, 39);
+  }
 
   return score;
 }
@@ -481,18 +486,58 @@ PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "ala
     setScore(finalScore);
     const tierInfo = getTier(finalScore);
 
-    // Webhook (fire & forget)
     const setor =
       answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "Não informado";
+    const cargo =
+      answers.cargo?.[0] != null ? QUESTIONS[0].opcoes[answers.cargo[0]] : "Não informado";
+    const porte =
+      answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "Não informado";
+    const gargalos =
+      answers.gargalos?.map((i: number) => QUESTIONS[3].opcoes[i]).join(", ") || "Nenhum";
+    const processos =
+      answers.processos?.[0] != null ? QUESTIONS[4].opcoes[answers.processos[0]] : "Não informado";
+    const sistemas =
+      answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : "Não informado";
+    const tempo =
+      answers.tempo?.[0] != null ? QUESTIONS[6].opcoes[answers.tempo[0]] : "Não informado";
+    const impactos =
+      answers.impactos?.map((i: number) => QUESTIONS[7].opcoes[i]).join(", ") || "Nenhum";
+    const urgencia =
+      answers.urgencia?.[0] != null ? QUESTIONS[8].opcoes[answers.urgencia[0]] : "Não informado";
+    const prioridade =
+      answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : "Não informado";
+
+    // Webhook (fire & forget)
     const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL;
     if (webhookUrl) {
-      fetch(webhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content: `🎯 NOVO LEAD — DIAGNÓSTICO\n\nNome: ${lead.nome}\nEmpresa: ${lead.empresa}\nEmail: ${lead.email}\nWhatsApp: ${lead.whatsapp || "Não informado"}\nCidade: ${city || "Não detectada"}\nSetor: ${setor}\nCargo: ${answers.cargo?.[0] != null ? QUESTIONS[0].opcoes[answers.cargo[0]] : "Não informado"}\nScore: ${finalScore}/100\nTier: ${tierInfo.tier}\nUrgência: ${answers.urgencia?.[0] != null ? QUESTIONS[8].opcoes[answers.urgencia[0]] : "Não informado"}\nPrioridade: ${answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : "Não informado"}`,
-        }),
-      }).catch(() => {});
+      try {
+        fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `🎯 **NOVO LEAD — DIAGNÓSTICO**\n\n**Nome:** ${lead.nome}\n**Empresa:** ${lead.empresa}\n**Email:** ${lead.email}\n**WhatsApp:** ${lead.whatsapp || "não informado"}\n**Cidade:** ${city || "não detectada"}\n\n**Score:** ${finalScore}/100 — **Tier ${tierInfo.tier}**\n**Cargo:** ${cargo}\n**Porte:** ${porte}\n**Setor:** ${setor}\n**Gargalos:** ${gargalos}\n**Processos manuais:** ${processos}\n**Sistemas desconectados:** ${sistemas}\n**Tempo perdido:** ${tempo}\n**Impactos:** ${impactos}\n**Urgência:** ${urgencia}\n**Prioridade:** ${prioridade}`,
+          }),
+        }).catch(() => {});
+      } catch {
+        console.log("Webhook não enviado — continuando normalmente.");
+      }
+    } else {
+      console.log("WEBHOOK_URL não definido — lead capturado localmente:", {
+        nome: lead.nome,
+        empresa: lead.empresa,
+        email: lead.email,
+        score: finalScore,
+        tier: tierInfo.tier,
+      });
+    }
+
+    // Meta Pixel — lead captured
+    if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
+      (window as unknown as { fbq: (...args: unknown[]) => void }).fbq(
+        "track",
+        "lead_captured",
+        { setor, tier: tierInfo.tier, score: finalScore }
+      );
     }
 
     setPhase("loading");
@@ -550,7 +595,12 @@ PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "ala
             )}
 
             <button
-              onClick={() => setPhase("quiz")}
+              onClick={() => {
+                setPhase("quiz");
+                if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
+                  (window as unknown as { fbq: (...args: unknown[]) => void }).fbq("track", "quiz_start");
+                }
+              }}
               className="mt-8 bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all duration-300 relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
             >
               Iniciar diagnóstico gratuito
@@ -872,7 +922,7 @@ PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "ala
                 />
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center mb-4">
                 <span
                   className="text-sm font-bold px-3 py-1 rounded-pill"
                   style={{
@@ -888,6 +938,28 @@ PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "ala
                   <span>Potencial alto</span>
                 </div>
               </div>
+
+              {/* Tier action indicator */}
+              {tierInfo.tier === "A" && (
+                <div className="rounded-xl bg-[#16a34a]/10 border border-[#16a34a]/20 px-4 py-3 text-sm text-[#16a34a] font-medium">
+                  ✓ Perfil qualificado — contato em até 2 horas
+                </div>
+              )}
+              {tierInfo.tier === "B" && (
+                <div className="rounded-xl bg-[#d97706]/10 border border-[#d97706]/20 px-4 py-3 text-sm text-[#d97706] font-medium">
+                  ✓ Bom potencial — contato ainda hoje
+                </div>
+              )}
+              {tierInfo.tier === "C" && (
+                <div className="rounded-xl bg-primary/10 border border-primary/20 px-4 py-3 text-sm text-primary font-medium">
+                  → Potencial inicial — contato em 24h
+                </div>
+              )}
+              {tierInfo.tier === "D" && (
+                <div className="rounded-xl bg-text-muted/10 border border-text-muted/20 px-4 py-3 text-sm text-text-muted font-medium">
+                  → Fase de mapeamento — enviaremos conteúdo
+                </div>
+              )}
             </div>
 
             {/* AI Diagnosis */}
@@ -911,20 +983,46 @@ PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "ala
 
             {/* CTA */}
             <div className="bg-white border border-card-border rounded-card p-6 shadow-sm text-center">
-              <p className="text-text font-medium mb-4">
-                {tierInfo.tier === "A" &&
-                  "Nossa equipe vai entrar em contato nas próximas 2 horas"}
-                {tierInfo.tier === "B" &&
-                  "Nossa equipe vai entrar em contato ainda hoje"}
-                {tierInfo.tier === "C" &&
-                  "Nossa equipe vai entrar em contato nas próximas 24 horas"}
-                {tierInfo.tier === "D" &&
-                  "Vamos te enviar conteúdo prático sobre automação para o seu setor"}
-              </p>
+              {tierInfo.tier === "A" && (
+                <>
+                  <p className="text-lg font-bold text-text mb-2">Nossa equipe entra em contato nas próximas 2 horas</p>
+                  <p className="text-sm text-text-muted mb-5">
+                    {lead.nome.split(" ")[0]}, seu perfil indica urgência real e alto potencial de automação. Um especialista da Gradios vai te ligar nas próximas 2 horas para mapear por onde começar — sem proposta pronta, sem enrolação.
+                  </p>
+                </>
+              )}
+              {tierInfo.tier === "B" && (
+                <>
+                  <p className="text-lg font-bold text-text mb-2">Nossa equipe entra em contato ainda hoje</p>
+                  <p className="text-sm text-text-muted mb-5">
+                    {lead.nome.split(" ")[0]}, sua operação tem gargalos claros e perfil adequado para automação. Um especialista da Gradios vai entrar em contato ainda hoje para entender melhor o seu cenário antes de propor qualquer coisa.
+                  </p>
+                </>
+              )}
+              {tierInfo.tier === "C" && (
+                <>
+                  <p className="text-lg font-bold text-text mb-2">Nossa equipe entra em contato nas próximas 24 horas</p>
+                  <p className="text-sm text-text-muted mb-5">
+                    {lead.nome.split(" ")[0]}, você está no início da jornada — e já identificamos áreas importantes para trabalhar. Um especialista entra em contato nas próximas 24 horas com material específico para o setor de {answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "sua empresa"}.
+                  </p>
+                </>
+              )}
+              {tierInfo.tier === "D" && (
+                <>
+                  <p className="text-lg font-bold text-text mb-2">Vamos te enviar conteúdo prático sobre automação</p>
+                  <p className="text-sm text-text-muted mb-5">
+                    {lead.nome.split(" ")[0]}, pelo diagnóstico, o momento ideal ainda está chegando — e quando chegar, você vai querer já ter mapeado o caminho. Vamos te enviar conteúdo sobre automação para empresas de {answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "seu setor"}.
+                  </p>
+                </>
+              )}
 
               <a
                 href={`https://wa.me/5543988372540?text=${encodeURIComponent(
-                  `Oi! Fiz o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100.`
+                  tierInfo.tier === "A"
+                    ? `Oi! Fiz o diagnóstico da Gradios agora mesmo. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100 — Tier A. Aguardo o contato!`
+                    : tierInfo.tier === "B"
+                    ? `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Podem me ligar ainda hoje?`
+                    : `Oi! Fiz o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Quero saber mais sobre automação para ${answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "meu setor"}.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
