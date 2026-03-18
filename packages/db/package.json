@@ -3,5 +3,5 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
-  "description": "Shared Supabase database client and helpers for BG Tech ecosystem"
+  "description": "Shared Supabase database client and helpers for Gradios ecosystem"
 }

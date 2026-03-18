@@ -1,5 +1,5 @@
 /* ============================================
-   BG Tech CRM — Auth Module (Supabase)
+   Gradios CRM — Auth Module (Supabase)
    ============================================ */
 
 import { CONFIG } from './config.js';

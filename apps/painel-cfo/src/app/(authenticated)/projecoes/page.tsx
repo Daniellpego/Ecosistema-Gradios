@@ -556,7 +556,7 @@ function DeleteConfirmModal({
 }
 
 export default function ProjecoesPage() {
-  useEffect(() => { document.title = 'Projeções | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Projeções | Gradios CFO' }, [])
 
   const { projecoes, isLoading } = useProjecoes()
   const deleteProjecao = useDeleteProjecao()
@@ -628,7 +628,7 @@ export default function ProjecoesPage() {
           <span className="text-5xl">📊</span>
           <h2 className="text-lg font-semibold text-text-primary">Nenhuma projeção criada ainda</h2>
           <p className="text-sm text-text-secondary text-center max-w-md">
-            Crie cenários financeiros para simular o futuro da BG Tech.
+            Crie cenários financeiros para simular o futuro da Gradios.
             Separe receita de Setup (única) e Mensalidade (recorrente).
           </p>
           <Button onClick={() => setFormOpen(true)} className="mt-2">

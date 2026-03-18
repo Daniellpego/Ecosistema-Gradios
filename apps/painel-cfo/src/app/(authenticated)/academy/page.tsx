@@ -16,7 +16,7 @@ const GLOSSARY = [
     subtitle: 'Monthly Recurring Revenue',
     icon: TrendingUp,
     explanation: 'Receita que se repete todo mês — mensalidades dos clientes.',
-    whyMatters: 'É o indicador #1 de previsibilidade. Quanto maior o MRR, mais segura é a operação da BG Tech.',
+    whyMatters: 'É o indicador #1 de previsibilidade. Quanto maior o MRR, mais segura é a operação da Gradios.',
     action: 'Foque em converter projetos avulsos em mensalidades recorrentes.',
   },
   {
@@ -24,7 +24,7 @@ const GLOSSARY = [
     subtitle: 'Taxa de Queima',
     icon: AlertTriangle,
     explanation: 'Quanto a empresa gasta por mês para operar (custos fixos + variáveis).',
-    whyMatters: 'Define por quanto tempo a BG Tech sobrevive com o caixa atual.',
+    whyMatters: 'Define por quanto tempo a Gradios sobrevive com o caixa atual.',
     action: 'Se burn rate > receita por 2+ meses, corte custos não-essenciais imediatamente.',
   },
   {
@@ -40,7 +40,7 @@ const GLOSSARY = [
     subtitle: 'Demonstrativo de Resultado',
     icon: BarChart3,
     explanation: 'Relatório que mostra: Receita - Custos - Impostos = Resultado.',
-    whyMatters: 'Mostra se a BG Tech está dando lucro ou prejuízo no período.',
+    whyMatters: 'Mostra se a Gradios está dando lucro ou prejuízo no período.',
     action: 'Analise mensalmente. Se resultado negativo 2+ meses, aja rápido.',
   },
   {
@@ -72,24 +72,24 @@ const GLOSSARY = [
     subtitle: 'Regime Tributário',
     icon: Lightbulb,
     explanation: 'Imposto pago sobre o FATURAMENTO (receita bruta), não sobre o lucro.',
-    whyMatters: 'Na BG Tech, a alíquota começa em ~6%. Isso é calculado sobre cada centavo que entra.',
+    whyMatters: 'Na Gradios, a alíquota começa em ~6%. Isso é calculado sobre cada centavo que entra.',
     action: 'Nunca confunda: imposto sobre faturamento ≠ imposto sobre lucro.',
   },
 ]
 
 const GUIDES = [
-  { title: 'Como ler a DRE da BG Tech', content: 'A DRE da BG Tech segue a cascata: Receita Bruta → menos Custos Variáveis = Margem Bruta → menos Custos Fixos = Resultado Operacional → menos Impostos = Resultado Líquido. O número mais importante é o Resultado Líquido — se positivo, a empresa está lucrando. Se negativo por 2+ meses, é hora de agir.' },
-  { title: 'Quando posso começar pró-labore?', content: 'Pró-labore só faz sentido quando: (1) Resultado líquido é positivo por 3+ meses consecutivos, (2) Runway > 6 meses após o pró-labore, (3) MRR cobre custos fixos + pró-labore. A BG Tech definiu R$ 2.000/mês por sócio, com reavaliação quando MRR > R$ 30k.' },
+  { title: 'Como ler a DRE da Gradios', content: 'A DRE da Gradios segue a cascata: Receita Bruta → menos Custos Variáveis = Margem Bruta → menos Custos Fixos = Resultado Operacional → menos Impostos = Resultado Líquido. O número mais importante é o Resultado Líquido — se positivo, a empresa está lucrando. Se negativo por 2+ meses, é hora de agir.' },
+  { title: 'Quando posso começar pró-labore?', content: 'Pró-labore só faz sentido quando: (1) Resultado líquido é positivo por 3+ meses consecutivos, (2) Runway > 6 meses após o pró-labore, (3) MRR cobre custos fixos + pró-labore. A Gradios definiu R$ 2.000/mês por sócio, com reavaliação quando MRR > R$ 30k.' },
   { title: 'Como sei se posso investir mais em marketing?', content: 'Verifique: (1) CAC atual — se cada cliente custa menos que o ticket médio do primeiro mês, o marketing está saudável. (2) Runway — se > 3 meses após o investimento extra. (3) ROI — se cada R$ 1 em marketing traz R$ 3+ em receita. Se sim para os 3, invista.' },
-  { title: 'O que é Runway e por que me preocupar?', content: 'Runway = Caixa ÷ Burn Rate. Se a BG Tech tem R$ 20k no caixa e gasta R$ 8k/mês, o runway é 2.5 meses. Isso significa: se NADA de receita entrar, a empresa fecha em 2.5 meses. Mantenha sempre > 3 meses.' },
+  { title: 'O que é Runway e por que me preocupar?', content: 'Runway = Caixa ÷ Burn Rate. Se a Gradios tem R$ 20k no caixa e gasta R$ 8k/mês, o runway é 2.5 meses. Isso significa: se NADA de receita entrar, a empresa fecha em 2.5 meses. Mantenha sempre > 3 meses.' },
   { title: 'Receita de Setup vs Mensalidade — por que separar?', content: 'Setup é receita única — entra uma vez e acabou. Mensalidade é recorrente — entra todo mês. Para decisões financeiras, mensalidade (MRR) é muito mais valiosa porque é previsível. Um MRR de R$ 10k vale mais que R$ 30k de setup, porque o setup não se repete.' },
-  { title: 'Como funciona o Simples Nacional no nosso caso', content: 'BG Tech paga imposto sobre FATURAMENTO (tudo que fatura), não sobre lucro. A alíquota começa em ~6% para empresas de tecnologia. Exemplo: se faturou R$ 10.000, paga ~R$ 600 de DAS, independente de ter tido lucro ou prejuízo.' },
+  { title: 'Como funciona o Simples Nacional no nosso caso', content: 'Gradios paga imposto sobre FATURAMENTO (tudo que fatura), não sobre lucro. A alíquota começa em ~6% para empresas de tecnologia. Exemplo: se faturou R$ 10.000, paga ~R$ 600 de DAS, independente de ter tido lucro ou prejuízo.' },
 ]
 
 interface ChatMessage { role: 'user' | 'assistant'; content: string }
 
 export default function AcademyPage() {
-  useEffect(() => { document.title = 'Academy | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Academy | Gradios CFO' }, [])
 
   const { analyze, isLoading } = useGroqAnalysis()
   const [question, setQuestion] = useState('')
@@ -188,7 +188,7 @@ export default function AcademyPage() {
             </div>
           )}
           <form onSubmit={handleAskAI} className="flex gap-2">
-            <Input placeholder="Faça uma pergunta sobre as finanças da BG Tech..." value={question} onChange={(e) => setQuestion(e.target.value)} className="flex-1" />
+            <Input placeholder="Faça uma pergunta sobre as finanças da Gradios..." value={question} onChange={(e) => setQuestion(e.target.value)} className="flex-1" />
             <Button type="submit" disabled={isLoading || !question.trim()}><Send className="h-4 w-4" /></Button>
           </form>
           <p className="text-[10px] text-text-dark">A IA usa o modelo Llama 3.3 via Groq. Respostas baseadas nos dados do painel.</p>

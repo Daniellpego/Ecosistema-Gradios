@@ -5,8 +5,8 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Painel CFO | BG Tech',
-  description: 'Sistema financeiro da BG Tech — Painel CFO',
+  title: 'Painel CFO | Gradios',
+  description: 'Sistema financeiro da Gradios — Painel CFO',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -67,7 +67,7 @@ function wrapHTML(title: string, period: string, content: string): string {
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>${title} — BG Tech</title>
+  <title>${title} — Gradios</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>${BASE_STYLES}</style>
 </head>
@@ -77,11 +77,11 @@ function wrapHTML(title: string, period: string, content: string): string {
       <h1>${title}</h1>
       <div class="period">${period}</div>
     </div>
-    <div class="brand">BG Tech</div>
+    <div class="brand">Gradios</div>
   </div>
   ${content}
   <div class="footer">
-    Gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} — Painel CFO BG Tech
+    Gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} — Painel CFO Gradios
   </div>
 </body>
 </html>`

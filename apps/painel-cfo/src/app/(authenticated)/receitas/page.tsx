@@ -15,7 +15,7 @@ import { PageTransition } from '@/components/motion'
 import type { Receita } from '@/types/database'
 
 export default function ReceitasPage() {
-  useEffect(() => { document.title = 'Receitas | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Receitas | Gradios CFO' }, [])
 
   const { data: receitas, isLoading } = useReceitas()
   const { data: receitasAno } = useReceitasAno()

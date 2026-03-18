@@ -55,7 +55,7 @@ export function LeadForm({ open, onOpenChange, onSuccess }: LeadFormProps) {
     setor: '',
     origem: 'direto',
     valor_estimado: '',
-    responsavel: 'Bryan',
+    responsavel: 'Sistema',
     temperatura: 'morno' as 'frio' | 'morno' | 'quente',
     notas: '',
   })
@@ -69,7 +69,7 @@ export function LeadForm({ open, onOpenChange, onSuccess }: LeadFormProps) {
       setor: '',
       origem: 'direto',
       valor_estimado: '',
-      responsavel: 'Bryan',
+      responsavel: 'Sistema',
       temperatura: 'morno' as 'frio' | 'morno' | 'quente',
       notas: '',
     })

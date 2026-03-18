@@ -1,5 +1,5 @@
 /* ============================================
-   BG Tech CRM — Deals View
+   Gradios CRM — Deals View
    ============================================ */
 
 import { fetchDeals, upsertDeal, deleteDeal, fetchLeads } from '../db.js';

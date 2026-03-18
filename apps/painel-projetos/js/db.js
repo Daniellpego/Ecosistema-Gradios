@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   BG Tech — Database Operations (Projetos & Tarefas)
+   Gradios — Database Operations (Projetos & Tarefas)
    ═══════════════════════════════════════════════════ */
 
 import { getSupabase } from './auth.js';

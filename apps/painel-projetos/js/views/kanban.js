@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   BG Tech — Kanban View
+   Gradios — Kanban View
    ═══════════════════════════════════════════════════ */
 
 import { fetchProjetos, fetchTarefas, fetchAllTarefas, upsertTarefa } from '../db.js';

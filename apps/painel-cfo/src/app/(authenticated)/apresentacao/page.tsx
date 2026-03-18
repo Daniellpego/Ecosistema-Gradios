@@ -49,7 +49,7 @@ export default function ApresentacaoPage() {
   const health = HEALTH_MAP[healthStatus]
 
   // Dynamic title
-  useEffect(() => { document.title = 'Apresentação | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Apresentação | Gradios CFO' }, [])
 
   // Escape key to exit
   useEffect(() => {
@@ -182,7 +182,7 @@ export default function ApresentacaoPage() {
 
         {/* Footer */}
         <p className="text-center text-xs text-text-dark">
-          Pressione ESC para sair — Painel CFO BG Tech
+          Pressione ESC para sair — Painel CFO Gradios
         </p>
       </div>
     </div>

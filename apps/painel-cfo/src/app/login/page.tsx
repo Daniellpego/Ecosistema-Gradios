@@ -4,14 +4,15 @@ export const dynamic = 'force-dynamic'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Brain, Eye, EyeOff, Loader2 } from 'lucide-react'
+import Image from 'next/image'
+import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 export default function LoginPage() {
-  useEffect(() => { document.title = 'Login | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Login | Gradios CFO' }, [])
 
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -63,11 +64,17 @@ export default function LoginPage() {
       <div className="w-full max-w-sm space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center gap-4">
-          <div className="gradient-cyan rounded-2xl p-4">
-            <Brain className="h-10 w-10 text-white" />
+          <div className="relative w-16 h-16">
+            <Image 
+              src="/logo.png" 
+              alt="Gradios" 
+              fill 
+              className="object-contain drop-shadow-md"
+              priority
+            />
           </div>
           <div className="text-center">
-            <h1 className="text-xl font-bold text-text-primary">BG TECH</h1>
+            <h1 className="text-xl font-bold text-text-primary">Gradios</h1>
             <p className="text-xs font-semibold text-brand-cyan tracking-widest uppercase mt-1">
               Painel CFO
             </p>

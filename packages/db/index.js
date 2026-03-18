@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════
-// BG Tech Ecosystem — Shared Supabase DB Layer
+// Gradios Ecosystem — Shared Supabase DB Layer
 // ═══════════════════════════════════════════════
 
 let _client = null;

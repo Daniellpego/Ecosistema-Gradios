@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════
-// BG Tech Ecosystem — Shared Types & Constants
+// Gradios Ecosystem — Shared Types & Constants
 // ═══════════════════════════════════════════════
 
 export const LEAD_STATUS = {

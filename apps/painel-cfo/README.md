@@ -1,6 +1,6 @@
-# Painel CFO — BG Tech
+# Painel CFO — Gradios
 
-Painel financeiro completo para gestao da BG Tech. Usado diariamente pelo CFO para acompanhar receitas, custos, DRE, projecoes e saude financeira da empresa.
+Painel financeiro completo para gestao da Gradios. Usado diariamente pelo CFO para acompanhar receitas, custos, DRE, projecoes e saude financeira da empresa.
 
 ## Rodar Localmente
 

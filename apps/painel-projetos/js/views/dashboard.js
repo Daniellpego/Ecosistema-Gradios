@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   BG Tech — Dashboard View
+   Gradios — Dashboard View
    ═══════════════════════════════════════════════════ */
 
 import { fetchProjetos } from '../db.js';

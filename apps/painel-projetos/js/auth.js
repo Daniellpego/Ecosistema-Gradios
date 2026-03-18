@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   BG Tech — Auth Module (Supabase)
+   Gradios — Auth Module (Supabase)
    ═══════════════════════════════════════════════════ */
 
 import { CONFIG } from './config.js';

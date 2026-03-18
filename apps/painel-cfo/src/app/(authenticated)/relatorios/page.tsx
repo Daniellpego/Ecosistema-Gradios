@@ -43,7 +43,7 @@ const MONTH_NAMES = [
 
 export default function RelatoriosPage() {
   const { month, year } = usePeriod()
-  useEffect(() => { document.title = 'Relatórios | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Relatórios | Gradios CFO' }, [])
 
   const dre = useDRE()
   const balanco = useBalanco()
@@ -191,7 +191,7 @@ export default function RelatoriosPage() {
               <h2 className="text-base font-semibold text-text-primary">Exportar PDF</h2>
             </div>
             <p className="text-xs text-text-secondary">
-              Gera relatórios formatados com a marca BG Tech. Use "Salvar como PDF" no diálogo de impressão.
+              Gera relatórios formatados com a marca Gradios. Use "Salvar como PDF" no diálogo de impressão.
             </p>
             <div className="space-y-1">
               <ExportButton

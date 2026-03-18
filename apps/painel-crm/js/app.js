@@ -1,5 +1,5 @@
 /* ============================================
-   BG Tech CRM — Main Application Controller
+   Gradios CRM — Main Application Controller
    ============================================ */
 
 import { signIn, signOut, getCurrentUser, onAuthStateChange } from './auth.js';

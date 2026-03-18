@@ -52,7 +52,7 @@ async function callAI(systemPrompt: string, userPrompt: string): Promise<string>
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${openRouterKey}`,
         'HTTP-Referer': 'https://bgtechsolucoes.com.br',
-        'X-Title': 'BG Tech Paineis',
+        'X-Title': 'Gradios Paineis',
       },
       body: JSON.stringify({
         model: 'nvidia/nemotron-3-super-120b-a12b:free',
@@ -94,7 +94,7 @@ serve(async (req: Request) => {
     }
 
     // Build system prompt
-    const system = systemPrompt ?? `Você é um analista financeiro e de negócios da BG Tech, uma empresa de automação e tecnologia.
+    const system = systemPrompt ?? `Você é um analista financeiro e de negócios da Gradios, uma empresa de automação e tecnologia.
 Responda de forma objetiva, direta e em português brasileiro.
 Use dados concretos quando disponíveis.
 Formate a resposta em tópicos claros.`

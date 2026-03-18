@@ -184,7 +184,7 @@ function CurrencyTooltip({ active, payload, label }: { active?: boolean; payload
 }
 
 export default function DREPage() {
-  useEffect(() => { document.title = 'DRE | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'DRE | Gradios CFO' }, [])
 
   const { lines: rawLines, current, chartData, isLoading, isChartLoading } = useDRE()
   const { simplesEnabled, aliquota } = useTax()

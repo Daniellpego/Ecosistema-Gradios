@@ -1,4 +1,4 @@
-# Auditoria Técnica Completa — Ecosistema BG Tech 2026
+# Auditoria Técnica Completa — Ecosistema Gradios 2026
 
 **Data:** 2026-03-15
 **Auditor:** Vault (DevSecOps Team Lead)
@@ -141,15 +141,15 @@ Nenhum `<ErrorBoundary>` ou `error.tsx` do Next.js existe. Qualquer erro de runt
 **Ação:** Criar `error.tsx` nos route groups `(authenticated)` e no root.
 **Tempo estimado:** 1h
 
-### BUG-02 — 'Bryan' hardcoded NÃO foi totalmente corrigido [CRÍTICO]
+### BUG-02 — 'Sistema' hardcoded NÃO foi totalmente corrigido [CRÍTICO]
 
 O commit `a298da7` corrigiu apenas 1 de 4 locais. Restam:
 
 | Arquivo | Linha | Contexto |
 |---|---|---|
-| `apps/painel-crm/src/components/leads/lead-form.tsx` | 58, 72 | Default `responsavel: 'Bryan'` no form state e `resetForm()` |
-| `apps/painel-crm/src/hooks/use-quiz-realtime.ts` | 54 | Leads criados por quiz recebem `responsavel: 'Bryan'` |
-| `site-principal/script.js` | 1311 | Quiz público também hardcoda `responsavel: 'Bryan'` |
+| `apps/painel-crm/src/components/leads/lead-form.tsx` | 58, 72 | Default `responsavel: 'Sistema'` no form state e `resetForm()` |
+| `apps/painel-crm/src/hooks/use-quiz-realtime.ts` | 54 | Leads criados por quiz recebem `responsavel: 'Sistema'` |
+| `site-principal/script.js` | 1311 | Quiz público também hardcoda `responsavel: 'Sistema'` |
 
 **Ação:** Substituir por `currentUser?.name ?? 'Sistema'` nos hooks com contexto de auth, e `'Sistema'` nos contextos sem sessão.
 **Tempo estimado:** 1h
@@ -300,4 +300,4 @@ SELECT + DELETE sequenciais. Em batch delete, gera 2×N queries.
 
 ---
 
-*Relatório gerado automaticamente por auditoria DevSecOps — Vault @ BG Tech*
+*Relatório gerado automaticamente por auditoria DevSecOps — Vault @ Gradios*

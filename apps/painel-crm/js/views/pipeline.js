@@ -1,5 +1,5 @@
 /* ============================================
-   BG Tech CRM — Pipeline View (Kanban)
+   Gradios CRM — Pipeline View (Kanban)
    ============================================ */
 
 import { fetchLeads, fetchPipelineStats } from '../db.js';

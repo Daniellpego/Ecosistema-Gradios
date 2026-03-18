@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   BG Tech — Timeline / Gantt View
+   Gradios — Timeline / Gantt View
    ═══════════════════════════════════════════════════ */
 
 import { fetchProjetos } from '../db.js';

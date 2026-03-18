@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="site-principal/logo-bgtech.png" alt="BG Tech" width="180" />
+  <img src="site-principal/logo-bgtech.png" alt="Gradios" width="180" />
 </p>
 
-<h1 align="center">Ecosistema BG Tech 2026</h1>
+<h1 align="center">Ecosistema Gradios 2026</h1>
 
 <p align="center">
   <strong>Plataforma completa de gestão empresarial para operações B2B</strong><br/>
@@ -23,7 +23,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                     ECOSISTEMA BG TECH                          │
+│                     ECOSISTEMA Gradios                          │
 │                                                                 │
 │   ┌──────────┐     ┌──────────┐     ┌──────────────┐           │
 │   │  PAINEL   │────▶│  PAINEL   │────▶│    PAINEL     │          │
@@ -123,7 +123,7 @@ Offline     Dexie.js (IndexedDB) + Sync Queue
 PWA         Service Worker (network-first)
 Monorepo    Turborepo + npm Workspaces
 Deploy      Vercel (zero-config)
-Design      Dark theme BG Tech (Poppins, 4-tier depth system)
+Design      Dark theme Gradios (Poppins, 4-tier depth system)
 ```
 
 ---
@@ -174,7 +174,7 @@ Ecosistema-BG-Tech-2026/
 │   └── migrations/
 │       └── 001_unified_schema.sql   # Schema + triggers + RLS
 │
-├── site-principal/             # Site institucional BG Tech
+├── site-principal/             # Site institucional Gradios
 ├── turbo.json                  # Turborepo config
 └── package.json                # Monorepo workspaces
 ```
@@ -265,6 +265,6 @@ O ecosistema segue um design system consistente com tema dark inspirado em Linea
 ---
 
 <p align="center">
-  <strong>BG Tech</strong> — Automação e Engenharia Digital para Empresas B2B<br/>
-  <a href="https://www.bgtechsolucoes.com.br">bgtechsolucoes.com.br</a>
+  <strong>Gradios</strong> — Automação e Engenharia Digital para Empresas B2B<br/>
+  <a href="https://gradios.com.br">gradios.com.br</a>
 </p>

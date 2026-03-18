@@ -39,7 +39,7 @@ function useReceitasConfirmadas() {
 }
 
 export default function GastosVariaveisPage() {
-  useEffect(() => { document.title = 'Gastos Variáveis | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Gastos Variáveis | Gradios CFO' }, [])
 
   const { data: gastos, isLoading } = useGastosVariaveis()
   const { data: gastosPrev } = useGastosVariaveisMesAnterior()

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   BG Tech — Projetos View
+   Gradios — Projetos View
    ═══════════════════════════════════════════════════ */
 
 import { fetchProjetos, upsertProjeto, deleteProjeto, fetchTarefas, upsertTarefa, deleteTarefa } from '../db.js';

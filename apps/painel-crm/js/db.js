@@ -1,5 +1,5 @@
 /* ============================================
-   BG Tech CRM — Database Operations (Supabase)
+   Gradios CRM — Database Operations (Supabase)
    ============================================ */
 
 import { getSupabase } from './auth.js';

@@ -8,18 +8,18 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          navy: '#0A1628',
-          card: '#131F35',
-          hover: '#182640',
-          input: '#0F1D32',
+          navy: '#0A1B5C',
+          card: '#122573',
+          hover: '#182C8A',
+          input: '#0E1E66',
         },
         brand: {
-          blue: '#1A6AAA',
-          cyan: '#00C8F0',
-          'cyan-light': '#40D8EE',
-          'cyan-lighter': '#80EEFF',
-          'blue-secondary': '#2B7AB5',
-          'blue-deep': '#153B5F',
+          blue: '#0A1B5C',
+          cyan: '#00BFFF',
+          'cyan-light': '#33CCFF',
+          'cyan-lighter': '#66D9FF',
+          'blue-secondary': '#14298A',
+          'blue-deep': '#06103D',
         },
         status: {
           positive: '#10B981',
@@ -33,7 +33,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       },
       fontWeight: {
         light: '300',

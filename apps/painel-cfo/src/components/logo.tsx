@@ -1,6 +1,4 @@
-'use client'
-
-import { Brain } from 'lucide-react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
 interface LogoProps {
@@ -11,15 +9,20 @@ interface LogoProps {
 export function Logo({ collapsed = false, className }: LogoProps) {
   return (
     <div className={cn('flex items-center gap-3', className)}>
-      <div className="gradient-cyan rounded-xl p-2 shrink-0">
-        <Brain className="h-6 w-6 text-white" />
+      <div className="relative w-10 h-10 shrink-0">
+        <Image 
+          src="/logo.png" 
+          alt="Gradios" 
+          fill 
+          className="object-contain drop-shadow-sm"
+        />
       </div>
       {!collapsed && (
         <div className="flex flex-col">
-          <span className="text-sm font-bold text-text-primary tracking-wide">
-            BG TECH
+          <span className="text-base font-bold text-text-primary tracking-tight">
+            Gradios
           </span>
-          <span className="text-[10px] font-semibold text-brand-cyan tracking-widest uppercase">
+          <span className="text-[10px] font-semibold text-brand-cyan tracking-widest uppercase opacity-80">
             Painel CFO
           </span>
         </div>

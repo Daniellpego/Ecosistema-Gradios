@@ -51,7 +51,7 @@ export function useQuizRealtime(onNewLead?: () => void) {
             status: 'novo',
             temperatura,
             valor_estimado: session.custo_invisivel_min ?? 0,
-            responsavel: 'Bryan',
+            responsavel: 'Sistema',
             notas: `Quiz: ${session.resultado_tipo} | Score: ${session.score_automacao ?? 0}% | Urgência: ${session.urgencia ?? '-'}`,
             tags: ['quiz', session.resultado_tipo].filter(Boolean),
           }

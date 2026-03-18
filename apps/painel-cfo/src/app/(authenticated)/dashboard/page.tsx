@@ -250,7 +250,7 @@ function ChartTooltipContent({
 
 // ── Page ─────────────────────────────────────────────────────────────
 export default function DashboardPage() {
-  useEffect(() => { document.title = 'Painel Geral | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Painel Geral | Gradios CFO' }, [])
 
   const dashboard = useDashboard()
   const { simplesEnabled, aliquota } = useTax()
@@ -301,7 +301,7 @@ export default function DashboardPage() {
         statusSaude: healthStatus,
       },
       systemPrompt:
-        'Você é o CFO virtual da BG Tech. Analise os dados financeiros e gere um resumo executivo conciso com: 1) Visão geral da saúde financeira, 2) Top 3 pontos de atenção, 3) Recomendações acionáveis. Use formatação markdown. Seja direto e objetivo.',
+        'Você é o CFO virtual da Gradios. Analise os dados financeiros e gere um resumo executivo conciso com: 1) Visão geral da saúde financeira, 2) Top 3 pontos de atenção, 3) Recomendações acionáveis. Use formatação markdown. Seja direto e objetivo.',
     })
     if (result) {
       setAiSummary(result)

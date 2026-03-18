@@ -1,8 +1,8 @@
-# BG Tech — Ecosistema
+# Gradios — Ecosistema
 
 ## Projeto Principal: Painel CFO
 
-Painel financeiro completo da BG Tech, usado diariamente pelo CFO (Gustavo Batista).
+Painel financeiro completo da Gradios, usado diariamente pelo CFO (Gustavo Batista).
 Localizado em `apps/painel-cfo/`.
 
 ### Stack

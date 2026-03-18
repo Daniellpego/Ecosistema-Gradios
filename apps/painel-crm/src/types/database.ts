@@ -170,7 +170,7 @@ export const SETORES = [
   'Outro',
 ] as const
 
-export const RESPONSAVEIS = ['Daniel', 'Bryan', 'Gustavo'] as const
+export const RESPONSAVEIS = ['Daniel', 'Sistema', 'Gustavo'] as const
 
 export const ATIVIDADE_ICONS: Record<AtividadeTipo, string> = {
   nota: 'FileText',

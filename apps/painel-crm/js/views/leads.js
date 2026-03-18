@@ -1,5 +1,5 @@
 /* ============================================
-   BG Tech CRM — Leads View
+   Gradios CRM — Leads View
    ============================================ */
 
 import { fetchLeads, upsertLead, deleteLead } from '../db.js';

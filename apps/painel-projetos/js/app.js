@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   BG Tech — Painel de Projetos  ·  Main App Controller
+   Gradios — Painel de Projetos  ·  Main App Controller
    ═══════════════════════════════════════════════════ */
 
 import { signIn, signOut, getSession, onAuthChange } from './auth.js';

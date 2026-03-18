@@ -58,7 +58,7 @@ function CustomTooltip({ active, payload }: PieTooltipProps) {
 }
 
 export default function CustosFixosPage() {
-  useEffect(() => { document.title = 'Custos Fixos | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Custos Fixos | Gradios CFO' }, [])
 
   const { data: custosFixos, isLoading } = useCustosFixos()
   const { data: receitas } = useReceitas()

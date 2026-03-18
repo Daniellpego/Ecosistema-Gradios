@@ -41,7 +41,7 @@ const CATEGORIA_LABELS: Record<string, string> = {
 const YEAR_OPTIONS = [2025, 2026, 2027]
 
 export default function BalancoAnualPage() {
-  useEffect(() => { document.title = 'Balanço Anual | BG Tech CFO' }, [])
+  useEffect(() => { document.title = 'Balanço Anual | Gradios CFO' }, [])
 
   const { year, setYear } = usePeriod()
   const balanco = useBalanco()

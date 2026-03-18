@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 export function PageTitle({ title }: { title: string }) {
   useEffect(() => {
-    document.title = `${title} | BG Tech CRM`
+    document.title = `${title} | Gradios CRM`
   }, [title])
   return null
 }

@@ -1,5 +1,5 @@
 /* ============================================
-   BG Tech CRM — Analytics View
+   Gradios CRM — Analytics View
    ============================================ */
 
 import { fetchAnalytics, fetchPipelineStats } from '../db.js';

@@ -1,5 +1,5 @@
 -- ══════════════════════════════════════════════════════════════
--- Ecosistema BG Tech 2026 — Unified Supabase Schema
+-- Ecosistema Gradios 2026 — Unified Supabase Schema
 --
 -- Tables: leads, deals, projetos, tarefas
 -- Triggers: cross-panel sync (CRM → CFO, Projetos → CFO)

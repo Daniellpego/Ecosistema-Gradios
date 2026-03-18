@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply bg-bg-navy text-text-primary font-poppins antialiased;
+    @apply bg-bg-navy text-text-primary font-inter antialiased;
   }
 
   ::-webkit-scrollbar {
@@ -19,7 +19,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #0F1D32;
+    background: #0A1B5C;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -35,6 +35,7 @@
   .card-glass {
     @apply bg-bg-card border border-brand-blue-deep/20 p-5;
     border-radius: 14px;
+    backdrop-filter: blur(10px);
   }
 
   .card-glass-hover {
@@ -43,74 +44,77 @@
   }
   .card-glass-hover:hover {
     transform: translateY(-1px);
+    box-shadow: 0 10px 30px -10px rgba(0, 191, 255, 0.2);
   }
 
   .gradient-cyan {
-    background: linear-gradient(135deg, #153B5F, #00C8F0);
+    background: linear-gradient(135deg, #0A1B5C, #00BFFF);
   }
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #153B5F, #00C8F0);
+    background-image: linear-gradient(135deg, #0A1B5C, #00BFFF);
   }
 
-  /* Badge styles */
+  /* Badge styles — Gradios */
   .badge-positive {
     @apply text-status-positive text-xs font-semibold px-2.5 py-0.5;
-    background: rgba(16, 185, 129, 0.18);
+    background: rgba(16, 185, 129, 0.12);
     border-radius: 6px;
   }
   .badge-negative {
     @apply text-status-negative text-xs font-semibold px-2.5 py-0.5;
-    background: rgba(239, 68, 68, 0.18);
+    background: rgba(239, 68, 68, 0.12);
     border-radius: 6px;
   }
   .badge-warning {
     @apply text-status-warning text-xs font-semibold px-2.5 py-0.5;
-    background: rgba(245, 158, 11, 0.18);
+    background: rgba(245, 158, 11, 0.12);
     border-radius: 6px;
   }
   .badge-cyan {
     @apply text-brand-cyan text-xs font-semibold px-2.5 py-0.5;
-    background: rgba(0, 200, 240, 0.18);
+    background: rgba(0, 191, 255, 0.12);
     border-radius: 6px;
   }
   .badge-blue {
     @apply text-xs font-semibold px-2.5 py-0.5;
-    color: #2B7AB5;
-    background: rgba(43, 122, 181, 0.18);
+    color: #40D8EE;
+    background: rgba(64, 216, 238, 0.12);
     border-radius: 6px;
   }
   .badge-purple {
     @apply text-xs font-semibold px-2.5 py-0.5;
     color: #A78BFA;
-    background: rgba(167, 139, 250, 0.18);
+    background: rgba(167, 139, 250, 0.12);
     border-radius: 6px;
   }
 
-  /* Table styles */
+  /* Table styles — Gradios */
   .table-header {
     @apply bg-bg-input text-text-secondary text-xs font-semibold uppercase tracking-wider;
   }
   .table-row {
     @apply border-b transition-colors;
-    border-color: rgba(21, 59, 95, 0.2);
+    border-color: rgba(0, 191, 255, 0.05);
   }
   .table-row:hover {
     @apply bg-bg-hover;
   }
 
-  /* Kanban */
+  /* Kanban — Gradios */
   .kanban-column {
     @apply bg-bg-card/50 rounded-xl border border-brand-blue-deep/20 p-3;
     min-height: 400px;
+    backdrop-filter: blur(5px);
   }
 
   .kanban-card {
     @apply bg-bg-card border border-brand-blue-deep/20 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all;
   }
   .kanban-card:hover {
-    @apply border-brand-cyan/30 bg-bg-hover;
+    @apply border-brand-cyan/40 bg-bg-hover;
+    box-shadow: 0 4px 20px -5px rgba(0, 191, 255, 0.15);
   }
 
   /* Pulse badge for new leads */
@@ -119,9 +123,9 @@
     animation: pulse-ring 1.5s infinite;
   }
   @keyframes pulse-ring {
-    0% { box-shadow: 0 0 0 0 rgba(0, 200, 240, 0.5); }
-    70% { box-shadow: 0 0 0 6px rgba(0, 200, 240, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 200, 240, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(0, 191, 255, 0.5); }
+    70% { box-shadow: 0 0 0 6px rgba(0, 191, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 191, 255, 0); }
   }
 
   /* Toast notification */
@@ -136,8 +140,8 @@
 
   .tooltip-brand {
     @apply text-sm text-text-primary;
-    background: #0F1D32;
-    border: 1px solid #153B5F;
+    background: #0A1B5C;
+    border: 1px solid rgba(0, 191, 255, 0.3);
     border-radius: 8px;
     padding: 8px 12px;
   }
