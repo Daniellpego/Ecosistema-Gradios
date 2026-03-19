@@ -192,4 +192,78 @@
   .animate-pulse-glow {
     animation: pulseGlow 2s ease-in-out infinite;
   }
+
+  /* ROI Card */
+  .roi-card {
+    position: relative;
+    background: linear-gradient(135deg, #1A0A0A, #1F0F0F, #0A1628);
+    border: 1px solid #EF444430;
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    overflow: hidden;
+  }
+
+  /* Quiz option entrance animation */
+  .quiz-option {
+    opacity: 0;
+    animation: fadeSlideUp 0.4s ease forwards;
+  }
+}
+
+/* ═══ PRINT STYLES — PDF Export ═══ */
+
+@media print {
+  /* Hide everything except the diagnostic */
+  body::before {
+    display: none !important;
+  }
+
+  nav, footer, .print\\:hidden {
+    display: none !important;
+  }
+
+  body {
+    background: #0A1628 !important;
+    color: #CBD5E1 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  section {
+    background: #0A1628 !important;
+  }
+
+  .result-container {
+    gap: 0.75rem;
+  }
+
+  .result-hero,
+  .result-section,
+  .result-data-card,
+  .result-cta,
+  .roi-card {
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Force dark backgrounds to print */
+  .result-hero {
+    background: #0A1628 !important;
+  }
+
+  .result-section {
+    background: #131F35 !important;
+  }
+
+  /* Remove animations for print */
+  .animate-fade-slide-up,
+  .opacity-0 {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .gauge-ring {
+    transition: none !important;
+  }
 }

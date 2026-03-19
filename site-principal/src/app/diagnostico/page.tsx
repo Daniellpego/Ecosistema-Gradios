@@ -3,6 +3,27 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
+import {
+  type Phase,
+  type LeadData,
+  QUESTIONS,
+  SECTOR_CONTEXT,
+  calculateScore,
+  getTier,
+  getOptionText,
+  getMultiOptionTexts,
+  getHorasMes,
+} from "./_lib/data";
+import IntroPhase from "./_components/intro-phase";
+import QuizPhase from "./_components/quiz-phase";
+import CapturePhase from "./_components/capture-phase";
+import LoadingPhase from "./_components/loading-phase";
+import ResultPhase from "./_components/result-phase";
+
+/* ════════════════════════════════════════════════════════════
+   SUPABASE SINGLETON
+   ════════════════════════════════════════════════════════════ */
+
 let _supabase: SupabaseClient | null = null;
 function getSupabase() {
   if (!_supabase) {
@@ -15,272 +36,7 @@ function getSupabase() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   TYPES
-   ════════════════════════════════════════════════════════════ */
-
-type Phase = "intro" | "quiz" | "capture" | "loading" | "result";
-
-interface Question {
-  id: string;
-  categoria: string;
-  pergunta: string;
-  sub: string;
-  tipo: "single" | "multi";
-  opcoes: string[];
-  scores: number[] | null;
-  horasMap?: string[];
-}
-
-interface LeadData {
-  nome: string;
-  empresa: string;
-  email: string;
-  whatsapp: string;
-}
-
-/* ════════════════════════════════════════════════════════════
-   QUESTIONS DATA
-   ════════════════════════════════════════════════════════════ */
-
-const QUESTIONS: Question[] = [
-  {
-    id: "cargo",
-    categoria: "Perfil",
-    pergunta: "Com quem a gente está falando?",
-    sub: "Isso personaliza o seu diagnóstico.",
-    tipo: "single",
-    opcoes: [
-      "Sócio(a)/Fundador(a)",
-      "Diretor(a)/CEO/C-level",
-      "Head/Gerente",
-      "Coordenador(a)",
-      "Analista/Operação",
-      "Outro",
-    ],
-    scores: [10, 10, 7, 3, 0, 3],
-  },
-  {
-    id: "tamanho",
-    categoria: "Empresa",
-    pergunta: "Qual é o porte da empresa hoje?",
-    sub: "Cada tamanho tem gargalos diferentes.",
-    tipo: "single",
-    opcoes: ["Até 10", "11 a 50", "51 a 200", "201 a 500", "Mais de 500"],
-    scores: [2, 5, 10, 10, 8],
-  },
-  {
-    id: "setor",
-    categoria: "Empresa",
-    pergunta: "Em qual setor vocês atuam?",
-    sub: "A Gradios atende vários setores — cada um tem seu padrão de automação.",
-    tipo: "single",
-    opcoes: [
-      "Varejo/E-commerce",
-      "Indústria/Manufatura",
-      "Logística/Distribuição",
-      "Saúde/Clínicas",
-      "Financeiro/Contabilidade",
-      "SaaS/Tecnologia",
-      "Serviços em geral",
-      "Outro",
-    ],
-    scores: null,
-  },
-  {
-    id: "gargalos",
-    categoria: "Operação",
-    pergunta: "Onde estão os maiores gargalos da operação hoje?",
-    sub: "Selecione tudo que se aplica — seja honesto.",
-    tipo: "multi",
-    opcoes: [
-      "Financeiro — fechamentos manuais",
-      "Comercial — CRM desatualizado",
-      "Atendimento — respostas lentas",
-      "Operações — dependem de pessoas",
-      "Logística/Estoque — planilha como sistema",
-      "RH — onboarding manual",
-      "Dados/Relatórios — fechamento leva dias",
-    ],
-    scores: null,
-  },
-  {
-    id: "processos",
-    categoria: "Operação",
-    pergunta: "Quantos processos dependem de digitação manual hoje?",
-    sub: "Pense nos que param se uma pessoa chave tirar férias.",
-    tipo: "single",
-    opcoes: ["Nenhum", "1 a 2", "3 a 5", "6 a 10", "Mais de 10"],
-    scores: [0, 5, 12, 18, 20],
-  },
-  {
-    id: "sistemas",
-    categoria: "Operação",
-    pergunta: "Quantos sistemas não conversam entre si?",
-    sub: "ERP sem CRM. Planilha paralela. O sistema que só o João sabe usar.",
-    tipo: "single",
-    opcoes: [
-      "Poucos sistemas",
-      "2 a 3 parcialmente integrados",
-      "4 a 6 desconectados",
-      "7 ou mais",
-    ],
-    scores: [3, 8, 13, 15],
-  },
-  {
-    id: "tempo",
-    categoria: "Operação",
-    pergunta: "Quanto tempo por semana vai para retrabalho manual?",
-    sub: "Esse número vai aparecer no seu diagnóstico.",
-    tipo: "single",
-    opcoes: ["Menos de 5h", "5 a 15h", "16 a 40h", "Mais de 40h"],
-    scores: [3, 8, 13, 15],
-    horasMap: ["~20h", "~40-60h", "~65-160h", "+160h"],
-  },
-  {
-    id: "impactos",
-    categoria: "Operação",
-    pergunta: "O que esse cenário causa na prática?",
-    sub: "Selecione tudo que acontece com frequência.",
-    tipo: "multi",
-    opcoes: [
-      "Atrasos em entregas",
-      "Erros por dado desatualizado",
-      "Decisões sem dado em tempo real",
-      "Custo alto com equipe em tarefas automáticas",
-      "Perda de cliente por lentidão",
-      "Dificuldade de escalar",
-    ],
-    scores: null,
-  },
-  {
-    id: "urgencia",
-    categoria: "Prioridade",
-    pergunta: "Quando vocês precisam resolver isso?",
-    sub: "Sem julgamento — queremos entender sua urgência real.",
-    tipo: "single",
-    opcoes: [
-      "Só estou mapeando",
-      "Próximos 6 meses",
-      "Próximos 3 meses",
-      "Próximos 30 dias",
-      "Prioridade imediata",
-    ],
-    scores: [1, 4, 7, 9, 10],
-  },
-  {
-    id: "prioridade",
-    categoria: "Prioridade",
-    pergunta: "Se a Gradios resolvesse uma coisa agora, o que seria?",
-    sub: "Define a recomendação personalizada do diagnóstico.",
-    tipo: "single",
-    opcoes: [
-      "Eliminar processos manuais",
-      "Integrar sistemas",
-      "Software sob medida",
-      "Dashboard e KPIs",
-      "IA no atendimento/análise",
-      "Ainda não sei",
-    ],
-    scores: null,
-  },
-];
-
-/* ════════════════════════════════════════════════════════════
-   SCORE CALCULATION
-   ════════════════════════════════════════════════════════════ */
-
-function multiScore(count: number, max: number): number {
-  if (max === 7) {
-    if (count === 0) return 0;
-    if (count === 1) return 1;
-    if (count <= 3) return 3;
-    if (count <= 5) return 5;
-    return 7;
-  }
-  if (count === 0) return 0;
-  if (count === 1) return 1;
-  if (count <= 3) return 3;
-  if (count <= 5) return 5;
-  return 7;
-}
-
-function calculateScore(answers: Record<string, number[]>): number {
-  let raw = 0;
-
-  if (answers.cargo?.[0] != null) raw += [10, 10, 7, 3, 0, 3][answers.cargo[0]];
-  if (answers.tamanho?.[0] != null) raw += [2, 5, 10, 10, 8][answers.tamanho[0]];
-  if (answers.gargalos) raw += multiScore(answers.gargalos.length, 7);
-  if (answers.processos?.[0] != null) raw += [0, 5, 12, 18, 20][answers.processos[0]];
-  if (answers.sistemas?.[0] != null) raw += [3, 8, 13, 15][answers.sistemas[0]];
-  if (answers.tempo?.[0] != null) raw += [3, 8, 13, 15][answers.tempo[0]];
-  if (answers.impactos) raw += multiScore(answers.impactos.length, 6);
-  if (answers.urgencia?.[0] != null) raw += [1, 4, 7, 9, 10][answers.urgencia[0]];
-
-  let score = Math.min(100, Math.round((raw / 94) * 100));
-
-  if (answers.cargo?.[0] === 4) score = Math.min(score, 50);
-  if (answers.urgencia?.[0] === 4) score = Math.max(score, 55);
-  if (answers.tamanho?.[0] === 0 && answers.urgencia?.[0] === 0) {
-    score = Math.min(score, 39);
-  }
-
-  return score;
-}
-
-function getTier(score: number): { label: string; tier: string; color: string } {
-  if (score >= 75) return { label: "Potencial Alto", tier: "A", color: "#16a34a" };
-  if (score >= 55) return { label: "Potencial Moderado", tier: "B", color: "#d97706" };
-  if (score >= 40) return { label: "Potencial Inicial", tier: "C", color: "#0A1B5C" };
-  return { label: "Em Desenvolvimento", tier: "D", color: "#64748B" };
-}
-
-/* ════════════════════════════════════════════════════════════
-   SECTOR CONTEXT FOR AI PROMPT
-   ════════════════════════════════════════════════════════════ */
-
-const SECTOR_CONTEXT: Record<string, string> = {
-  "Varejo/E-commerce":
-    "Sistemas como VTEX, Tiny, Bling, Shopify raramente conversam com o financeiro sem integração. Gargalo típico: pedido entra, estoque não atualiza, NF emitida manualmente. Divergência de estoque vira rotina. Resultado esperado com automação: fechamento de 3 dias para 2 horas, eliminação de divergência de estoque, pedido→estoque→financeiro rodando sem intervenção humana.",
-  "Indústria/Manufatura":
-    "ERP existe (Totvs, SAP, Senior) mas não está integrado ao chão de fábrica. Apontamento de produção manual, OEE invisível, relatórios de produção chegam com 24-48h de atraso. Decisões tomadas com dados de ontem. Resultado esperado: visibilidade em tempo real do chão de fábrica, redução de 40% no retrabalho, relatórios automáticos no fechamento do turno.",
-  "Logística/Distribuição":
-    "Emissão manual de NF + comunicação com transportadora feita uma por uma. WMS não conectado ao ERP do cliente. Rastreamento depende de ligação. Resultado esperado: eliminar 80% das ligações de status, NF emitida automaticamente ao confirmar pedido, tracking integrado ao sistema do cliente.",
-  "Saúde/Clínicas":
-    "Confirmação de consulta ainda por ligação manual, prontuário + agendamento + faturamento em sistemas separados, risco de glosa no faturamento ao plano de saúde. Retrabalho constante na conciliação. Resultado esperado: redução de 35% no no-show com confirmação automática, aceleração do ciclo de recebimento, faturamento ao convênio sem retrabalho.",
-  "Financeiro/Contabilidade":
-    "Case real da Gradios — fechamento mensal de 3 dias para 4 horas com automação de conciliação bancária e fluxo de aprovações. Lançamentos manuais e relatórios gerenciais sempre atrasados. Planilhas paralelas como fonte de verdade. Resultado esperado: conciliação automática, relatórios em tempo real, fluxo de aprovação digital sem e-mail.",
-  "SaaS/Tecnologia":
-    "Onboarding do cliente manual e lento, integração CRM (HubSpot, Pipedrive) + billing (Stripe, Iugu) + suporte feita por gambiarras ou Zapier frágil. CS sem visão completa do cliente. Resultado esperado: redução de 50% no time-to-value, CS com dashboard unificado, churn detectado antes de acontecer.",
-  "Serviços em geral":
-    "Proposta + contrato + NF + cobrança ainda por e-mail manual, follow-up dependente de memória, CRM inexistente ou subutilizado. Vendedor gasta mais tempo em admin do que vendendo. Resultado esperado: ciclo de vendas 30% mais rápido com fluxo automatizado de proposta→contrato→NF→cobrança.",
-  Outro:
-    "Diagnóstico consultivo amplo, foco nos gargalos específicos mencionados pelo lead. Análise cruzada entre processos manuais, sistemas desconectados e impacto financeiro do retrabalho.",
-};
-
-/* ════════════════════════════════════════════════════════════
-   SUPABASE HELPERS
-   ════════════════════════════════════════════════════════════ */
-
-function getOptionText(questionId: string, answerIndex: number | undefined): string {
-  if (answerIndex == null) return "Não informado";
-  const q = QUESTIONS.find((q) => q.id === questionId);
-  return q?.opcoes[answerIndex] ?? "Não informado";
-}
-
-function getMultiOptionTexts(questionId: string, answerIndexes: number[] | undefined): string[] {
-  if (!answerIndexes || answerIndexes.length === 0) return [];
-  const q = QUESTIONS.find((q) => q.id === questionId);
-  if (!q) return [];
-  return answerIndexes.map((i) => q.opcoes[i]).filter(Boolean);
-}
-
-function getHorasMes(tempoIndex: number | undefined): string {
-  if (tempoIndex == null) return "Não informado";
-  return ["~20h/mês", "~40-60h/mês", "~65-160h/mês", "+160h/mês"][tempoIndex] ?? "Não informado";
-}
-
-/* ════════════════════════════════════════════════════════════
-   COMPONENT
+   ORCHESTRATOR
    ════════════════════════════════════════════════════════════ */
 
 export default function DiagnosticoPage() {
@@ -288,122 +44,93 @@ export default function DiagnosticoPage() {
   const [city, setCity] = useState<string>("");
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number[]>>({});
-  const [lead, setLead] = useState<LeadData>({
-    nome: "",
-    empresa: "",
-    email: "",
-    whatsapp: "",
-  });
+  const [lead, setLead] = useState<LeadData>({ nome: "", empresa: "", email: "", whatsapp: "" });
   const [loadingStep, setLoadingStep] = useState(0);
   const [aiText, setAiText] = useState("");
   const [score, setScore] = useState(0);
-  const [animatedScore, setAnimatedScore] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const streamRef = useRef<boolean>(false);
   const leadRowIdRef = useRef<string | null>(null);
   const diagSavedRef = useRef<boolean>(false);
-  const [phaseKey, setPhaseKey] = useState(0);
 
-  // Detect city
+  /* ── Detect city ── */
   useEffect(() => {
     fetch("https://ipapi.co/json/")
       .then((r) => r.json())
-      .then((d) => {
-        if (d?.city) setCity(d.city);
-      })
+      .then((d) => { if (d?.city) setCity(d.city); })
       .catch(() => {});
   }, []);
 
-  // Set page title
+  /* ── Page meta ── */
   useEffect(() => {
     document.title = "Diagnóstico Gratuito | Gradios";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
-      meta.setAttribute(
-        "content",
-        "Descubra em 2 minutos onde sua empresa perde tempo e dinheiro com processos manuais. Diagnóstico personalizado por IA."
-      );
+      meta.setAttribute("content", "Descubra em 2 minutos quanto sua empresa perde por mês com processos manuais. Diagnóstico personalizado por IA.");
     }
   }, []);
 
-  // Animated score counter
-  useEffect(() => {
-    if (phase !== "result") return;
-    let current = 0;
-    const target = score;
-    const interval = setInterval(() => {
-      current += 1;
-      if (current >= target) {
-        current = target;
-        clearInterval(interval);
-      }
-      setAnimatedScore(current);
-    }, 20);
-    return () => clearInterval(interval);
-  }, [phase, score]);
-
-  // Supabase — save diagnostico_ia when stream completes
+  /* ── Save AI diagnosis to Supabase when stream completes ── */
   useEffect(() => {
     if (phase !== "result" || !aiText || diagSavedRef.current) return;
     const streamDone = aiText.length > 50 && aiText.trimEnd().endsWith(".");
-    if (!streamDone) return;
-    if (!leadRowIdRef.current) return;
+    if (!streamDone || !leadRowIdRef.current) return;
 
     diagSavedRef.current = true;
     (async () => {
       try {
         const sb = getSupabase();
         if (!sb) return;
-        await sb
-          .from("quiz_leads")
-          .update({ diagnostico_ia: aiText })
-          .eq("id", leadRowIdRef.current!);
+        await sb.from("quiz_leads").update({ diagnostico_ia: aiText }).eq("id", leadRowIdRef.current!);
       } catch {
-        console.log("Supabase update diagnostico_ia falhou.");
+        // silently continue
       }
     })();
   }, [phase, aiText]);
 
-  const q = QUESTIONS[currentQ];
-
   /* ── Quiz answer handlers ── */
 
-  function handleSingleSelect(optionIdx: number) {
-    setAnswers((prev) => ({ ...prev, [q.id]: [optionIdx] }));
+  function handleSingleSelect(questionId: string, idx: number) {
+    setAnswers((prev) => ({ ...prev, [questionId]: [idx] }));
+
+    // Track per-question events
+    trackEvent("quiz_answer", { question: questionId, answer_index: idx });
   }
 
-  function handleMultiToggle(optionIdx: number) {
+  function handleMultiToggle(questionId: string, idx: number) {
     setAnswers((prev) => {
-      const current = prev[q.id] || [];
-      if (current.includes(optionIdx)) {
-        return { ...prev, [q.id]: current.filter((i) => i !== optionIdx) };
+      const current = prev[questionId] || [];
+      if (current.includes(idx)) {
+        return { ...prev, [questionId]: current.filter((i) => i !== idx) };
       }
-      return { ...prev, [q.id]: [...current, optionIdx] };
+      return { ...prev, [questionId]: [...current, idx] };
     });
-  }
-
-  function canAdvance(): boolean {
-    const a = answers[q.id];
-    if (!a || a.length === 0) return false;
-    return true;
   }
 
   function nextQuestion() {
     if (currentQ < QUESTIONS.length - 1) {
-      setPhaseKey((k) => k + 1);
       setCurrentQ((p) => p + 1);
     } else {
       setPhase("capture");
+      trackEvent("quiz_completed", { questions_answered: Object.keys(answers).length });
     }
   }
 
   function prevQuestion() {
     if (currentQ > 0) {
-      setPhaseKey((k) => k + 1);
       setCurrentQ((p) => p - 1);
     }
   }
 
-  /* ── AI streaming call (via server-side API route) ── */
+  /* ── Analytics helper ── */
+
+  function trackEvent(event: string, params?: Record<string, unknown>) {
+    if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
+      (window as unknown as { fbq: (...args: unknown[]) => void }).fbq("track", event, params);
+    }
+  }
+
+  /* ── AI streaming call ── */
 
   const startAiStream = useCallback(
     async (finalScore: number) => {
@@ -420,11 +147,8 @@ export default function DiagnosticoPage() {
         "mais de 40h/semana (+160h/mês — equivale a uma pessoa inteira)",
       ][tempoIdx] ?? "não informado";
 
-      const gargalosLabels =
-        answers.gargalos?.map((i) => QUESTIONS[3].opcoes[i]).join(", ") || "Nenhum";
-      const impactosLabels =
-        answers.impactos?.map((i) => QUESTIONS[7].opcoes[i]).join(", ") || "Nenhum";
-
+      const gargalosLabels = answers.gargalos?.map((i) => QUESTIONS[3].opcoes[i]).join(", ") || "Nenhum";
+      const impactosLabels = answers.impactos?.map((i) => QUESTIONS[7].opcoes[i]).join(", ") || "Nenhum";
       const sectorCtx = SECTOR_CONTEXT[setor] || SECTOR_CONTEXT["Outro"];
 
       const systemPrompt = `Você é o Gustavo, sócio da Gradios. Londrina, PR. Automação de processos, integrações sob medida, software custom. Você fala como um cara técnico que entende de negócio — direto, sem firula, com autoridade.
@@ -490,9 +214,7 @@ REGRAS ABSOLUTAS:
         });
 
         if (!res.ok || !res.body) {
-          setAiText(
-            "Diagnóstico em processamento. Nossa equipe entrará em contato com os resultados completos."
-          );
+          setAiText("Diagnóstico em processamento. Nossa equipe entrará em contato com os resultados completos.");
           return;
         }
 
@@ -515,10 +237,7 @@ REGRAS ABSOLUTAS:
 
             try {
               const parsed = JSON.parse(data);
-              if (
-                parsed.type === "content_block_delta" &&
-                parsed.delta?.type === "text_delta"
-              ) {
+              if (parsed.type === "content_block_delta" && parsed.delta?.type === "text_delta") {
                 setAiText((prev) => prev + parsed.delta.text);
               }
             } catch {
@@ -527,9 +246,7 @@ REGRAS ABSOLUTAS:
           }
         }
       } catch {
-        setAiText(
-          "Diagnóstico em processamento. Nossa equipe entrará em contato com os resultados completos."
-        );
+        setAiText("Diagnóstico em processamento. Nossa equipe entrará em contato com os resultados completos.");
       }
     },
     [answers, city, lead]
@@ -538,30 +255,21 @@ REGRAS ABSOLUTAS:
   /* ── Submit lead & start loading ── */
 
   async function handleSubmitLead() {
+    setIsSubmitting(true);
     const finalScore = calculateScore(answers);
     setScore(finalScore);
     const tierInfo = getTier(finalScore);
 
-    const setor =
-      answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "Não informado";
-    const cargo =
-      answers.cargo?.[0] != null ? QUESTIONS[0].opcoes[answers.cargo[0]] : "Não informado";
-    const porte =
-      answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "Não informado";
-    const gargalos =
-      answers.gargalos?.map((i: number) => QUESTIONS[3].opcoes[i]).join(", ") || "Nenhum";
-    const processos =
-      answers.processos?.[0] != null ? QUESTIONS[4].opcoes[answers.processos[0]] : "Não informado";
-    const sistemas =
-      answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : "Não informado";
-    const tempo =
-      answers.tempo?.[0] != null ? QUESTIONS[6].opcoes[answers.tempo[0]] : "Não informado";
-    const impactos =
-      answers.impactos?.map((i: number) => QUESTIONS[7].opcoes[i]).join(", ") || "Nenhum";
-    const urgencia =
-      answers.urgencia?.[0] != null ? QUESTIONS[8].opcoes[answers.urgencia[0]] : "Não informado";
-    const prioridade =
-      answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : "Não informado";
+    const setor = answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "Não informado";
+    const cargo = answers.cargo?.[0] != null ? QUESTIONS[0].opcoes[answers.cargo[0]] : "Não informado";
+    const porte = answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "Não informado";
+    const gargalos = answers.gargalos?.map((i: number) => QUESTIONS[3].opcoes[i]).join(", ") || "Nenhum";
+    const processos = answers.processos?.[0] != null ? QUESTIONS[4].opcoes[answers.processos[0]] : "Não informado";
+    const sistemas = answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : "Não informado";
+    const tempo = answers.tempo?.[0] != null ? QUESTIONS[6].opcoes[answers.tempo[0]] : "Não informado";
+    const impactos = answers.impactos?.map((i: number) => QUESTIONS[7].opcoes[i]).join(", ") || "Nenhum";
+    const urgencia = answers.urgencia?.[0] != null ? QUESTIONS[8].opcoes[answers.urgencia[0]] : "Não informado";
+    const prioridade = answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : "Não informado";
 
     // Webhook (fire & forget)
     const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL;
@@ -575,28 +283,14 @@ REGRAS ABSOLUTAS:
           }),
         }).catch(() => {});
       } catch {
-        console.log("Webhook não enviado — continuando normalmente.");
+        // continue silently
       }
-    } else {
-      console.log("WEBHOOK_URL não definido — lead capturado localmente:", {
-        nome: lead.nome,
-        empresa: lead.empresa,
-        email: lead.email,
-        score: finalScore,
-        tier: tierInfo.tier,
-      });
     }
 
-    // Meta Pixel — lead captured
-    if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
-      (window as unknown as { fbq: (...args: unknown[]) => void }).fbq(
-        "track",
-        "lead_captured",
-        { setor, tier: tierInfo.tier, score: finalScore }
-      );
-    }
+    // Meta Pixel
+    trackEvent("lead_captured", { setor, tier: tierInfo.tier, score: finalScore });
 
-    // Supabase — save lead (fire & forget, never blocks the flow)
+    // Supabase — save lead
     try {
       const sb = getSupabase();
       if (!sb) throw new Error("Supabase not configured");
@@ -629,11 +323,9 @@ REGRAS ABSOLUTAS:
         .select("id")
         .single();
 
-      if (data?.id) {
-        leadRowIdRef.current = data.id;
-      }
+      if (data?.id) leadRowIdRef.current = data.id;
     } catch {
-      console.log("Supabase insert falhou — continuando normalmente.");
+      // continue silently
     }
 
     setPhase("loading");
@@ -641,647 +333,78 @@ REGRAS ABSOLUTAS:
     // Start AI stream in parallel
     startAiStream(finalScore);
 
-    // Animated loading steps (5 steps with varied timing for realism)
+    // Animated loading steps
     const stepTimings = [800, 1100, 900, 1000, 1200];
     for (let i = 0; i < stepTimings.length; i++) {
       setLoadingStep(i);
       await new Promise((r) => setTimeout(r, stepTimings[i]));
     }
-    setLoadingStep(5); // mark last step as complete
+    setLoadingStep(5);
 
-    // Brief pause before reveal
     await new Promise((r) => setTimeout(r, 800));
     setPhase("result");
+    trackEvent("diagnosis_viewed", { score: finalScore, tier: tierInfo.tier });
   }
 
-  const isCaptureFilled = lead.nome.trim() && lead.empresa.trim() && lead.email.trim();
-  const tierInfo = getTier(score);
+  /* ── Phase helpers ── */
+
+  function handleIntroStart() {
+    setPhase("quiz");
+    trackEvent("quiz_start");
+  }
+
+  const isDarkPhase = phase === "loading" || phase === "result";
 
   /* ════════════════════════════════════════════════════════════
      RENDER
      ════════════════════════════════════════════════════════════ */
 
-  const isDarkPhase = phase === "loading" || phase === "result";
-
   return (
-    <section className={`relative z-10 min-h-screen transition-colors duration-700 ${isDarkPhase ? "bg-[#080E1A]" : ""}`}
+    <section
+      className={`relative z-10 min-h-screen transition-colors duration-700 ${isDarkPhase ? "bg-[#080E1A]" : ""}`}
       style={isDarkPhase ? { background: "linear-gradient(180deg, #080E1A 0%, #0A1628 30%, #0F1D32 100%)" } : undefined}
     >
-      {/* Top gradient accent line */}
       {!isDarkPhase && <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-primary" />}
 
       <div className="max-w-2xl mx-auto px-4 py-12 sm:py-20">
-        {/* ═══ INTRO ═══ */}
         {phase === "intro" && (
-          <div className="animate-fade-slide-up text-center">
-            <span className="inline-flex items-center bg-primary/[0.08] text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide">
-              Diagnóstico Gratuito
-            </span>
-
-            <h1
-              className="mt-6 text-3xl sm:text-4xl md:text-5xl font-black text-text leading-tight"
-              style={{ letterSpacing: "-0.02em" }}
-            >
-              Sua operação está te{" "}
-              <span className="relative inline-block">
-                limitando
-                <svg
-                  className="absolute -bottom-1 left-0 w-full"
-                  viewBox="0 0 200 12"
-                  fill="none"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d="M2 8C40 2 80 2 100 6C120 10 160 4 198 6"
-                    stroke="url(#grad-line)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    className="path-anim"
-                  />
-                  <defs>
-                    <linearGradient id="grad-line" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#0A1B5C" />
-                      <stop offset="1" stopColor="#00BFFF" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </span>{" "}
-              ou impulsionando?
-            </h1>
-
-            {city && (
-              <p className="mt-4 text-lg text-text-muted" style={{ animationDelay: "0.15s" }}>
-                {city}. Responda 10 perguntas e descubra onde sua empresa perde
-                tempo e dinheiro.
-              </p>
-            )}
-            {!city && (
-              <p className="mt-4 text-lg text-text-muted">
-                Responda 10 perguntas e descubra onde sua empresa perde tempo e
-                dinheiro.
-              </p>
-            )}
-
-            <button
-              onClick={() => {
-                setPhase("quiz");
-                if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
-                  (window as unknown as { fbq: (...args: unknown[]) => void }).fbq("track", "quiz_start");
-                }
-              }}
-              className="mt-8 bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all duration-300 relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
-            >
-              Iniciar diagnóstico gratuito
-            </button>
-
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-sm text-text-muted">
-              {[
-                ["2 min", "para responder"],
-                ["IA", "diagnóstico real"],
-                ["30 min", "nossa conversa"],
-              ].map(([big, small], i) => (
-                <div
-                  key={big}
-                  className="flex flex-col items-center opacity-0 animate-fade-slide-up"
-                  style={{ animationDelay: `${0.3 + i * 0.15}s` }}
-                >
-                  <span className="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    {big}
-                  </span>
-                  <span>{small}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <IntroPhase city={city} onStart={handleIntroStart} />
         )}
 
-        {/* ═══ QUIZ ═══ */}
         {phase === "quiz" && (
-          <div key={phaseKey} className="animate-fade-slide-up">
-            {/* Progress bar */}
-            <div className="mb-8">
-              <div className="flex justify-between text-xs text-text-muted mb-2">
-                <span className="font-medium text-primary">{q.categoria}</span>
-                <span>
-                  {currentQ + 1} / {QUESTIONS.length}
-                </span>
-              </div>
-              <div className="w-full h-2 bg-card-border rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-primary rounded-full transition-all duration-500 ease-out"
-                  style={{
-                    width: `${((currentQ + 1) / QUESTIONS.length) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-
-            <h2
-              className="text-2xl sm:text-3xl font-black text-text"
-              style={{ letterSpacing: "-0.02em" }}
-            >
-              {q.pergunta}
-            </h2>
-            <p className="mt-2 text-text-muted">{q.sub}</p>
-
-            {q.tipo === "multi" && (
-              <p className="mt-1 text-xs text-secondary font-medium">
-                Selecione uma ou mais opções
-              </p>
-            )}
-
-            <div className="mt-6 flex flex-col gap-3">
-              {q.opcoes.map((opt, idx) => {
-                const selected = answers[q.id]?.includes(idx);
-                return (
-                  <button
-                    key={idx}
-                    onClick={() =>
-                      q.tipo === "single"
-                        ? handleSingleSelect(idx)
-                        : handleMultiToggle(idx)
-                    }
-                    className={`w-full text-left px-5 py-4 rounded-card border-2 transition-all duration-200 text-sm font-medium group ${
-                      selected
-                        ? "border-primary bg-primary/5 text-primary shadow-sm shadow-primary/10"
-                        : "border-card-border hover:border-primary/30 hover:bg-white text-text"
-                    }`}
-                    style={{
-                      animationDelay: `${idx * 0.05}s`,
-                    }}
-                  >
-                    <span className="flex items-center gap-3">
-                      <span
-                        className={`flex-shrink-0 w-5 h-5 rounded-${
-                          q.tipo === "multi" ? "md" : "full"
-                        } border-2 flex items-center justify-center transition-all ${
-                          selected
-                            ? "border-primary bg-primary"
-                            : "border-card-border group-hover:border-primary/40"
-                        }`}
-                      >
-                        {selected && (
-                          <svg
-                            width="12"
-                            height="12"
-                            viewBox="0 0 12 12"
-                            fill="none"
-                          >
-                            <path
-                              d="M2.5 6L5 8.5L9.5 3.5"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        )}
-                      </span>
-                      {opt}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Navigation */}
-            <div className="mt-8 flex justify-between items-center">
-              <button
-                onClick={prevQuestion}
-                disabled={currentQ === 0}
-                className="text-sm font-medium text-text-muted hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                ← Voltar
-              </button>
-              <button
-                onClick={nextQuestion}
-                disabled={!canAdvance()}
-                className="bg-brand-gradient text-white rounded-pill px-6 py-3 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
-              >
-                {currentQ === QUESTIONS.length - 1 ? "Continuar →" : "Próxima →"}
-              </button>
-            </div>
-          </div>
+          <QuizPhase
+            currentQ={currentQ}
+            answers={answers}
+            onSingleSelect={handleSingleSelect}
+            onMultiToggle={handleMultiToggle}
+            onNext={nextQuestion}
+            onPrev={prevQuestion}
+          />
         )}
 
-        {/* ═══ CAPTURE ═══ */}
         {phase === "capture" && (
-          <div className="animate-fade-slide-up">
-            <div className="text-center mb-8">
-              <span className="inline-flex items-center bg-primary/[0.08] text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide">
-                Quase lá
-              </span>
-              <h2
-                className="mt-4 text-2xl sm:text-3xl font-black text-text"
-                style={{ letterSpacing: "-0.02em" }}
-              >
-                Preencha seus dados para gerar o diagnóstico
-              </h2>
-              <p className="mt-2 text-text-muted text-sm">
-                Seus dados são usados apenas para personalizar o resultado.
-              </p>
-            </div>
-
-            <div className="bg-white border border-card-border rounded-card p-6 shadow-sm space-y-4">
-              {/* Gradient top border on form card */}
-              <div className="-mx-6 -mt-6 mb-4 h-1 rounded-t-card bg-gradient-primary" />
-
-              <div>
-                <label className="block text-sm font-medium text-text mb-1.5">
-                  Nome completo *
-                </label>
-                <input
-                  type="text"
-                  value={lead.nome}
-                  onChange={(e) =>
-                    setLead((p) => ({ ...p, nome: e.target.value }))
-                  }
-                  placeholder="Seu nome completo"
-                  className="w-full px-4 py-3 rounded-card border border-card-border bg-white text-text text-sm placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-text mb-1.5">
-                  Empresa *
-                </label>
-                <input
-                  type="text"
-                  value={lead.empresa}
-                  onChange={(e) =>
-                    setLead((p) => ({ ...p, empresa: e.target.value }))
-                  }
-                  placeholder="Nome da empresa"
-                  className="w-full px-4 py-3 rounded-card border border-card-border bg-white text-text text-sm placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-text mb-1.5">
-                  E-mail corporativo *
-                </label>
-                <input
-                  type="email"
-                  value={lead.email}
-                  onChange={(e) =>
-                    setLead((p) => ({ ...p, email: e.target.value }))
-                  }
-                  placeholder="seu@empresa.com"
-                  className="w-full px-4 py-3 rounded-card border border-card-border bg-white text-text text-sm placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-text mb-1.5">
-                  WhatsApp{" "}
-                  <span className="text-text-muted font-normal">(opcional)</span>
-                </label>
-                <input
-                  type="tel"
-                  value={lead.whatsapp}
-                  onChange={(e) =>
-                    setLead((p) => ({ ...p, whatsapp: e.target.value }))
-                  }
-                  placeholder="(00) 00000-0000"
-                  className="w-full px-4 py-3 rounded-card border border-card-border bg-white text-text text-sm placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-              </div>
-
-              <button
-                onClick={handleSubmitLead}
-                disabled={!isCaptureFilled}
-                className="w-full mt-2 bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
-              >
-                Gerar meu diagnóstico agora →
-              </button>
-
-              <p className="text-xs text-text-muted text-center mt-3">
-                Sem spam. Dados usados apenas para o diagnóstico.
-              </p>
-            </div>
-          </div>
+          <CapturePhase
+            lead={lead}
+            setLead={setLead}
+            answers={answers}
+            isSubmitting={isSubmitting}
+            onSubmit={handleSubmitLead}
+          />
         )}
 
-        {/* ═══ LOADING ═══ */}
         {phase === "loading" && (
-          <div className="animate-fade-slide-up">
-            <div className="loading-container">
-              {/* Background effects */}
-              <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-20 animate-pulse" style={{ background: "radial-gradient(circle, #00BFFF, transparent 70%)" }} />
-              </div>
-
-              <div className="relative z-10 flex flex-col items-center text-center">
-                {/* Animated scanner ring */}
-                <div className="w-24 h-24 mb-8 relative">
-                  <div className="absolute inset-0 rounded-full border-2 border-[#1E293B]" />
-                  <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#00BFFF] animate-spin" style={{ animationDuration: "1.5s" }} />
-                  <div className="absolute inset-2 rounded-full border border-[#1E293B]" />
-                  <div className="absolute inset-2 rounded-full border border-transparent border-b-[#0A1B5C] animate-spin" style={{ animationDuration: "2.5s", animationDirection: "reverse" }} />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-3 h-3 rounded-full bg-[#00BFFF] animate-pulse" style={{ boxShadow: "0 0 20px #00BFFF60" }} />
-                  </div>
-                </div>
-
-                <p className="text-white text-xl sm:text-2xl font-black mb-1" style={{ letterSpacing: "-0.02em" }}>
-                  Analisando {lead.empresa}
-                </p>
-                {city && <p className="text-[#64748B] text-sm mb-8">{city}</p>}
-                {!city && <div className="mb-8" />}
-
-                {/* Steps */}
-                <div className="space-y-3 w-full max-w-sm text-left">
-                  {[
-                    { label: "Mapeando gargalos operacionais", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
-                    { label: "Calculando custo invisível do retrabalho", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" },
-                    { label: "Cruzando dados com empresas do setor", icon: "M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" },
-                    { label: "Consultando base de soluções aplicáveis", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 2h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 8.172V3L8 2z" },
-                    { label: "Gerando diagnóstico com IA da Gradios", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
-                  ].map((step, idx) => (
-                    <div
-                      key={idx}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-500 ${
-                        loadingStep > idx
-                          ? "bg-[#10B981]/10 border border-[#10B981]/20"
-                          : loadingStep === idx
-                          ? "bg-[#00BFFF]/10 border border-[#00BFFF]/20"
-                          : "bg-[#0F172A]/50 border border-[#1E293B]"
-                      }`}
-                    >
-                      {loadingStep > idx ? (
-                        <div className="w-7 h-7 rounded-full bg-[#10B981] flex items-center justify-center flex-shrink-0">
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                            <path d="M3 7L6 10L11 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </div>
-                      ) : loadingStep === idx ? (
-                        <div className="w-7 h-7 rounded-full border-2 border-[#00BFFF] border-t-transparent animate-spin flex-shrink-0" />
-                      ) : (
-                        <div className="w-7 h-7 rounded-full border border-[#1E293B] flex items-center justify-center flex-shrink-0">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d={step.icon} />
-                          </svg>
-                        </div>
-                      )}
-                      <span className={`text-sm transition-all duration-300 ${
-                        loadingStep > idx ? "text-[#10B981] font-medium" :
-                        loadingStep === idx ? "text-white font-medium" :
-                        "text-[#475569]"
-                      }`}>
-                        {step.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          <LoadingPhase empresa={lead.empresa} city={city} loadingStep={loadingStep} />
         )}
 
-        {/* ═══ RESULT ═══ */}
-        {phase === "result" && (() => {
-          const setor = answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "Não informado";
-          const gargalosTexts = answers.gargalos?.map((i) => QUESTIONS[3].opcoes[i]) || [];
-          const impactosTexts = answers.impactos?.map((i) => QUESTIONS[7].opcoes[i]) || [];
-          const tempoLabel = answers.tempo?.[0] != null ? QUESTIONS[6].opcoes[answers.tempo[0]] : null;
-          const horasMes = answers.tempo?.[0] != null ? ["~20h", "~40-60h", "~65-160h", "+160h"][answers.tempo[0]] : null;
-          const sistemasLabel = answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : null;
-          const processosLabel = answers.processos?.[0] != null ? QUESTIONS[4].opcoes[answers.processos[0]] : null;
-          const prioridadeLabel = answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : null;
-          const circumference = 2 * Math.PI * 54;
-          const strokeOffset = circumference - (circumference * animatedScore) / 100;
-
-          return (
-          <div className="result-container">
-            {/* ── HERO: Dark diagnostic header ── */}
-            <div className="result-hero animate-fade-slide-up" style={{ animationDelay: "0s" }}>
-              <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full opacity-10" style={{ background: `radial-gradient(circle, ${tierInfo.color}, transparent 70%)` }} />
-                <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full opacity-10" style={{ background: `radial-gradient(circle, #00BFFF, transparent 70%)` }} />
-              </div>
-
-              <div className="relative z-10">
-                <p className="text-[#00BFFF] text-xs font-semibold tracking-[0.2em] uppercase mb-6">Diagnóstico Gradios</p>
-
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight mb-2" style={{ letterSpacing: "-0.03em" }}>
-                  {lead.nome.split(" ")[0]}, seu diagnóstico<br />está pronto.
-                </h1>
-                <p className="text-[#94A3B8] text-sm sm:text-base">
-                  {lead.empresa}{city ? ` · ${city}` : ""} · {setor}
-                </p>
-
-                {/* Circular Score Gauge */}
-                <div className="mt-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
-                  <div className="relative w-36 h-36 flex-shrink-0">
-                    <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
-                      <circle cx="60" cy="60" r="54" fill="none" stroke="#1E293B" strokeWidth="8" />
-                      <circle
-                        cx="60" cy="60" r="54" fill="none"
-                        stroke={tierInfo.color}
-                        strokeWidth="8"
-                        strokeLinecap="round"
-                        strokeDasharray={circumference}
-                        strokeDashoffset={strokeOffset}
-                        className="gauge-ring"
-                        style={{ filter: `drop-shadow(0 0 8px ${tierInfo.color}60)` }}
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-4xl font-black text-white leading-none">{animatedScore}</span>
-                      <span className="text-xs text-[#64748B] font-medium">/100</span>
-                    </div>
-                  </div>
-
-                  <div className="text-center sm:text-left">
-                    <span
-                      className="inline-block text-sm font-bold px-4 py-1.5 rounded-pill mb-3"
-                      style={{ color: tierInfo.color, backgroundColor: `${tierInfo.color}20`, border: `1px solid ${tierInfo.color}40` }}
-                    >
-                      {tierInfo.label}
-                    </span>
-                    <p className="text-[#CBD5E1] text-sm max-w-xs">
-                      {tierInfo.tier === "A" && "Sua operação tem alto potencial de automação. Os gargalos são claros e o retorno é rápido."}
-                      {tierInfo.tier === "B" && "Identificamos gargalos concretos. Com as automações certas, o ganho operacional é significativo."}
-                      {tierInfo.tier === "C" && "Existem oportunidades iniciais de automação que já trariam resultado no curto prazo."}
-                      {tierInfo.tier === "D" && "O momento é de mapeamento. Quando decidir automatizar, o caminho já vai estar claro."}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* ── DATA CARDS: Show their own data back ── */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.2s" }}>
-              {horasMes && (
-                <div className="result-data-card col-span-2 sm:col-span-1">
-                  <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Retrabalho/mês</p>
-                  <p className="text-2xl sm:text-3xl font-black text-white mt-1">{horasMes}</p>
-                  <p className="text-[#EF4444] text-xs font-medium mt-1">desperdiçadas</p>
-                </div>
-              )}
-              {sistemasLabel && (
-                <div className="result-data-card">
-                  <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Sistemas</p>
-                  <p className="text-lg font-bold text-white mt-1">{sistemasLabel}</p>
-                  <p className="text-[#F59E0B] text-xs font-medium mt-1">desconectados</p>
-                </div>
-              )}
-              {processosLabel && (
-                <div className="result-data-card">
-                  <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Processos manuais</p>
-                  <p className="text-lg font-bold text-white mt-1">{processosLabel}</p>
-                  <p className="text-[#F59E0B] text-xs font-medium mt-1">dependem de digitação</p>
-                </div>
-              )}
-            </div>
-
-            {/* ── BOTTLENECKS ── */}
-            {gargalosTexts.length > 0 && (
-              <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.35s" }}>
-                <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Gargalos identificados</p>
-                <div className="flex flex-wrap gap-2">
-                  {gargalosTexts.map((g, i) => (
-                    <span key={i} className="inline-flex items-center gap-1.5 bg-[#EF4444]/10 border border-[#EF4444]/20 text-[#FCA5A5] text-xs font-medium px-3 py-1.5 rounded-pill">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#EF4444]" />
-                      {g.split(" — ")[0]}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ── IMPACTS ── */}
-            {impactosTexts.length > 0 && (
-              <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.45s" }}>
-                <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Impactos na operação</p>
-                <div className="flex flex-wrap gap-2">
-                  {impactosTexts.map((imp, i) => (
-                    <span key={i} className="inline-flex items-center gap-1.5 bg-[#F59E0B]/10 border border-[#F59E0B]/20 text-[#FCD34D] text-xs font-medium px-3 py-1.5 rounded-pill">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
-                      {imp}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ── AI DIAGNOSIS ── */}
-            <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.55s" }}>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0A1B5C] to-[#00BFFF] flex items-center justify-center flex-shrink-0">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-white text-sm font-bold">Análise da Gradios</p>
-                  <p className="text-[#64748B] text-[10px]">Gerado por IA com dados reais da sua operação</p>
-                </div>
-              </div>
-
-              <div className="bg-[#0F172A] border border-[#1E293B] rounded-2xl p-5 sm:p-6">
-                {aiText ? (
-                  <p className="text-[#CBD5E1] text-sm sm:text-base leading-relaxed" style={{ whiteSpace: "pre-wrap" }}>
-                    {aiText}
-                    {!aiText.endsWith(".") && (
-                      <span className="inline-block w-0.5 h-4 ml-0.5 animate-pulse align-middle" style={{ background: "linear-gradient(to bottom, #00BFFF, #0A1B5C)" }} />
-                    )}
-                  </p>
-                ) : (
-                  <div className="flex items-center gap-3 text-[#64748B] text-sm">
-                    <div className="w-4 h-4 border-2 border-[#00BFFF] border-t-transparent rounded-full animate-spin" />
-                    Gerando diagnóstico personalizado...
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* ── PRIORITY ── */}
-            {prioridadeLabel && (
-              <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.65s" }}>
-                <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Sua prioridade</p>
-                <div className="bg-[#00BFFF]/10 border border-[#00BFFF]/20 rounded-2xl p-4 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#00BFFF]/20 flex items-center justify-center flex-shrink-0">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-white text-sm font-bold">{prioridadeLabel}</p>
-                    <p className="text-[#64748B] text-xs">É por aqui que a Gradios começaria</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* ── CTA ── */}
-            <div className="result-cta opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.75s" }}>
-              <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #00BFFF, transparent 70%)" }} />
-              </div>
-
-              <div className="relative z-10 text-center">
-                <p className="text-white text-xl sm:text-2xl font-black mb-2" style={{ letterSpacing: "-0.02em" }}>
-                  {tierInfo.tier === "A" ? "Próximo passo: conversa de 30 min" :
-                   tierInfo.tier === "B" ? "Vamos mapear o caminho" :
-                   tierInfo.tier === "C" ? "Quer entender melhor?" :
-                   "Conteúdo prático no seu e-mail"}
-                </p>
-                <p className="text-[#94A3B8] text-sm max-w-md mx-auto mb-6">
-                  {tierInfo.tier === "A"
-                    ? `${lead.nome.split(" ")[0]}, seu perfil indica urgência real. Um especialista da Gradios entra em contato nas próximas horas — sem proposta pronta, só diagnóstico de perto.`
-                    : tierInfo.tier === "B"
-                    ? `${lead.nome.split(" ")[0]}, os gargalos são claros. Se quiser antecipar, manda um oi no WhatsApp que a gente agenda uma conversa rápida.`
-                    : tierInfo.tier === "C"
-                    ? `${lead.nome.split(" ")[0]}, já identificamos por onde começar. Fala com a gente quando quiser — sem compromisso.`
-                    : `${lead.nome.split(" ")[0]}, vamos te enviar material específico para ${setor}. Quando fizer sentido, a gente conversa.`
-                  }
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <a
-                    href={`https://wa.me/5543988372540?text=${encodeURIComponent(
-                      tierInfo.tier === "A"
-                        ? `Oi! Fiz o diagnóstico da Gradios agora mesmo. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100 — Tier A. Aguardo o contato!`
-                        : tierInfo.tier === "B"
-                        ? `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Podem me ligar ainda hoje?`
-                        : `Oi! Fiz o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Quero saber mais sobre automação para ${setor}.`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 bg-[#25D366] text-white rounded-pill px-7 py-3.5 font-bold hover:bg-[#20BD5A] hover:shadow-lg hover:shadow-[#25D366]/30 transition-all duration-300 text-sm"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                    </svg>
-                    Falar com a Gradios
-                  </a>
-
-                  <button
-                    onClick={() => {
-                      if (navigator.share) {
-                        navigator.share({ title: `Diagnóstico ${lead.empresa} — Gradios`, text: `Fiz o diagnóstico de automação da Gradios e tirei ${score}/100. Confira:`, url: window.location.href });
-                      } else {
-                        navigator.clipboard.writeText(window.location.href);
-                      }
-                    }}
-                    className="inline-flex items-center gap-2 text-[#94A3B8] hover:text-white border border-[#1E293B] hover:border-[#334155] rounded-pill px-6 py-3.5 font-medium transition-all duration-300 text-sm"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
-                    </svg>
-                    Compartilhar resultado
-                  </button>
-                </div>
-
-                <p className="text-[#475569] text-xs mt-6">
-                  Diagnóstico gerado em {new Date().toLocaleDateString("pt-BR")} · Dados protegidos · Gradios © {new Date().getFullYear()}
-                </p>
-              </div>
-            </div>
-          </div>
-          );
-        })()}
+        {phase === "result" && (
+          <ResultPhase
+            lead={lead}
+            answers={answers}
+            score={score}
+            city={city}
+            aiText={aiText}
+          />
+        )}
       </div>
     </section>
   );
