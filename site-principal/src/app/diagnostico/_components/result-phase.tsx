@@ -7,7 +7,6 @@ import {
   formatBRL,
   getTier,
   type LeadData,
-  type TierInfo,
 } from "../_lib/data";
 
 interface ResultPhaseProps {
@@ -235,8 +234,6 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
           <div className="space-y-3">
             {aiBlocks.length > 1 ? (
               aiBlocks.map((block, i) => {
-                // First block = intro, last block = closing, middle = content
-                const isIntro = i === 0;
                 const isClosing = i === aiBlocks.length - 1;
                 const isDiagnostic = i === 1;
 

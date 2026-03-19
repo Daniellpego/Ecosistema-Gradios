@@ -5,7 +5,6 @@ import {
   QUESTIONS,
   CATEGORY_TRANSITIONS,
   calculatePartialScore,
-  type Question,
   type CategoryTransition,
 } from "../_lib/data";
 

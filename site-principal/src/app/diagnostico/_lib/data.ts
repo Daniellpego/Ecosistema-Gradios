@@ -287,7 +287,6 @@ export function getTier(score: number): TierInfo {
 
 /** Calculate partial score from current answers (for live progress) */
 export function calculatePartialScore(answers: Record<string, number[]>): number {
-  const totalQuestions = QUESTIONS.filter((q) => q.scores !== null).length; // 6 scored questions
   let answeredScored = 0;
   let raw = 0;
 
