@@ -427,39 +427,50 @@ export default function DiagnosticoPage() {
 
       const sectorCtx = SECTOR_CONTEXT[setor] || SECTOR_CONTEXT["Outro"];
 
-      const systemPrompt = `Você é consultor sênior de automação da Gradios, empresa de Londrina, PR, especializada em automação de processos, integrações e software sob medida.
-Escreva um diagnóstico personalizado e cirúrgico para este lead. Nada genérico.
+      const systemPrompt = `Você é o Gustavo, sócio da Gradios. Londrina, PR. Automação de processos, integrações sob medida, software custom. Você fala como um cara técnico que entende de negócio — direto, sem firula, com autoridade.
 
-PERFIL:
-- Nome: ${lead.nome.split(" ")[0]} — use apenas o primeiro nome
+DADOS DO LEAD (use TODOS no texto, não invente nada):
+- Nome: ${lead.nome.split(" ")[0]}
 - Empresa: ${lead.empresa}
-- Cidade: ${city || "não detectada"}
+- Cidade: ${city || "não informada"}
 - Cargo: ${answers.cargo?.[0] != null ? QUESTIONS[0].opcoes[answers.cargo[0]] : "Não informado"}
-- Porte: ${answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "Não informado"}
+- Porte: ${answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "Não informado"} colaboradores
 - Setor: ${setor}
-- Gargalos: ${gargalosLabels}
+- Gargalos marcados: ${gargalosLabels}
 - Processos manuais: ${answers.processos?.[0] != null ? QUESTIONS[4].opcoes[answers.processos[0]] : "Não informado"}
-- Sistemas desconectados: ${answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : "Não informado"}
-- Tempo perdido: ${tempoExpandido}
-- Impactos: ${impactosLabels}
+- Sistemas que não conversam: ${answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : "Não informado"}
+- Tempo perdido em retrabalho: ${tempoExpandido}
+- Impactos reais: ${impactosLabels}
 - Urgência: ${answers.urgencia?.[0] != null ? QUESTIONS[8].opcoes[answers.urgencia[0]] : "Não informado"}
 - Prioridade: ${answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : "Não informado"}
 - Score: ${finalScore}/100
 
-CONTEXTO DO SETOR (use para personalizar o diagnóstico):
+CONTEXTO REAL DO SETOR (referência para o diagnóstico):
 ${sectorCtx}
 
-ESTRUTURA OBRIGATÓRIA — 4 parágrafos, linha em branco entre cada, sem títulos, sem markdown, sem asteriscos:
+FORMATO — texto corrido, 5 blocos separados por linha em branco. Sem markdown. Sem asteriscos. Sem bullet points. Sem títulos.
 
-Parágrafo 1 (2 frases): chame pelo primeiro nome, mencione a cidade de forma natural se disponível, diga que analisou as respostas da empresa. Tom: colega de confiança.
+BLOCO 1 — ABERTURA (2 frases):
+Chame pelo primeiro nome. Mencione a cidade se disponível. Diga que cruzou os dados da ${lead.empresa} e o resultado é claro. Tom: direto, como se já conhecesse a empresa. Não diga "obrigado por responder".
 
-Parágrafo 2 (3-4 bullets com •): achados com os dados REAIS — inclua as horas/mês, os sistemas desconectados, as áreas marcadas como gargalo. Números concretos.
+BLOCO 2 — DIAGNÓSTICO CIRÚRGICO (3-4 frases):
+Vá direto nos problemas. Cite os gargalos EXATOS que o lead marcou, os ${tempoExpandido} de retrabalho, os sistemas desconectados. Use números reais das respostas. Explique o custo invisível disso — horas desperdiçadas, decisões atrasadas, operação frágil. Fale como quem já viu esse cenário 50 vezes.
 
-Parágrafo 3 (2 frases): diagnóstico do setor específico — o que empresas similares ganham ao automatizar os gargalos identificados. Use o contexto do setor acima.
+BLOCO 3 — CONTEXTO DO SETOR (2 frases):
+Compare com empresas parecidas do mesmo setor. Cite resultados reais que a Gradios entrega (use o contexto do setor acima). Números concretos — % de redução, horas economizadas.
 
-Parágrafo 4 (1 frase): diga que a equipe da Gradios vai entrar em contato nas próximas horas para uma conversa de 30 minutos.
+BLOCO 4 — O QUE A GRADIOS FARIA (2-3 frases):
+Baseado na prioridade "${answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : "não definida"}", diga EXATAMENTE o que a Gradios faria primeiro. Seja específico — qual sistema conectar com qual, qual processo automatizar, que tipo de dashboard montar. Nada vago.
 
-PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "alavancar", "potencializar", "ecossistema", linguagem corporativa vaga. Máximo 220 palavras.`;
+BLOCO 5 — FECHAMENTO (1 frase):
+Diga que nos próximos dias a equipe vai entrar em contato para uma conversa rápida de 30 minutos — sem compromisso, sem proposta, só entender o cenário de perto.
+
+REGRAS ABSOLUTAS:
+- Máximo 280 palavras
+- PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "alavancar", "potencializar", "ecossistema", "revolucionar", "otimizar", "sinergia", "robusto", "escalável", "holístico", "paradigma", "agregar valor". Se usar qualquer uma dessas palavras, o diagnóstico é descartado.
+- NÃO comece frases com "Com base nas suas respostas" ou "Analisando o questionário"
+- Tom: consultor que cobra caro e fala pouco. Cada frase tem que ter peso.
+- Use vírgulas curtas. Frases diretas. Parece conversa de bar entre dois donos de empresa, não relatório corporativo.`;
 
       try {
         const res = await fetch("/api/diagnostico", {
@@ -630,15 +641,16 @@ PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "ala
     // Start AI stream in parallel
     startAiStream(finalScore);
 
-    // Animated loading steps
-    const steps = [0, 1, 2, 3];
-    for (const step of steps) {
-      setLoadingStep(step);
-      await new Promise((r) => setTimeout(r, 950));
+    // Animated loading steps (5 steps with varied timing for realism)
+    const stepTimings = [800, 1100, 900, 1000, 1200];
+    for (let i = 0; i < stepTimings.length; i++) {
+      setLoadingStep(i);
+      await new Promise((r) => setTimeout(r, stepTimings[i]));
     }
+    setLoadingStep(5); // mark last step as complete
 
-    // Move to result after all steps
-    await new Promise((r) => setTimeout(r, 600));
+    // Brief pause before reveal
+    await new Promise((r) => setTimeout(r, 800));
     setPhase("result");
   }
 
@@ -649,10 +661,14 @@ PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "ala
      RENDER
      ════════════════════════════════════════════════════════════ */
 
+  const isDarkPhase = phase === "loading" || phase === "result";
+
   return (
-    <section className="relative z-10 min-h-screen">
+    <section className={`relative z-10 min-h-screen transition-colors duration-700 ${isDarkPhase ? "bg-[#080E1A]" : ""}`}
+      style={isDarkPhase ? { background: "linear-gradient(180deg, #080E1A 0%, #0A1628 30%, #0F1D32 100%)" } : undefined}
+    >
       {/* Top gradient accent line */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-primary" />
+      {!isDarkPhase && <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-primary" />}
 
       <div className="max-w-2xl mx-auto px-4 py-12 sm:py-20">
         {/* ═══ INTRO ═══ */}
@@ -948,242 +964,324 @@ PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "ala
 
         {/* ═══ LOADING ═══ */}
         {phase === "loading" && (
-          <div className="animate-fade-slide-up text-center">
-            <div className="flex flex-col items-center">
-              {/* Spinner with gradient ring */}
-              <div className="w-20 h-20 rounded-full p-[3px] bg-gradient-primary mb-8 animate-float">
-                <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full border-[3px] border-card-border border-t-secondary animate-spin" />
-                </div>
+          <div className="animate-fade-slide-up">
+            <div className="loading-container">
+              {/* Background effects */}
+              <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-20 animate-pulse" style={{ background: "radial-gradient(circle, #00BFFF, transparent 70%)" }} />
               </div>
 
-              <p className="text-xl font-black text-text">Analisando</p>
-              <p className="text-primary font-semibold text-lg">{lead.empresa}</p>
-              {city && <p className="text-text-muted text-sm mt-1">{city}</p>}
+              <div className="relative z-10 flex flex-col items-center text-center">
+                {/* Animated scanner ring */}
+                <div className="w-24 h-24 mb-8 relative">
+                  <div className="absolute inset-0 rounded-full border-2 border-[#1E293B]" />
+                  <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#00BFFF] animate-spin" style={{ animationDuration: "1.5s" }} />
+                  <div className="absolute inset-2 rounded-full border border-[#1E293B]" />
+                  <div className="absolute inset-2 rounded-full border border-transparent border-b-[#0A1B5C] animate-spin" style={{ animationDuration: "2.5s", animationDirection: "reverse" }} />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-3 h-3 rounded-full bg-[#00BFFF] animate-pulse" style={{ boxShadow: "0 0 20px #00BFFF60" }} />
+                  </div>
+                </div>
 
-              <div className="mt-8 space-y-4 text-left w-full max-w-sm">
-                {[
-                  "Identificando gargalos operacionais...",
-                  "Calculando impacto financeiro...",
-                  "Analisando perfil do setor...",
-                  "Gerando diagnóstico com IA...",
-                ].map((label, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-3 opacity-0 animate-fade-slide-up"
-                    style={{ animationDelay: `${0.1 + idx * 0.15}s` }}
-                  >
-                    {loadingStep > idx ? (
-                      <div className="w-7 h-7 rounded-full bg-brand-gradient flex items-center justify-center flex-shrink-0 shadow-sm shadow-primary/20">
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 14 14"
-                          fill="none"
-                        >
-                          <path
-                            d="M3 7L6 10L11 4"
-                            stroke="white"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    ) : loadingStep === idx ? (
-                      <div className="w-7 h-7 rounded-full border-2 border-secondary border-t-transparent animate-spin flex-shrink-0" />
-                    ) : (
-                      <div className="w-7 h-7 rounded-full border-2 border-card-border flex-shrink-0" />
-                    )}
-                    <span
-                      className={`text-sm transition-all duration-300 ${
-                        loadingStep >= idx
-                          ? "text-text font-medium"
-                          : "text-text-muted"
+                <p className="text-white text-xl sm:text-2xl font-black mb-1" style={{ letterSpacing: "-0.02em" }}>
+                  Analisando {lead.empresa}
+                </p>
+                {city && <p className="text-[#64748B] text-sm mb-8">{city}</p>}
+                {!city && <div className="mb-8" />}
+
+                {/* Steps */}
+                <div className="space-y-3 w-full max-w-sm text-left">
+                  {[
+                    { label: "Mapeando gargalos operacionais", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
+                    { label: "Calculando custo invisível do retrabalho", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" },
+                    { label: "Cruzando dados com empresas do setor", icon: "M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" },
+                    { label: "Consultando base de soluções aplicáveis", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 2h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 8.172V3L8 2z" },
+                    { label: "Gerando diagnóstico com IA da Gradios", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
+                  ].map((step, idx) => (
+                    <div
+                      key={idx}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-500 ${
+                        loadingStep > idx
+                          ? "bg-[#10B981]/10 border border-[#10B981]/20"
+                          : loadingStep === idx
+                          ? "bg-[#00BFFF]/10 border border-[#00BFFF]/20"
+                          : "bg-[#0F172A]/50 border border-[#1E293B]"
                       }`}
                     >
-                      {label}
-                    </span>
-                  </div>
-                ))}
+                      {loadingStep > idx ? (
+                        <div className="w-7 h-7 rounded-full bg-[#10B981] flex items-center justify-center flex-shrink-0">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 7L6 10L11 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </div>
+                      ) : loadingStep === idx ? (
+                        <div className="w-7 h-7 rounded-full border-2 border-[#00BFFF] border-t-transparent animate-spin flex-shrink-0" />
+                      ) : (
+                        <div className="w-7 h-7 rounded-full border border-[#1E293B] flex items-center justify-center flex-shrink-0">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d={step.icon} />
+                          </svg>
+                        </div>
+                      )}
+                      <span className={`text-sm transition-all duration-300 ${
+                        loadingStep > idx ? "text-[#10B981] font-medium" :
+                        loadingStep === idx ? "text-white font-medium" :
+                        "text-[#475569]"
+                      }`}>
+                        {step.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {/* ═══ RESULT ═══ */}
-        {phase === "result" && (
-          <div className="animate-fade-slide-up space-y-6">
-            {/* Header card */}
-            <div className="bg-white border border-card-border rounded-card overflow-hidden shadow-sm">
-              <div className="h-1 bg-gradient-primary" />
-              <div className="p-6">
-                <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <span className="inline-flex items-center bg-primary/[0.08] text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide">
-                    Diagnóstico Gradios
-                  </span>
-                </div>
-                <p className="text-lg font-bold text-text">{lead.empresa}</p>
-                <div className="flex flex-wrap gap-x-4 text-sm text-text-muted mt-1">
-                  {city && <span>{city}</span>}
-                  <span>{lead.email}</span>
-                </div>
+        {phase === "result" && (() => {
+          const setor = answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "Não informado";
+          const gargalosTexts = answers.gargalos?.map((i) => QUESTIONS[3].opcoes[i]) || [];
+          const impactosTexts = answers.impactos?.map((i) => QUESTIONS[7].opcoes[i]) || [];
+          const tempoLabel = answers.tempo?.[0] != null ? QUESTIONS[6].opcoes[answers.tempo[0]] : null;
+          const horasMes = answers.tempo?.[0] != null ? ["~20h", "~40-60h", "~65-160h", "+160h"][answers.tempo[0]] : null;
+          const sistemasLabel = answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : null;
+          const processosLabel = answers.processos?.[0] != null ? QUESTIONS[4].opcoes[answers.processos[0]] : null;
+          const prioridadeLabel = answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : null;
+          const circumference = 2 * Math.PI * 54;
+          const strokeOffset = circumference - (circumference * animatedScore) / 100;
+
+          return (
+          <div className="result-container">
+            {/* ── HERO: Dark diagnostic header ── */}
+            <div className="result-hero animate-fade-slide-up" style={{ animationDelay: "0s" }}>
+              <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full opacity-10" style={{ background: `radial-gradient(circle, ${tierInfo.color}, transparent 70%)` }} />
+                <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full opacity-10" style={{ background: `radial-gradient(circle, #00BFFF, transparent 70%)` }} />
               </div>
-            </div>
 
-            {/* Score card */}
-            <div className="bg-white border border-card-border rounded-card overflow-hidden shadow-sm">
-              <div
-                className="h-1"
-                style={{
-                  background: `linear-gradient(90deg, ${tierInfo.color}, ${tierInfo.color}88)`,
-                }}
-              />
-              <div className="p-6">
-                <div className="flex items-end gap-4 mb-4">
-                  <span
-                    className="text-6xl font-black leading-none"
-                    style={{ color: tierInfo.color }}
-                  >
-                    {animatedScore}
-                  </span>
-                  <span className="text-2xl text-text-muted font-bold mb-1">
-                    /100
-                  </span>
-                </div>
+              <div className="relative z-10">
+                <p className="text-[#00BFFF] text-xs font-semibold tracking-[0.2em] uppercase mb-6">Diagnóstico Gradios</p>
 
-                {/* Progress bar */}
-                <div className="w-full h-3 bg-card-border rounded-full overflow-hidden mb-3">
-                  <div
-                    className="h-full rounded-full transition-all duration-1000 ease-out"
-                    style={{
-                      width: `${animatedScore}%`,
-                      backgroundColor: tierInfo.color,
-                    }}
-                  />
-                </div>
-
-                <div className="flex justify-between items-center mb-4">
-                  <span
-                    className="text-sm font-bold px-3 py-1 rounded-pill"
-                    style={{
-                      color: tierInfo.color,
-                      backgroundColor: `${tierInfo.color}15`,
-                    }}
-                  >
-                    {tierInfo.label}
-                  </span>
-                  <div className="flex gap-1 text-[10px] text-text-muted">
-                    <span>Em desenvolvimento</span>
-                    <span>→</span>
-                    <span>Potencial alto</span>
-                  </div>
-                </div>
-
-                {/* Tier action indicator */}
-                {tierInfo.tier === "A" && (
-                  <div className="rounded-card bg-[#16a34a]/10 border border-[#16a34a]/20 px-4 py-3 text-sm text-[#16a34a] font-medium">
-                    Perfil qualificado — contato em até 2 horas
-                  </div>
-                )}
-                {tierInfo.tier === "B" && (
-                  <div className="rounded-card bg-[#d97706]/10 border border-[#d97706]/20 px-4 py-3 text-sm text-[#d97706] font-medium">
-                    Bom potencial — contato ainda hoje
-                  </div>
-                )}
-                {tierInfo.tier === "C" && (
-                  <div className="rounded-card bg-primary/10 border border-primary/20 px-4 py-3 text-sm text-primary font-medium">
-                    Potencial inicial — contato em 24h
-                  </div>
-                )}
-                {tierInfo.tier === "D" && (
-                  <div className="rounded-card bg-text-muted/10 border border-text-muted/20 px-4 py-3 text-sm text-text-muted font-medium">
-                    Fase de mapeamento — enviaremos conteúdo
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* AI Diagnosis */}
-            <div className="bg-white border border-card-border rounded-card overflow-hidden shadow-sm">
-              <div className="h-1 bg-gradient-primary" />
-              <div className="p-6">
-                <p
-                  className="text-sm text-text leading-relaxed"
-                  style={{ whiteSpace: "pre-wrap" }}
-                >
-                  {aiText}
-                  {aiText && !aiText.endsWith(".") && (
-                    <span className="inline-block w-0.5 h-4 bg-brand-gradient ml-0.5 animate-pulse align-middle" />
-                  )}
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight mb-2" style={{ letterSpacing: "-0.03em" }}>
+                  {lead.nome.split(" ")[0]}, seu diagnóstico<br />está pronto.
+                </h1>
+                <p className="text-[#94A3B8] text-sm sm:text-base">
+                  {lead.empresa}{city ? ` · ${city}` : ""} · {setor}
                 </p>
-                {!aiText && (
-                  <div className="flex items-center gap-2 text-text-muted text-sm">
-                    <div className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
-                    Gerando diagnóstico...
+
+                {/* Circular Score Gauge */}
+                <div className="mt-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
+                  <div className="relative w-36 h-36 flex-shrink-0">
+                    <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="54" fill="none" stroke="#1E293B" strokeWidth="8" />
+                      <circle
+                        cx="60" cy="60" r="54" fill="none"
+                        stroke={tierInfo.color}
+                        strokeWidth="8"
+                        strokeLinecap="round"
+                        strokeDasharray={circumference}
+                        strokeDashoffset={strokeOffset}
+                        className="gauge-ring"
+                        style={{ filter: `drop-shadow(0 0 8px ${tierInfo.color}60)` }}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-4xl font-black text-white leading-none">{animatedScore}</span>
+                      <span className="text-xs text-[#64748B] font-medium">/100</span>
+                    </div>
+                  </div>
+
+                  <div className="text-center sm:text-left">
+                    <span
+                      className="inline-block text-sm font-bold px-4 py-1.5 rounded-pill mb-3"
+                      style={{ color: tierInfo.color, backgroundColor: `${tierInfo.color}20`, border: `1px solid ${tierInfo.color}40` }}
+                    >
+                      {tierInfo.label}
+                    </span>
+                    <p className="text-[#CBD5E1] text-sm max-w-xs">
+                      {tierInfo.tier === "A" && "Sua operação tem alto potencial de automação. Os gargalos são claros e o retorno é rápido."}
+                      {tierInfo.tier === "B" && "Identificamos gargalos concretos. Com as automações certas, o ganho operacional é significativo."}
+                      {tierInfo.tier === "C" && "Existem oportunidades iniciais de automação que já trariam resultado no curto prazo."}
+                      {tierInfo.tier === "D" && "O momento é de mapeamento. Quando decidir automatizar, o caminho já vai estar claro."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── DATA CARDS: Show their own data back ── */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.2s" }}>
+              {horasMes && (
+                <div className="result-data-card col-span-2 sm:col-span-1">
+                  <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Retrabalho/mês</p>
+                  <p className="text-2xl sm:text-3xl font-black text-white mt-1">{horasMes}</p>
+                  <p className="text-[#EF4444] text-xs font-medium mt-1">desperdiçadas</p>
+                </div>
+              )}
+              {sistemasLabel && (
+                <div className="result-data-card">
+                  <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Sistemas</p>
+                  <p className="text-lg font-bold text-white mt-1">{sistemasLabel}</p>
+                  <p className="text-[#F59E0B] text-xs font-medium mt-1">desconectados</p>
+                </div>
+              )}
+              {processosLabel && (
+                <div className="result-data-card">
+                  <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Processos manuais</p>
+                  <p className="text-lg font-bold text-white mt-1">{processosLabel}</p>
+                  <p className="text-[#F59E0B] text-xs font-medium mt-1">dependem de digitação</p>
+                </div>
+              )}
+            </div>
+
+            {/* ── BOTTLENECKS ── */}
+            {gargalosTexts.length > 0 && (
+              <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.35s" }}>
+                <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Gargalos identificados</p>
+                <div className="flex flex-wrap gap-2">
+                  {gargalosTexts.map((g, i) => (
+                    <span key={i} className="inline-flex items-center gap-1.5 bg-[#EF4444]/10 border border-[#EF4444]/20 text-[#FCA5A5] text-xs font-medium px-3 py-1.5 rounded-pill">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#EF4444]" />
+                      {g.split(" — ")[0]}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── IMPACTS ── */}
+            {impactosTexts.length > 0 && (
+              <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.45s" }}>
+                <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Impactos na operação</p>
+                <div className="flex flex-wrap gap-2">
+                  {impactosTexts.map((imp, i) => (
+                    <span key={i} className="inline-flex items-center gap-1.5 bg-[#F59E0B]/10 border border-[#F59E0B]/20 text-[#FCD34D] text-xs font-medium px-3 py-1.5 rounded-pill">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
+                      {imp}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── AI DIAGNOSIS ── */}
+            <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.55s" }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0A1B5C] to-[#00BFFF] flex items-center justify-center flex-shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-white text-sm font-bold">Análise da Gradios</p>
+                  <p className="text-[#64748B] text-[10px]">Gerado por IA com dados reais da sua operação</p>
+                </div>
+              </div>
+
+              <div className="bg-[#0F172A] border border-[#1E293B] rounded-2xl p-5 sm:p-6">
+                {aiText ? (
+                  <p className="text-[#CBD5E1] text-sm sm:text-base leading-relaxed" style={{ whiteSpace: "pre-wrap" }}>
+                    {aiText}
+                    {!aiText.endsWith(".") && (
+                      <span className="inline-block w-0.5 h-4 ml-0.5 animate-pulse align-middle" style={{ background: "linear-gradient(to bottom, #00BFFF, #0A1B5C)" }} />
+                    )}
+                  </p>
+                ) : (
+                  <div className="flex items-center gap-3 text-[#64748B] text-sm">
+                    <div className="w-4 h-4 border-2 border-[#00BFFF] border-t-transparent rounded-full animate-spin" />
+                    Gerando diagnóstico personalizado...
                   </div>
                 )}
               </div>
             </div>
 
-            {/* CTA */}
-            <div className="bg-white border border-card-border rounded-card overflow-hidden shadow-sm">
-              <div className="h-1 bg-gradient-primary" />
-              <div className="p-6 text-center">
-                {tierInfo.tier === "A" && (
-                  <>
-                    <p className="text-lg font-bold text-text mb-2">Nossa equipe entra em contato nas próximas 2 horas</p>
-                    <p className="text-sm text-text-muted mb-5">
-                      {lead.nome.split(" ")[0]}, seu perfil indica urgência real e alto potencial de automação. Um especialista da Gradios vai te ligar nas próximas 2 horas para mapear por onde começar — sem proposta pronta, sem enrolação.
-                    </p>
-                  </>
-                )}
-                {tierInfo.tier === "B" && (
-                  <>
-                    <p className="text-lg font-bold text-text mb-2">Nossa equipe entra em contato ainda hoje</p>
-                    <p className="text-sm text-text-muted mb-5">
-                      {lead.nome.split(" ")[0]}, sua operação tem gargalos claros e perfil adequado para automação. Um especialista da Gradios vai entrar em contato ainda hoje para entender melhor o seu cenário antes de propor qualquer coisa.
-                    </p>
-                  </>
-                )}
-                {tierInfo.tier === "C" && (
-                  <>
-                    <p className="text-lg font-bold text-text mb-2">Nossa equipe entra em contato nas próximas 24 horas</p>
-                    <p className="text-sm text-text-muted mb-5">
-                      {lead.nome.split(" ")[0]}, você está no início — e já identificamos áreas importantes para trabalhar. Um especialista entra em contato nas próximas 24 horas com material específico para o setor de {answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "sua empresa"}.
-                    </p>
-                  </>
-                )}
-                {tierInfo.tier === "D" && (
-                  <>
-                    <p className="text-lg font-bold text-text mb-2">Vamos te enviar conteúdo prático sobre automação</p>
-                    <p className="text-sm text-text-muted mb-5">
-                      {lead.nome.split(" ")[0]}, pelo diagnóstico, o momento ideal ainda está chegando — e quando chegar, você vai querer já ter mapeado o caminho. Vamos te enviar conteúdo sobre automação para empresas de {answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "seu setor"}.
-                    </p>
-                  </>
-                )}
+            {/* ── PRIORITY ── */}
+            {prioridadeLabel && (
+              <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.65s" }}>
+                <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Sua prioridade</p>
+                <div className="bg-[#00BFFF]/10 border border-[#00BFFF]/20 rounded-2xl p-4 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#00BFFF]/20 flex items-center justify-center flex-shrink-0">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-white text-sm font-bold">{prioridadeLabel}</p>
+                    <p className="text-[#64748B] text-xs">É por aqui que a Gradios começaria</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
-                <a
-                  href={`https://wa.me/5543988372540?text=${encodeURIComponent(
-                    tierInfo.tier === "A"
-                      ? `Oi! Fiz o diagnóstico da Gradios agora mesmo. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100 — Tier A. Aguardo o contato!`
-                      : tierInfo.tier === "B"
-                      ? `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Podem me ligar ainda hoje?`
-                      : `Oi! Fiz o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Quero saber mais sobre automação para ${answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "meu setor"}.`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-[#25D366] text-white rounded-pill px-6 py-3 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#25D366]/25 transition-all duration-300"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
-                  Falar no WhatsApp
-                </a>
+            {/* ── CTA ── */}
+            <div className="result-cta opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.75s" }}>
+              <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #00BFFF, transparent 70%)" }} />
+              </div>
+
+              <div className="relative z-10 text-center">
+                <p className="text-white text-xl sm:text-2xl font-black mb-2" style={{ letterSpacing: "-0.02em" }}>
+                  {tierInfo.tier === "A" ? "Próximo passo: conversa de 30 min" :
+                   tierInfo.tier === "B" ? "Vamos mapear o caminho" :
+                   tierInfo.tier === "C" ? "Quer entender melhor?" :
+                   "Conteúdo prático no seu e-mail"}
+                </p>
+                <p className="text-[#94A3B8] text-sm max-w-md mx-auto mb-6">
+                  {tierInfo.tier === "A"
+                    ? `${lead.nome.split(" ")[0]}, seu perfil indica urgência real. Um especialista da Gradios entra em contato nas próximas horas — sem proposta pronta, só diagnóstico de perto.`
+                    : tierInfo.tier === "B"
+                    ? `${lead.nome.split(" ")[0]}, os gargalos são claros. Se quiser antecipar, manda um oi no WhatsApp que a gente agenda uma conversa rápida.`
+                    : tierInfo.tier === "C"
+                    ? `${lead.nome.split(" ")[0]}, já identificamos por onde começar. Fala com a gente quando quiser — sem compromisso.`
+                    : `${lead.nome.split(" ")[0]}, vamos te enviar material específico para ${setor}. Quando fizer sentido, a gente conversa.`
+                  }
+                </p>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href={`https://wa.me/5543988372540?text=${encodeURIComponent(
+                      tierInfo.tier === "A"
+                        ? `Oi! Fiz o diagnóstico da Gradios agora mesmo. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100 — Tier A. Aguardo o contato!`
+                        : tierInfo.tier === "B"
+                        ? `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Podem me ligar ainda hoje?`
+                        : `Oi! Fiz o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Quero saber mais sobre automação para ${setor}.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 bg-[#25D366] text-white rounded-pill px-7 py-3.5 font-bold hover:bg-[#20BD5A] hover:shadow-lg hover:shadow-[#25D366]/30 transition-all duration-300 text-sm"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    Falar com a Gradios
+                  </a>
+
+                  <button
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({ title: `Diagnóstico ${lead.empresa} — Gradios`, text: `Fiz o diagnóstico de automação da Gradios e tirei ${score}/100. Confira:`, url: window.location.href });
+                      } else {
+                        navigator.clipboard.writeText(window.location.href);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 text-[#94A3B8] hover:text-white border border-[#1E293B] hover:border-[#334155] rounded-pill px-6 py-3.5 font-medium transition-all duration-300 text-sm"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
+                    </svg>
+                    Compartilhar resultado
+                  </button>
+                </div>
+
+                <p className="text-[#475569] text-xs mt-6">
+                  Diagnóstico gerado em {new Date().toLocaleDateString("pt-BR")} · Dados protegidos · Gradios © {new Date().getFullYear()}
+                </p>
               </div>
             </div>
           </div>
-        )}
+          );
+        })()}
       </div>
     </section>
   );
