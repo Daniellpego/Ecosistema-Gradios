@@ -508,6 +508,28 @@ class JarvisResponse(BaseModel):
     session_id: str
 
 
+class NovoLeadPayload(BaseModel):
+    """Payload recebido do webhook Supabase quando quiz_leads recebe INSERT."""
+    lead: dict
+
+
+class DadosLead(BaseModel):
+    """Dados do lead para gerar proposta (quando nao tem lead_id)."""
+    nome: str
+    empresa: str
+    segmento: str = "Nao informado"
+    dor_principal: str = "Nao informado"
+    score: int = 0
+
+
+class GerarPropostaPayload(BaseModel):
+    """Payload para gerar proposta comercial."""
+    lead_id: Optional[int] = None
+    dados_lead: Optional[DadosLead] = None
+    valor_estimado: float = 5000.0
+    servicos: list[str] = []
+
+
 # ─── App ────────────────────────────────────────────────────────────
 app = FastAPI(
     title="GRADIOS JARVIS API",
@@ -981,6 +1003,305 @@ async def crm_leads_analysis() -> dict:
     return {
         "pipeline": pipeline,
         "analise_ia": response_text,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+# ─── Webhook: Novo lead do quiz → analise CRM automatica ──────────
+
+def classificar_lead(score: int) -> dict:
+    """Classifica lead por score do quiz em tier A/B/C/D."""
+    if score >= 75:
+        return {"tier": "A", "label": "Quente", "prioridade": "imediata", "sla_horas": 2}
+    if score >= 55:
+        return {"tier": "B", "label": "Morno-quente", "prioridade": "alta", "sla_horas": 6}
+    if score >= 40:
+        return {"tier": "C", "label": "Morno", "prioridade": "media", "sla_horas": 24}
+    return {"tier": "D", "label": "Frio", "prioridade": "baixa", "sla_horas": 72}
+
+
+@app.post("/jarvis/crm/novo-lead")
+async def crm_novo_lead(payload: NovoLeadPayload) -> dict:
+    """Recebe novo lead do quiz e gera analise CRM automatica.
+
+    Chamado pelo webhook/trigger do Supabase quando INSERT em quiz_leads.
+    Gera: script de abordagem, classificacao, proxima acao.
+    Salva em jarvis_studies e jarvis_memory.
+    """
+    lead = payload.lead
+    nome = lead.get("nome", "Lead desconhecido")
+    empresa = lead.get("empresa", "Empresa nao informada")
+    email = lead.get("email", "")
+    score = int(lead.get("score", 0) or 0)
+    segmento = lead.get("setor") or lead.get("segmento", "Nao informado")
+    dor = lead.get("dor_principal") or lead.get("gargalos", "Nao informado")
+    urgencia = lead.get("urgencia", "Nao informado")
+    cargo = lead.get("cargo", "Nao informado")
+    tamanho = lead.get("tamanho", "Nao informado")
+    whatsapp = lead.get("whatsapp", "")
+
+    # Classificacao
+    tier = classificar_lead(score)
+
+    # Contexto para o agent CRM
+    lead_context = (
+        f"NOVO LEAD DO QUIZ — ANALISE URGENTE\n\n"
+        f"DADOS DO LEAD:\n"
+        f"- Nome: {nome}\n"
+        f"- Empresa: {empresa}\n"
+        f"- Email: {email}\n"
+        f"- WhatsApp: {whatsapp or 'nao informado'}\n"
+        f"- Cargo: {cargo}\n"
+        f"- Tamanho empresa: {tamanho}\n"
+        f"- Segmento: {segmento}\n"
+        f"- Dor principal: {dor}\n"
+        f"- Urgencia: {urgencia}\n"
+        f"- Score quiz: {score}/100\n"
+        f"- Classificacao: Tier {tier['tier']} ({tier['label']})\n"
+        f"- SLA contato: {tier['sla_horas']} horas\n"
+    )
+
+    system = AGENTS["crm"]["system"] + f"\n\n{lead_context}"
+    messages = [{"role": "user", "content": (
+        f"Novo lead acabou de entrar pelo quiz: {nome} da {empresa}, "
+        f"score {score}/100 (Tier {tier['tier']}), segmento {segmento}.\n\n"
+        "Gere EXATAMENTE nesta estrutura:\n\n"
+        "1. CLASSIFICACAO E DIAGNOSTICO\n"
+        "   - Tier e justificativa\n"
+        "   - Potencial estimado de projeto\n"
+        "   - Probabilidade de fechamento\n\n"
+        "2. SCRIPT WHATSAPP (pronto para copiar e enviar)\n"
+        "   - Primeira mensagem personalizada\n"
+        "   - Segunda mensagem caso nao responda em 24h\n\n"
+        "3. SCRIPT EMAIL (pronto para enviar)\n"
+        "   - Subject line\n"
+        "   - Corpo do email\n\n"
+        "4. PROXIMA ACAO\n"
+        "   - O que fazer agora\n"
+        "   - Follow-up em quantos dias\n"
+        "   - Quem deve abordar (Daniel/Gustavo)\n\n"
+        "Use os dados reais do lead. Nada generico."
+    )}]
+
+    # Session ID unico para esse lead
+    session_id = str(uuid.uuid4())
+
+    try:
+        response_text = ""
+        async for chunk in call_ollama(system, messages):
+            response_text += chunk
+    except Exception as e:
+        logger.error("Erro ao analisar novo lead %s: %s", nome, e)
+        raise HTTPException(502, f"Erro ao gerar analise: {e}")
+
+    # Salva em jarvis_studies
+    await sb.insert("jarvis_studies", {
+        "title": f"Analise novo lead: {nome} ({empresa}) — Tier {tier['tier']}",
+        "agent": "crm",
+        "content": response_text,
+        "summary": f"Score {score}/100 | Tier {tier['tier']} | {segmento} | SLA {tier['sla_horas']}h",
+        "tags": [f"tier-{tier['tier'].lower()}", segmento.lower(), "quiz-lead", "auto-generated"],
+        "status": "completo",
+    })
+
+    # Salva em jarvis_memory para historico
+    await save_message(
+        session_id=session_id,
+        agent="crm",
+        user_message=f"[WEBHOOK] Novo lead do quiz: {nome} ({empresa}), score {score}, {segmento}",
+        agent_response=response_text,
+    )
+
+    logger.info(
+        "Novo lead analisado: %s (%s) — Tier %s — Score %d",
+        nome, empresa, tier["tier"], score,
+    )
+
+    return {
+        "status": "ok",
+        "lead": {
+            "nome": nome,
+            "empresa": empresa,
+            "email": email,
+            "score": score,
+            "segmento": segmento,
+        },
+        "classificacao": tier,
+        "analise_ia": response_text,
+        "session_id": session_id,
+        "saved_to": ["jarvis_studies", "jarvis_memory"],
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+# ─── Gerar proposta comercial com 1 clique ────────────────────────
+
+@app.post("/jarvis/crm/gerar-proposta")
+async def crm_gerar_proposta(payload: GerarPropostaPayload) -> dict:
+    """Gera proposta comercial completa em markdown usando agents Copy + CRM.
+
+    Busca dados do lead no Supabase (se lead_id informado) ou usa dados_lead.
+    Salva proposta na tabela crm_proposals com status draft.
+    """
+    import time
+    t0 = time.perf_counter()
+
+    # ── 1. Resolver dados do lead ──────────────────────────────────
+    nome = ""
+    empresa = ""
+    segmento = ""
+    dor = ""
+    lead_score = 0
+
+    if payload.lead_id and sb.enabled:
+        # Busca lead real no Supabase
+        rows = await sb.select(
+            "leads",
+            columns="id,nome,empresa,segmento,dor_principal,score,whatsapp",
+            filters={"id": f"eq.{payload.lead_id}"},
+            limit=1,
+        )
+        if rows:
+            lead = rows[0]
+            nome = lead.get("nome", "")
+            empresa = lead.get("empresa", "")
+            segmento = lead.get("segmento", "")
+            dor = lead.get("dor_principal", "")
+            lead_score = int(lead.get("score", 0) or 0)
+
+    # Fallback para dados_lead do payload
+    if not nome and payload.dados_lead:
+        nome = payload.dados_lead.nome
+        empresa = payload.dados_lead.empresa
+        segmento = payload.dados_lead.segmento
+        dor = payload.dados_lead.dor_principal
+        lead_score = payload.dados_lead.score
+
+    if not nome or not empresa:
+        raise HTTPException(400, "Informe lead_id ou dados_lead com nome e empresa")
+
+    # ── 2. Calcular opcoes de valor ────────────────────────────────
+    valor_base = payload.valor_estimado
+    valor_essencial = round(valor_base * 0.65, 2)
+    valor_completo = round(valor_base, 2)
+    valor_premium = round(valor_base * 1.45, 2)
+
+    servicos_texto = ", ".join(payload.servicos) if payload.servicos else "automacao de processos"
+
+    # ── 3. Montar prompt para agent Copy ───────────────────────────
+    system = AGENTS["copy"]["system"] + (
+        "\n\nMISSAO ESPECIFICA: Gerar proposta comercial completa em markdown.\n"
+        "Voce esta criando uma proposta real que sera enviada ao cliente.\n"
+        "Tom: profissional, direto, confiante. Sem exageros. Com numeros reais.\n"
+        "A GRADIOS entrega resultado em 2 semanas, sem contrato longo."
+    )
+
+    prompt = (
+        f"Gere uma proposta comercial COMPLETA em markdown para:\n\n"
+        f"LEAD:\n"
+        f"- Nome: {nome}\n"
+        f"- Empresa: {empresa}\n"
+        f"- Segmento: {segmento}\n"
+        f"- Dor principal: {dor}\n"
+        f"- Score quiz: {lead_score}/100\n"
+        f"- Servicos solicitados: {servicos_texto}\n\n"
+        f"VALORES PRE-CALCULADOS:\n"
+        f"- Opcao Essencial: R$ {valor_essencial:,.2f}\n"
+        f"- Opcao Completa: R$ {valor_completo:,.2f} (recomendada)\n"
+        f"- Opcao Premium: R$ {valor_premium:,.2f}\n\n"
+        f"ESTRUTURA OBRIGATORIA (em markdown):\n\n"
+        f"# Proposta Comercial — {empresa}\n\n"
+        f"## O Problema\n"
+        f"(2-3 paragrafos baseados na dor real do lead: '{dor}'. "
+        f"Especifico para o segmento {segmento}. Cite numeros e consequencias reais.)\n\n"
+        f"## Nossa Solucao\n"
+        f"(O que a GRADIOS vai entregar: {servicos_texto}. "
+        f"Explique como resolve cada dor mencionada. Seja concreto.)\n\n"
+        f"## Como Vamos Trabalhar\n"
+        f"**Fase 1 (Semana 1-2):** Diagnostico e configuracao\n"
+        f"**Fase 2 (Semana 3-4):** Implementacao e testes\n"
+        f"**Fase 3 (Semana 5-6):** Ajustes, entrega final e treinamento\n"
+        f"(Detalhe cada fase com entregas especificas para {empresa})\n\n"
+        f"## Investimento\n\n"
+        f"| Opcao | Escopo | Valor |\n"
+        f"|-------|--------|-------|\n"
+        f"| Essencial | Escopo basico — resolve a dor principal | R$ {valor_essencial:,.2f} |\n"
+        f"| **Completa** | **Escopo recomendado — resolve dor + integracao** | **R$ {valor_completo:,.2f}** |\n"
+        f"| Premium | Escopo completo + suporte 3 meses + treinamento | R$ {valor_premium:,.2f} |\n\n"
+        f"(Explique brevemente o que cada opcao inclui e exclui)\n\n"
+        f"## Por que a GRADIOS\n"
+        f"(3 diferenciais concretos. Sem cliche. Provas sociais reais.)\n\n"
+        f"## Proximo Passo\n"
+        f"(CTA direto com urgencia natural. Sugira agendar uma call de 30 min.)\n\n"
+        f"---\n"
+        f"*Proposta gerada por JARVIS — Gradios {datetime.now().strftime('%d/%m/%Y')}*\n\n"
+        f"IMPORTANTE: Retorne APENAS o markdown da proposta, sem explicacoes extras."
+    )
+
+    messages = [{"role": "user", "content": prompt}]
+
+    # ── 4. Gerar proposta via Ollama ───────────────────────────────
+    try:
+        response_text = ""
+        async for chunk in call_ollama(system, messages):
+            response_text += chunk
+    except Exception as e:
+        logger.error("Erro ao gerar proposta para %s: %s", empresa, e)
+        raise HTTPException(502, f"Erro ao gerar proposta: {e}")
+
+    tempo_ms = int((time.perf_counter() - t0) * 1000)
+
+    # ── 5. Salvar na tabela crm_proposals ──────────────────────────
+    proposta_data = {
+        "title": f"Proposta {empresa} — {servicos_texto[:50]}",
+        "value": valor_completo,
+        "status": "Rascunho",
+        "content": response_text,
+        "gerada_por": "jarvis",
+        "agent_usado": "copy",
+        "session_id": str(uuid.uuid4()),
+        "versao": 1,
+    }
+
+    # Vincula ao opportunity se existir
+    if payload.lead_id:
+        proposta_data["lead_id"] = payload.lead_id
+
+    saved = await sb.insert("crm_proposals", proposta_data)
+    proposta_id = saved.get("id") if saved else None
+
+    # Tambem salva como estudo em jarvis_studies
+    await sb.insert("jarvis_studies", {
+        "title": f"Proposta comercial: {empresa} — R$ {valor_completo:,.2f}",
+        "agent": "copy",
+        "content": response_text,
+        "summary": f"{servicos_texto} | Essencial R${valor_essencial:,.0f} | Completa R${valor_completo:,.0f} | Premium R${valor_premium:,.0f}",
+        "tags": ["proposta", segmento.lower(), "auto-generated"],
+        "status": "completo",
+    })
+
+    logger.info(
+        "Proposta gerada: %s (%s) — R$ %s — %dms",
+        empresa, segmento, f"{valor_completo:,.2f}", tempo_ms,
+    )
+
+    return {
+        "status": "ok",
+        "proposta_id": proposta_id,
+        "proposta_markdown": response_text,
+        "lead": {
+            "nome": nome,
+            "empresa": empresa,
+            "segmento": segmento,
+            "score": lead_score,
+        },
+        "valor_opcoes": {
+            "essencial": valor_essencial,
+            "completo": valor_completo,
+            "premium": valor_premium,
+        },
+        "tempo_geracao_ms": tempo_ms,
+        "saved_to": ["crm_proposals", "jarvis_studies"],
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
