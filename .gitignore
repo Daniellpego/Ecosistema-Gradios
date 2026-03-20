@@ -1,0 +1,24 @@
+node_modules/
+.next/
+.env
+.env.local
+__pycache__/
+*.pyc
+venv/
+.venv/
+ollama-models/
+*.egg-info/
+dist/
+build/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Docker volumes
+aiox/n8n-data/
+aiox/evolution-data/
+aiox/postgres-data/
+aiox/qrcode.png
+
+# Logs
+aiox/logs/

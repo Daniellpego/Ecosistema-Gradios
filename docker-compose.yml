@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: gradios-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - E:/gradios/ollama-models:/root/.ollama/models
+    environment:
+      - OLLAMA_MODELS=/root/.ollama/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  jarvis-api:
+    build:
+      context: ./gradios-jarvis
+      dockerfile: Dockerfile
+    container_name: gradios-jarvis-api
+    ports:
+      - "8001:8001"
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=qwen2.5:14b
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_KEY=${SUPABASE_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  gradios-ui:
+    build:
+      context: ./apps/gradios-ui
+      dockerfile: Dockerfile
+    container_name: gradios-ui
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_JARVIS_URL=http://localhost:8001
+    depends_on:
+      - jarvis-api
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: gradios-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+volumes:
+  redis-data:
