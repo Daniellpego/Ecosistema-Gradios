@@ -66,12 +66,12 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
     }
   }
 
+  const cargoLabel = answers.cargo?.[0] != null ? QUESTIONS[0].opcoes[answers.cargo[0]] : "profissional";
+  const tamanhoLabel = answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "vários";
+  const gargaloPrincipal = gargalosTexts.length > 0 ? gargalosTexts[0].split(" — ")[0] : null;
+  const horasSemana = answers.tempo?.[0] != null ? ["~3h", "~10h", "~28h", "50+"][answers.tempo[0]] : null;
   const whatsAppMsg = encodeURIComponent(
-    tierInfo.tier === "A"
-      ? `Oi! Fiz o diagnóstico da Gradios agora mesmo. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100 — Tier A. Aguardo o contato!`
-      : tierInfo.tier === "B"
-      ? `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Podem me ligar ainda hoje?`
-      : `Oi! Fiz o diagnóstico da Gradios. Sou ${lead.nome} da ${lead.empresa}, score ${score}/100. Quero saber mais sobre automação para ${setor}.`
+    `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${cargoLabel} de uma empresa de ${setor} com ${tamanhoLabel} funcionários.${gargaloPrincipal ? ` Nosso maior gargalo é ${gargaloPrincipal.toLowerCase()}` : ""}${horasSemana ? ` e perdemos cerca de ${horasSemana} horas por semana com retrabalho manual` : ""}. Recebi resultado ${tierInfo.tier} e quero entender como resolver isso.`
   );
 
   return (
@@ -133,20 +133,43 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
         </div>
       </div>
 
-      {/* ── ROI CARD ── */}
+      {/* ── HOURS + ROI HIGHLIGHT (two metric cards side by side) ── */}
+      {answers.tempo?.[0] != null && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.12s" }}>
+          {/* Hours lost per week */}
+          <div className="bg-[#0F172A] border border-[#EF4444]/20 rounded-2xl p-5 sm:p-6 text-center">
+            <p className="text-5xl sm:text-6xl font-black text-white leading-none mb-2">
+              {["~3h", "~10h", "~28h", "50h+"][answers.tempo[0]]}
+            </p>
+            <p className="text-[#EF4444] text-xs font-semibold tracking-wider uppercase">
+              perdidas por semana
+            </p>
+          </div>
+
+          {/* Monthly cost */}
+          {roi && (
+            <div className="bg-[#0F172A] border border-[#EF4444]/20 rounded-2xl p-5 sm:p-6 text-center">
+              <p className="text-4xl sm:text-5xl font-black text-white leading-none mb-2">
+                {formatBRL(roi.monthlyCost)}
+              </p>
+              <p className="text-[#EF4444] text-xs font-semibold tracking-wider uppercase">
+                custo estimado/mês
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── ROI DETAIL (annual projection) ── */}
       {roi && (
-        <div className="roi-card opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.15s" }}>
+        <div className="roi-card opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.18s" }}>
           <div className="absolute inset-0 overflow-hidden rounded-2xl">
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #EF4444, transparent 70%)" }} />
           </div>
           <div className="relative z-10">
-            <p className="text-[#FCA5A5] text-[10px] font-semibold tracking-wider uppercase mb-1">Custo invisível do retrabalho</p>
-            <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-3xl sm:text-4xl font-black text-white">{formatBRL(roi.monthlyCost)}</span>
-              <span className="text-[#EF4444] text-sm font-bold">/mês</span>
-            </div>
+            <p className="text-[#FCA5A5] text-[10px] font-semibold tracking-wider uppercase mb-1">Custo estimado de retrabalho</p>
             <p className="text-[#94A3B8] text-sm mb-4">
-              {roi.monthlyHours}h/mês a {formatBRL(roi.hourlyCost)}/hora (média {setor})
+              {roi.monthlyHours}h/mês × {formatBRL(roi.hourlyCost)}/hora (média {setor})
             </p>
             <div className="flex items-center gap-3 bg-[#EF4444]/10 border border-[#EF4444]/20 rounded-xl px-4 py-3">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -154,7 +177,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
                 <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
               </svg>
               <p className="text-[#FCA5A5] text-sm font-medium">
-                Projeção anual: <span className="text-white font-black">{formatBRL(roi.annualCost)}</span> em retrabalho
+                Potencial de economia anual: <span className="text-white font-black">{formatBRL(roi.annualCost)}</span>
               </p>
             </div>
           </div>
@@ -162,7 +185,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
       )}
 
       {/* ── DATA CARDS ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.25s" }}>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.28s" }}>
         {horasMes && (
           <div className="result-data-card col-span-2 sm:col-span-1">
             <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Retrabalho/mês</p>
@@ -311,10 +334,10 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
 
         <div className="relative z-10 text-center">
           <p className="text-white text-xl sm:text-2xl font-black mb-2" style={{ letterSpacing: "-0.02em" }}>
-            {tierInfo.tier === "A" ? "Próximo passo: conversa de 30 min" :
-             tierInfo.tier === "B" ? "Vamos mapear o caminho" :
-             tierInfo.tier === "C" ? "Quer entender melhor?" :
-             "Conteúdo prático no seu e-mail"}
+            {tierInfo.tier === "A" ? "Falar com especialista — respondemos em até 2h" :
+             tierInfo.tier === "B" ? "Agendar diagnóstico aprofundado" :
+             tierInfo.tier === "C" ? "Ver como empresas do seu setor automatizaram" :
+             "Baixar guia: primeiros passos em automação"}
           </p>
           <p className="text-[#94A3B8] text-sm max-w-md mx-auto mb-6">
             {tierInfo.tier === "A"

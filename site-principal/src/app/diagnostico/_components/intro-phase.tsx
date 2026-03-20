@@ -34,7 +34,7 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
         className="mt-6 text-3xl sm:text-4xl md:text-5xl font-black text-text leading-tight"
         style={{ letterSpacing: "-0.02em" }}
       >
-        Quanto sua empresa{" "}
+        Descubra quanto sua empresa{" "}
         <span className="relative inline-block">
           perde
           <svg
@@ -58,18 +58,12 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
             </defs>
           </svg>
         </span>{" "}
-        por mês com processos manuais?
+        com processos manuais
       </h1>
 
-      {city ? (
-        <p className="mt-4 text-lg text-text-muted" style={{ animationDelay: "0.15s" }}>
-          {city} — Responda 10 perguntas e a gente calcula o custo real.
-        </p>
-      ) : (
-        <p className="mt-4 text-lg text-text-muted">
-          Responda 10 perguntas e a gente calcula o custo real.
-        </p>
-      )}
+      <p className="mt-4 text-lg text-text-muted" style={{ animationDelay: "0.15s" }}>
+        {city ? `${city} — ` : ""}7 perguntas. 2 minutos.{"\n"}Diagnóstico real da sua operação — gerado por IA na hora.
+      </p>
 
       <button
         onClick={onStart}
