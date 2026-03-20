@@ -191,7 +191,8 @@ Diga que nos próximos dias a equipe vai entrar em contato para uma conversa rá
 
 REGRAS ABSOLUTAS:
 - Máximo 280 palavras
-- PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "alavancar", "potencializar", "ecossistema", "revolucionar", "otimizar", "sinergia", "robusto", "escalável", "holístico", "paradigma", "agregar valor". Se usar qualquer uma dessas palavras, o diagnóstico é descartado.
+- PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "alavancar", "potencializar", "ecossistema", "revolucionar", "otimizar", "sinergia", "robusto", "escalável", "holístico", "paradigma", "agregar valor", "disruptivo", "revolucionário", "inteligência artificial", "machine learning". Se usar qualquer uma dessas palavras, o diagnóstico é descartado.
+- NUNCA use as palavras: transformação digital, disruptivo, revolucionário, inteligência artificial, machine learning, ou qualquer buzzword tecnológico. Use linguagem direta de processo: "automatizar", "conectar sistemas", "eliminar retrabalho", "reduzir horas manuais".
 - NÃO comece frases com "Com base nas suas respostas" ou "Analisando o questionário"
 - Tom: consultor que cobra caro e fala pouco. Cada frase tem que ter peso.
 - Use vírgulas curtas. Frases diretas. Parece conversa de bar entre dois donos de empresa, não relatório corporativo.`;
@@ -280,6 +281,40 @@ REGRAS ABSOLUTAS:
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             content: `🎯 **NOVO LEAD — DIAGNÓSTICO**\n\n**Nome:** ${lead.nome}\n**Empresa:** ${lead.empresa}\n**Email:** ${lead.email}\n**WhatsApp:** ${lead.whatsapp || "não informado"}\n**Cidade:** ${city || "não detectada"}\n\n**Score:** ${finalScore}/100 — **Tier ${tierInfo.tier}**\n**Cargo:** ${cargo}\n**Porte:** ${porte}\n**Setor:** ${setor}\n**Gargalos:** ${gargalos}\n**Processos manuais:** ${processos}\n**Sistemas desconectados:** ${sistemas}\n**Tempo perdido:** ${tempo}\n**Impactos:** ${impactos}\n**Urgência:** ${urgencia}\n**Prioridade:** ${prioridade}`,
+          }),
+        }).catch(() => {});
+      } catch {
+        // continue silently
+      }
+    }
+
+    // n8n email sequence webhook (fire & forget)
+    const emailWebhookUrl = process.env.NEXT_PUBLIC_N8N_EMAIL_WEBHOOK_URL;
+    if (emailWebhookUrl) {
+      try {
+        fetch(emailWebhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: lead.nome,
+            email: lead.email,
+            empresa: lead.empresa,
+            whatsapp: lead.whatsapp || null,
+            setor,
+            cargo,
+            porte,
+            score: finalScore,
+            tier: tierInfo.tier,
+            gargalo_principal: gargalos.split(", ")[0] || "Não informado",
+            gargalos,
+            processos,
+            sistemas,
+            tempo,
+            tempo_horas_mes: getHorasMes(answers.tempo?.[0]),
+            impactos,
+            urgencia,
+            prioridade,
+            cidade: city || null,
           }),
         }).catch(() => {});
       } catch {

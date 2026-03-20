@@ -49,7 +49,7 @@ export const QUESTIONS: Question[] = [
       "Analista/Operação",
       "Outro",
     ],
-    scores: [10, 10, 7, 3, 0, 3],
+    scores: [10, 10, 8, 5, 0, 3],
     reactions: {
       0: "Direto com quem decide. Isso muda tudo no diagnóstico.",
       1: "C-level no comando. O diagnóstico vai ser estratégico.",
@@ -62,7 +62,7 @@ export const QUESTIONS: Question[] = [
     sub: "Cada tamanho tem gargalos diferentes — e soluções diferentes.",
     tipo: "single",
     opcoes: ["Até 10", "11 a 50", "51 a 200", "201 a 500", "Mais de 500"],
-    scores: [2, 5, 10, 10, 8],
+    scores: [2, 5, 10, 12, 10],
     reactions: {
       2: "51-200 é o tamanho onde automação gera mais impacto por real investido.",
       3: "Com 200+ pessoas, cada processo manual custa caro. Vamos medir.",
@@ -258,8 +258,8 @@ export function multiScore(count: number): number {
 export function calculateScore(answers: Record<string, number[]>): number {
   let raw = 0;
 
-  if (answers.cargo?.[0] != null) raw += [10, 10, 7, 3, 0, 3][answers.cargo[0]];
-  if (answers.tamanho?.[0] != null) raw += [2, 5, 10, 10, 8][answers.tamanho[0]];
+  if (answers.cargo?.[0] != null) raw += [10, 10, 8, 5, 0, 3][answers.cargo[0]];
+  if (answers.tamanho?.[0] != null) raw += [2, 5, 10, 12, 10][answers.tamanho[0]];
   if (answers.gargalos) raw += multiScore(answers.gargalos.length);
   if (answers.processos?.[0] != null) raw += [0, 5, 12, 18, 20][answers.processos[0]];
   if (answers.sistemas?.[0] != null) raw += [3, 8, 13, 15][answers.sistemas[0]];
@@ -272,6 +272,10 @@ export function calculateScore(answers: Record<string, number[]>): number {
   if (answers.cargo?.[0] === 4) score = Math.min(score, 50);
   if (answers.urgencia?.[0] === 4) score = Math.max(score, 55);
   if (answers.tamanho?.[0] === 0 && answers.urgencia?.[0] === 0) {
+    score = Math.min(score, 39);
+  }
+  // Hard filter: "Até 10" employees → cap at Tier D
+  if (answers.tamanho?.[0] === 0) {
     score = Math.min(score, 39);
   }
 
@@ -290,8 +294,8 @@ export function calculatePartialScore(answers: Record<string, number[]>): number
   let answeredScored = 0;
   let raw = 0;
 
-  if (answers.cargo?.[0] != null) { raw += [10, 10, 7, 3, 0, 3][answers.cargo[0]]; answeredScored++; }
-  if (answers.tamanho?.[0] != null) { raw += [2, 5, 10, 10, 8][answers.tamanho[0]]; answeredScored++; }
+  if (answers.cargo?.[0] != null) { raw += [10, 10, 8, 5, 0, 3][answers.cargo[0]]; answeredScored++; }
+  if (answers.tamanho?.[0] != null) { raw += [2, 5, 10, 12, 10][answers.tamanho[0]]; answeredScored++; }
   if (answers.processos?.[0] != null) { raw += [0, 5, 12, 18, 20][answers.processos[0]]; answeredScored++; }
   if (answers.sistemas?.[0] != null) { raw += [3, 8, 13, 15][answers.sistemas[0]]; answeredScored++; }
   if (answers.tempo?.[0] != null) { raw += [3, 8, 13, 15][answers.tempo[0]]; answeredScored++; }
