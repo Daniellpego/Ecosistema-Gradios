@@ -191,8 +191,8 @@ Diga que nos próximos dias a equipe vai entrar em contato para uma conversa rá
 
 REGRAS ABSOLUTAS:
 - Máximo 280 palavras
-- PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "alavancar", "potencializar", "ecossistema", "revolucionar", "otimizar", "sinergia", "robusto", "escalável", "holístico", "paradigma", "agregar valor", "disruptivo", "revolucionário", "inteligência artificial", "machine learning". Se usar qualquer uma dessas palavras, o diagnóstico é descartado.
-- NUNCA use as palavras: transformação digital, disruptivo, revolucionário, inteligência artificial, machine learning, ou qualquer buzzword tecnológico. Use linguagem direta de processo: "automatizar", "conectar sistemas", "eliminar retrabalho", "reduzir horas manuais".
+- PROIBIDO: "incrível", "fantástico", "transformação digital", "jornada", "alavancar", "potencializar", "ecossistema", "revolucionar", "otimizar", "sinergia", "robusto", "escalável", "holístico", "paradigma", "agregar valor". Se usar qualquer uma dessas palavras, o diagnóstico é descartado.
+- NUNCA use as palavras: transformação digital, disruptivo, revolucionário, inteligência artificial, machine learning, inovação, ecossistema, alavancar, potencializar, sinergia, robusto, escalável. Use linguagem direta de processo: automatizar, conectar sistemas, eliminar retrabalho, reduzir horas manuais, integrar, simplificar.
 - NÃO comece frases com "Com base nas suas respostas" ou "Analisando o questionário"
 - Tom: consultor que cobra caro e fala pouco. Cada frase tem que ter peso.
 - Use vírgulas curtas. Frases diretas. Parece conversa de bar entre dois donos de empresa, não relatório corporativo.`;

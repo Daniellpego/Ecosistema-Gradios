@@ -66,10 +66,12 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
     }
   }
 
+  const cargoLabel = answers.cargo?.[0] != null ? QUESTIONS[0].opcoes[answers.cargo[0]] : "profissional";
+  const tamanhoLabel = answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "vários";
   const gargaloPrincipal = gargalosTexts.length > 0 ? gargalosTexts[0].split(" — ")[0] : null;
-  const horasSemana = answers.tempo?.[0] != null ? ["<5h", "5-15h", "16-40h", "+40h"][answers.tempo[0]] : null;
+  const horasSemana = answers.tempo?.[0] != null ? ["~3h", "~10h", "~28h", "50+"][answers.tempo[0]] : null;
   const whatsAppMsg = encodeURIComponent(
-    `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${lead.nome} de uma empresa de ${setor} com ${answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "vários"} funcionários.${gargaloPrincipal ? ` Nosso maior gargalo é ${gargaloPrincipal.toLowerCase()}` : ""}${horasSemana ? ` e perdemos cerca de ${horasSemana} por semana com processos manuais` : ""}. Recebi o resultado (${tierInfo.tier}) e quero entender como resolver isso.`
+    `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${cargoLabel} de uma empresa de ${setor} com ${tamanhoLabel} funcionários.${gargaloPrincipal ? ` Nosso maior gargalo é ${gargaloPrincipal.toLowerCase()}` : ""}${horasSemana ? ` e perdemos cerca de ${horasSemana} horas por semana com retrabalho manual` : ""}. Recebi resultado ${tierInfo.tier} e quero entender como resolver isso.`
   );
 
   return (
@@ -131,28 +133,34 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
         </div>
       </div>
 
-      {/* ── HOURS LOST HIGHLIGHT ── */}
+      {/* ── HOURS + ROI HIGHLIGHT (two metric cards side by side) ── */}
       {answers.tempo?.[0] != null && (
-        <div className="opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.12s" }}>
-          <div className="relative bg-gradient-to-br from-[#1A0A0A] to-[#0F172A] border border-[#EF4444]/30 rounded-2xl p-6 sm:p-8 text-center overflow-hidden">
-            <div className="absolute inset-0 overflow-hidden rounded-2xl">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 h-60 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #EF4444, transparent 70%)" }} />
-            </div>
-            <div className="relative z-10">
-              <p className="text-[#EF4444] text-[10px] font-semibold tracking-[0.2em] uppercase mb-3">Seu negócio perde aproximadamente</p>
-              <p className="text-5xl sm:text-6xl font-black text-white leading-none mb-2">
-                {["~5h", "5-15h", "16-40h", "+40h"][answers.tempo[0]]}
-              </p>
-              <p className="text-[#FCA5A5] text-lg font-semibold mb-1">por semana com processos manuais</p>
-              <p className="text-[#64748B] text-sm">
-                Equivale a {horasMes}/mês — {answers.tempo[0] >= 2 ? "quase uma pessoa inteira só em retrabalho" : "tempo que poderia ir para crescimento"}
-              </p>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.12s" }}>
+          {/* Hours lost per week */}
+          <div className="bg-[#0F172A] border border-[#EF4444]/20 rounded-2xl p-5 sm:p-6 text-center">
+            <p className="text-5xl sm:text-6xl font-black text-white leading-none mb-2">
+              {["~3h", "~10h", "~28h", "50h+"][answers.tempo[0]]}
+            </p>
+            <p className="text-[#EF4444] text-xs font-semibold tracking-wider uppercase">
+              perdidas por semana
+            </p>
           </div>
+
+          {/* Monthly cost */}
+          {roi && (
+            <div className="bg-[#0F172A] border border-[#EF4444]/20 rounded-2xl p-5 sm:p-6 text-center">
+              <p className="text-4xl sm:text-5xl font-black text-white leading-none mb-2">
+                {formatBRL(roi.monthlyCost)}
+              </p>
+              <p className="text-[#EF4444] text-xs font-semibold tracking-wider uppercase">
+                custo estimado/mês
+              </p>
+            </div>
+          )}
         </div>
       )}
 
-      {/* ── ROI CARD ── */}
+      {/* ── ROI DETAIL (annual projection) ── */}
       {roi && (
         <div className="roi-card opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.18s" }}>
           <div className="absolute inset-0 overflow-hidden rounded-2xl">
@@ -160,10 +168,6 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
           </div>
           <div className="relative z-10">
             <p className="text-[#FCA5A5] text-[10px] font-semibold tracking-wider uppercase mb-1">Custo estimado de retrabalho</p>
-            <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-3xl sm:text-4xl font-black text-white">{formatBRL(roi.monthlyCost)}</span>
-              <span className="text-[#EF4444] text-sm font-bold">/mês</span>
-            </div>
             <p className="text-[#94A3B8] text-sm mb-4">
               {roi.monthlyHours}h/mês × {formatBRL(roi.hourlyCost)}/hora (média {setor})
             </p>
@@ -330,9 +334,9 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
 
         <div className="relative z-10 text-center">
           <p className="text-white text-xl sm:text-2xl font-black mb-2" style={{ letterSpacing: "-0.02em" }}>
-            {tierInfo.tier === "A" ? "Falar com especialista agora — respondemos em até 2h" :
-             tierInfo.tier === "B" ? "Agendar diagnóstico aprofundado — vagas limitadas esta semana" :
-             tierInfo.tier === "C" ? "Ver como empresas do seu setor automatizam" :
+            {tierInfo.tier === "A" ? "Falar com especialista — respondemos em até 2h" :
+             tierInfo.tier === "B" ? "Agendar diagnóstico aprofundado" :
+             tierInfo.tier === "C" ? "Ver como empresas do seu setor automatizaram" :
              "Baixar guia: primeiros passos em automação"}
           </p>
           <p className="text-[#94A3B8] text-sm max-w-md mx-auto mb-6">
