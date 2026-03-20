@@ -1,0 +1,392 @@
+{
+  "name": "Quiz Gradios — Email Nurturing (6 emails × 4 tiers)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "quiz-lead-nurturing",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "quiz-lead-nurturing"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract and normalize lead data from webhook\nconst lead = $input.first().json;\n\nconst nome = (lead.nome || '').split(' ')[0];\nconst empresa = lead.empresa || '';\nconst setor = lead.setor || 'Outro';\nconst cargo = lead.cargo || '';\nconst tier = lead.tier || 'D';\nconst score = lead.score || 0;\nconst email = lead.email || '';\nconst gargalos = lead.gargalos || '';\nconst gargaloArr = typeof gargalos === 'string' ? gargalos.split(', ') : (Array.isArray(gargalos) ? gargalos : []);\nconst gargalo_principal = gargaloArr[0] ? gargaloArr[0].split(' — ')[0] : 'processos manuais';\nconst gargalo_2 = gargaloArr[1] ? gargaloArr[1].split(' — ')[0] : gargalo_principal;\nconst prioridade = lead.prioridade || 'Eliminar processos manuais';\n\n// Hours calculation\nconst horasMap = { '~20h/mês': 20, '~40-60h/mês': 50, '~65-160h/mês': 112, '+160h/mês': 180 };\nconst tempo_horas_mes = lead.tempo_horas_mes || '~20h/mês';\nconst horas_mes_num = horasMap[tempo_horas_mes] || 20;\nconst horas_semana_num = Math.round(horas_mes_num / 4);\nconst horas_semana_labels = { 20: '~3h', 50: '~10h', 112: '~28h', 180: '50h+' };\nconst horas_semana = horas_semana_labels[horas_mes_num] || '~' + horas_semana_num + 'h';\nconst pct_funcionario = Math.round((horas_mes_num / 160) * 100);\n\n// ROI calculation\nconst sectorCost = {\n  'Varejo/E-commerce': 32, 'Indústria/Manufatura': 41,\n  'Logística/Distribuição': 35, 'Saúde/Clínicas': 45,\n  'Financeiro/Contabilidade': 54, 'SaaS/Tecnologia': 63,\n  'Serviços em geral': 36, 'Outro': 38\n};\nconst hourlyCost = sectorCost[setor] || 38;\nconst roi_mensal_num = horas_mes_num * hourlyCost;\nconst roi_anual_num = roi_mensal_num * 12;\nconst fmtBRL = (v) => 'R$ ' + v.toLocaleString('pt-BR');\n\nconst whatsapp_msg = encodeURIComponent(\n  `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${cargo} de uma empresa de ${setor} com ${lead.tamanho || 'vários'} funcionários. Nosso maior gargalo é ${gargalo_principal.toLowerCase()} e perdemos cerca de ${horas_semana} horas por semana com retrabalho manual. Recebi resultado ${tier} e quero entender como resolver isso.`\n);\n\nreturn [{\n  json: {\n    email,\n    nome,\n    empresa,\n    setor,\n    cargo,\n    tier,\n    score,\n    gargalo_principal,\n    gargalo_2,\n    horas_semana,\n    horas_mes: horas_mes_num + 'h',\n    horas_mes_num,\n    pct_funcionario: pct_funcionario.toString(),\n    roi_mensal: fmtBRL(roi_mensal_num),\n    roi_anual: fmtBRL(roi_anual_num),\n    prioridade,\n    diagnostico_url: 'https://gradios.co/diagnostico',\n    whatsapp_url: 'https://wa.me/5543988372540?text=' + whatsapp_msg\n  }\n}];"
+      },
+      "id": "prepare_vars",
+      "name": "Prepare Variables",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Email 1 templates — select by tier\nconst d = $input.first().json;\nconst tier = d.tier;\n\nconst subjects = {\n  A: 'Seu diagnóstico chegou — e o resultado é sério',\n  B: `Diagnóstico da ${d.empresa} — veja o que encontramos`,\n  C: 'Seu diagnóstico de automação está aqui',\n  D: `Seu diagnóstico está pronto, ${d.nome}`\n};\n\nconst bodies = {\n  A: `${d.nome},\\n\\nCruzamos as respostas da ${d.empresa} e o cenário é claro.\\n\\nVocês perdem ${d.horas_semana} por semana com processos manuais. Isso é ${d.horas_mes} por mês — equivalente a ${d.pct_funcionario}% de um funcionário inteiro só em retrabalho.\\n\\nO diagnóstico completo da IA está abaixo. Mas o mais importante: sua empresa está no grupo de potencial alto — o que significa que dá pra resolver isso rápido, com impacto direto na operação.\\n\\n👉 Ver diagnóstico completo: ${d.diagnostico_url}\\n\\nNos próximos minutos alguém do nosso time vai entrar em contato pelo WhatsApp. Se preferir adiantar:\\n\\n💬 Chamar no WhatsApp agora: ${d.whatsapp_url}\\n\\nGradios`,\n  B: `${d.nome},\\n\\nSeu diagnóstico da ${d.empresa} está pronto.\\n\\nO resultado mostra potencial real de automação — especialmente nos gargalos que você marcou: ${d.gargalo_principal} e ${d.gargalo_2}.\\n\\n👉 Ver diagnóstico completo: ${d.diagnostico_url}\\n\\nEsta semana temos algumas vagas para diagnóstico aprofundado por vídeo — 30 minutos, sem compromisso, focado exatamente no que você marcou como prioridade.\\n\\n💬 Quero uma vaga: ${d.whatsapp_url}\\n\\nGradios`,\n  C: `${d.nome},\\n\\nDiagnóstico da ${d.empresa} gerado.\\n\\nVocê está no estágio inicial de automação — o que é normal para empresas do seu porte no setor de ${d.setor}.\\n\\nA boa notícia: as empresas que saem desse estágio geralmente fazem isso com 1 ou 2 automações bem escolhidas, não com um projeto grande.\\n\\n👉 Ver diagnóstico completo: ${d.diagnostico_url}\\n\\nNos próximos dias vou te mandar um conteúdo específico sobre o que empresas de ${d.setor} costumam automatizar primeiro.\\n\\nGradios`,\n  D: `${d.nome},\\n\\nSeu diagnóstico está pronto.\\n\\nPelo que você respondeu, a ${d.empresa} ainda está mapeando as possibilidades — e isso faz sentido. Automação sem clareza de onde dói mais é desperdício de dinheiro.\\n\\n👉 Ver diagnóstico completo: ${d.diagnostico_url}\\n\\nVou te mandar um guia simples de como identificar os 3 processos que mais valem automatizar primeiro. Sem custo, sem enrolação.\\n\\nGradios`\n};\n\nreturn [{ json: { ...d, email_subject: subjects[tier] || subjects.D, email_body: bodies[tier] || bodies.D } }];"
+      },
+      "id": "email_1_template",
+      "name": "Email 1 — Resultado (D0)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {
+          "replyTo": "gustavo@gradios.co"
+        }
+      },
+      "id": "send_email_1",
+      "name": "Send Email 1",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [920, 300],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMAIL_CREDENTIAL_ID",
+          "name": "Gmail — Gradios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "id": "wait_2d",
+      "name": "Wait 2 Days",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1140, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Check nurturing_paused flag in Supabase before continuing\n// This is a placeholder — connect to Supabase HTTP Request node\n// For now, pass through\nreturn $input.all();"
+      },
+      "id": "check_pause_2",
+      "name": "Check Pause Flag",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1360, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Email 2 — Day 2: Gargalo deep-dive\nconst d = $input.first().json;\nconst tier = d.tier;\n\nconst subjects = {\n  A: `O gargalo que mais custa pra ${d.empresa}`,\n  B: `O gargalo que mais custa pra ${d.empresa}`,\n  C: `Por que ${d.gargalo_principal} é mais caro do que parece`,\n  D: `Por que ${d.gargalo_principal} é mais caro do que parece`\n};\n\nconst body = `${d.nome},\\n\\nNo diagnóstico você marcou ${d.gargalo_principal} como um dos maiores problemas.\\n\\nEsse gargalo específico tem um custo que raramente aparece no financeiro — mas está lá todo mês:\\n\\n→ Tempo de equipe em tarefa que não agrega valor\\n→ Erro humano que vira retrabalho lá na frente\\n→ Decisão tomada com dado desatualizado\\n\\nEm empresas de ${d.setor} com o porte da ${d.empresa}, esse gargalo sozinho costuma representar ${d.roi_mensal}/mês em custo invisível.\\n\\nA maioria resolve com uma automação simples de integração. Não precisa de sistema novo. Não precisa de equipe técnica.\\n\\n💬 Entender como resolver o meu gargalo: ${d.whatsapp_url}\\n\\nGradios`;\n\nreturn [{ json: { ...d, email_subject: subjects[tier] || subjects.D, email_body: body } }];"
+      },
+      "id": "email_2_template",
+      "name": "Email 2 — Gargalo (D2)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1580, 300]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {
+          "replyTo": "gustavo@gradios.co"
+        }
+      },
+      "id": "send_email_2",
+      "name": "Send Email 2",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1800, 300],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMAIL_CREDENTIAL_ID",
+          "name": "Gmail — Gradios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "id": "wait_2d_2",
+      "name": "Wait 2 Days (D4)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [2020, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Email 3 — Day 4: Case do setor\nconst d = $input.first().json;\n\nconst subject = `Como uma empresa de ${d.setor} eliminou ${d.horas_semana} de retrabalho por semana`;\n\nconst body = `${d.nome},\\n\\nUm caso real que talvez faça sentido pra ${d.empresa}.\\n\\nUma empresa de ${d.setor} com porte parecido com o de vocês tinha exatamente o problema que você marcou: ${d.gargalo_principal}.\\n\\nO que a gente fez:\\n→ Mapeamos o fluxo que causava o gargalo (2 dias)\\n→ Construímos a integração entre os sistemas existentes (1 semana)\\n→ Testamos e ajustamos (3 dias)\\n\\nResultado: o processo que causava ${d.gargalo_principal} passou a rodar sem intervenção manual. Mesma equipe. Mesmo sistema. Só conectamos o que já existia.\\n\\nNão trocamos nenhum sistema. Não contratamos ninguém.\\n\\nSe quiser ver como aplicar isso na ${d.empresa}:\\n\\n💬 Quero ver como funciona pra mim: ${d.whatsapp_url}\\n\\nGradios`;\n\nreturn [{ json: { ...d, email_subject: subject, email_body: body } }];"
+      },
+      "id": "email_3_template",
+      "name": "Email 3 — Case (D4)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2240, 300]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {
+          "replyTo": "gustavo@gradios.co"
+        }
+      },
+      "id": "send_email_3",
+      "name": "Send Email 3",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [2460, 300],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMAIL_CREDENTIAL_ID",
+          "name": "Gmail — Gradios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "days"
+      },
+      "id": "wait_3d",
+      "name": "Wait 3 Days (D7)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [2680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Email 4 — Day 7: Dica prática\nconst d = $input.first().json;\n\nconst subject = `Uma coisa que você pode fazer hoje na ${d.empresa} (sem custo)`;\n\nconst body = `${d.nome},\\n\\nUma dica prática — independente de contratar alguém ou não.\\n\\nMapeie UMA tarefa que alguém na sua equipe faz todo dia de forma manual. Só uma.\\n\\nAnote:\\n→ Quantas vezes por semana acontece\\n→ Quanto tempo leva cada vez\\n→ Quantas pessoas fazem isso\\n\\nMultiplica pelo custo hora. Esse é o custo real desse processo.\\n\\nA maioria das empresas que a gente atende se surpreende com o número. Porque nunca tinham calculado.\\n\\nSe quiser fazer esse mapeamento com a gente — de graça, em 30 minutos por vídeo — é só responder esse email ou clicar abaixo.\\n\\n💬 Quero fazer o mapeamento: ${d.whatsapp_url}\\n\\nGradios`;\n\nreturn [{ json: { ...d, email_subject: subject, email_body: body } }];"
+      },
+      "id": "email_4_template",
+      "name": "Email 4 — Dica (D7)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2900, 300]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {
+          "replyTo": "gustavo@gradios.co"
+        }
+      },
+      "id": "send_email_4",
+      "name": "Send Email 4",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [3120, 300],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMAIL_CREDENTIAL_ID",
+          "name": "Gmail — Gradios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "days"
+      },
+      "id": "wait_3d_2",
+      "name": "Wait 3 Days (D10)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [3340, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Email 5 — Day 10: Follow-up suave\nconst d = $input.first().json;\nconst tier = d.tier;\n\nconst subjects = {\n  A: `${d.nome}, ainda faz sentido conversar?`,\n  B: `Ainda pensando em automação na ${d.empresa}?`,\n  C: `Ainda pensando em automação na ${d.empresa}?`,\n  D: `Uma pergunta rápida, ${d.nome}`\n};\n\nconst body = `${d.nome},\\n\\nFaz 10 dias desde o diagnóstico da ${d.empresa}.\\n\\nNão sei se você avançou com isso internamente, se surgiu outra prioridade, ou se ainda está avaliando.\\n\\nSe ainda faz sentido, tenho 30 minutos essa semana pra uma conversa rápida. Sem apresentação, sem proposta. Só entender o cenário de perto e ver se a gente consegue ajudar de verdade.\\n\\nSe não faz mais sentido agora — tudo bem também. Só me fala pra eu não tomar mais o seu tempo.\\n\\n💬 Quero conversar essa semana: ${d.whatsapp_url}\\n\\nNão faz sentido agora? Sem problema — responda \"parar\" e a gente encerra por aqui.\\n\\nGradios`;\n\nreturn [{ json: { ...d, email_subject: subjects[tier] || subjects.D, email_body: body } }];"
+      },
+      "id": "email_5_template",
+      "name": "Email 5 — Follow-up (D10)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [3560, 300]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {
+          "replyTo": "gustavo@gradios.co"
+        }
+      },
+      "id": "send_email_5",
+      "name": "Send Email 5",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [3780, 300],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMAIL_CREDENTIAL_ID",
+          "name": "Gmail — Gradios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 4,
+        "unit": "days"
+      },
+      "id": "wait_4d",
+      "name": "Wait 4 Days (D14)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [4000, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Email 6 — Day 14: Oferta direta\nconst d = $input.first().json;\nconst tier = d.tier;\n\nconst subjects = {\n  A: `Última mensagem — proposta específica pra ${d.empresa}`,\n  B: `Última mensagem — proposta específica pra ${d.empresa}`,\n  C: 'Uma última coisa antes de eu parar de escrever',\n  D: 'Uma última coisa antes de eu parar de escrever'\n};\n\nconst bodies = {\n  A: `${d.nome},\\n\\nÚltimo email dessa sequência.\\n\\nBaseado no diagnóstico da ${d.empresa}, montamos mentalmente o que faríamos nos primeiros 14 dias se trabalhássemos juntos:\\n\\n→ Semana 1: mapear o fluxo de ${d.gargalo_principal} e identificar os pontos de integração\\n→ Semana 2: primeira automação rodando — ${d.prioridade}\\n\\nInvestimento: a partir de R$ 10.000. Prazo: 14 dias para a primeira entrega. Garantia: se não entregar resultado mensurável, devolvemos.\\n\\nSe quiser avançar — ou só entender melhor antes de decidir:\\n\\n💬 Quero conversar agora: ${d.whatsapp_url}\\n\\nSe não for o momento, sem problema. Fica o diagnóstico como referência pra quando fizer sentido.\\n\\nGradios`,\n  B: `${d.nome},\\n\\nÚltimo email dessa sequência.\\n\\nBaseado no diagnóstico da ${d.empresa}, montamos mentalmente o que faríamos nos primeiros 14 dias se trabalhássemos juntos:\\n\\n→ Semana 1: mapear o fluxo de ${d.gargalo_principal} e identificar os pontos de integração\\n→ Semana 2: primeira automação rodando — ${d.prioridade}\\n\\nInvestimento: a partir de R$ 10.000. Prazo: 14 dias para a primeira entrega. Garantia: se não entregar resultado mensurável, devolvemos.\\n\\nSe quiser avançar — ou só entender melhor antes de decidir:\\n\\n💬 Quero conversar agora: ${d.whatsapp_url}\\n\\nSe não for o momento, sem problema. Fica o diagnóstico como referência pra quando fizer sentido.\\n\\nGradios`,\n  C: `${d.nome},\\n\\nÚltimo email.\\n\\nSe você ainda não automatizou nada na ${d.empresa}, provavelmente é por um desses motivos: não sabe por onde começar, acha caro, ou não tem tempo pra avaliar direito.\\n\\nOs três têm solução simples.\\n\\nTemos um pacote de entrada específico pra empresas no seu estágio: diagnóstico aprofundado + uma automação de impacto rápido, por R$ 10.000, entregue em 14 dias.\\n\\n💬 Entender o pacote de entrada: ${d.whatsapp_url}\\n\\nSe não for agora — guarda esse email. Quando o retrabalho ficar grande demais, a gente tá aqui.\\n\\nGradios`,\n  D: `${d.nome},\\n\\nÚltimo email.\\n\\nSe você ainda não automatizou nada na ${d.empresa}, provavelmente é por um desses motivos: não sabe por onde começar, acha caro, ou não tem tempo pra avaliar direito.\\n\\nOs três têm solução simples.\\n\\nTemos um pacote de entrada específico pra empresas no seu estágio: diagnóstico aprofundado + uma automação de impacto rápido, por R$ 10.000, entregue em 14 dias.\\n\\n💬 Entender o pacote de entrada: ${d.whatsapp_url}\\n\\nSe não for agora — guarda esse email. Quando o retrabalho ficar grande demais, a gente tá aqui.\\n\\nGradios`\n};\n\nreturn [{ json: { ...d, email_subject: subjects[tier] || subjects.D, email_body: bodies[tier] || bodies.D } }];"
+      },
+      "id": "email_6_template",
+      "name": "Email 6 — Oferta (D14)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [4220, 300]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {
+          "replyTo": "gustavo@gradios.co"
+        }
+      },
+      "id": "send_email_6",
+      "name": "Send Email 6",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [4440, 300],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMAIL_CREDENTIAL_ID",
+          "name": "Gmail — Gradios"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [{ "node": "Prepare Variables", "type": "main", "index": 0 }]
+      ]
+    },
+    "Prepare Variables": {
+      "main": [
+        [{ "node": "Email 1 — Resultado (D0)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Email 1 — Resultado (D0)": {
+      "main": [
+        [{ "node": "Send Email 1", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Email 1": {
+      "main": [
+        [{ "node": "Wait 2 Days", "type": "main", "index": 0 }]
+      ]
+    },
+    "Wait 2 Days": {
+      "main": [
+        [{ "node": "Check Pause Flag", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check Pause Flag": {
+      "main": [
+        [{ "node": "Email 2 — Gargalo (D2)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Email 2 — Gargalo (D2)": {
+      "main": [
+        [{ "node": "Send Email 2", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Email 2": {
+      "main": [
+        [{ "node": "Wait 2 Days (D4)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Wait 2 Days (D4)": {
+      "main": [
+        [{ "node": "Email 3 — Case (D4)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Email 3 — Case (D4)": {
+      "main": [
+        [{ "node": "Send Email 3", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Email 3": {
+      "main": [
+        [{ "node": "Wait 3 Days (D7)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Wait 3 Days (D7)": {
+      "main": [
+        [{ "node": "Email 4 — Dica (D7)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Email 4 — Dica (D7)": {
+      "main": [
+        [{ "node": "Send Email 4", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Email 4": {
+      "main": [
+        [{ "node": "Wait 3 Days (D10)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Wait 3 Days (D10)": {
+      "main": [
+        [{ "node": "Email 5 — Follow-up (D10)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Email 5 — Follow-up (D10)": {
+      "main": [
+        [{ "node": "Send Email 5", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Email 5": {
+      "main": [
+        [{ "node": "Wait 4 Days (D14)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Wait 4 Days (D14)": {
+      "main": [
+        [{ "node": "Email 6 — Oferta (D14)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Email 6 — Oferta (D14)": {
+      "main": [
+        [{ "node": "Send Email 6", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    { "name": "quiz" },
+    { "name": "nurturing" },
+    { "name": "email" }
+  ]
+}
