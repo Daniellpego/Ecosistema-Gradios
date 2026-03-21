@@ -98,7 +98,10 @@ class SupabaseREST:
                     headers=self.headers,
                     json=data,
                 )
-                r.raise_for_status()
+                if not r.is_success:
+                    body = r.text
+                    logger.warning("Supabase INSERT %s HTTP %d: %s", table, r.status_code, body)
+                    return None
                 rows = r.json()
                 return rows[0] if rows else None
         except Exception as e:
@@ -1650,8 +1653,7 @@ async def criar_reuniao(payload: CriarReuniaoPayload) -> dict:
         }, ensure_ascii=False),
         "summary": f"Reuniao agendada: {payload.lead_nome} ({payload.empresa}) — {payload.data} {payload.hora}",
         "tags": ["reuniao", "agenda"],
-        "status": "ativo",
-    })
+            })
 
     return {
         "status": "ok",
@@ -1754,8 +1756,7 @@ async def crm_onboarding(payload: OnboardingPayload) -> dict:
             f"Inicio: {payload.data_inicio}."
         ),
         "tags": ["onboarding", "cs", "cliente-novo"],
-        "status": "ativo",
-    })
+            })
 
     # 3. Enviar resumo para Daniel via WhatsApp
     try:
