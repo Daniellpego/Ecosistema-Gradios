@@ -1555,6 +1555,242 @@ async def listar_propostas() -> list[dict]:
     )
 
 
+# ─── Agenda / Google Calendar ──────────────────────────────────────
+
+class CriarReuniaoPayload(BaseModel):
+    """Payload para agendar reuniao com lead."""
+    lead_nome: str
+    empresa: str
+    data: str  # YYYY-MM-DD
+    hora: str  # HH:MM
+    duracao_minutos: int = 60
+    descricao: str = ""
+    email_lead: Optional[str] = None
+    whatsapp_lead: Optional[str] = None
+
+
+@app.post("/jarvis/agenda/criar-reuniao")
+async def criar_reuniao(payload: CriarReuniaoPayload) -> dict:
+    """Agenda reuniao no Google Calendar, notifica via WhatsApp e salva estudo."""
+    import sys
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent))
+
+    titulo = f"Reuniao GRADIOS — {payload.lead_nome} ({payload.empresa})"
+    descricao = (
+        f"Lead: {payload.lead_nome}\n"
+        f"Empresa: {payload.empresa}\n"
+        f"{payload.descricao}"
+    )
+    convidados = [payload.email_lead] if payload.email_lead else None
+
+    # 1. Criar evento no Google Calendar
+    evento: dict = {}
+    gcal_ok = False
+    try:
+        from aiox.integrations.google_calendar import criar_evento
+        evento = await criar_evento(
+            titulo=titulo,
+            data=payload.data,
+            hora=payload.hora,
+            duracao_minutos=payload.duracao_minutos,
+            descricao=descricao,
+            convidados=convidados,
+        )
+        gcal_ok = True
+        logger.info("Reuniao agendada: %s — %s %s", titulo, payload.data, payload.hora)
+    except FileNotFoundError as e:
+        logger.warning("Google Calendar nao configurado: %s", e)
+        evento = {"warning": "Google Calendar nao configurado — reuniao salva localmente"}
+    except Exception as e:
+        logger.error("Erro ao criar evento Google Calendar: %s", e)
+        evento = {"error": str(e)}
+
+    # 2. Enviar confirmacao WhatsApp
+    whatsapp_ok = False
+    if payload.whatsapp_lead:
+        try:
+            evo_url = os.getenv("EVOLUTION_URL", "http://localhost:8080")
+            evo_instance = os.getenv("EVOLUTION_INSTANCE", "gradios")
+            evo_key = os.getenv("EVOLUTION_APIKEY", "")
+            if evo_key:
+                msg = (
+                    f"Ola {payload.lead_nome}! 👋\n\n"
+                    f"Confirmando nossa reuniao:\n"
+                    f"📅 Data: {payload.data}\n"
+                    f"🕐 Hora: {payload.hora}\n"
+                    f"⏱️ Duracao: {payload.duracao_minutos} minutos\n\n"
+                    f"Qualquer duvida, estamos a disposicao.\n"
+                    f"— Equipe GRADIOS"
+                )
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    r = await client.post(
+                        f"{evo_url}/message/sendText/{evo_instance}",
+                        headers={"apikey": evo_key, "Content-Type": "application/json"},
+                        json={"number": payload.whatsapp_lead, "text": msg},
+                    )
+                    r.raise_for_status()
+                    whatsapp_ok = True
+        except Exception as e:
+            logger.warning("WhatsApp confirmacao falhou: %s", e)
+
+    # 3. Salvar em jarvis_studies
+    await sb.insert("jarvis_studies", {
+        "title": titulo,
+        "agent": "crm",
+        "content": json.dumps({
+            "tipo": "reuniao_agendada",
+            "lead": payload.lead_nome,
+            "empresa": payload.empresa,
+            "data": payload.data,
+            "hora": payload.hora,
+            "duracao": payload.duracao_minutos,
+            "google_calendar": gcal_ok,
+            "whatsapp_enviado": whatsapp_ok,
+            "evento": evento,
+        }, ensure_ascii=False),
+        "summary": f"Reuniao agendada: {payload.lead_nome} ({payload.empresa}) — {payload.data} {payload.hora}",
+        "tags": ["reuniao", "agenda"],
+        "status": "ativo",
+    })
+
+    return {
+        "status": "ok",
+        "reuniao": {
+            "titulo": titulo,
+            "data": payload.data,
+            "hora": payload.hora,
+            "duracao": payload.duracao_minutos,
+        },
+        "google_calendar": evento,
+        "whatsapp_enviado": whatsapp_ok,
+    }
+
+
+@app.get("/jarvis/agenda/proximos")
+async def agenda_proximos() -> dict:
+    """Lista eventos dos proximos 7 dias do Google Calendar."""
+    import sys
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent))
+
+    try:
+        from aiox.integrations.google_calendar import listar_proximos_7_dias
+        eventos = await listar_proximos_7_dias()
+        return {"status": "ok", "eventos": eventos, "total": len(eventos)}
+    except FileNotFoundError:
+        # Google Calendar nao configurado — busca do Supabase
+        reunioes = await sb.select(
+            "jarvis_studies",
+            columns="id,title,summary,content,created_at",
+            filters={"tags": "cs.{reuniao}"},
+            order="created_at.desc",
+            limit=20,
+        )
+        return {
+            "status": "fallback",
+            "message": "Google Calendar nao configurado — mostrando reunioes salvas",
+            "eventos": reunioes,
+            "total": len(reunioes),
+        }
+    except Exception as e:
+        logger.error("Erro ao listar agenda: %s", e)
+        return {"status": "error", "message": str(e), "eventos": [], "total": 0}
+
+
+# ─── Onboarding cliente novo ──────────────────────────────────────
+
+class OnboardingPayload(BaseModel):
+    """Payload para iniciar onboarding de cliente novo."""
+    cliente_nome: str
+    empresa: str
+    servico: str
+    valor: float
+    data_inicio: str  # YYYY-MM-DD
+
+
+@app.post("/jarvis/crm/onboarding")
+async def crm_onboarding(payload: OnboardingPayload) -> dict:
+    """Gera plano de onboarding completo via CS Agent.
+
+    1. CS Agent cria checklist 30-60-90
+    2. Salva em jarvis_studies
+    3. Envia resumo WhatsApp para Daniel
+    """
+    # 1. Gerar plano via CS Agent
+    cs_system = AGENTS["cs"]["system"]
+    prompt = (
+        f"Gere um plano de onboarding COMPLETO para novo cliente:\n\n"
+        f"CLIENTE: {payload.cliente_nome}\n"
+        f"EMPRESA: {payload.empresa}\n"
+        f"SERVICO CONTRATADO: {payload.servico}\n"
+        f"VALOR: R$ {payload.valor:,.2f}\n"
+        f"INICIO: {payload.data_inicio}\n\n"
+        f"Inclua obrigatoriamente:\n"
+        f"1. CHECKLIST SEMANA 1 — integracao, acessos, kickoff\n"
+        f"2. CHECKLIST SEMANA 2 — primeiras entregas, validacoes\n"
+        f"3. CHECKLIST SEMANAS 3-4 — entrega principal, ajustes\n"
+        f"4. CRONOGRAMA DE CHECKPOINTS — datas especificas de acompanhamento\n"
+        f"5. TEMPLATE DO PRIMEIRO EMAIL — email de boas-vindas pronto para enviar\n"
+        f"6. METRICAS DE SUCESSO — como medir se o onboarding foi bem-sucedido\n\n"
+        f"Formato: texto estruturado com bullets. Seja especifico, nao generico."
+    )
+
+    try:
+        response_text = ""
+        async for chunk in call_ollama(cs_system, [{"role": "user", "content": prompt}]):
+            response_text += chunk
+    except Exception as e:
+        logger.error("Erro ao gerar onboarding via CS Agent: %s", e)
+        raise HTTPException(502, f"Erro ao gerar plano: {e}")
+
+    # 2. Salvar em jarvis_studies
+    titulo = f"Onboarding — {payload.cliente_nome} ({payload.empresa})"
+    await sb.insert("jarvis_studies", {
+        "title": titulo,
+        "agent": "cs",
+        "content": response_text,
+        "summary": (
+            f"Plano de onboarding para {payload.empresa}. "
+            f"Servico: {payload.servico}. Valor: R${payload.valor:,.2f}. "
+            f"Inicio: {payload.data_inicio}."
+        ),
+        "tags": ["onboarding", "cs", "cliente-novo"],
+        "status": "ativo",
+    })
+
+    # 3. Enviar resumo para Daniel via WhatsApp
+    try:
+        evo_url = os.getenv("EVOLUTION_URL", "http://localhost:8080")
+        evo_instance = os.getenv("EVOLUTION_INSTANCE", "gradios")
+        evo_key = os.getenv("EVOLUTION_APIKEY", "")
+        daniel_wa = os.getenv("DANIEL_WHATSAPP", "5543988372540")
+        if evo_key:
+            resumo = (
+                f"🆕 *NOVO CLIENTE — ONBOARDING INICIADO*\n\n"
+                f"Cliente: {payload.cliente_nome}\n"
+                f"Empresa: {payload.empresa}\n"
+                f"Servico: {payload.servico}\n"
+                f"Valor: R$ {payload.valor:,.2f}\n"
+                f"Inicio: {payload.data_inicio}\n\n"
+                f"Plano completo gerado pelo CS Agent.\n"
+                f"Confira em: AIOX > Estudos > tag: onboarding"
+            )
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                await client.post(
+                    f"{evo_url}/message/sendText/{evo_instance}",
+                    headers={"apikey": evo_key, "Content-Type": "application/json"},
+                    json={"number": daniel_wa, "text": resumo},
+                )
+    except Exception as e:
+        logger.warning("WhatsApp onboarding falhou: %s", e)
+
+    return {
+        "status": "ok",
+        "titulo": titulo,
+        "plano": response_text,
+        "tags": ["onboarding", "cs", "cliente-novo"],
+    }
+
+
 # ─── Health check ──────────────────────────────────────────────────
 
 @app.get("/health")

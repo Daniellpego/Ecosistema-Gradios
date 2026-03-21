@@ -43,6 +43,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/",          label: "Painel",    icon: "LayoutDashboard" },
   { href: "/agents",    label: "Agents",    icon: "Bot" },
   { href: "/projetos",  label: "Projetos",  icon: "FolderKanban" },
+  { href: "/agenda",    label: "Agenda",    icon: "CalendarDays" },
   { href: "/estudos",   label: "Estudos",   icon: "FileText" },
   { href: "/alertas",   label: "Alertas",   icon: "Bell" },
   { href: "/status",    label: "Status",    icon: "Activity" },

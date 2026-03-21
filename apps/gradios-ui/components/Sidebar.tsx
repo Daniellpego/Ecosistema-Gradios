@@ -12,6 +12,7 @@ import {
   Zap,
   FolderKanban,
   Activity,
+  CalendarDays,
 } from "lucide-react";
 
 const ICONS: Record<string, React.ElementType> = {
@@ -21,6 +22,7 @@ const ICONS: Record<string, React.ElementType> = {
   Bell,
   FolderKanban,
   Activity,
+  CalendarDays,
 };
 
 export function Sidebar() {
