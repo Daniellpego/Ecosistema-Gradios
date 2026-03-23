@@ -1,12 +1,13 @@
 "use client";
 import { submitLead } from "@/app/actions";
-import { useInView } from "@/hooks/useAnimations";
+import { useScrollReveal } from "@/hooks/useAnimations";
 import { useState } from "react";
 
 export function LeadForm() {
-  const { ref, inView } = useInView();
+  const leftCol = useScrollReveal('right', 0, 0.1);
+  const rightCol = useScrollReveal('left', 200, 0.1);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  
+
   async function handleSubmit(formData: FormData) {
     setStatus("loading");
     try {
@@ -18,9 +19,7 @@ export function LeadForm() {
   }
 
   return (
-    <section id="contato" className={`relative z-10 py-16 lg:py-20 overflow-hidden bg-[#f1f5f9] text-left transition-all duration-700 ${
-      inView ? "opacity-100" : "opacity-0"
-    }`} ref={ref}>
+    <section id="contato" className="relative z-10 py-16 lg:py-20 overflow-hidden bg-[#f1f5f9] text-left">
       {/* Gradiente de fundo */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-white to-secondary/5 -z-10" />
       {/* Blob esquerdo */}
@@ -29,24 +28,24 @@ export function LeadForm() {
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-secondary/8 rounded-full blur-3xl -z-10 translate-x-1/3 translate-y-1/3" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
-          {/* COLUNA ESQUERDA (texto de convencimento) */}
-          <div>
+
+          {/* COLUNA ESQUERDA — slide from left */}
+          <div ref={leftCol.ref} className={leftCol.className} style={leftCol.style}>
             <div className="inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6">
               Consultoria Gradios
             </div>
-            
+
             <h2 className="text-4xl lg:text-5xl font-bold text-text leading-tight mb-4">
               Sua equipe ainda<br />perde tempo com isso?
             </h2>
-            
+
             <p className="text-text-muted text-lg mt-4 leading-relaxed max-w-lg mb-4">
               Conta pra gente o que trava vocês hoje. A gente mapeia o que dá pra resolver e mostra como. Sem cobrar nada por isso.
             </p>
             <p className="text-primary font-semibold text-sm mb-8 italic">
               Imagine sua operação rodando sozinha enquanto você foca no que importa.
             </p>
-            
+
             <div className="flex flex-col gap-4 mb-8">
               {["Sem compromisso", "Resposta em até 24h", "Diagnóstico 100% gratuito"].map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
@@ -77,13 +76,13 @@ export function LeadForm() {
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.325 0-4.47-.744-6.227-2.01l-.435-.327-2.646.887.887-2.646-.327-.435A9.956 9.956 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
               (43) 98837-2540
             </a>
-            
+
           </div>
 
-          {/* COLUNA DIREITA (formulário) */}
-          <div className="bg-bg-alt border border-card-border rounded-card p-8 shadow-sm">
+          {/* COLUNA DIREITA — slide from right */}
+          <div ref={rightCol.ref} className={`bg-bg-alt border border-card-border rounded-card p-8 shadow-sm ${rightCol.className}`} style={rightCol.style}>
             <h3 className="text-xl font-bold text-text mb-6">Conta o que trava vocês</h3>
-            
+
             {status === "success" ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
@@ -96,7 +95,7 @@ export function LeadForm() {
               </div>
             ) : (
               <form action={handleSubmit} className="flex flex-col gap-5">
-                
+
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-text" htmlFor="nome">Nome completo</label>
                   <input
@@ -180,7 +179,7 @@ export function LeadForm() {
               </form>
             )}
           </div>
-          
+
         </div>
       </div>
     </section>

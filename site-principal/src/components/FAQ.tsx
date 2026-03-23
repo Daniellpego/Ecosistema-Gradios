@@ -1,5 +1,5 @@
 "use client";
-import { useInView } from "@/hooks/useAnimations";
+import { useScrollReveal, useStaggerReveal } from "@/hooks/useAnimations";
 import { useState } from "react";
 
 const faqItems = [
@@ -60,38 +60,41 @@ export const faqSchemaData = {
 };
 
 export function FAQ() {
-  const { ref, inView } = useInView();
+  const header = useScrollReveal('up', 0, 0.1);
+  const { ref, getChildProps } = useStaggerReveal(0.05);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-white py-16 lg:py-20" ref={ref}>
+    <section className="bg-white py-16 lg:py-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div className="flex flex-col items-center mb-12">
-          <div className="inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6">
+        {/* Header — scroll reveal */}
+        <div className="flex flex-col items-center mb-12" ref={header.ref}>
+          <div className={`inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6 ${header.className}`} style={header.style}>
             Perguntas Frequentes
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4">
+          <h2 className={`text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4 ${header.className}`} style={{ ...header.style, transitionDelay: '100ms' }}>
             Perguntas que todo empresário<br className="hidden md:block"/> faz antes de contratar
           </h2>
-          <p className="text-text-muted text-lg text-center max-w-lg mx-auto">
+          <p className={`text-text-muted text-lg text-center max-w-lg mx-auto ${header.className}`} style={{ ...header.style, transitionDelay: '200ms' }}>
             Respondemos as 10 dúvidas mais comuns. Sem enrolação.
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        {/* FAQ items — cascade reveal alternating left/right */}
+        <div className="flex flex-col gap-3" ref={ref}>
           {faqItems.map((item, index) => {
             const isOpen = openIndex === index;
+            const direction = index % 2 === 0 ? 'left' : 'right';
+            const child = getChildProps(index, direction as 'left' | 'right', 80);
             return (
               <div
                 key={index}
-                className={`rounded-card overflow-hidden transition-all duration-300 ${
-                  inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                } ${isOpen
+                className={`rounded-card overflow-hidden transition-all duration-300 ${child.className} ${isOpen
                   ? "border border-primary/30 shadow-lg shadow-primary/5 bg-primary/[0.02] border-l-[3px] border-l-primary"
                   : "border border-card-border"
                 }`}
-                style={{ transitionDelay: inView ? `${Math.min(index, 5) * 60}ms` : "0ms" }}
+                style={child.style}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
@@ -100,12 +103,11 @@ export function FAQ() {
                 >
                   <span className="text-base font-bold text-text pr-4">{item.question}</span>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                    isOpen ? "bg-primary text-white" : "bg-primary/8 text-primary"
+                    isOpen ? "bg-primary text-white rotate-45" : "bg-primary/8 text-primary rotate-0"
                   }`}>
-                    {/* + that rotates to × */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-45" : "rotate-0"}`}
+                      className="w-4 h-4"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"

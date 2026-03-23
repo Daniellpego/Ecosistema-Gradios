@@ -190,6 +190,48 @@
     width: 100%;
   }
 
+  /* Brain pulse animation */
+  @keyframes brainPulse {
+    0%, 100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 4px rgba(37, 70, 189, 0.3));
+    }
+    50% {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 12px rgba(0, 191, 255, 0.6));
+    }
+  }
+
+  .animate-brain-pulse {
+    animation: brainPulse 2.5s ease-in-out infinite;
+  }
+
+  /* Neural network connection lines */
+  @keyframes neuralPulse {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.5; }
+  }
+
+  .animate-neural {
+    animation: neuralPulse 3s ease-in-out infinite;
+  }
+
+  /* WhatsApp desktop bar */
+  @keyframes wppSlideIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .animate-wpp-in {
+    animation: wppSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 2s both;
+  }
+
+  /* Section header reveal */
+  @keyframes headerReveal {
+    from { opacity: 0; transform: translateY(24px) scale(0.96); letter-spacing: 0.1em; }
+    to   { opacity: 1; transform: translateY(0) scale(1); letter-spacing: -0.02em; }
+  }
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .animate-float,
@@ -198,7 +240,10 @@
     .animate-cta-pulse,
     .animate-fade-slide-up,
     .animate-fade-slide-right,
-    .animate-pulse-glow {
+    .animate-pulse-glow,
+    .animate-brain-pulse,
+    .animate-neural,
+    .animate-wpp-in {
       animation: none !important;
     }
     .solution-card,

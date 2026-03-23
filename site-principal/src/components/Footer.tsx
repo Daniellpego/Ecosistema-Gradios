@@ -121,7 +121,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Gradios Soluções em Tecnologia LTDA. Todos os direitos reservados.
           </p>
           <p className="text-xs text-[#94A3B8]/30 text-center sm:text-right">
-            CNPJ: 00.000.000/0001-00
+            CNPJ: 65.663.208/0001-36
           </p>
         </div>
       </div>
