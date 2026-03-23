@@ -31,8 +31,37 @@ export function useInView(threshold = 0.15) {
   return { ref, inView };
 }
 
-/* ═══ useScrollReveal — per-element reveal with CSS class injection ═══ */
+/*
+ * ═══ SCROLL REVEAL SYSTEM ═══
+ * Uses CSS @keyframes with bounce/overshoot — NOT flat transitions.
+ * Each direction has its own keyframe in globals.css:
+ *   .reveal-up, .reveal-down, .reveal-left, .reveal-right,
+ *   .reveal-scale, .reveal-blur, .reveal-rotate
+ *
+ * Hidden state is set inline, animation class is toggled on reveal.
+ */
+
 export type RevealDirection = 'up' | 'down' | 'left' | 'right' | 'scale' | 'blur' | 'rotate';
+
+const hiddenStyles: Record<RevealDirection, React.CSSProperties> = {
+  up:     { opacity: 0, transform: 'translateY(60px) scale(0.96)' },
+  down:   { opacity: 0, transform: 'translateY(-60px) scale(0.96)' },
+  left:   { opacity: 0, transform: 'translateX(80px) rotate(2deg)' },
+  right:  { opacity: 0, transform: 'translateX(-80px) rotate(-2deg)' },
+  scale:  { opacity: 0, transform: 'scale(0.7)' },
+  blur:   { opacity: 0, transform: 'scale(0.95)', filter: 'blur(12px)' },
+  rotate: { opacity: 0, transform: 'rotate(6deg) translateY(40px)' },
+};
+
+const animClass: Record<RevealDirection, string> = {
+  up:     'reveal-up',
+  down:   'reveal-down',
+  left:   'reveal-left',
+  right:  'reveal-right',
+  scale:  'reveal-scale',
+  blur:   'reveal-blur',
+  rotate: 'reveal-rotate',
+};
 
 export function useScrollReveal(
   direction: RevealDirection = 'up',
@@ -47,7 +76,7 @@ export function useScrollReveal(
     if (!el) { setRevealed(true); return; }
 
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.95) {
+    if (rect.top < window.innerHeight * 0.92) {
       setRevealed(true);
       return;
     }
@@ -65,30 +94,15 @@ export function useScrollReveal(
     return () => observer.disconnect();
   }, [threshold]);
 
-  const baseHidden: Record<RevealDirection, string> = {
-    up: 'translate-y-12 opacity-0',
-    down: '-translate-y-12 opacity-0',
-    left: 'translate-x-16 opacity-0',
-    right: '-translate-x-16 opacity-0',
-    scale: 'scale-90 opacity-0',
-    blur: 'opacity-0 blur-sm',
-    rotate: 'opacity-0 rotate-3',
-  };
-
-  const shown = 'translate-x-0 translate-y-0 scale-100 opacity-100 blur-0 rotate-0';
-
-  const className = revealed ? shown : baseHidden[direction];
-  const style = {
-    transitionProperty: 'transform, opacity, filter',
-    transitionDuration: '800ms',
-    transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-    transitionDelay: `${delay}ms`,
-  };
+  const className = revealed ? animClass[direction] : '';
+  const style: React.CSSProperties = revealed
+    ? { animationDelay: `${delay}ms` }
+    : hiddenStyles[direction];
 
   return { ref, className, style, revealed };
 }
 
-/* ═══ useStaggerReveal — parent container that triggers children stagger ═══ */
+/* ═══ useStaggerReveal — parent triggers children with bounce stagger ═══ */
 export function useStaggerReveal(threshold = 0.12) {
   const ref = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
@@ -98,7 +112,7 @@ export function useStaggerReveal(threshold = 0.12) {
     if (!el) { setRevealed(true); return; }
 
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.95) {
+    if (rect.top < window.innerHeight * 0.92) {
       setRevealed(true);
       return;
     }
@@ -121,25 +135,12 @@ export function useStaggerReveal(threshold = 0.12) {
     direction: RevealDirection = 'up',
     staggerMs = 100
   ) => {
-    const baseHidden: Record<RevealDirection, string> = {
-      up: 'translate-y-10 opacity-0 scale-[0.97]',
-      down: '-translate-y-10 opacity-0 scale-[0.97]',
-      left: 'translate-x-14 opacity-0',
-      right: '-translate-x-14 opacity-0',
-      scale: 'scale-75 opacity-0',
-      blur: 'opacity-0 blur-md',
-      rotate: 'opacity-0 -rotate-3 translate-y-6',
-    };
-    const shown = 'translate-x-0 translate-y-0 scale-100 opacity-100 blur-0 rotate-0';
-
     return {
-      className: revealed ? shown : baseHidden[direction],
-      style: {
-        transitionProperty: 'transform, opacity, filter',
-        transitionDuration: '700ms',
-        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        transitionDelay: revealed ? `${index * staggerMs}ms` : '0ms',
-      } as React.CSSProperties,
+      className: revealed ? animClass[direction] : '',
+      style: (revealed
+        ? { animationDelay: `${index * staggerMs}ms` }
+        : hiddenStyles[direction]
+      ) as React.CSSProperties,
     };
   }, [revealed]);
 

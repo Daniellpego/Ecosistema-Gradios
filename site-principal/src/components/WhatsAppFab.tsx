@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 
 export function WhatsAppFab() {
   const [visible, setVisible] = useState(false);
-  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 2000);
@@ -11,42 +10,30 @@ export function WhatsAppFab() {
   }, []);
 
   return (
-    <div
-      className={`fixed bottom-6 right-6 z-50 transition-all duration-500 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
+    <a
+      href="https://wa.me/5543988372540"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Conversar pelo WhatsApp"
+      className={`fixed bottom-6 right-6 z-50 group transition-all duration-700 ${
+        visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-75 pointer-events-none"
       }`}
     >
-      <a
-        href="https://wa.me/5543988372540"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Conversar pelo WhatsApp"
-        className="group flex items-center gap-0 hover:gap-3 transition-all duration-300"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
-        {/* Desktop expanded label */}
-        <div
-          className={`hidden sm:flex items-center bg-[#0f172a] text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg border border-white/10 transition-all duration-300 whitespace-nowrap overflow-hidden ${
-            hovered
-              ? "max-w-[200px] opacity-100 mr-0"
-              : "max-w-0 opacity-0 px-0 mr-0"
-          }`}
-        >
+      {/* Desktop: expanded bar — Mobile: circle only */}
+      <div className="flex items-center">
+        {/* Text label — desktop only, always visible */}
+        <div className="hidden sm:flex items-center bg-[#0f172a] text-white text-sm font-semibold pl-5 pr-2 py-3 rounded-l-full border border-r-0 border-white/10 shadow-lg group-hover:bg-[#1a2744] transition-colors duration-300">
           Fale com a gente
         </div>
 
-        {/* Button */}
-        <div className="relative w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/30 hover:shadow-xl hover:shadow-[#25D366]/40 hover:scale-110 transition-all duration-300">
-          {/* Subtle pulse ring */}
-          <span className="absolute inset-0 rounded-full border-2 border-[#25D366] animate-ping opacity-20" style={{ animationDuration: '3s' }} />
-
-          {/* WhatsApp icon — clean filled version */}
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 text-white relative z-10" viewBox="0 0 24 24" fill="currentColor">
+        {/* Green circle button */}
+        <div className="relative w-14 h-14 sm:w-12 sm:h-12 bg-[#25D366] sm:rounded-r-full sm:rounded-l-none rounded-full flex items-center justify-center animate-wpp-breath group-hover:scale-110 transition-transform duration-300">
+          {/* WhatsApp icon */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 sm:w-6 sm:h-6 text-white relative z-10" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c.01 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.27z" />
           </svg>
         </div>
-      </a>
-    </div>
+      </div>
+    </a>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 import { useStaggerReveal, useScrollReveal } from "@/hooks/useAnimations";
+import { TiltCard } from "./TiltCard";
+import { WordReveal } from "./WordReveal";
 
 export function Benefits() {
   const header = useScrollReveal('up', 0, 0.1);
@@ -96,9 +98,10 @@ export function Benefits() {
           <div className={`inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6 ${header.className}`} style={header.style}>
             Soluções
           </div>
-          <h2 className={`text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4 ${header.className}`} style={{ ...header.style, transitionDelay: '100ms' }}>
-            Seu time ainda faz<br className="hidden md:block"/> isso na mão?
-          </h2>
+          <WordReveal
+            text="Seu time ainda faz isso na mão?"
+            className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4"
+          />
           <p className={`text-text-muted text-lg text-center max-w-lg mx-auto ${header.className}`} style={{ ...header.style, transitionDelay: '200ms' }}>
             Entregamos resultado. Não só código.
           </p>
@@ -109,9 +112,9 @@ export function Benefits() {
           {benefits.map((benefit, index) => {
             const child = getChildProps(index, index % 2 === 0 ? 'up' : 'scale', 120);
             return (
-              <div
+              <TiltCard
                 key={index}
-                className={`group solution-card bg-white border border-card-border rounded-card p-6 flex flex-col justify-between gap-4 h-full ${child.className}`}
+                className={`group solution-card bg-white border border-card-border rounded-card p-6 flex flex-col justify-between gap-4 h-full touch-feedback ${child.className}`}
                 style={child.style}
               >
                 <div>
@@ -141,7 +144,7 @@ export function Benefits() {
                     </div>
                   )}
                 </div>
-              </div>
+              </TiltCard>
             );
           })}
         </div>

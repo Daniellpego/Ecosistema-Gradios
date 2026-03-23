@@ -8,8 +8,8 @@ export function MidCTA() {
 
   return (
     <section className="relative py-16 lg:py-20 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-brand-gradient -z-10" />
+      {/* Animated gradient mesh background */}
+      <div className="absolute inset-0 animated-gradient-mesh -z-10" />
       {/* Diagonal texture */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.08] -z-[5]" style={{
         backgroundImage: 'repeating-linear-gradient(45deg, #fff 0px, #fff 1px, transparent 1px, transparent 16px)',

@@ -1,5 +1,7 @@
 "use client";
 import { useScrollReveal, useStaggerReveal, useCounter } from "@/hooks/useAnimations";
+import { WordReveal } from "./WordReveal";
+import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import Link from "next/link";
 
 export function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
@@ -25,9 +27,10 @@ export function Testimonials() {
           <div className={`inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6 ${header.className}`} style={header.style}>
             Resultados Reais
           </div>
-          <h2 className={`text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4 ${header.className}`} style={{ ...header.style, transitionDelay: '100ms' }}>
-            O que muda quando você<br className="hidden md:block"/> para de fazer no braço
-          </h2>
+          <WordReveal
+            text="O que muda quando você para de fazer no braço"
+            className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4"
+          />
           <p className={`text-text-muted text-lg text-center max-w-xl mx-auto mt-4 ${header.className}`} style={{ ...header.style, transitionDelay: '200ms' }}>
             Resultados concretos de quem trocou o manual pela automação.
           </p>
@@ -49,22 +52,13 @@ export function Testimonials() {
                         <polyline points="17 6 23 6 23 12"></polyline>
                       </svg>
                     </div>
-                    <span className="text-sm font-semibold text-primary uppercase tracking-wider">Case em destaque — Setor Financeiro</span>
+                    <span className="text-sm font-semibold text-primary uppercase tracking-wider">Case em destaque | Setor Financeiro</span>
                   </div>
 
                   <p className="text-lg font-bold text-text mb-5">Fechamento financeiro mensal</p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                    <div className="bg-red-50 border border-red-200/60 rounded-xl p-5">
-                      <div className="text-xs font-semibold text-red-400 uppercase tracking-wider mb-2">Antes</div>
-                      <div className="text-3xl font-bold font-display text-red-600 mb-1">3 dias</div>
-                      <p className="text-sm text-red-400">Processo manual, planilhas, erros frequentes</p>
-                    </div>
-                    <div className="bg-green-50 border border-green-200/60 rounded-xl p-5">
-                      <div className="text-xs font-semibold text-green-500 uppercase tracking-wider mb-2">Depois</div>
-                      <div className="text-3xl font-bold font-display text-green-600 mb-1">4 horas</div>
-                      <p className="text-sm text-green-500">Automatizado, sem erro, relatório pronto</p>
-                    </div>
+                  <div className="mb-6">
+                    <BeforeAfterSlider />
                   </div>
 
                   <p className="text-text-muted leading-relaxed">

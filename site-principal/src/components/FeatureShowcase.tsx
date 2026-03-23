@@ -1,5 +1,7 @@
 "use client";
 import { useScrollReveal, useStaggerReveal } from "@/hooks/useAnimations";
+import { TiltCard } from "./TiltCard";
+import { WordReveal } from "./WordReveal";
 
 export function FeatureShowcase() {
   const leftCol = useScrollReveal('right', 0, 0.1);
@@ -50,9 +52,10 @@ export function FeatureShowcase() {
             <div className="inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6">
               Como Funciona
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-text leading-tight mb-4">
-              Entendemos primeiro.<br />Construímos depois.
-            </h2>
+            <WordReveal
+              text="Entendemos primeiro. Construímos depois."
+              className="text-4xl lg:text-5xl font-bold text-text leading-tight mb-4"
+            />
             <p className="text-text-muted text-lg mt-4 leading-relaxed max-w-lg">
               A gente não chega com uma proposta pronta. Primeiro a gente entende. Depois a gente constrói.
             </p>
@@ -78,9 +81,10 @@ export function FeatureShowcase() {
               const child = getChildProps(index, 'left', 180);
               return (
                 <div key={index} className="relative z-10 mb-6 last:mb-0">
-                  <div
-                    className={`bg-bg-alt border border-card-border rounded-card p-6 relative overflow-hidden group cursor-default hover:shadow-[0_24px_48px_rgba(37,70,189,0.15)] hover:-translate-y-2 hover:border-primary/60 transition-all duration-300 ${child.className}`}
+                  <TiltCard
+                    className={`bg-bg-alt border border-card-border rounded-card p-6 relative overflow-hidden group cursor-default hover:shadow-[0_24px_48px_rgba(37,70,189,0.15)] hover:-translate-y-2 hover:border-primary/60 transition-all duration-300 touch-feedback ${child.className}`}
                     style={child.style}
+                    intensity={6}
                   >
                     <div className="flex items-start gap-4 z-10 relative">
                       <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 relative overflow-hidden shadow-[0_0_20px_rgba(37,70,189,0.3)] group-hover:shadow-[0_0_30px_rgba(37,70,189,0.5)] transition-shadow duration-500" style={{ background: 'linear-gradient(135deg, #2546BD 0%, #1856C0 40%, #00BFFF 100%)' }}>
@@ -95,7 +99,7 @@ export function FeatureShowcase() {
                     <span className="absolute bottom-4 right-6 text-6xl font-black text-text/5 leading-none select-none z-0">
                       {step.number}
                     </span>
-                  </div>
+                  </TiltCard>
                 </div>
               );
             })}

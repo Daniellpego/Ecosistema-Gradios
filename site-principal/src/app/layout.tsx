@@ -4,6 +4,8 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { FloatingShapes } from "@/components/FloatingShapes";
 
 const geist = localFont({
   src: "./fonts/GeistVF.woff",
@@ -69,7 +71,7 @@ const jsonLdFaq = {
   "mainEntity": [
     { "@type": "Question", "name": "Quanto custa automatizar meus processos?", "acceptedAnswer": { "@type": "Answer", "text": "Depende da complexidade. Nossos projetos variam conforme o escopo, mas o diagnóstico gratuito identifica exatamente o que faz sentido para sua empresa. A maioria dos nossos clientes recupera o investimento em menos de 3 meses." } },
     { "@type": "Question", "name": "Quanto tempo leva para implementar?", "acceptedAnswer": { "@type": "Answer", "text": "Automações simples ficam prontas em 5-10 dias. Projetos mais complexos levam de 3 a 6 semanas." } },
-    { "@type": "Question", "name": "Preciso trocar os sistemas que já uso?", "acceptedAnswer": { "@type": "Answer", "text": "Não. A automação integra os sistemas que você já tem — ERP, CRM, planilhas, WhatsApp, e-mail. Não substituímos nada, conectamos tudo." } },
+    { "@type": "Question", "name": "Preciso trocar os sistemas que já uso?", "acceptedAnswer": { "@type": "Answer", "text": "Não. A automação integra os sistemas que você já tem: ERP, CRM, planilhas, WhatsApp, e-mail. Não substituímos nada, conectamos tudo." } },
     { "@type": "Question", "name": "Precisa de contrato longo?", "acceptedAnswer": { "@type": "Answer", "text": "Não. Trabalhamos com escopo definido e transparente. Você paga pelo que foi combinado, sem amarras." } },
     { "@type": "Question", "name": "E se eu fizer o diagnóstico e não quiser contratar?", "acceptedAnswer": { "@type": "Answer", "text": "Sem problema nenhum. O diagnóstico é gratuito e sem compromisso." } },
     { "@type": "Question", "name": "Funciona pro meu setor?", "acceptedAnswer": { "@type": "Answer", "text": "Se sua empresa tem processos manuais, planilhas sendo copiadas, ou sistemas que não conversam entre si, a gente resolve. Já atuamos em varejo, saúde, financeiro, logística, serviços e SaaS." } },
@@ -104,8 +106,10 @@ export default function RootLayout({
         >
           Pular para o conteúdo principal
         </a>
+        <ScrollProgress />
+        <FloatingShapes />
         <Navbar />
-        <main id="conteudo-principal" className="min-h-screen pt-20">
+        <main id="conteudo-principal" className="min-h-screen pt-20 relative z-[2]">
           {children}
         </main>
         <Footer />

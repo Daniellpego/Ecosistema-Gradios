@@ -1,5 +1,6 @@
 "use client";
 import { useScrollReveal, useStaggerReveal } from "@/hooks/useAnimations";
+import { WordReveal } from "./WordReveal";
 import { useState } from "react";
 
 const faqItems = [
@@ -17,7 +18,7 @@ const faqItems = [
   },
   {
     question: "Preciso trocar os sistemas que já uso?",
-    answer: "Não. A automação integra os sistemas que você já tem — ERP, CRM, planilhas, WhatsApp, e-mail. Não substituímos nada, conectamos tudo."
+    answer: "Não. A automação integra os sistemas que você já tem: ERP, CRM, planilhas, WhatsApp, e-mail. Não substituímos nada, conectamos tudo."
   },
   {
     question: "Precisa de contrato longo?",
@@ -37,7 +38,7 @@ const faqItems = [
   },
   {
     question: "Minha equipe vai precisar aprender ferramentas novas?",
-    answer: "Não. As automações rodam no background. Sua equipe continua usando as mesmas ferramentas de sempre — só que agora os dados fluem automaticamente entre elas."
+    answer: "Não. As automações rodam no background. Sua equipe continua usando as mesmas ferramentas de sempre. Só que agora os dados fluem automaticamente entre elas."
   },
   {
     question: "O que acontece depois da implementação?",
@@ -73,9 +74,10 @@ export function FAQ() {
           <div className={`inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6 ${header.className}`} style={header.style}>
             Perguntas Frequentes
           </div>
-          <h2 className={`text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4 ${header.className}`} style={{ ...header.style, transitionDelay: '100ms' }}>
-            Perguntas que todo empresário<br className="hidden md:block"/> faz antes de contratar
-          </h2>
+          <WordReveal
+            text="Perguntas que todo empresário faz antes de contratar"
+            className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4"
+          />
           <p className={`text-text-muted text-lg text-center max-w-lg mx-auto ${header.className}`} style={{ ...header.style, transitionDelay: '200ms' }}>
             Respondemos as 10 dúvidas mais comuns. Sem enrolação.
           </p>
@@ -98,7 +100,7 @@ export function FAQ() {
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between p-5 text-left group"
+                  className="w-full flex items-center justify-between p-5 text-left group touch-feedback"
                   aria-expanded={isOpen}
                 >
                   <span className="text-base font-bold text-text pr-4">{item.question}</span>
