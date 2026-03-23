@@ -44,13 +44,13 @@ export function useInView(threshold = 0.15) {
 export type RevealDirection = 'up' | 'down' | 'left' | 'right' | 'scale' | 'blur' | 'rotate';
 
 const hiddenStyles: Record<RevealDirection, React.CSSProperties> = {
-  up:     { opacity: 0, transform: 'translateY(60px) scale(0.96)' },
-  down:   { opacity: 0, transform: 'translateY(-60px) scale(0.96)' },
-  left:   { opacity: 0, transform: 'translateX(80px) rotate(2deg)' },
-  right:  { opacity: 0, transform: 'translateX(-80px) rotate(-2deg)' },
-  scale:  { opacity: 0, transform: 'scale(0.7)' },
-  blur:   { opacity: 0, transform: 'scale(0.95)', filter: 'blur(12px)' },
-  rotate: { opacity: 0, transform: 'rotate(6deg) translateY(40px)' },
+  up:     { opacity: 0, transform: 'translateY(40px)' },
+  down:   { opacity: 0, transform: 'translateY(-40px)' },
+  left:   { opacity: 0, transform: 'translateX(50px)' },
+  right:  { opacity: 0, transform: 'translateX(-50px)' },
+  scale:  { opacity: 0, transform: 'scale(0.92)' },
+  blur:   { opacity: 0, filter: 'blur(8px)' },
+  rotate: { opacity: 0, transform: 'rotate(3deg) translateY(30px)' },
 };
 
 const animClass: Record<RevealDirection, string> = {

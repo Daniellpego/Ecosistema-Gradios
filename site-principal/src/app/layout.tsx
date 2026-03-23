@@ -5,7 +5,6 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
 import { ScrollProgress } from "@/components/ScrollProgress";
-import { FloatingShapes } from "@/components/FloatingShapes";
 
 const geist = localFont({
   src: "./fonts/GeistVF.woff",
@@ -107,9 +106,8 @@ export default function RootLayout({
           Pular para o conteúdo principal
         </a>
         <ScrollProgress />
-        <FloatingShapes />
         <Navbar />
-        <main id="conteudo-principal" className="min-h-screen pt-20 relative z-[2]">
+        <main id="conteudo-principal" className="min-h-screen pt-20">
           {children}
         </main>
         <Footer />

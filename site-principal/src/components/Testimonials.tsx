@@ -1,7 +1,6 @@
 "use client";
 import { useScrollReveal, useStaggerReveal, useCounter } from "@/hooks/useAnimations";
 import { WordReveal } from "./WordReveal";
-import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import Link from "next/link";
 
 export function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
@@ -57,8 +56,17 @@ export function Testimonials() {
 
                   <p className="text-lg font-bold text-text mb-5">Fechamento financeiro mensal</p>
 
-                  <div className="mb-6">
-                    <BeforeAfterSlider />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <div className="bg-red-50 border border-red-200/60 rounded-xl p-5">
+                      <div className="text-xs font-semibold text-red-400 uppercase tracking-wider mb-2">Antes</div>
+                      <div className="text-3xl font-bold font-display text-red-600 mb-1">3 dias</div>
+                      <p className="text-sm text-red-400">Processo manual, planilhas, erros frequentes</p>
+                    </div>
+                    <div className="bg-green-50 border border-green-200/60 rounded-xl p-5">
+                      <div className="text-xs font-semibold text-green-500 uppercase tracking-wider mb-2">Depois</div>
+                      <div className="text-3xl font-bold font-display text-green-600 mb-1">4 horas</div>
+                      <p className="text-sm text-green-500">Automatizado, sem erro, relatório pronto</p>
+                    </div>
                   </div>
 
                   <p className="text-text-muted leading-relaxed">
