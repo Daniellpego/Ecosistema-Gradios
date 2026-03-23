@@ -190,129 +190,71 @@
     width: 100%;
   }
 
-  /* ═══ SCROLL REVEAL KEYFRAMES — with real bounce/overshoot ═══ */
+  /* ═══ SCROLL REVEAL KEYFRAMES — smooth, elegant, no bounce ═══ */
 
-  /* Reveal from bottom — bounces up past target then settles */
   @keyframes revealUp {
-    0%   { opacity: 0; transform: translateY(60px) scale(0.96); }
-    50%  { opacity: 1; transform: translateY(-8px) scale(1.02); }
-    70%  { transform: translateY(3px) scale(0.995); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
-  .reveal-up { animation: revealUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .reveal-up { animation: revealUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
-  /* Reveal from top */
   @keyframes revealDown {
-    0%   { opacity: 0; transform: translateY(-60px) scale(0.96); }
-    50%  { opacity: 1; transform: translateY(8px) scale(1.02); }
-    70%  { transform: translateY(-3px) scale(0.995); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+    from { opacity: 0; transform: translateY(-40px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
-  .reveal-down { animation: revealDown 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .reveal-down { animation: revealDown 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
-  /* Reveal from right — swings in with rotation */
   @keyframes revealLeft {
-    0%   { opacity: 0; transform: translateX(80px) rotate(3deg) scale(0.95); }
-    45%  { opacity: 1; transform: translateX(-12px) rotate(-1deg) scale(1.02); }
-    70%  { transform: translateX(4px) rotate(0.3deg) scale(0.998); }
-    100% { opacity: 1; transform: translateX(0) rotate(0) scale(1); }
+    from { opacity: 0; transform: translateX(50px); }
+    to   { opacity: 1; transform: translateX(0); }
   }
-  .reveal-left { animation: revealLeft 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .reveal-left { animation: revealLeft 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
-  /* Reveal from left — swings in with rotation */
   @keyframes revealRight {
-    0%   { opacity: 0; transform: translateX(-80px) rotate(-3deg) scale(0.95); }
-    45%  { opacity: 1; transform: translateX(12px) rotate(1deg) scale(1.02); }
-    70%  { transform: translateX(-4px) rotate(-0.3deg) scale(0.998); }
-    100% { opacity: 1; transform: translateX(0) rotate(0) scale(1); }
+    from { opacity: 0; transform: translateX(-50px); }
+    to   { opacity: 1; transform: translateX(0); }
   }
-  .reveal-right { animation: revealRight 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .reveal-right { animation: revealRight 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
-  /* Reveal with scale bounce — pops in */
   @keyframes revealScale {
-    0%   { opacity: 0; transform: scale(0.6); }
-    40%  { opacity: 1; transform: scale(1.08); }
-    65%  { transform: scale(0.96); }
-    80%  { transform: scale(1.02); }
-    100% { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
   }
-  .reveal-scale { animation: revealScale 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .reveal-scale { animation: revealScale 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
-  /* Reveal with blur dissolve */
   @keyframes revealBlur {
-    0%   { opacity: 0; transform: scale(0.92); filter: blur(16px); }
-    60%  { opacity: 1; transform: scale(1.03); filter: blur(0px); }
-    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+    from { opacity: 0; filter: blur(8px); }
+    to   { opacity: 1; filter: blur(0); }
   }
-  .reveal-blur { animation: revealBlur 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .reveal-blur { animation: revealBlur 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
-  /* Reveal with rotation flip */
   @keyframes revealRotate {
-    0%   { opacity: 0; transform: rotate(8deg) translateY(50px) scale(0.9); }
-    50%  { opacity: 1; transform: rotate(-2deg) translateY(-6px) scale(1.03); }
-    75%  { transform: rotate(0.5deg) translateY(2px) scale(0.99); }
-    100% { opacity: 1; transform: rotate(0) translateY(0) scale(1); }
+    from { opacity: 0; transform: rotate(3deg) translateY(30px); }
+    to   { opacity: 1; transform: rotate(0) translateY(0); }
   }
-  .reveal-rotate { animation: revealRotate 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .reveal-rotate { animation: revealRotate 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
-  /* ═══ BRAIN EMOJI PULSE ═══ */
+  /* ═══ BRAIN EMOJI PULSE — subtle ═══ */
   @keyframes brainBounce {
-    0%, 100% {
-      transform: scale(1);
-      filter: drop-shadow(0 0 0px transparent);
-    }
-    25% {
-      transform: scale(1.25) rotate(-5deg);
-      filter: drop-shadow(0 0 8px rgba(0, 191, 255, 0.5));
-    }
-    50% {
-      transform: scale(1.1) rotate(3deg);
-      filter: drop-shadow(0 0 12px rgba(37, 70, 189, 0.6));
-    }
-    75% {
-      transform: scale(1.2) rotate(-2deg);
-      filter: drop-shadow(0 0 6px rgba(0, 191, 255, 0.4));
-    }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
   }
 
   .animate-brain-bounce {
-    animation: brainBounce 3s ease-in-out infinite;
+    animation: brainBounce 2.5s ease-in-out infinite;
     display: inline-block;
   }
 
-  /* ═══ ANIMATED GRADIENT MESH ═══ */
-  @keyframes gradientShift {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  .animated-gradient-mesh {
-    background: linear-gradient(
-      -45deg,
-      #2546BD,
-      #1856C0,
-      #00BFFF,
-      #2546BD,
-      #0090D9
-    );
-    background-size: 400% 400%;
-    animation: gradientShift 12s ease infinite;
-  }
-
   /* ═══ MOBILE TOUCH FEEDBACK ═══ */
-  @keyframes touchPulse {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(0.97); }
-    100% { transform: scale(1); }
-  }
-
   .touch-feedback {
     -webkit-tap-highlight-color: transparent;
   }
 
-  .touch-feedback:active {
-    animation: touchPulse 0.2s ease;
+  @media (hover: none) {
+    .touch-feedback:active {
+      transform: scale(0.98);
+      transition: transform 0.1s ease;
+    }
   }
 
   /* ═══ WHATSAPP PULSE — alive breathing ═══ */
