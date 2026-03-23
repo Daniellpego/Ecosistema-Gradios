@@ -36,7 +36,7 @@ export function LeadForm() {
               Consultoria Gradios
             </div>
             
-            <h2 className="text-4xl lg:text-5xl font-black text-text leading-tight mb-4">
+            <h2 className="text-4xl lg:text-5xl font-bold text-text leading-tight mb-4">
               Sua equipe ainda<br />perde tempo com isso?
             </h2>
             
@@ -153,7 +153,7 @@ export function LeadForm() {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="w-full bg-brand-gradient text-white rounded-pill py-4 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all duration-300 relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700 disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full animate-cta-pulse bg-brand-gradient text-white rounded-pill py-4 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#2546BD]/30 transition-all duration-300 relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700 disabled:opacity-70 disabled:cursor-not-allowed disabled:animate-none"
                   >
                     {status === "loading" ? (
                       <span className="flex items-center justify-center gap-2">

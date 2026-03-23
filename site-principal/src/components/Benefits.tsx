@@ -9,7 +9,7 @@ export function Benefits() {
       title: "Automação de Processos",
       description: "Eliminamos tarefas repetitivas do seu time. Aprovações, relatórios, integrações e notificações. Tudo rodando sozinho enquanto você foca no negócio.",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-primary group-hover:scale-125 group-hover:text-secondary transition-all duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-primary solution-icon group-hover:scale-110 group-hover:text-secondary transition-all duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="3"></circle>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
         </svg>
@@ -138,7 +138,7 @@ export function Benefits() {
           <div className="inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6">
             Soluções
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-text text-center leading-tight mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4">
             Seu time ainda faz<br className="hidden md:block"/> isso na mão?
           </h2>
           <p className="text-text-muted text-lg text-center max-w-lg mx-auto">

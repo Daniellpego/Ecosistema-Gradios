@@ -49,7 +49,7 @@ export function FeatureShowcase() {
             <div className="inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6">
               Como Funciona
             </div>
-            <h2 className="text-4xl lg:text-5xl font-black text-text leading-tight mb-4">
+            <h2 className="text-4xl lg:text-5xl font-bold text-text leading-tight mb-4">
               Entendemos primeiro.<br />Construímos depois.
             </h2>
             <p className="text-text-muted text-lg mt-4 leading-relaxed max-w-lg">
@@ -77,15 +77,15 @@ export function FeatureShowcase() {
             {steps.map((step, index) => (
               <div key={index} className="relative z-10 mb-6 last:mb-0">
                 <div 
-                  className={`bg-bg-alt border border-card-border rounded-card p-6 relative overflow-hidden group cursor-default hover:shadow-[0_24px_48px_rgba(10,27,92,0.15)] hover:-translate-y-2 hover:border-primary/60 transition-all duration-300 ${
+                  className={`bg-bg-alt border border-card-border rounded-card p-6 relative overflow-hidden group cursor-default hover:shadow-[0_24px_48px_rgba(37,70,189,0.15)] hover:-translate-y-2 hover:border-primary/60 transition-all duration-300 ${
                     inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
                   }`}
                   style={{ transitionDelay: inView ? `${index * 150}ms` : "0ms" }}
                 >
                   <div className="flex items-start gap-4 z-10 relative">
                     {/* Ícone circular */}
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 relative overflow-hidden shadow-[0_0_20px_rgba(0,191,255,0.3)] group-hover:shadow-[0_0_30px_rgba(0,191,255,0.5)] transition-shadow duration-500" style={{ background: 'linear-gradient(135deg, #0A1B5C 0%, #1440A0 40%, #00BFFF 100%)' }}>
-                      <div className="absolute inset-[1px] rounded-full bg-gradient-to-br from-[#0A1B5C] via-[#1440A0] to-[#00BFFF]"></div>
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 relative overflow-hidden shadow-[0_0_20px_rgba(37,70,189,0.3)] group-hover:shadow-[0_0_30px_rgba(37,70,189,0.5)] transition-shadow duration-500" style={{ background: 'linear-gradient(135deg, #2546BD 0%, #1856C0 40%, #00BFFF 100%)' }}>
+                      <div className="absolute inset-[1px] rounded-full bg-gradient-to-br from-[#2546BD] via-[#1856C0] to-[#00BFFF]"></div>
                       <div className="relative z-10">{step.icon}</div>
                     </div>
                     <div className="flex-1">

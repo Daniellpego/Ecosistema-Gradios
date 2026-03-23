@@ -37,7 +37,7 @@ export function FAQ() {
           <div className="inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6">
             Perguntas Frequentes
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-text text-center leading-tight mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4">
             Sem dúvida pra<br className="hidden md:block"/> dar o próximo passo
           </h2>
         </div>
@@ -48,9 +48,12 @@ export function FAQ() {
             return (
               <div
                 key={index}
-                className={`border rounded-card overflow-hidden transition-all duration-300 ${
+                className={`rounded-card overflow-hidden transition-all duration-300 ${
                   inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                } ${isOpen ? "border-primary/30 shadow-lg shadow-primary/5" : "border-card-border"}`}
+                } ${isOpen
+                  ? "border border-primary/30 shadow-lg shadow-primary/5 bg-primary/[0.02] border-l-[3px] border-l-primary"
+                  : "border border-card-border"
+                }`}
                 style={{ transitionDelay: inView ? `${index * 60}ms` : "0ms" }}
               >
                 <button
@@ -60,23 +63,36 @@ export function FAQ() {
                 >
                   <span className="text-base font-bold text-text pr-4">{item.question}</span>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                    isOpen ? "bg-primary text-white rotate-180" : "bg-primary/8 text-primary"
+                    isOpen ? "bg-primary text-white" : "bg-primary/8 text-primary"
                   }`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="6 9 12 15 18 9" />
+                    {/* + that rotates to × */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-45" : "rotate-0"}`}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                   </div>
                 </button>
                 <div
-                  className="overflow-hidden transition-all duration-300 ease-in-out"
+                  className="grid transition-all duration-300 ease-in-out"
                   style={{
-                    maxHeight: isOpen ? "300px" : "0px",
+                    gridTemplateRows: isOpen ? "1fr" : "0fr",
                     opacity: isOpen ? 1 : 0,
                   }}
                 >
-                  <p className="px-5 pb-5 text-sm text-text-muted leading-relaxed">
-                    {item.answer}
-                  </p>
+                  <div className="overflow-hidden">
+                    <p className="px-5 pb-5 text-sm text-text-muted leading-relaxed">
+                      {item.answer}
+                    </p>
+                  </div>
                 </div>
               </div>
             );

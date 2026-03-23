@@ -17,13 +17,17 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image: 
-      linear-gradient(rgba(10, 27, 92, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(10, 27, 92, 0.045) 1px, transparent 1px);
+    background-image:
+      linear-gradient(rgba(37, 70, 189, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37, 70, 189, 0.04) 1px, transparent 1px);
     background-size: 48px 48px;
   }
   h1, h2 {
     letter-spacing: -0.02em;
+    font-family: var(--font-display), var(--font-inter), sans-serif;
+  }
+  h3, h4 {
+    font-family: var(--font-display), var(--font-inter), sans-serif;
   }
 }
 
@@ -37,19 +41,19 @@
 
   /* Classe de gradiente da marca — única fonte de verdade */
   .bg-brand-gradient {
-    background: linear-gradient(135deg, #0A1B5C, #00BFFF);
+    background: linear-gradient(135deg, #2546BD, #00BFFF);
   }
 
   @keyframes fadeSlideUp {
     from { opacity: 0; transform: translateY(60px) scale(0.95); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
-  
+
   @keyframes fadeSlideRight {
     from { opacity: 0; transform: translateX(60px) scale(0.95); }
     to   { opacity: 1; transform: translateX(0) scale(1); }
   }
-  
+
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
@@ -65,7 +69,7 @@
     stroke-dashoffset: 320;
     animation: drawLine 1.2s ease-out 0.8s forwards;
   }
-  
+
   .animate-fade-slide-up {
     animation: fadeSlideUp 0.6s ease forwards;
   }
@@ -88,6 +92,12 @@
     100% { background-position: 200% center; }
   }
 
+  /* CTA pulse glow */
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 4px 14px rgba(37, 70, 189, 0.25); }
+    50% { box-shadow: 0 4px 24px rgba(37, 70, 189, 0.45), 0 0 40px rgba(0, 191, 255, 0.15); }
+  }
+
   .animate-float {
     animation: float 4s ease-in-out infinite;
   }
@@ -95,6 +105,10 @@
   .animate-shimmer {
     background-size: 200% auto;
     animation: shimmer 3s linear infinite;
+  }
+
+  .animate-cta-pulse {
+    animation: ctaPulse 3s ease-in-out infinite;
   }
 
   .duration-2000 {
@@ -106,15 +120,61 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .solution-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 24px 48px rgba(10, 27, 92, 0.20),
-                0 0 0 1px rgba(10, 27, 92, 0.08);
-    border-color: rgba(10, 27, 92, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(37, 70, 189, 0.12),
+                0 0 0 1px rgba(37, 70, 189, 0.10);
+    border-color: rgba(37, 70, 189, 0.3);
+  }
+  .solution-card:hover .solution-icon {
+    transform: scale(1.1);
+    color: #00BFFF;
   }
 
   /* Progress bar animada */
   .progress-bar {
     transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Link hover underline */
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #2546BD, #00BFFF);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+  .link-underline:hover::after {
+    width: 100%;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-marquee,
+    .animate-shimmer,
+    .animate-cta-pulse,
+    .animate-fade-slide-up,
+    .animate-fade-slide-right,
+    .animate-pulse-glow {
+      animation: none !important;
+    }
+    .solution-card,
+    .progress-bar,
+    .path-anim {
+      transition: none !important;
+      animation: none !important;
+    }
+    * {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
   }
 
   /* ═══ DIAGNOSTIC RESULT — Dark Theme ═══ */
@@ -218,7 +278,7 @@
     display: none !important;
   }
 
-  nav, footer, .print\\:hidden {
+  nav, footer, .print\:hidden {
     display: none !important;
   }
 

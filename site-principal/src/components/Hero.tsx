@@ -56,8 +56,17 @@ export function Hero() {
 
   return (
     <section className="relative pt-24 pb-8 lg:pt-28 lg:pb-12 overflow-hidden">
+      {/* Hero gradient background */}
+      <div className="absolute inset-0 -z-20 bg-gradient-to-b from-white via-[#f0f4ff] to-white" />
+
+      {/* Diagonal lines texture — hero only */}
+      <div className="absolute inset-0 -z-10 pointer-events-none opacity-[0.06]" style={{
+        backgroundImage: 'repeating-linear-gradient(45deg, #2546BD 0px, #2546BD 1px, transparent 1px, transparent 16px)',
+        backgroundSize: '16px 16px',
+      }} />
+
       {/* Glow Orbs */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -z-10 w-[800px] h-[600px] bg-[#0A1B5C]/8 rounded-full blur-[100px] -translate-y-1/3"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -z-10 w-[800px] h-[600px] bg-[#2546BD]/8 rounded-full blur-[100px] -translate-y-1/3"></div>
       <div className="absolute top-1/2 right-0 -z-10 w-[400px] h-[400px] bg-[#00BFFF]/6 rounded-full blur-[80px]"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,7 +82,7 @@ export function Hero() {
           </div>
 
           {/* H1 com text reveal por palavra */}
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-text leading-[1.1] mb-6">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-text leading-[1.1] mb-6">
             {["Automatize", "sua", "operação."].map((word, i) => (
               <span
                 key={i}
@@ -108,7 +117,7 @@ export function Hero() {
                 <path d="M0 4 Q150 0 300 4" stroke="url(#underline-grad)" strokeWidth="5" strokeLinecap="round" fill="none" className="path-anim" />
                 <defs>
                   <linearGradient id="underline-grad" x1="0" y1="0" x2="300" y2="0">
-                    <stop offset="0%" stopColor="#0A1B5C" />
+                    <stop offset="0%" stopColor="#2546BD" />
                     <stop offset="100%" stopColor="#00BFFF" />
                   </linearGradient>
                 </defs>
@@ -131,12 +140,31 @@ export function Hero() {
             }`}
             style={{ transitionDelay: '700ms' }}
           >
-            <Link href="/diagnostico" className="bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:shadow-lg hover:shadow-[#0A1B5C]/25 hover:opacity-90 transition-all text-center w-full sm:w-auto relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700">
+            <Link href="/diagnostico" className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:shadow-lg hover:shadow-[#2546BD]/30 hover:opacity-90 transition-all text-center w-full sm:w-auto relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700">
               Diagnóstico Gratuito
             </Link>
-            <Link href="#como-funciona" className="text-text font-medium px-6 py-4 hover:text-primary transition-colors flex items-center gap-2">
+            <Link href="#como-funciona" className="text-text font-medium px-6 py-4 hover:text-primary transition-colors flex items-center gap-2 border border-card-border rounded-pill hover:border-primary/30">
               Ver como funciona &rarr;
             </Link>
+          </div>
+
+          {/* Social proof no hero */}
+          <div
+            className={`mt-8 flex items-center justify-center gap-3 transition-all duration-700 ${
+              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+            style={{ transitionDelay: '900ms' }}
+          >
+            <div className="flex -space-x-2">
+              {["G", "M", "R", "A"].map((initial, i) => (
+                <div key={i} className="w-7 h-7 rounded-full bg-brand-gradient border-2 border-white flex items-center justify-center relative" style={{ zIndex: 4 - i }}>
+                  <span className="text-white text-[10px] font-bold">{initial}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-sm text-text-muted">
+              <span className="font-bold text-text">+17 empresas</span> já automatizaram com a Gradios
+            </p>
           </div>
         </div>
 
@@ -180,8 +208,8 @@ export function Hero() {
               }}
             />
 
-            {/* Janela do App — macOS style */}
-            <div className="bg-[#0f172a] rounded-2xl lg:rounded-3xl shadow-[0_60px_120px_rgba(10,27,92,0.3),0_0_0_1px_rgba(255,255,255,0.05)] overflow-hidden relative z-10">
+            {/* Janela do App — macOS style — enhanced shadow */}
+            <div className="bg-[#0f172a] rounded-2xl lg:rounded-3xl shadow-[0_60px_140px_rgba(37,70,189,0.25),0_30px_60px_rgba(0,0,0,0.15),0_0_0_1px_rgba(255,255,255,0.05)] overflow-hidden relative z-10">
               {/* Title Bar */}
               <div className="flex items-center gap-2 px-5 py-3 bg-[#0f172a] border-b border-white/5">
                 <div className="flex gap-2">
@@ -267,7 +295,7 @@ export function Hero() {
                                   height: mounted ? `${h}%` : '0%',
                                   transitionDuration: `${800 + i * 60}ms`,
                                   transitionDelay: `${i * 40}ms`,
-                                  background: h > 70 ? 'linear-gradient(to top, #0A1B5C, #00BFFF)' : 'linear-gradient(to top, rgba(10,27,92,0.3), rgba(0,191,255,0.25))',
+                                  background: h > 70 ? 'linear-gradient(to top, #2546BD, #00BFFF)' : 'linear-gradient(to top, rgba(37,70,189,0.3), rgba(0,191,255,0.25))',
                                 }}
                               ></div>
                             </div>
@@ -311,12 +339,18 @@ export function Hero() {
             </div>
 
             {/* Glow abaixo do dashboard */}
-            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-[#0A1B5C]/20 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-[#2546BD]/20 rounded-full blur-3xl -z-10"></div>
           </div>
         </div>
 
       </div>
+
+      {/* Mobile sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/90 backdrop-blur-md border-t border-card-border sm:hidden">
+        <Link href="/diagnostico" className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-6 py-3 font-bold text-center block text-sm">
+          Diagnóstico Gratuito
+        </Link>
+      </div>
     </section>
   );
 }
-

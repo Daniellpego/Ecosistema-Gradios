@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  weight: ['400', '500', '700', '900'],
-  variable: '--font-inter',
-  display: 'swap',
+const geist = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const geistDisplay = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-display",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -70,7 +75,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} font-sans`}>
+      <body className={`${geist.variable} ${geistDisplay.variable} font-sans`}>
         {/* Skip-link de acessibilidade */}
         <a
           href="#conteudo-principal"
