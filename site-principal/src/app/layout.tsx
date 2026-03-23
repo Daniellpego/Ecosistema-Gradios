@@ -20,20 +20,20 @@ const geistDisplay = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Gradios | Engenharia Neural para Empresas Inteligentes',
-  description: 'Transforme sua empresa com a Gradios. Especialistas em automação inteligente e sistemas neurais de alta escala.',
+  title: 'Gradios | Automação e Software Sob Medida para Empresas B2B',
+  description: 'Automação de processos, software sob medida e integração de sistemas. Diagnóstico gratuito e resultado em até 2 semanas.',
   keywords: ["automação b2b", "desenvolvimento de software sob medida", "integração de sistemas", "dashboards empresariais", "ia para negócios"],
   authors: [{ name: "Gradios" }],
   openGraph: {
     type: "website",
-    description: "Menos processo manual. Mais escala. Software que resolve de verdade.",
+    description: "Automação de processos, software sob medida e integração de sistemas para empresas B2B.",
     siteName: "Gradios",
     locale: "pt_BR",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gradios | O Cérebro da Sua Empresa",
-    description: "Menos processo manual. Mais escala. Software que resolve de verdade.",
+    title: "Gradios | Automação e Software Sob Medida para Empresas B2B",
+    description: "Automação de processos, software sob medida e integração de sistemas para empresas B2B.",
   },
   robots: { index: true, follow: true },
 };

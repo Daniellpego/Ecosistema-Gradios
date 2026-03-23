@@ -13,7 +13,7 @@ export function Benefits() {
   const benefits = [
     {
       title: "Automação de Processos",
-      description: "Eliminamos tarefas repetitivas do seu time. Aprovações, relatórios, integrações e notificações. Tudo rodando sozinho enquanto você foca no negócio.",
+      description: "Aprovações, relatórios, integrações e notificações rodando sem intervenção humana. Seu time foca no que gera receita.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-primary solution-icon group-hover:scale-110 group-hover:text-secondary transition-all duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="3" />
@@ -66,7 +66,7 @@ export function Benefits() {
     },
     {
       title: "Suporte e Evolução Contínua",
-      description: "Seu sistema evolui junto com seu negócio. Sem sumiço, sem retrabalho, sem ticket ignorado. Time dedicado do início ao fim.",
+      description: "Seu sistema evolui junto com seu negócio. Acompanhamento contínuo, correções rápidas e time dedicado do início ao fim.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
@@ -79,7 +79,7 @@ export function Benefits() {
     },
     {
       title: "IA Aplicada ao Negócio",
-      description: "Automatizamos atendimento, análise de dados e tomada de decisão. IA aplicada direto no seu processo. Onde gera resultado real.",
+      description: "Atendimento, análise de dados e tomada de decisão com inteligência artificial integrada ao fluxo que seu time já usa.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
@@ -112,14 +112,14 @@ export function Benefits() {
             Soluções
           </motion.div>
           <WordReveal
-            text="Seu time ainda faz isso na mão?"
+            text="Quanto custa um processo que depende de gente?"
             className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4"
           />
           <motion.p
             className="text-text-muted text-lg text-center max-w-lg mx-auto"
             variants={revealVariants("up")}
           >
-            Entregamos resultado. Não só código.
+            Cada solução é medida pelo que economiza, não pelo que entrega.
           </motion.p>
         </motion.div>
 

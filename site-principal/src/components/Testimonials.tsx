@@ -55,14 +55,14 @@ export function Testimonials() {
             Resultados Reais
           </motion.div>
           <WordReveal
-            text="O que muda quando você para de fazer no braço"
+            text="O que acontece quando o processo roda sem depender de ninguém"
             className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4"
           />
           <motion.p
             className="text-text-muted text-lg text-center max-w-xl mx-auto mt-4"
             variants={revealVariants("up")}
           >
-            Resultados concretos de quem trocou o manual pela automação.
+            Números reais de empresas que eliminaram processos manuais.
           </motion.p>
         </motion.div>
 

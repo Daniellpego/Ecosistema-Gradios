@@ -26,9 +26,9 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
           className="mt-4 text-2xl sm:text-3xl font-bold text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Seu diagnóstico está pronto.
+          Falta pouco para o seu diagnóstico.
           <br />
-          <span className="text-[#00BFFF]">Só falta você.</span>
+          <span className="text-[#00BFFF]">Preencha seus dados abaixo.</span>
         </h2>
         <p className="mt-2 text-[#94A3B8] text-sm">
           Preencha seus dados para gerar o diagnóstico completo com IA.

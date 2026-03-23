@@ -18,9 +18,9 @@ export function Footer() {
               <Image src="/logo.png" alt="Gradios" width={88} height={88} className="w-11 h-11 drop-shadow-md brightness-0 invert" />
               <span className="text-xl font-bold text-white font-display">Gradios</span>
             </div>
-            <p className="text-sm font-medium text-secondary mb-3">O cérebro da sua operação.</p>
+            <p className="text-sm font-medium text-secondary mb-3">Automação e Software Sob Medida</p>
             <p className="text-[#94A3B8] text-sm max-w-sm mb-6 leading-relaxed">
-              Menos processo manual. Mais escala.<br />Software que resolve de verdade.
+              Processos manuais consomem tempo e dinheiro.<br />Nós eliminamos os dois.
             </p>
 
             {/* +17 empresas seal */}

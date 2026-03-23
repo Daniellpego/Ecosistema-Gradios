@@ -125,18 +125,18 @@ export function Hero() {
             <span className="animate-brain-float text-lg leading-none" role="img" aria-label="cérebro">
               🧠
             </span>
-            O cérebro da sua operação
+            Automação e Software B2B
           </motion.div>
 
           {/* H1 com text reveal — spring physics */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-text leading-[1.1] mb-6">
             <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0}>
-              Automatize sua operação.
+              Sua operação pode render mais
             </motion.span>
             <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0.1}>
-              Escale sem{" "}
+              com o{" "}
               <span className="relative inline-block whitespace-nowrap">
-                contratar mais.
+                mesmo time.
                 <svg className="absolute -bottom-2 left-0 w-full overflow-visible" height="8" viewBox="0 0 300 8" fill="none" preserveAspectRatio="none">
                   <path d="M0 4 Q150 0 300 4" stroke="url(#underline-grad)" strokeWidth="5" strokeLinecap="round" fill="none" className="path-anim" />
                   <defs>
@@ -157,7 +157,7 @@ export function Hero() {
             animate="visible"
             custom={0.6}
           >
-            Identificamos o gargalo, construímos a automação, e você vê resultado em 2 semanas. Sem enrolação, sem contrato longo.
+            Mapeamos o gargalo, construímos a automação e você vê resultado em 2 semanas. Escopo fechado, sem contrato longo.
           </motion.p>
 
           <motion.div
@@ -209,7 +209,7 @@ export function Hero() {
             animate="visible"
             custom={1.1}
           >
-            <p className="text-xs text-text-muted/60 uppercase tracking-widest font-medium">Empresas que já automatizaram com a Gradios</p>
+            <p className="text-xs text-text-muted/60 uppercase tracking-widest font-medium">Setores que já automatizaram com a Gradios</p>
             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
               {[
                 { name: "Financeiro", icon: "M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" },
@@ -259,7 +259,7 @@ export function Hero() {
             animate="visible"
             custom={1.4}
           >
-            <span className="text-secondary">⚡</span> Integrado ao seu stack
+            <span className="text-secondary">⚡</span> Integrado aos seus sistemas
           </motion.div>
 
           {/* Container com perspectiva 3D + spring entry + scroll parallax */}

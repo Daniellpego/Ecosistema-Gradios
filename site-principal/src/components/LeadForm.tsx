@@ -38,14 +38,13 @@ export function LeadForm() {
               Consultoria Gradios
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-text leading-tight mb-4">
-              Sua equipe ainda
+              Quanto do seu faturamento
               <br />
-              perde tempo com isso?
+              vai embora em processo manual?
             </h2>
-            <p className="text-text-muted text-lg mt-4 leading-relaxed max-w-lg mb-4">
-              Conta pra gente o que trava vocês hoje. A gente mapeia o que dá pra resolver e mostra como. Sem cobrar nada por isso.
+            <p className="text-text-muted text-lg mt-4 leading-relaxed max-w-lg mb-8">
+              Conte o que trava sua operação hoje. Mapeamos o que dá pra resolver e mostramos como, sem cobrar nada por isso.
             </p>
-            <p className="text-primary font-semibold text-sm mb-8 italic">Imagine sua operação rodando sozinha enquanto você foca no que importa.</p>
 
             <div className="flex flex-col gap-4 mb-8">
               {["Sem compromisso", "Resposta em até 24h", "Diagnóstico 100% gratuito"].map((item, index) => (
@@ -89,7 +88,7 @@ export function LeadForm() {
             viewport={viewport}
             variants={revealVariants("left")}
           >
-            <h3 className="text-xl font-bold text-text mb-6">Conta o que trava vocês</h3>
+            <h3 className="text-xl font-bold text-text mb-6">Descreva seu maior gargalo</h3>
 
             {status === "success" ? (
               <div className="text-center py-12">

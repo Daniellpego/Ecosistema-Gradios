@@ -74,8 +74,8 @@ function NeuralGrid() {
 export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
   const [showContent, setShowContent] = useState(false);
   const headline = city
-    ? `${city}. Detectamos uma ineficiência na sua operação.`
-    : "Detectamos uma ineficiência na sua operação.";
+    ? `${city}. Quanto sua operação perde em processos manuais?`
+    : "Quanto sua operação perde em processos manuais?";
   const { displayed, done } = useTypewriter(headline, 30, 800);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -108,8 +108,8 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
             <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#10B981] rounded-full border-2 border-[#080E1A] animate-status-pulse" />
           </div>
           <div className="text-left">
-            <p className="text-white text-sm font-semibold">Gradios Neural Engine</p>
-            <p className="text-[#64748B] text-xs">Analisando em tempo real</p>
+            <p className="text-white text-sm font-semibold">Diagnóstico Gradios</p>
+            <p className="text-[#64748B] text-xs">Pronto para começar</p>
           </div>
         </motion.div>
 
@@ -143,7 +143,7 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
             >
               {/* Subheadline */}
               <p className="text-[#94A3B8] text-base sm:text-lg mb-8">
-                10 perguntas. 2 minutos. Diagnóstico real da sua operação, gerado por IA na hora.
+                10 perguntas. 2 minutos. Diagnóstico personalizado da sua operação, gerado por IA.
               </p>
 
               {/* CTA */}
@@ -198,7 +198,7 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
                   ))}
                 </div>
                 <p className="text-[#64748B] text-sm">
-                  <span className="font-bold text-[#94A3B8]">2.400+</span> empresas diagnosticadas
+                  <span className="font-bold text-[#94A3B8]">+17</span> empresas já passaram por aqui
                 </p>
               </motion.div>
 
@@ -218,15 +218,15 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
                     ))}
                   </div>
                   <p className="text-[#CBD5E1] text-sm leading-relaxed">
-                    &ldquo;Fizemos o diagnóstico achando que era mais um quiz genérico. Em 2 minutos, mostraram que a gente perdia <strong className="text-white">R$14 mil/mês</strong> em retrabalho. Fechamos na mesma semana.&rdquo;
+                    &ldquo;O diagnóstico mostrou gargalos que a gente sabia que existiam mas nunca tinha quantificado. Ajudou a priorizar o que automatizar primeiro.&rdquo;
                   </p>
                   <div className="flex items-center gap-2 mt-3">
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#2546BD] to-[#00BFFF] flex items-center justify-center text-white text-[10px] font-bold">
-                      RM
+                      GB
                     </div>
                     <div>
-                      <p className="text-[#CBD5E1] text-xs font-bold">Rafael M.</p>
-                      <p className="text-[#475569] text-[10px]">COO · Logística · 120 func.</p>
+                      <p className="text-[#CBD5E1] text-xs font-bold">Gestor de operações</p>
+                      <p className="text-[#475569] text-[10px]">Setor de serviços financeiros</p>
                     </div>
                   </div>
                 </div>

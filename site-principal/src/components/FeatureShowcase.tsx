@@ -61,7 +61,7 @@ export function FeatureShowcase() {
               className="text-4xl lg:text-5xl font-bold text-text leading-tight mb-4"
             />
             <p className="text-text-muted text-lg mt-4 leading-relaxed max-w-lg">
-              A gente não chega com uma proposta pronta. Primeiro a gente entende. Depois a gente constrói.
+              Mapeamos o processo atual, identificamos os gargalos e só então propomos a solução. Cada etapa é validada com você.
             </p>
 
             <div className="mt-8 flex flex-col gap-3">

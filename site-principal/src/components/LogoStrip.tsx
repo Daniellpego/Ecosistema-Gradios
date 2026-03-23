@@ -14,7 +14,7 @@ export function LogoStrip() {
     <section className="bg-white py-12 border-t border-b border-card-border overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <p className="text-sm text-text-muted tracking-wide text-center mb-8 font-medium">
-          Construído para empresas que operam assim:
+          Setores que já automatizaram com a Gradios:
         </p>
         
         <div className="relative overflow-hidden marquee-container">

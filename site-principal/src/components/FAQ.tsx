@@ -90,7 +90,7 @@ export function FAQ() {
             className="text-text-muted text-lg text-center max-w-lg mx-auto"
             variants={revealVariants("up")}
           >
-            Respondemos as 10 dúvidas mais comuns. Sem enrolação.
+            Respondemos as 10 dúvidas mais comuns. Direto ao ponto.
           </motion.p>
         </motion.div>
 

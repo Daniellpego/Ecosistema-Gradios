@@ -58,7 +58,7 @@ export function MidCTA() {
           >
             Fazer meu diagnóstico gratuito →
           </Link>
-          <p className="text-white/60 text-sm mt-4">100% gratuito · Sem compromisso · Resultado na hora</p>
+          <p className="text-white/60 text-sm mt-4">100% gratuito · Sem compromisso · Resultado em minutos</p>
         </motion.div>
       </motion.div>
     </section>

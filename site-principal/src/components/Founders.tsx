@@ -18,7 +18,7 @@ const founders = [
     initials: "DP",
     name: "Daniel Pego",
     role: "Co-fundador & Head de Engenharia",
-    bio: "Engenheiro de software full-stack com experiência em arquitetura de sistemas, dashboards financeiros e integrações complexas. Soluções que escalam.",
+    bio: "Engenheiro de software full-stack com experiência em arquitetura de sistemas, dashboards financeiros e integrações complexas.",
     quote: "Cada empresa tem um jeito próprio de operar. A gente não força template. Entende primeiro, constrói depois.",
     direction: "up" as Direction,
   },
@@ -58,7 +58,7 @@ export function Founders() {
             className="text-text-muted text-lg text-center max-w-xl mx-auto"
             variants={revealVariants("up")}
           >
-            Não somos uma agência genérica. Somos engenheiros que entendem de processo.
+            Três sócios, três especialidades. Automação, engenharia e comercial trabalhando juntos.
           </motion.p>
         </motion.div>
 
@@ -112,7 +112,7 @@ export function Founders() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ ...spring.smooth, delay: 0.3 }}
         >
-          {["n8n Partner", "Make Certified", "Supabase", "Next.js"].map((badge, i) => (
+          {["n8n Partner", "Make Certified"].map((badge, i) => (
             <div key={i} className="bg-white border border-card-border rounded-pill px-4 py-2 text-xs font-semibold text-text-muted hover:border-primary/30 hover:text-primary transition-all duration-300">
               {badge}
             </div>
