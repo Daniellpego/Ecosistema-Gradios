@@ -341,7 +341,7 @@ REGRAS ABSOLUTAS:
     trackEvent("quiz_start");
   }
 
-  const isDarkPhase = phase === "loading" || phase === "result";
+  const isDarkPhase = phase === "intro" || phase === "loading" || phase === "result";
 
   /* ════════════════════════════════════════════════════════════
      RENDER

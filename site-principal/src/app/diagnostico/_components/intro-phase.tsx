@@ -1,120 +1,239 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 interface IntroPhaseProps {
   city: string;
   onStart: () => void;
 }
 
-export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
+/* ═══════════════════════════════════════════════════════════
+   TYPEWRITER HOOK
+   ═══════════════════════════════════════════════════════════ */
+
+function useTypewriter(text: string, speed = 35, startDelay = 600) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    setDisplayed("");
+    setDone(false);
+    let i = 0;
+    const delayTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        i++;
+        setDisplayed(text.slice(0, i));
+        if (i >= text.length) {
+          clearInterval(interval);
+          setDone(true);
+        }
+      }, speed);
+      return () => clearInterval(interval);
+    }, startDelay);
+    return () => clearTimeout(delayTimer);
+  }, [text, speed, startDelay]);
+
+  return { displayed, done };
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATED GRID DOTS (subtle neural network feel)
+   ═══════════════════════════════════════════════════════════ */
+
+function NeuralGrid() {
   return (
-    <div className="animate-fade-slide-up text-center">
-      {/* Trust bar */}
-      <div className="flex items-center justify-center gap-2 mb-8 opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.1s" }}>
-        <div className="flex -space-x-2">
-          {["#0A1B5C", "#1440A0", "#0090D9", "#00BFFF"].map((c, i) => (
-            <div
-              key={i}
-              className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white text-[10px] font-bold"
-              style={{ background: c, zIndex: 4 - i }}
-            >
-              {["G", "M", "R", "T"][i]}
-            </div>
-          ))}
-        </div>
-        <p className="text-text-muted text-sm">
-          <span className="font-bold text-text">2.400+</span> empresas diagnosticadas
-        </p>
-      </div>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Subtle grid lines */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0, 191, 255, 1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 191, 255, 1) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+      {/* Radial glow center */}
+      <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.08]"
+        style={{ background: "radial-gradient(circle, #00BFFF, transparent 70%)" }}
+      />
+      {/* Secondary glow bottom */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] opacity-[0.05]"
+        style={{ background: "radial-gradient(ellipse, #2546BD, transparent 70%)" }}
+      />
+    </div>
+  );
+}
 
-      <span className="inline-flex items-center bg-primary/[0.08] text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide">
-        Diagnóstico Gratuito · 2 minutos
-      </span>
+/* ═══════════════════════════════════════════════════════════
+   INTRO PHASE — Dark Mode + Typewriter + Neural Immersion
+   ═══════════════════════════════════════════════════════════ */
 
-      <h1
-        className="mt-6 text-3xl sm:text-4xl md:text-5xl font-bold text-text leading-tight"
-        style={{ letterSpacing: "-0.02em" }}
-      >
-        Descubra quanto sua empresa{" "}
-        <span className="relative inline-block">
-          perde
-          <svg
-            className="absolute -bottom-1 left-0 w-full"
-            viewBox="0 0 200 12"
-            fill="none"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M2 8C40 2 80 2 100 6C120 10 160 4 198 6"
-              stroke="url(#grad-line)"
-              strokeWidth="3"
-              strokeLinecap="round"
-              className="path-anim"
-            />
-            <defs>
-              <linearGradient id="grad-line" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#0A1B5C" />
-                <stop offset="1" stopColor="#00BFFF" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </span>{" "}
-        com processos manuais
-      </h1>
+export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
+  const [showContent, setShowContent] = useState(false);
+  const headline = city
+    ? `${city}. Detectamos uma ineficiência na sua operação.`
+    : "Detectamos uma ineficiência na sua operação.";
+  const { displayed, done } = useTypewriter(headline, 30, 800);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-      <p className="mt-4 text-lg text-text-muted" style={{ animationDelay: "0.15s" }}>
-        {city ? `${city} | ` : ""}7 perguntas. 2 minutos.{"\n"}Diagnóstico real da sua operação, gerado por IA na hora.
-      </p>
+  // Show content after typewriter finishes
+  useEffect(() => {
+    if (done) {
+      const timer = setTimeout(() => setShowContent(true), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [done]);
 
-      <button
-        onClick={onStart}
-        className="mt-8 bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all duration-300 relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700 text-lg"
-      >
-        Fazer meu diagnóstico gratuito
-      </button>
+  return (
+    <div ref={containerRef} className="relative min-h-[70vh] flex flex-col items-center justify-center">
+      <NeuralGrid />
 
-      {/* Social proof metrics */}
-      <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-sm text-text-muted">
-        {[
-          ["2 min", "para responder"],
-          ["IA", "diagnóstico real"],
-          ["R$", "custo calculado"],
-        ].map(([big, small], i) => (
-          <div
-            key={big}
-            className="flex flex-col items-center opacity-0 animate-fade-slide-up"
-            style={{ animationDelay: `${0.3 + i * 0.15}s` }}
-          >
-            <span className="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {big}
-            </span>
-            <span>{small}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Testimonial */}
-      <div className="mt-10 max-w-md mx-auto opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.6s" }}>
-        <div className="bg-white border border-card-border rounded-card p-4 text-left shadow-sm">
-          <div className="flex gap-1 mb-2">
-            {[1, 2, 3, 4, 5].map((s) => (
-              <svg key={s} width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+      <div className="relative z-10 text-center max-w-xl mx-auto">
+        {/* AI avatar + status */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="flex items-center justify-center gap-3 mb-8"
+        >
+          <div className="relative">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#2546BD] to-[#00BFFF] flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" />
               </svg>
-            ))}
-          </div>
-          <p className="text-text text-sm leading-relaxed">
-            &ldquo;Fizemos o diagnóstico achando que era mais um quiz genérico. Em 2 minutos, eles mostraram que a gente perdia <strong>R$14 mil/mês</strong> em retrabalho. Fechamos com a Gradios na mesma semana.&rdquo;
-          </p>
-          <div className="flex items-center gap-2 mt-3">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
-              RM
             </div>
-            <div>
-              <p className="text-text text-xs font-bold">Rafael M.</p>
-              <p className="text-text-muted text-[10px]">COO · Empresa de logística · 120 func.</p>
-            </div>
+            <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#10B981] rounded-full border-2 border-[#080E1A] animate-status-pulse" />
           </div>
+          <div className="text-left">
+            <p className="text-white text-sm font-semibold">Gradios Neural Engine</p>
+            <p className="text-[#64748B] text-xs">Analisando em tempo real</p>
+          </div>
+        </motion.div>
+
+        {/* Typewriter headline */}
+        <div className="min-h-[120px] sm:min-h-[140px] flex items-center justify-center">
+          <h1
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight"
+            style={{ letterSpacing: "-0.03em" }}
+          >
+            {displayed}
+            {!done && (
+              <span
+                className="inline-block w-0.5 h-8 sm:h-10 ml-1 align-middle"
+                style={{
+                  background: "linear-gradient(to bottom, #00BFFF, #2546BD)",
+                  animation: "pulse 1s ease-in-out infinite",
+                }}
+              />
+            )}
+          </h1>
         </div>
+
+        {/* Content reveals after typewriter */}
+        <AnimatePresence>
+          {showContent && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-6"
+            >
+              {/* Subheadline */}
+              <p className="text-[#94A3B8] text-base sm:text-lg mb-8">
+                10 perguntas. 2 minutos. Diagnóstico real da sua operação, gerado por IA na hora.
+              </p>
+
+              {/* CTA */}
+              <motion.button
+                onClick={onStart}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-gradient-to-r from-[#2546BD] to-[#00BFFF] text-white rounded-pill px-8 py-4 font-bold text-lg shadow-lg shadow-[#2546BD]/30 hover:shadow-xl hover:shadow-[#00BFFF]/20 transition-shadow duration-300 relative overflow-hidden"
+              >
+                <span className="relative z-10">Iniciar diagnóstico</span>
+                <div className="absolute inset-0 bg-white/10 -translate-x-full skew-x-12 hover:translate-x-[200%] transition-transform duration-700" />
+              </motion.button>
+
+              {/* Trust metrics */}
+              <div className="mt-10 flex items-center justify-center gap-8 sm:gap-12">
+                {[
+                  { value: "2 min", label: "para responder" },
+                  { value: "IA", label: "diagnóstico real" },
+                  { value: "R$", label: "custo calculado" },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.value}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15 * i, duration: 0.4 }}
+                    className="flex flex-col items-center"
+                  >
+                    <span className="text-2xl font-black bg-gradient-to-r from-[#2546BD] to-[#00BFFF] bg-clip-text text-transparent">
+                      {item.value}
+                    </span>
+                    <span className="text-[#64748B] text-xs mt-0.5">{item.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Social proof bar */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-10 flex items-center justify-center gap-3"
+              >
+                <div className="flex -space-x-2">
+                  {["#2546BD", "#1856C0", "#0090D9", "#00BFFF"].map((c, i) => (
+                    <div
+                      key={i}
+                      className="w-7 h-7 rounded-full border-2 border-[#0A1628] flex items-center justify-center text-white text-[9px] font-bold"
+                      style={{ background: c, zIndex: 4 - i }}
+                    >
+                      {["G", "M", "R", "T"][i]}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[#64748B] text-sm">
+                  <span className="font-bold text-[#94A3B8]">2.400+</span> empresas diagnosticadas
+                </p>
+              </motion.div>
+
+              {/* Testimonial */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="mt-8 max-w-md mx-auto"
+              >
+                <div className="bg-[#131F35] border border-[#1E293B] rounded-card p-4 text-left">
+                  <div className="flex gap-1 mb-2">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <svg key={s} width="12" height="12" viewBox="0 0 24 24" fill="#F59E0B">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="text-[#CBD5E1] text-sm leading-relaxed">
+                    &ldquo;Fizemos o diagnóstico achando que era mais um quiz genérico. Em 2 minutos, mostraram que a gente perdia <strong className="text-white">R$14 mil/mês</strong> em retrabalho. Fechamos na mesma semana.&rdquo;
+                  </p>
+                  <div className="flex items-center gap-2 mt-3">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#2546BD] to-[#00BFFF] flex items-center justify-center text-white text-[10px] font-bold">
+                      RM
+                    </div>
+                    <div>
+                      <p className="text-[#CBD5E1] text-xs font-bold">Rafael M.</p>
+                      <p className="text-[#475569] text-[10px]">COO · Logística · 120 func.</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
