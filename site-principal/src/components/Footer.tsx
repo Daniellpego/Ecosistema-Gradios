@@ -103,7 +103,7 @@ export function Footer() {
               </a>
               <p className="text-xs text-[#94A3B8]/60 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                Londrina, PR — Brasil
+                Londrina, PR | Brasil
               </p>
             </div>
 

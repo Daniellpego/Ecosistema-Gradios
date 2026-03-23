@@ -125,7 +125,7 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
 
         <div>
           <label className="block text-sm font-medium text-text mb-1.5">
-            WhatsApp <span className="text-text-muted font-normal">(opcional — para contato mais rápido)</span>
+            WhatsApp <span className="text-text-muted font-normal">(opcional, para contato mais rápido)</span>
           </label>
           <input
             type="tel"

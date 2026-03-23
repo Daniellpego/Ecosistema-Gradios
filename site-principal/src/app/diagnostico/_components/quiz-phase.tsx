@@ -229,7 +229,7 @@ export default function QuizPhase({
       {currentQ === 7 && answeredCount >= 8 && (
         <div className="mt-3 text-center">
           <p className="text-xs text-secondary font-semibold animate-fade-slide-up">
-            Quase lá — faltam 2 perguntas para fechar o diagnóstico.
+            Quase lá! Faltam 2 perguntas para fechar o diagnóstico.
           </p>
         </div>
       )}

@@ -247,7 +247,7 @@ export function Hero() {
                     {/* KPI Cards */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
                       {[
-                        { label: "Processos / dia", value: count ?? "—", delta: "+18%", up: true, icon: "⚡" },
+                        { label: "Processos / dia", value: count ?? "...", delta: "+18%", up: true, icon: "⚡" },
                         { label: "Economia / mês", value: "R$ 47k", delta: "+32% vs meta", up: true, icon: "💰" },
                         { label: "Tempo médio", value: "4h", delta: "-68%", up: true, icon: "⏱" },
                         { label: "Uptime", value: "99.8%", delta: "SLA garantido", up: false, icon: "🛡" },
@@ -302,7 +302,7 @@ export function Hero() {
                             <div key={i}>
                               <div className="flex justify-between mb-1.5">
                                 <span className="text-[10px] text-white/50">{item.label}</span>
-                                <span className="text-[10px] text-white/40">{mounted ? `${item.pct}%` : '—'}</span>
+                                <span className="text-[10px] text-white/40">{mounted ? `${item.pct}%` : '...'}</span>
                               </div>
                               <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
                                 <div

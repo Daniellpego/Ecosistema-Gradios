@@ -17,7 +17,7 @@ const faqItems = [
   },
   {
     question: "Preciso trocar os sistemas que já uso?",
-    answer: "Não. A automação integra os sistemas que você já tem — ERP, CRM, planilhas, WhatsApp, e-mail. Não substituímos nada, conectamos tudo."
+    answer: "Não. A automação integra os sistemas que você já tem: ERP, CRM, planilhas, WhatsApp, e-mail. Não substituímos nada, conectamos tudo."
   },
   {
     question: "Precisa de contrato longo?",
@@ -37,7 +37,7 @@ const faqItems = [
   },
   {
     question: "Minha equipe vai precisar aprender ferramentas novas?",
-    answer: "Não. As automações rodam no background. Sua equipe continua usando as mesmas ferramentas de sempre — só que agora os dados fluem automaticamente entre elas."
+    answer: "Não. As automações rodam no background. Sua equipe continua usando as mesmas ferramentas de sempre. Só que agora os dados fluem automaticamente entre elas."
   },
   {
     question: "O que acontece depois da implementação?",

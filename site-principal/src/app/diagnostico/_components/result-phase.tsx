@@ -57,7 +57,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
   function handleShare() {
     if (navigator.share) {
       navigator.share({
-        title: `Diagnóstico ${lead.empresa} — Gradios`,
+        title: `Diagnóstico ${lead.empresa} | Gradios`,
         text: `Fiz o diagnóstico de automação da Gradios e tirei ${score}/100. Descubra o seu:`,
         url: window.location.href,
       });
@@ -334,18 +334,18 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
 
         <div className="relative z-10 text-center">
           <p className="text-white text-xl sm:text-2xl font-black mb-2" style={{ letterSpacing: "-0.02em" }}>
-            {tierInfo.tier === "A" ? "Falar com especialista — respondemos em até 2h" :
+            {tierInfo.tier === "A" ? "Falar com especialista (respondemos em até 2h)" :
              tierInfo.tier === "B" ? "Agendar diagnóstico aprofundado" :
              tierInfo.tier === "C" ? "Ver como empresas do seu setor automatizaram" :
              "Baixar guia: primeiros passos em automação"}
           </p>
           <p className="text-[#94A3B8] text-sm max-w-md mx-auto mb-6">
             {tierInfo.tier === "A"
-              ? `${lead.nome.split(" ")[0]}, seu perfil indica urgência real. Um especialista da Gradios entra em contato nas próximas horas — sem proposta pronta, só diagnóstico de perto.`
+              ? `${lead.nome.split(" ")[0]}, seu perfil indica urgência real. Um especialista da Gradios entra em contato nas próximas horas. Sem proposta pronta, só diagnóstico de perto.`
               : tierInfo.tier === "B"
               ? `${lead.nome.split(" ")[0]}, os gargalos são claros. Se quiser antecipar, manda um oi no WhatsApp que a gente agenda uma conversa rápida.`
               : tierInfo.tier === "C"
-              ? `${lead.nome.split(" ")[0]}, já identificamos por onde começar. Fala com a gente quando quiser — sem compromisso.`
+              ? `${lead.nome.split(" ")[0]}, já identificamos por onde começar. Fala com a gente quando quiser. Sem compromisso.`
               : `${lead.nome.split(" ")[0]}, vamos te enviar material específico para ${setor}. Quando fizer sentido, a gente conversa.`
             }
           </p>

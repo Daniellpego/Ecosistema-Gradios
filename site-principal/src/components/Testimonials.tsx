@@ -49,7 +49,7 @@ export function Testimonials() {
                         <polyline points="17 6 23 6 23 12"></polyline>
                       </svg>
                     </div>
-                    <span className="text-sm font-semibold text-primary uppercase tracking-wider">Case em destaque — Setor Financeiro</span>
+                    <span className="text-sm font-semibold text-primary uppercase tracking-wider">Case em destaque | Setor Financeiro</span>
                   </div>
 
                   <p className="text-lg font-bold text-text mb-5">Fechamento financeiro mensal</p>

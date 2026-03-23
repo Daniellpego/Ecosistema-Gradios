@@ -62,7 +62,7 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
       </h1>
 
       <p className="mt-4 text-lg text-text-muted" style={{ animationDelay: "0.15s" }}>
-        {city ? `${city} — ` : ""}7 perguntas. 2 minutos.{"\n"}Diagnóstico real da sua operação — gerado por IA na hora.
+        {city ? `${city} | ` : ""}7 perguntas. 2 minutos.{"\n"}Diagnóstico real da sua operação, gerado por IA na hora.
       </p>
 
       <button
