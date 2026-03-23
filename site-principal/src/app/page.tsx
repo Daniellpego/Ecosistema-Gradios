@@ -3,6 +3,8 @@ import { LogoStrip } from "@/components/LogoStrip";
 import { Benefits } from "@/components/Benefits";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
 import { Testimonials } from "@/components/Testimonials";
+import { MidCTA } from "@/components/MidCTA";
+import { Founders } from "@/components/Founders";
 import { FAQ } from "@/components/FAQ";
 import { LeadForm } from "@/components/LeadForm";
 
@@ -14,6 +16,8 @@ export default function Home() {
       <Benefits />
       <FeatureShowcase />
       <Testimonials />
+      <MidCTA />
+      <Founders />
       <FAQ />
       <LeadForm />
     </div>

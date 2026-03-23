@@ -36,12 +36,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-// JSON-LD Schema Markup
-const jsonLd = {
+// JSON-LD Schema Markup — Organization
+const jsonLdOrg = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Gradios Soluções em Tecnologia",
-  url: "https://gradios.com.br",
+  url: "https://gradios.co",
   description: "Automação de processos, desenvolvimento de software sob medida e integração de sistemas para empresas B2B.",
   address: {
     "@type": "PostalAddress",
@@ -62,6 +62,21 @@ const jsonLd = {
   ],
 };
 
+// JSON-LD Schema Markup — FAQPage
+const jsonLdFaq = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Quanto custa automatizar meus processos?", "acceptedAnswer": { "@type": "Answer", "text": "Depende da complexidade. Nossos projetos variam conforme o escopo, mas o diagnóstico gratuito identifica exatamente o que faz sentido para sua empresa. A maioria dos nossos clientes recupera o investimento em menos de 3 meses." } },
+    { "@type": "Question", "name": "Quanto tempo leva para implementar?", "acceptedAnswer": { "@type": "Answer", "text": "Automações simples ficam prontas em 5-10 dias. Projetos mais complexos levam de 3 a 6 semanas." } },
+    { "@type": "Question", "name": "Preciso trocar os sistemas que já uso?", "acceptedAnswer": { "@type": "Answer", "text": "Não. A automação integra os sistemas que você já tem — ERP, CRM, planilhas, WhatsApp, e-mail. Não substituímos nada, conectamos tudo." } },
+    { "@type": "Question", "name": "Precisa de contrato longo?", "acceptedAnswer": { "@type": "Answer", "text": "Não. Trabalhamos com escopo definido e transparente. Você paga pelo que foi combinado, sem amarras." } },
+    { "@type": "Question", "name": "E se eu fizer o diagnóstico e não quiser contratar?", "acceptedAnswer": { "@type": "Answer", "text": "Sem problema nenhum. O diagnóstico é gratuito e sem compromisso." } },
+    { "@type": "Question", "name": "Funciona pro meu setor?", "acceptedAnswer": { "@type": "Answer", "text": "Se sua empresa tem processos manuais, planilhas sendo copiadas, ou sistemas que não conversam entre si, a gente resolve. Já atuamos em varejo, saúde, financeiro, logística, serviços e SaaS." } },
+    { "@type": "Question", "name": "O que acontece depois da implementação?", "acceptedAnswer": { "@type": "Answer", "text": "Oferecemos suporte contínuo. Monitoramos as automações, fazemos ajustes quando necessário e identificamos novas oportunidades de otimização." } },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -70,9 +85,15 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="scroll-smooth">
       <head>
+        <link rel="canonical" href="https://gradios.co/" />
+        <meta name="robots" content="index, follow" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaq) }}
         />
       </head>
       <body className={`${geist.variable} ${geistDisplay.variable} font-sans`}>

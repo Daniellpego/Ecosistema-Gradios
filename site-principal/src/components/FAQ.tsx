@@ -4,30 +4,64 @@ import { useState } from "react";
 
 const faqItems = [
   {
-    question: "Quanto tempo leva para ter resultado?",
-    answer: "Nossa primeira entrega acontece em até 2 semanas. Projetos maiores são entregues em sprints, com resultados visíveis desde a primeira etapa. Sem enrolação."
+    question: "Quanto custa automatizar meus processos?",
+    answer: "Depende da complexidade. Nossos projetos variam conforme o escopo, mas o diagnóstico gratuito identifica exatamente o que faz sentido para sua empresa. A maioria dos nossos clientes recupera o investimento em menos de 3 meses."
+  },
+  {
+    question: "Quanto tempo leva para implementar?",
+    answer: "Automações simples ficam prontas em 5-10 dias. Projetos mais complexos levam de 3 a 6 semanas. No diagnóstico gratuito, você recebe um cronograma realista antes de comprometer qualquer investimento."
+  },
+  {
+    question: "E se eu já tentei automatizar e não funcionou?",
+    answer: "Acontece mais do que você imagina. Geralmente o problema não é a tecnologia, é o diagnóstico errado. Por isso começamos sempre pelo mapeamento completo dos processos antes de tocar em qualquer ferramenta."
+  },
+  {
+    question: "Preciso trocar os sistemas que já uso?",
+    answer: "Não. A automação integra os sistemas que você já tem — ERP, CRM, planilhas, WhatsApp, e-mail. Não substituímos nada, conectamos tudo."
   },
   {
     question: "Precisa de contrato longo?",
     answer: "Não. Trabalhamos com escopo definido e transparente. Você paga pelo que foi combinado, sem amarras. Se quiser continuar, a gente continua. Simples assim."
   },
   {
+    question: "E se eu fizer o diagnóstico e não quiser contratar?",
+    answer: "Sem problema nenhum. O diagnóstico é gratuito e sem compromisso. Você recebe um relatório com os gargalos identificados e pode implementar por conta própria se preferir."
+  },
+  {
+    question: "Vocês vão me ligar insistentemente depois?",
+    answer: "Não. Você recebe o diagnóstico via WhatsApp, e a conversa acontece no seu ritmo. Zero pressão. Nosso modelo funciona por resultado, não por insistência."
+  },
+  {
     question: "Funciona pro meu setor?",
     answer: "Se sua empresa tem processos manuais, planilhas sendo copiadas, ou sistemas que não conversam entre si, a gente resolve. Já atuamos em varejo, saúde, financeiro, logística, serviços e SaaS."
   },
   {
-    question: "Como é o suporte depois da entrega?",
-    answer: "Suporte real, com time dedicado. Não é só ticket jogado numa fila. Acompanhamos os primeiros resultados e permanecemos disponíveis para evolução contínua do sistema."
+    question: "Minha equipe vai precisar aprender ferramentas novas?",
+    answer: "Não. As automações rodam no background. Sua equipe continua usando as mesmas ferramentas de sempre — só que agora os dados fluem automaticamente entre elas."
   },
   {
-    question: "Vocês usam inteligência artificial?",
-    answer: "Sim, quando faz sentido pro seu negócio. Aplicamos IA em automação de atendimento, análise de dados e tomada de decisão. Sempre focado em resultado, não em hype."
+    question: "O que acontece depois da implementação?",
+    answer: "Oferecemos suporte contínuo. Monitoramos as automações, fazemos ajustes quando necessário e identificamos novas oportunidades de otimização. Não entregamos e sumimos."
   }
 ];
 
+// Schema.org FAQPage data (exported for layout)
+export const faqSchemaData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
+
 export function FAQ() {
   const { ref, inView } = useInView();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section className="bg-white py-16 lg:py-20" ref={ref}>
@@ -38,8 +72,11 @@ export function FAQ() {
             Perguntas Frequentes
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4">
-            Sem dúvida pra<br className="hidden md:block"/> dar o próximo passo
+            Perguntas que todo empresário<br className="hidden md:block"/> faz antes de contratar
           </h2>
+          <p className="text-text-muted text-lg text-center max-w-lg mx-auto">
+            Respondemos as 10 dúvidas mais comuns. Sem enrolação.
+          </p>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -54,7 +91,7 @@ export function FAQ() {
                   ? "border border-primary/30 shadow-lg shadow-primary/5 bg-primary/[0.02] border-l-[3px] border-l-primary"
                   : "border border-card-border"
                 }`}
-                style={{ transitionDelay: inView ? `${index * 60}ms` : "0ms" }}
+                style={{ transitionDelay: inView ? `${Math.min(index, 5) * 60}ms` : "0ms" }}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
@@ -82,10 +119,11 @@ export function FAQ() {
                   </div>
                 </button>
                 <div
-                  className="grid transition-all duration-300 ease-in-out"
+                  className="grid transition-all duration-[400ms]"
                   style={{
                     gridTemplateRows: isOpen ? "1fr" : "0fr",
                     opacity: isOpen ? 1 : 0,
+                    transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                 >
                   <div className="overflow-hidden">

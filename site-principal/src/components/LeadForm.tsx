@@ -70,7 +70,7 @@ export function LeadForm() {
                 ))}
               </div>
               <p className="text-sm text-text-muted">
-                <span className="font-bold text-text">+12 empresas</span> já automatizaram com a Gradios
+                <span className="font-bold text-text">+17 empresas</span> já automatizaram com a Gradios
               </p>
             </div>
             <a href="https://wa.me/5543988372540" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-green-600 hover:text-green-700 transition-colors">

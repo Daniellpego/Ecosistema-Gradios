@@ -17,17 +17,17 @@ export function LogoStrip() {
           Construído para empresas que operam assim:
         </p>
         
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden marquee-container">
           {/* Máscara esquerda */}
           <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
           {/* Máscara direita */}
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
-          {/* marquee existente sem alteração */}
+          {/* marquee — pausa no hover */}
           <div className="flex animate-marquee whitespace-nowrap gap-12 lg:gap-16 w-max">
-            {[...logos, ...logos].map((logo, index) => (
-              <div 
-                key={index} 
-                className="text-text-muted/40 font-bold text-lg lg:text-xl tracking-tight select-none flex-shrink-0"
+            {[...logos, ...logos, ...logos].map((logo, index) => (
+              <div
+                key={index}
+                className="text-text-muted/40 font-bold text-lg lg:text-xl tracking-tight select-none flex-shrink-0 hover:text-primary/40 transition-colors"
               >
                 {logo}
               </div>

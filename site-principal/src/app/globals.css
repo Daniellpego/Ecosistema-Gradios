@@ -44,6 +44,11 @@
     background: linear-gradient(135deg, #2546BD, #00BFFF);
   }
 
+  /* Spring easing — used globally */
+  .ease-spring {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   @keyframes fadeSlideUp {
     from { opacity: 0; transform: translateY(60px) scale(0.95); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -54,9 +59,40 @@
     to   { opacity: 1; transform: translateX(0) scale(1); }
   }
 
+  /* Hero mockup dramatic 3D entry */
+  @keyframes mockupEntry {
+    from {
+      opacity: 0;
+      transform: perspective(1200px) rotateX(8deg) rotateY(-4deg) translateY(60px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: perspective(1200px) rotateX(4deg) rotateY(0deg) translateY(0) scale(1);
+    }
+  }
+
+  .animate-mockup-entry {
+    animation: mockupEntry 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  }
+
+  /* Hero text line stagger */
+  @keyframes textLineUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-text-up {
+    animation: textLineUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
+  }
+
+  /* Marquee pause on hover */
+  .marquee-container:hover .animate-marquee {
+    animation-play-state: paused;
   }
 
   /* SVG underline draw animation */

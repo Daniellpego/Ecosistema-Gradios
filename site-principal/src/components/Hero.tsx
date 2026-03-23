@@ -81,47 +81,31 @@ export function Hero() {
             O cérebro da sua operação
           </div>
 
-          {/* H1 com text reveal por palavra */}
+          {/* H1 com text reveal line by line — spring easing */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-text leading-[1.1] mb-6">
-            {["Automatize", "sua", "operação."].map((word, i) => (
-              <span
-                key={i}
-                className={`inline-block mr-[0.3em] transition-all duration-700 ${
-                  mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-                }`}
-                style={{ transitionDelay: `${i * 100}ms` }}
-              >
-                {word}
-              </span>
-            ))}
-            <br />
-            {["Escale", "sem"].map((word, i) => (
-              <span
-                key={i}
-                className={`inline-block mr-[0.3em] transition-all duration-700 ${
-                  mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-                }`}
-                style={{ transitionDelay: `${(i + 3) * 100}ms` }}
-              >
-                {word}
-              </span>
-            ))}{' '}
             <span
-              className={`relative inline-block whitespace-nowrap transition-all duration-700 ${
-                mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-              }`}
-              style={{ transitionDelay: '500ms' }}
+              className={`block ${mounted ? 'animate-text-up' : 'opacity-0'}`}
+              style={{ animationDelay: '0ms' }}
             >
-              contratar mais.
-              <svg className="absolute -bottom-2 left-0 w-full overflow-visible" height="8" viewBox="0 0 300 8" fill="none" preserveAspectRatio="none">
-                <path d="M0 4 Q150 0 300 4" stroke="url(#underline-grad)" strokeWidth="5" strokeLinecap="round" fill="none" className="path-anim" />
-                <defs>
-                  <linearGradient id="underline-grad" x1="0" y1="0" x2="300" y2="0">
-                    <stop offset="0%" stopColor="#2546BD" />
-                    <stop offset="100%" stopColor="#00BFFF" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              Automatize sua operação.
+            </span>
+            <span
+              className={`block ${mounted ? 'animate-text-up' : 'opacity-0'}`}
+              style={{ animationDelay: '100ms' }}
+            >
+              Escale sem{' '}
+              <span className="relative inline-block whitespace-nowrap">
+                contratar mais.
+                <svg className="absolute -bottom-2 left-0 w-full overflow-visible" height="8" viewBox="0 0 300 8" fill="none" preserveAspectRatio="none">
+                  <path d="M0 4 Q150 0 300 4" stroke="url(#underline-grad)" strokeWidth="5" strokeLinecap="round" fill="none" className="path-anim" />
+                  <defs>
+                    <linearGradient id="underline-grad" x1="0" y1="0" x2="300" y2="0">
+                      <stop offset="0%" stopColor="#2546BD" />
+                      <stop offset="100%" stopColor="#00BFFF" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
             </span>
           </h1>
 
@@ -184,13 +168,13 @@ export function Hero() {
             <span className="text-secondary">⚡</span> Integrado ao seu stack
           </div>
 
-          {/* Container com perspectiva 3D + parallax */}
+          {/* Container com perspectiva 3D + dramatic entry + parallax */}
           <div
             ref={dashRef}
             onMouseMove={handleMouseMove}
-            className={`relative transition-all duration-700 ${mounted ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
+            className={`relative ${mounted ? 'animate-mockup-entry' : 'opacity-0'}`}
             style={{
-              transform: `rotateX(4deg) translateY(${scrollY * -0.06}px)`,
+              transform: mounted ? `translateY(${scrollY * -0.06}px)` : undefined,
               transformStyle: 'preserve-3d',
               willChange: 'transform',
             }}
