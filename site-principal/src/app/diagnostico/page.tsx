@@ -272,55 +272,8 @@ REGRAS ABSOLUTAS:
     const urgencia = answers.urgencia?.[0] != null ? QUESTIONS[8].opcoes[answers.urgencia[0]] : "Não informado";
     const prioridade = answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : "Não informado";
 
-    // Webhook (fire & forget)
-    const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL;
-    if (webhookUrl) {
-      try {
-        fetch(webhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            content: `🎯 **NOVO LEAD — DIAGNÓSTICO**\n\n**Nome:** ${lead.nome}\n**Empresa:** ${lead.empresa}\n**Email:** ${lead.email}\n**WhatsApp:** ${lead.whatsapp || "não informado"}\n**Cidade:** ${city || "não detectada"}\n\n**Score:** ${finalScore}/100 — **Tier ${tierInfo.tier}**\n**Cargo:** ${cargo}\n**Porte:** ${porte}\n**Setor:** ${setor}\n**Gargalos:** ${gargalos}\n**Processos manuais:** ${processos}\n**Sistemas desconectados:** ${sistemas}\n**Tempo perdido:** ${tempo}\n**Impactos:** ${impactos}\n**Urgência:** ${urgencia}\n**Prioridade:** ${prioridade}`,
-          }),
-        }).catch(() => {});
-      } catch {
-        // continue silently
-      }
-    }
-
-    // n8n email sequence webhook (fire & forget)
-    const emailWebhookUrl = process.env.NEXT_PUBLIC_N8N_EMAIL_WEBHOOK_URL;
-    if (emailWebhookUrl) {
-      try {
-        fetch(emailWebhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nome: lead.nome,
-            email: lead.email,
-            empresa: lead.empresa,
-            whatsapp: lead.whatsapp || null,
-            setor,
-            cargo,
-            porte,
-            score: finalScore,
-            tier: tierInfo.tier,
-            gargalo_principal: gargalos.split(", ")[0] || "Não informado",
-            gargalos,
-            processos,
-            sistemas,
-            tempo,
-            tempo_horas_mes: getHorasMes(answers.tempo?.[0]),
-            impactos,
-            urgencia,
-            prioridade,
-            cidade: city || null,
-          }),
-        }).catch(() => {});
-      } catch {
-        // continue silently
-      }
-    }
+    // Webhooks (Discord + n8n) agora disparam via triggers no Supabase
+    // após INSERT em quiz_leads — imune a AdBlockers (migration 010)
 
     // Meta Pixel
     trackEvent("lead_captured", { setor, tier: tierInfo.tier, score: finalScore });

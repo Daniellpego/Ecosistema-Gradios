@@ -102,11 +102,11 @@ Gradios`,
   },
 
   /* ──────────────────────────────────────────────────────────
-     EMAIL 2 — Dia 2 (aprofunda o maior gargalo)
+     EMAIL 2 — Dia 3 (gargalo do setor)
      ────────────────────────────────────────────────────────── */
   {
-    id: "email_2_gargalo",
-    day: 2,
+    id: "email_2_gargalo_setor",
+    day: 3,
     subject: {
       A: "O gargalo que mais custa pra {{empresa}}",
       B: "O gargalo que mais custa pra {{empresa}}",
@@ -189,11 +189,11 @@ Gradios`,
   },
 
   /* ──────────────────────────────────────────────────────────
-     EMAIL 3 — Dia 4 (case do setor)
+     EMAIL 3 — Dia 7 (case de sucesso / prova social)
      ────────────────────────────────────────────────────────── */
   {
     id: "email_3_case",
-    day: 4,
+    day: 7,
     subject: {
       A: "Como uma empresa de {{setor}} eliminou {{horas_semana}} de retrabalho por semana",
       B: "Como uma empresa de {{setor}} eliminou {{horas_semana}} de retrabalho por semana",
@@ -288,11 +288,11 @@ Gradios`,
   },
 
   /* ──────────────────────────────────────────────────────────
-     EMAIL 4 — Dia 7 (dica prática implementável)
+     EMAIL 4 — Dia 14 (insight acionável sem custo / autoridade)
      ────────────────────────────────────────────────────────── */
   {
     id: "email_4_dica",
-    day: 7,
+    day: 14,
     subject: {
       A: "Uma coisa que você pode fazer hoje na {{empresa}} (sem custo)",
       B: "Uma coisa que você pode fazer hoje na {{empresa}} (sem custo)",
@@ -387,102 +387,25 @@ Gradios`,
   },
 
   /* ──────────────────────────────────────────────────────────
-     EMAIL 5 — Dia 10 (CTA suave pra call)
+     EMAIL 5 — Dia 21 (check-in + proposta soft)
      ────────────────────────────────────────────────────────── */
   {
-    id: "email_5_followup",
-    day: 10,
+    id: "email_5_proposta",
+    day: 21,
     subject: {
-      A: "{{nome}}, ainda faz sentido conversar?",
-      B: "Ainda pensando em automação na {{empresa}}?",
-      C: "Ainda pensando em automação na {{empresa}}?",
-      D: "Uma pergunta rápida, {{nome}}",
-    },
-    body: {
-      A: `{{nome}},
-
-Faz 10 dias desde o diagnóstico da {{empresa}}.
-
-Não sei se você avançou com isso internamente, se surgiu outra prioridade, ou se ainda está avaliando.
-
-Se ainda faz sentido, tenho 30 minutos essa semana pra uma conversa rápida. Sem apresentação, sem proposta. Só entender o cenário de perto e ver se a gente consegue ajudar de verdade.
-
-Se não faz mais sentido agora — tudo bem também. Só me fala pra eu não tomar mais o seu tempo.
-
-[Quero conversar essa semana → {{whatsapp_url}}]
-
-Não faz sentido agora? Sem problema — responda "parar" e a gente encerra por aqui.
-
-Gradios`,
-
-      B: `{{nome}},
-
-Faz 10 dias desde o diagnóstico da {{empresa}}.
-
-Não sei se você avançou com isso internamente, se surgiu outra prioridade, ou se ainda está avaliando.
-
-Se ainda faz sentido, tenho 30 minutos essa semana pra uma conversa rápida. Sem apresentação, sem proposta. Só entender o cenário de perto e ver se a gente consegue ajudar de verdade.
-
-Se não faz mais sentido agora — tudo bem também. Só me fala pra eu não tomar mais o seu tempo.
-
-[Quero conversar essa semana → {{whatsapp_url}}]
-
-Não faz sentido agora? Sem problema — responda "parar" e a gente encerra por aqui.
-
-Gradios`,
-
-      C: `{{nome}},
-
-Faz 10 dias desde o diagnóstico da {{empresa}}.
-
-Não sei se você avançou com isso internamente, se surgiu outra prioridade, ou se ainda está avaliando.
-
-Se ainda faz sentido, tenho 30 minutos essa semana pra uma conversa rápida. Sem apresentação, sem proposta. Só entender o cenário de perto e ver se a gente consegue ajudar de verdade.
-
-Se não faz mais sentido agora — tudo bem também. Só me fala pra eu não tomar mais o seu tempo.
-
-[Quero conversar essa semana → {{whatsapp_url}}]
-
-Não faz sentido agora? Sem problema — responda "parar" e a gente encerra por aqui.
-
-Gradios`,
-
-      D: `{{nome}},
-
-Faz 10 dias desde o diagnóstico da {{empresa}}.
-
-Não sei se você avançou com isso internamente, se surgiu outra prioridade, ou se ainda está avaliando.
-
-Se ainda faz sentido, tenho 30 minutos essa semana pra uma conversa rápida. Sem apresentação, sem proposta. Só entender o cenário de perto e ver se a gente consegue ajudar de verdade.
-
-Se não faz mais sentido agora — tudo bem também. Só me fala pra eu não tomar mais o seu tempo.
-
-[Quero conversar essa semana → {{whatsapp_url}}]
-
-Não faz sentido agora? Sem problema — responda "parar" e a gente encerra por aqui.
-
-Gradios`,
-    },
-  },
-
-  /* ──────────────────────────────────────────────────────────
-     EMAIL 6 — Dia 14 (oferta direta)
-     ────────────────────────────────────────────────────────── */
-  {
-    id: "email_6_oferta",
-    day: 14,
-    subject: {
-      A: "Última mensagem — proposta específica pra {{empresa}}",
-      B: "Última mensagem — proposta específica pra {{empresa}}",
+      A: "{{nome}}, 3 semanas depois — faz sentido avançar?",
+      B: "{{nome}}, 3 semanas depois — faz sentido avançar?",
       C: "Uma última coisa antes de eu parar de escrever",
       D: "Uma última coisa antes de eu parar de escrever",
     },
     body: {
       A: `{{nome}},
 
-Último email dessa sequência.
+Faz 3 semanas desde o diagnóstico da {{empresa}}.
 
-Baseado no diagnóstico da {{empresa}}, montamos mentalmente o que faríamos nos primeiros 14 dias se trabalhássemos juntos:
+Não sei se você avançou com isso internamente, se surgiu outra prioridade, ou se ainda está avaliando. Mas o cenário que a gente mapeou dificilmente mudou sozinho — {{roi_mensal}}/mês em retrabalho não some sem intervenção.
+
+Baseado no que você respondeu, o que a gente faria nos primeiros 14 dias:
 
 → Semana 1: mapear o fluxo de {{gargalo_principal}} e identificar os pontos de integração
 → Semana 2: primeira automação rodando — {{prioridade}}
@@ -493,15 +416,17 @@ Se quiser avançar — ou só entender melhor antes de decidir:
 
 [Quero conversar agora → {{whatsapp_url}}]
 
-Se não for o momento, sem problema. Fica o diagnóstico como referência pra quando fizer sentido.
+Se não for o momento, sem problema. Fica o diagnóstico como referência pra quando fizer sentido. Responda "parar" e a gente encerra por aqui.
 
 Gradios`,
 
       B: `{{nome}},
 
-Último email dessa sequência.
+Faz 3 semanas desde o diagnóstico da {{empresa}}.
 
-Baseado no diagnóstico da {{empresa}}, montamos mentalmente o que faríamos nos primeiros 14 dias se trabalhássemos juntos:
+Não sei se você avançou com isso internamente, se surgiu outra prioridade, ou se ainda está avaliando. Mas o cenário que a gente mapeou dificilmente mudou sozinho — {{roi_mensal}}/mês em retrabalho não some sem intervenção.
+
+Baseado no que você respondeu, o que a gente faria nos primeiros 14 dias:
 
 → Semana 1: mapear o fluxo de {{gargalo_principal}} e identificar os pontos de integração
 → Semana 2: primeira automação rodando — {{prioridade}}
@@ -512,7 +437,7 @@ Se quiser avançar — ou só entender melhor antes de decidir:
 
 [Quero conversar agora → {{whatsapp_url}}]
 
-Se não for o momento, sem problema. Fica o diagnóstico como referência pra quando fizer sentido.
+Se não for o momento, sem problema. Fica o diagnóstico como referência pra quando fizer sentido. Responda "parar" e a gente encerra por aqui.
 
 Gradios`,
 
@@ -528,7 +453,7 @@ Temos um pacote de entrada específico pra empresas no seu estágio: diagnóstic
 
 [Entender o pacote de entrada → {{whatsapp_url}}]
 
-Se não for agora — guarda esse email. Quando o retrabalho ficar grande demais, a gente tá aqui.
+Se não for agora — guarda esse email. Quando o retrabalho ficar grande demais, a gente tá aqui. Responda "parar" pra encerrar.
 
 Gradios`,
 
@@ -544,7 +469,7 @@ Temos um pacote de entrada específico pra empresas no seu estágio: diagnóstic
 
 [Entender o pacote de entrada → {{whatsapp_url}}]
 
-Se não for agora — guarda esse email. Quando o retrabalho ficar grande demais, a gente tá aqui.
+Se não for agora — guarda esse email. Quando o retrabalho ficar grande demais, a gente tá aqui. Responda "parar" pra encerrar.
 
 Gradios`,
     },

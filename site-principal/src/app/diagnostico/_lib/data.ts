@@ -269,10 +269,10 @@ export function calculateScore(answers: Record<string, number[]>): number {
 
   let score = Math.min(100, Math.round((raw / 94) * 100));
 
-  // Hard cap: Analista/Operação → score máximo 35 (Tier D)
-  if (answers.cargo?.[0] === 4) score = Math.min(score, 35);
-  // Hard cap: "Até 10" funcionários → score máximo 35 (Tier D direto)
-  if (answers.tamanho?.[0] === 0) score = Math.min(score, 35);
+  // Soft penalty: Analista/Operação → -20 pontos (ainda pode subir de tier)
+  if (answers.cargo?.[0] === 4) score = Math.max(0, score - 20);
+  // Soft penalty: "Até 10" funcionários → -15 pontos
+  if (answers.tamanho?.[0] === 0) score = Math.max(0, score - 15);
   // Urgência imediata garante mínimo Tier B
   if (answers.urgencia?.[0] === 4) score = Math.max(score, 55);
 
@@ -359,7 +359,7 @@ export function calculateROI(answers: Record<string, number[]>): {
   const setor = setorIdx != null ? QUESTIONS[2].opcoes[setorIdx] : "Outro";
   const hourlyCost = SECTOR_HOURLY_COST[setor] ?? 38;
   const monthlyHours = HOURS_PER_MONTH[tempoIdx] ?? 20;
-  const monthlyCost = monthlyHours * hourlyCost;
+  const monthlyCost = Math.round(monthlyHours * hourlyCost * 0.8);
   const annualCost = monthlyCost * 12;
 
   return { monthlyHours, monthlyCost, annualCost, hourlyCost };
@@ -368,6 +368,16 @@ export function calculateROI(answers: Record<string, number[]>): {
 /* ════════════════════════════════════════════════════════════
    HELPERS
    ════════════════════════════════════════════════════════════ */
+
+/** Detect if lead is an Analista (champion routing) */
+export function isAnalista(answers: Record<string, number[]>): boolean {
+  return answers.cargo?.[0] === 4;
+}
+
+/** Detect if lead is micro company (≤10 employees) */
+export function isMicroEmpresa(answers: Record<string, number[]>): boolean {
+  return answers.tamanho?.[0] === 0;
+}
 
 export function getOptionText(questionId: string, answerIndex: number | undefined): string {
   if (answerIndex == null) return "Não informado";

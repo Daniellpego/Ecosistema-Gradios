@@ -6,6 +6,7 @@ import {
   calculateROI,
   formatBRL,
   getTier,
+  isAnalista,
   type LeadData,
 } from "../_lib/data";
 
@@ -153,7 +154,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
                 {formatBRL(roi.monthlyCost)}
               </p>
               <p className="text-[#EF4444] text-xs font-semibold tracking-wider uppercase">
-                custo estimado/mês
+                custo mínimo estimado/mês
               </p>
             </div>
           )}
@@ -167,9 +168,9 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #EF4444, transparent 70%)" }} />
           </div>
           <div className="relative z-10">
-            <p className="text-[#FCA5A5] text-[10px] font-semibold tracking-wider uppercase mb-1">Custo estimado de retrabalho</p>
+            <p className="text-[#FCA5A5] text-[10px] font-semibold tracking-wider uppercase mb-1">Estimativa conservadora de retrabalho</p>
             <p className="text-[#94A3B8] text-sm mb-4">
-              {roi.monthlyHours}h/mês × {formatBRL(roi.hourlyCost)}/hora (média {setor})
+              {roi.monthlyHours}h/mês × {formatBRL(roi.hourlyCost)}/hora (média {setor}) × fator conservador
             </p>
             <div className="flex items-center gap-3 bg-[#EF4444]/10 border border-[#EF4444]/20 rounded-xl px-4 py-3">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -177,7 +178,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
                 <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
               </svg>
               <p className="text-[#FCA5A5] text-sm font-medium">
-                Potencial de economia anual: <span className="text-white font-black">{formatBRL(roi.annualCost)}</span>
+                Sendo conservador, no mínimo <span className="text-white font-black">{formatBRL(roi.annualCost)}</span>/ano em economia
               </p>
             </div>
           </div>
@@ -326,8 +327,38 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
         </div>
       )}
 
+      {/* ── ANALISTA ROUTING (Champion) ── */}
+      {isAnalista(answers) && (
+        <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.65s" }}>
+          <div className="bg-[#F59E0B]/10 border border-[#F59E0B]/20 rounded-2xl p-5">
+            <p className="text-[#FCD34D] text-sm font-bold mb-2">
+              Para implementar, você vai precisar do aval da diretoria.
+            </p>
+            <p className="text-[#CBD5E1] text-sm">
+              A gente monta um resumo executivo com ROI e diagnóstico formatado pra decisor — pronto pra você apresentar.
+            </p>
+            <a
+              href={`https://wa.me/5543988372540?text=${encodeURIComponent(
+                `Oi! Sou ${lead.nome} da ${lead.empresa}. Fiz o diagnóstico e preciso de material executivo para apresentar à diretoria.`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-3 bg-[#F59E0B]/20 text-[#FCD34D] rounded-pill px-5 py-2.5 font-semibold text-sm hover:bg-[#F59E0B]/30 transition-all duration-300"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+              Quero material para o gestor
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* ── CTA ── */}
-      <div className="result-cta opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.7s" }}>
+      <div className="result-cta opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.75s" }}>
         <div className="absolute inset-0 overflow-hidden rounded-2xl">
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #00BFFF, transparent 70%)" }} />
         </div>
