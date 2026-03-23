@@ -7,7 +7,7 @@ import { spring } from "@/lib/motion";
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
-  const [pulse, setPulse] = useState(false);
+
   const [count, setCount] = useState<number | null>(null);
   const dashRef = useRef<HTMLDivElement>(null);
 
@@ -23,10 +23,8 @@ export function Hero() {
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 150);
-    const interval = setInterval(() => setPulse((p) => !p), 3000);
     return () => {
       clearTimeout(t);
-      clearInterval(interval);
     };
   }, []);
 
@@ -113,13 +111,18 @@ export function Hero() {
         {/* TEXTO CENTRALIZADO */}
         <div className="text-center max-w-4xl mx-auto mb-12 lg:mb-16">
           <motion.div
-            className="inline-flex items-center gap-2.5 bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-5 py-2 tracking-wide mb-6"
+            className="inline-flex items-center gap-2.5 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-5 py-2 tracking-wide mb-6 relative overflow-hidden"
+            style={{
+              background: "linear-gradient(90deg, rgba(37,70,189,0.08) 0%, rgba(0,191,255,0.14) 40%, rgba(37,70,189,0.08) 60%, rgba(37,70,189,0.08) 100%)",
+              backgroundSize: "200% 100%",
+              animation: "badgeShimmer 4s ease-in-out infinite",
+            }}
             variants={heroEntrance}
             initial="hidden"
             animate="visible"
             custom={0}
           >
-            <span className="animate-brain-bounce text-lg leading-none" role="img" aria-label="cérebro">
+            <span className="animate-brain-float text-lg leading-none" role="img" aria-label="cérebro">
               🧠
             </span>
             O cérebro da sua operação
@@ -332,7 +335,7 @@ export function Hero() {
                         <div className="text-white/30 text-[10px] sm:text-xs">Atualizado agora</div>
                       </div>
                       <div className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.06] rounded-lg px-3 py-1.5">
-                        <div className={`h-2 w-2 rounded-full bg-green-400 transition-opacity duration-500 ${pulse ? "opacity-100" : "opacity-30"}`} />
+                        <div className="h-2 w-2 rounded-full bg-green-400 animate-status-pulse" />
                         <span className="text-[10px] sm:text-xs text-white/40">Tudo operacional</span>
                       </div>
                     </div>
