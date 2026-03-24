@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { trackWhatsAppClick } from "@/lib/meta-pixel";
 
 export function WhatsAppFab() {
   const pathname = usePathname();
@@ -15,6 +16,7 @@ export function WhatsAppFab() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Conversar pelo WhatsApp"
+      onClick={() => trackWhatsAppClick(pathname || "unknown")}
       className="fixed bottom-6 right-6 z-50 group"
       initial={{ opacity: 0, y: 12, scale: 0.75 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { spring } from "@/lib/motion";
+import { trackCTAClick } from "@/lib/meta-pixel";
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
@@ -167,6 +168,7 @@ export function Hero() {
           >
             <Link
               href="/diagnostico"
+              onClick={() => trackCTAClick("Hero", "Diagnóstico Gratuito", "/diagnostico")}
               className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:shadow-lg hover:shadow-[#2546BD]/30 hover:opacity-90 transition-all text-center w-full sm:w-auto relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
             >
               Diagnóstico Gratuito
@@ -404,7 +406,11 @@ export function Hero() {
 
       {/* Mobile sticky CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/90 backdrop-blur-md border-t border-card-border sm:hidden">
-        <Link href="/diagnostico" className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-6 py-3 font-bold text-center block text-sm">
+        <Link
+          href="/diagnostico"
+          onClick={() => trackCTAClick("Hero Mobile Sticky", "Diagnóstico Gratuito", "/diagnostico")}
+          className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-6 py-3 font-bold text-center block text-sm"
+        >
           Diagnóstico Gratuito
         </Link>
       </div>

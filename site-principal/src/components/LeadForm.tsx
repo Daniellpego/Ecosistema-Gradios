@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { revealVariants, staggerParent, viewport } from "@/lib/motion";
+import { trackCTAClick } from "@/lib/meta-pixel";
 
 export function LeadForm() {
   const [hovered, setHovered] = useState(false);
@@ -84,6 +85,7 @@ export function LeadForm() {
             <motion.div variants={revealVariants("scale")}>
               <Link
                 href="/diagnostico"
+                onClick={() => trackCTAClick("Final CTA Section", "Fazer meu diagnóstico agora", "/diagnostico")}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
                 className="inline-block bg-gradient-to-r from-[#2546BD] to-[#00BFFF] text-white rounded-pill px-10 py-5 font-bold text-lg transition-all duration-500 relative overflow-hidden before:absolute before:inset-0 before:bg-white/15 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"

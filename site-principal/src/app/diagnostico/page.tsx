@@ -120,7 +120,40 @@ export default function DiagnosticoPage() {
   function trackEvent(event: string, params?: Record<string, unknown>) {
     try {
       if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
-        (window as unknown as { fbq: (...args: unknown[]) => void }).fbq("track", event, params);
+        const fbq = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
+
+        // Map custom events to Meta Pixel standard events
+        switch (event) {
+          case "quiz_start":
+            fbq("track", "ViewContent", { content_name: "Quiz Diagnóstico Gradios", content_category: "Quiz" });
+            break;
+          case "quiz_answer":
+            fbq("trackCustom", "QuizAnswer", params);
+            break;
+          case "quiz_completed":
+            fbq("track", "InitiateCheckout", { content_name: "Quiz Completo", num_items: params?.questions_answered || 0 });
+            break;
+          case "lead_captured":
+            fbq("track", "Lead", {
+              content_name: "Diagnóstico Gradios",
+              content_category: params?.setor || "Não informado",
+              value: 0,
+              currency: "BRL"
+            });
+            break;
+          case "diagnosis_viewed":
+            fbq("track", "CompleteRegistration", {
+              content_name: "Resultado Diagnóstico",
+              status: `Tier ${params?.tier}`,
+              value: (params?.score as number) || 0
+            });
+            break;
+          case "quiz_abandoned":
+            fbq("trackCustom", "QuizAbandoned", params);
+            break;
+          default:
+            fbq("trackCustom", event, params);
+        }
       }
       // Also push to dataLayer for GTM/GA4 if available
       if (typeof window !== "undefined" && (window as unknown as { dataLayer?: unknown[] }).dataLayer) {
@@ -281,8 +314,40 @@ REGRAS ABSOLUTAS:
 
     // Webhooks (Discord + n8n) disparam via triggers Supabase (migration 010)
 
-    // Meta Pixel
+    // Generate unique event ID for deduplication between Pixel and Conversions API
+    const eventId = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+
+    // Meta Pixel (client-side)
     trackEvent("lead_captured", { setor, tier: tierInfo.tier, score: finalScore });
+
+    // Meta Conversions API (server-side) - fire and forget
+    fetch("/api/meta-conversion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        eventName: "Lead",
+        eventSourceUrl: window.location.href,
+        userData: {
+          email: lead.email,
+          phone: lead.whatsapp,
+          firstName: lead.nome.split(" ")[0],
+          lastName: lead.nome.split(" ").slice(1).join(" "),
+          city: city,
+          country: "br",
+        },
+        customData: {
+          content_name: "Diagnóstico Gradios",
+          content_category: setor,
+          tier: tierInfo.tier,
+          score: finalScore,
+          value: 0,
+          currency: "BRL",
+        },
+        eventId,
+      }),
+    }).catch(() => {
+      // Silently fail if Conversions API is down
+    });
 
     // Supabase — save lead
     try {
