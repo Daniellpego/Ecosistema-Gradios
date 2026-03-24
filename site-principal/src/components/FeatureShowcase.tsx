@@ -57,15 +57,15 @@ export function FeatureShowcase() {
               Como Funciona
             </div>
             <WordReveal
-              text="Entendemos primeiro. Construímos depois."
+              text="Você explica o problema. A gente resolve."
               className="text-4xl lg:text-5xl font-bold text-text leading-tight mb-4"
             />
             <p className="text-text-muted text-lg mt-4 leading-relaxed max-w-lg">
-              Mapeamos o processo atual, identificamos os gargalos e só então propomos a solução. Cada etapa é validada com você.
+              Não vendemos pacote pronto. Primeiro entendemos como sua empresa funciona. Depois construímos exatamente o que falta.
             </p>
 
             <div className="mt-8 flex flex-col gap-3">
-              {["Sem contrato longo", "Primeira entrega em até 2 semanas", "Suporte real, não só ticket"].map((item, i) => (
+              {["Sem contrato longo. Escopo fechado.", "Primeira entrega em 14 dias.", "Suporte de verdade. Pessoa real, não ticket."].map((item, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div className="w-5 h-5 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">

@@ -29,19 +29,19 @@ export function MidCTA() {
           className="text-3xl lg:text-5xl font-bold text-white leading-tight mb-4"
           variants={revealVariants("scale")}
         >
-          Descubra quanto sua empresa
-          <br className="hidden md:block" /> perde com processos manuais
+          2 minutos. 1 diagnóstico.
+          <br className="hidden md:block" /> 0 reais.
         </motion.h2>
 
         <motion.p className="text-white/80 text-lg mb-6 max-w-2xl mx-auto" variants={revealVariants("up")}>
-          Responda nosso diagnóstico (leva apenas 2 minutos) e receba gratuitamente:
+          Responda 10 perguntas e descubra exatamente onde sua operação sangra tempo e dinheiro.
         </motion.p>
 
         <motion.div
           className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-8"
           variants={staggerParent(0.08)}
         >
-          {["Quais processos automatizar agora", "Quanto tempo e dinheiro economizar", "Plano de ação personalizado"].map((item, i) => (
+          {["Os gargalos que custam mais caro", "Quanto você economiza automatizando", "Por onde começar primeiro"].map((item, i) => (
             <motion.div key={i} className="flex items-center gap-2" variants={revealVariants("up")}>
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-green-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
@@ -56,9 +56,9 @@ export function MidCTA() {
             href="/diagnostico"
             className="inline-block bg-white text-primary rounded-pill px-8 py-4 font-bold text-lg hover:bg-white/90 hover:shadow-xl transition-all relative overflow-hidden before:absolute before:inset-0 before:bg-primary/5 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
           >
-            Fazer meu diagnóstico gratuito →
+            Quero meu diagnóstico gratuito →
           </Link>
-          <p className="text-white/60 text-sm mt-4">100% gratuito · Sem compromisso · Resultado em minutos</p>
+          <p className="text-white/60 text-sm mt-4">Gratuito. Sem compromisso. Resultado na hora.</p>
         </motion.div>
       </motion.div>
     </section>

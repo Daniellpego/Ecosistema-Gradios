@@ -50,17 +50,17 @@ export function FAQ() {
             className="inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6"
             variants={revealVariants("up")}
           >
-            Perguntas Frequentes
+            Antes de decidir
           </motion.div>
           <WordReveal
-            text="Perguntas que todo empresário faz antes de contratar"
+            text="As perguntas que você deveria fazer"
             className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4"
           />
           <motion.p
             className="text-text-muted text-lg text-center max-w-lg mx-auto"
             variants={revealVariants("up")}
           >
-            Respondemos as dúvidas mais comuns. Direto ao ponto.
+            Se a resposta não for direta, desconfie. As nossas são.
           </motion.p>
         </motion.div>
 

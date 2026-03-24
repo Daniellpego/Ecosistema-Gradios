@@ -22,23 +22,23 @@ export function LeadForm() {
           className="inline-flex items-center bg-[#00BFFF]/10 text-[#00BFFF] font-semibold border border-[#00BFFF]/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6"
           variants={revealVariants("up")}
         >
-          Diagnóstico Gratuito
+          Último passo
         </motion.div>
 
         <motion.h2
           className="text-3xl lg:text-5xl font-bold text-white leading-tight mb-4"
           variants={revealVariants("scale")}
         >
-          Descubra quanto sua operação
+          Se você leu até aqui,
           <br className="hidden sm:block" />
-          perde toda semana
+          seu processo precisa de nós.
         </motion.h2>
 
         <motion.p
           className="text-[#94A3B8] text-lg mb-8 max-w-xl mx-auto"
           variants={revealVariants("up")}
         >
-          Responda nosso diagnóstico em 2 minutos e receba um mapa completo dos seus gargalos com o custo estimado em reais.
+          10 perguntas. 2 minutos. Um relatório com os gargalos da sua operação e quanto eles custam por mês. De graça.
         </motion.p>
 
         <motion.div variants={revealVariants("scale")}>
@@ -46,9 +46,9 @@ export function LeadForm() {
             href="/diagnostico"
             className="inline-block bg-gradient-to-r from-[#2546BD] to-[#00BFFF] text-white rounded-pill px-10 py-5 font-bold text-lg hover:shadow-xl hover:shadow-[#00BFFF]/20 transition-all relative overflow-hidden before:absolute before:inset-0 before:bg-white/15 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
           >
-            Descobrir quanto estou perdendo
+            Fazer meu diagnóstico agora
           </Link>
-          <p className="text-[#475569] text-sm mt-4">100% gratuito. Sem compromisso. Resultado gerado por IA.</p>
+          <p className="text-[#475569] text-sm mt-4">Gratuito. Sem compromisso. Resultado gerado por IA na hora.</p>
         </motion.div>
 
         {/* Micro trust */}

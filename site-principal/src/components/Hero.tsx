@@ -123,19 +123,29 @@ export function Hero() {
             animate="visible"
             custom={0}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-            </svg>
             O cérebro da sua operação
           </motion.div>
 
-          {/* H1 — Ogilvy: headline curta, promessa clara */}
-          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-text leading-[1.1] mb-6">
-            <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0}>
-              Processos manuais custam{" "}
+          {/* Slogan acima do H1 */}
+          <motion.p
+            className="text-lg lg:text-xl font-medium text-primary mb-3 tracking-wide"
+            variants={heroEntrance}
+            initial="hidden"
+            animate="visible"
+            custom={0}
+          >
+            O cérebro da sua operação.
+          </motion.p>
+
+          {/* H1 — Ogilvy: fato + promessa, sem floreio */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-text leading-[1.1] mb-6">
+            <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0.05}>
+              Seu time perde 40h por mês
+            </motion.span>
+            <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0.15}>
+              em tarefas que uma{" "}
               <span className="relative inline-block whitespace-nowrap">
-                caro.
+                máquina faz em 4.
                 <svg className="absolute -bottom-2 left-0 w-full overflow-visible" height="8" viewBox="0 0 300 8" fill="none" preserveAspectRatio="none">
                   <path d="M0 4 Q150 0 300 4" stroke="url(#underline-grad)" strokeWidth="5" strokeLinecap="round" fill="none" className="path-anim" />
                   <defs>
@@ -147,9 +157,6 @@ export function Hero() {
                 </svg>
               </span>
             </motion.span>
-            <motion.span className="block text-primary" variants={textLineVariants} initial="hidden" animate="visible" custom={0.1}>
-              Nós eliminamos eles.
-            </motion.span>
           </h1>
 
           <motion.p
@@ -159,7 +166,7 @@ export function Hero() {
             animate="visible"
             custom={0.6}
           >
-            Automação, software sob medida e IA para a sua empresa rodar sem depender de planilha, retrabalho ou sorte.
+            A Gradios conecta seus sistemas, elimina retrabalho e entrega resultado em 14 dias. Sem contrato longo.
           </motion.p>
 
           <motion.div

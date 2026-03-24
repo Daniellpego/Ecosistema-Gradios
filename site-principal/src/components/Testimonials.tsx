@@ -53,17 +53,17 @@ export function Testimonials() {
             className="inline-flex items-center bg-primary/8 text-primary font-semibold border border-secondary/20 rounded-pill text-sm px-4 py-1.5 tracking-wide mb-6"
             variants={revealVariants("up")}
           >
-            Resultados Reais
+            Prova
           </motion.div>
           <WordReveal
-            text="O que acontece quando o processo roda sem depender de ninguém"
+            text="Fatos. Não promessas."
             className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4"
           />
           <motion.p
             className="text-text-muted text-lg text-center max-w-xl mx-auto mt-4"
             variants={revealVariants("up")}
           >
-            Números reais de empresas que eliminaram processos manuais.
+            Estes são resultados reais de empresas reais. Pergunte para elas.
           </motion.p>
         </motion.div>
 
