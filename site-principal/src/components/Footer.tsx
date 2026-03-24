@@ -3,7 +3,11 @@ import Image from "next/image";
 
 export function Footer() {
   return (
-    <footer className="bg-[#0A1628] pt-16 pb-6 relative z-10">
+    <footer className="bg-[#0A1628] pt-0 pb-6 relative z-10">
+      {/* Divider sutil entre LeadForm e Footer */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-white/[0.06] mb-16" />
+      </div>
       {/* Diagonal lines texture — footer only */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{
         backgroundImage: 'repeating-linear-gradient(45deg, #00BFFF 0px, #00BFFF 1px, transparent 1px, transparent 16px)',

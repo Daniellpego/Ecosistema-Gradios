@@ -1,26 +1,110 @@
 "use client";
 
 import { motion, useInView, animate } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { WordReveal } from "./WordReveal";
 import { spring, revealVariants, staggerParent, viewport } from "@/lib/motion";
 import Image from "next/image";
 import Link from "next/link";
 
-function TimeBar({ percent, color, delay }: { percent: number; color: string; delay: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+/* ── Interactive Before/After Slider ── */
+function BeforeAfterSlider() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [sliderPos, setSliderPos] = useState(50); // percentage
+  const [isDragging, setIsDragging] = useState(false);
+
+  const updatePosition = useCallback((clientX: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const pct = Math.max(2, Math.min(98, (x / rect.width) * 100));
+    setSliderPos(pct);
+  }, []);
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    setIsDragging(true);
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    updatePosition(e.clientX);
+  }, [updatePosition]);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging) return;
+    updatePosition(e.clientX);
+  }, [isDragging, updatePosition]);
+
+  const handlePointerUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   return (
     <div
-      ref={ref}
-      className={`h-full ${color} rounded-full transition-all ease-out`}
-      style={{
-        width: isInView ? `${percent}%` : "0%",
-        transitionDuration: "1200ms",
-        transitionDelay: `${delay}s`,
-      }}
-    />
+      ref={containerRef}
+      className="relative w-full rounded-2xl overflow-hidden select-none touch-none cursor-col-resize"
+      style={{ aspectRatio: "16/7" }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+    >
+      {/* DEPOIS (background - full width) */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 flex flex-col justify-center p-6 sm:p-10">
+        <div className="max-w-md ml-auto mr-8 sm:mr-16">
+          <div className="text-xs font-bold text-green-500 uppercase tracking-wider mb-2">Depois</div>
+          <div className="text-4xl sm:text-5xl font-bold font-display text-green-600 mb-2">4 horas</div>
+          <p className="text-sm sm:text-base text-green-600/70">Automatizado, sem erro, relatório pronto</p>
+          <div className="mt-4 flex items-center gap-2">
+            <div className="h-2 w-16 bg-green-200 rounded-full overflow-hidden">
+              <div className="h-full w-[5.5%] bg-green-500 rounded-full" />
+            </div>
+            <span className="text-xs text-green-500 font-semibold">5.5% do tempo original</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ANTES (overlay - clipped) */}
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-red-50 to-rose-50 flex flex-col justify-center p-6 sm:p-10"
+        style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
+      >
+        <div className="max-w-md ml-8 sm:ml-16">
+          <div className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Antes</div>
+          <div className="text-4xl sm:text-5xl font-bold font-display text-red-600 mb-2">3 dias</div>
+          <p className="text-sm sm:text-base text-red-500/70">Processo manual, planilhas, erros frequentes</p>
+          <div className="mt-4 flex items-center gap-2">
+            <div className="h-2 w-16 bg-red-200 rounded-full overflow-hidden">
+              <div className="h-full w-full bg-red-500 rounded-full" />
+            </div>
+            <span className="text-xs text-red-400 font-semibold">100% do tempo</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Slider handle */}
+      <div
+        className="absolute top-0 bottom-0 z-20 flex items-center"
+        style={{ left: `${sliderPos}%`, transform: "translateX(-50%)" }}
+      >
+        <div className="w-[2px] h-full bg-white shadow-[0_0_8px_rgba(0,0,0,0.3)]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center border-2 border-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 8l4 4-4 4" />
+            <path d="M6 8l-4 4 4 4" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Labels */}
+      <div className="absolute top-3 left-3 z-10 bg-red-500/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+        Antes
+      </div>
+      <div className="absolute top-3 right-3 z-10 bg-green-500/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+        Depois
+      </div>
+
+      {/* Hint on first load */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 bg-black/50 backdrop-blur-sm text-white text-[10px] font-medium px-3 py-1.5 rounded-full pointer-events-none opacity-60">
+        Arraste para comparar
+      </div>
+    </div>
   );
 }
 
@@ -84,55 +168,40 @@ export function Testimonials() {
           </motion.p>
         </motion.div>
 
-        {/* Layout: 1 card grande + 2 cards — stagger */}
+        {/* Case principal — slider interativo */}
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-16 items-stretch"
+          className="mt-16"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.08 }}
           variants={staggerParent(0.12)}
         >
-          {/* Card principal */}
           <motion.div
-            className="lg:col-span-2 solution-card bg-white border border-card-border rounded-card p-8 flex flex-col justify-between gap-6"
+            className="solution-card bg-white border border-card-border rounded-card p-6 sm:p-8"
             variants={revealVariants("scale")}
           >
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                    <polyline points="17 6 23 6 23 12" />
-                  </svg>
-                </div>
-                <span className="text-sm font-semibold text-primary uppercase tracking-wider">Case em destaque | Setor Financeiro</span>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </svg>
               </div>
-              <p className="text-lg font-bold text-text mb-5">Fechamento financeiro mensal</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <div className="bg-red-50 border border-red-200/60 rounded-xl p-5">
-                  <div className="text-xs font-semibold text-red-400 uppercase tracking-wider mb-2">Antes</div>
-                  <div className="text-3xl font-bold font-display text-red-600 mb-1">3 dias</div>
-                  <p className="text-sm text-red-400 mb-3">Processo manual, planilhas, erros frequentes</p>
-                  <div className="h-2 bg-red-100 rounded-full overflow-hidden">
-                    <TimeBar percent={100} color="bg-red-500" delay={0.3} />
-                  </div>
-                </div>
-                <div className="bg-green-50 border border-green-200/60 rounded-xl p-5">
-                  <div className="text-xs font-semibold text-green-500 uppercase tracking-wider mb-2">Depois</div>
-                  <div className="text-3xl font-bold font-display text-green-600 mb-1">4 horas</div>
-                  <p className="text-sm text-green-500 mb-3">Automatizado, sem erro, relatório pronto</p>
-                  <div className="h-2 bg-green-100 rounded-full overflow-hidden">
-                    <TimeBar percent={5.5} color="bg-green-500" delay={0.6} />
-                  </div>
-                </div>
+              <div>
+                <span className="text-sm font-semibold text-primary uppercase tracking-wider block">Case em destaque | Setor Financeiro</span>
+                <span className="text-lg font-bold text-text">Fechamento financeiro mensal</span>
               </div>
-              <p className="text-text-muted leading-relaxed">
-                Automação completa do fluxo de aprovações, conciliação bancária e geração de relatórios. Eliminamos 90% do trabalho manual.
-              </p>
             </div>
 
+            {/* Before/After Slider */}
+            <BeforeAfterSlider />
+
+            <p className="text-text-muted leading-relaxed mt-6">
+              Automação completa do fluxo de aprovações, conciliação bancária e geração de relatórios. Eliminamos 90% do trabalho manual.
+            </p>
+
             {/* Testimonial + micro-CTA */}
-            <div className="pt-4 border-t border-card-border space-y-4">
+            <div className="pt-4 mt-4 border-t border-card-border space-y-4">
               <div className="flex items-center gap-3">
                 <Image src="/logo-cliente-4.webp" alt="Logo de holding financeira, cliente Gradios" width={32} height={32} className="w-8 h-8 rounded-full object-cover bg-white border border-card-border flex-shrink-0" />
                 <div>
@@ -141,7 +210,6 @@ export function Testimonials() {
                 </div>
               </div>
 
-              {/* Micro-CTA — targeted conversion */}
               <Link
                 href="/diagnostico"
                 className="group flex items-center gap-3 bg-primary/[0.04] hover:bg-primary/[0.08] border border-primary/15 hover:border-primary/30 rounded-xl px-4 py-3 transition-all duration-300"
@@ -153,58 +221,64 @@ export function Testimonials() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-text">Seu fechamento financeiro também demora?</p>
-                  <p className="text-xs text-primary font-medium">Descubra como reduzir →</p>
+                  <p className="text-xs text-primary font-medium">Descubra como reduzir &rarr;</p>
                 </div>
               </Link>
             </div>
           </motion.div>
+        </motion.div>
 
-          {/* Coluna direita: 2 cards empilhados */}
-          <div className="flex flex-col gap-6">
-            <motion.div
-              className="solution-card bg-white border border-card-border rounded-card p-6 flex-1 flex flex-col justify-between"
-              variants={revealVariants("left")}
-            >
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs text-text-muted line-through">1x volume</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                  <span className="text-xs font-bold text-green-600">3x volume</span>
-                </div>
-                <div className="text-3xl font-bold font-display text-text mb-2">3x</div>
-                <p className="text-sm font-bold text-text mb-2">Volume sem contratar</p>
-                <p className="text-sm text-text-muted">Empresa de serviços B2B com 12 colaboradores triplicou a capacidade de atendimento em 6 semanas com automação de processos internos.</p>
+        {/* Cards secundários */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.08 }}
+          variants={staggerParent(0.12)}
+        >
+          <motion.div
+            className="solution-card bg-white border border-card-border rounded-card p-6 flex flex-col justify-between"
+            variants={revealVariants("left")}
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs text-text-muted line-through">1x volume</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+                <span className="text-xs font-bold text-green-600">3x volume</span>
               </div>
-              <div className="pt-4 mt-4 border-t border-card-border flex items-center gap-2">
-                <Image src="/logo-cliente-5.webp" alt="Logo de consultoria B2B, cliente Gradios" width={24} height={24} className="w-6 h-6 rounded-full object-cover bg-white border border-card-border flex-shrink-0" />
-                <span className="text-xs text-text-muted font-medium">Diretor de Operações, consultoria B2B</span>
-              </div>
-            </motion.div>
+              <div className="text-3xl font-bold font-display text-text mb-2">3x</div>
+              <p className="text-sm font-bold text-text mb-2">Volume sem contratar</p>
+              <p className="text-sm text-text-muted">Empresa de serviços B2B com 12 colaboradores triplicou a capacidade de atendimento em 6 semanas com automação de processos internos.</p>
+            </div>
+            <div className="pt-4 mt-4 border-t border-card-border flex items-center gap-2">
+              <Image src="/logo-cliente-5.webp" alt="Logo de consultoria B2B, cliente Gradios" width={24} height={24} className="w-6 h-6 rounded-full object-cover bg-white border border-card-border flex-shrink-0" />
+              <span className="text-xs text-text-muted font-medium">Diretor de Operações, consultoria B2B</span>
+            </div>
+          </motion.div>
 
-            <motion.div
-              className="solution-card bg-white border border-card-border rounded-card p-6 flex-1 flex flex-col justify-between"
-              variants={revealVariants("left")}
-            >
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs text-text-muted line-through">40h/mês</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                  <span className="text-xs font-bold text-green-600">2h/mês</span>
-                </div>
-                <div className="text-3xl font-bold font-display text-text mb-2">95%</div>
-                <p className="text-sm font-bold text-text mb-2">Menos tempo em emissão de notas</p>
-                <p className="text-sm text-text-muted">Processo de emissão de notas fiscais que consumia uma semana por mês passou a rodar automaticamente com validação inteligente.</p>
+          <motion.div
+            className="solution-card bg-white border border-card-border rounded-card p-6 flex flex-col justify-between"
+            variants={revealVariants("left")}
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs text-text-muted line-through">40h/mês</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+                <span className="text-xs font-bold text-green-600">2h/mês</span>
               </div>
-              <div className="pt-4 mt-4 border-t border-card-border flex items-center gap-2">
-                <Image src="/logo-cliente-6.webp" alt="Logo de distribuidora, cliente Gradios" width={24} height={24} className="w-6 h-6 rounded-full object-cover bg-white border border-card-border flex-shrink-0" />
-                <span className="text-xs text-text-muted font-medium">Gestor Financeiro, distribuidora</span>
-              </div>
-            </motion.div>
-          </div>
+              <div className="text-3xl font-bold font-display text-text mb-2">95%</div>
+              <p className="text-sm font-bold text-text mb-2">Menos tempo em emissão de notas</p>
+              <p className="text-sm text-text-muted">Processo de emissão de notas fiscais que consumia uma semana por mês passou a rodar automaticamente com validação inteligente.</p>
+            </div>
+            <div className="pt-4 mt-4 border-t border-card-border flex items-center gap-2">
+              <Image src="/logo-cliente-6.webp" alt="Logo de distribuidora, cliente Gradios" width={24} height={24} className="w-6 h-6 rounded-full object-cover bg-white border border-card-border flex-shrink-0" />
+              <span className="text-xs text-text-muted font-medium">Gestor Financeiro, distribuidora</span>
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* Métricas rápidas */}

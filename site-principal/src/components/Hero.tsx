@@ -353,7 +353,7 @@ export function Hero() {
                                   height: mounted ? `${h}%` : "0%",
                                   background: h > 70 ? "linear-gradient(to top, #2546BD, #00BFFF)" : "linear-gradient(to top, rgba(37,70,189,0.3), rgba(0,191,255,0.25))",
                                   transition: `height ${800 + i * 60}ms ease-out ${i * 40}ms`,
-                                  animation: mounted ? `barBreath 3s ease-in-out ${1.5 + i * 0.15}s infinite` : "none",
+                                  animation: mounted ? `barBreath 5s ease-in-out ${2 + i * 0.2}s infinite` : "none",
                                 }}
                               />
                             </div>
@@ -382,7 +382,7 @@ export function Hero() {
                                   style={{
                                     width: mounted ? `${item.pct}%` : "0%",
                                     transition: `width 1200ms ease-out ${i * 120}ms`,
-                                    animation: mounted ? `progressPulse 4s ease-in-out ${2 + i * 0.3}s infinite` : "none",
+                                    animation: mounted ? `progressPulse 6s ease-in-out ${2.5 + i * 0.4}s infinite` : "none",
                                   }}
                                 />
                               </div>

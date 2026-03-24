@@ -10,8 +10,8 @@ export function LeadForm() {
 
   return (
     <section id="contato" className="relative z-10 py-16 lg:py-24 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0f1d32] to-[#0A1628] -z-10" />
+      {/* Background — seamless into footer */}
+      <div className="absolute inset-0 bg-[#0A1628] -z-10" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#2546BD]/10 rounded-full blur-[120px] -z-[5]" />
 
       {/* Hover glow — "ignição" cyan */}
