@@ -73,8 +73,8 @@ function NeuralGrid() {
 
 export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
   const headline = city
-    ? `${city}. Quanto sua operação perde em processos manuais?`
-    : "Quanto sua operação perde em processos manuais?";
+    ? `${city}, quanto seu time perde por semana em tarefas que uma máquina faz em minutos?`
+    : "Quanto seu time perde por semana em tarefas que uma máquina faz em minutos?";
   const { displayed, done } = useTypewriter(headline, 30, 800);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -134,7 +134,7 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
             >
               {/* Subheadline */}
               <p className="text-[#94A3B8] text-base sm:text-lg mb-4">
-                Diagnóstico personalizado da sua operação em apenas 2 minutos, gerado por IA.
+                10 perguntas. 2 minutos. Um diagnóstico real com custo em reais.
               </p>
 
               {/* Prévia do resultado */}
@@ -142,9 +142,9 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
                 <p className="text-[10px] font-semibold text-[#00BFFF] tracking-wider uppercase mb-3">Você vai receber</p>
                 <div className="space-y-2.5">
                   {[
-                    "Mapa dos seus gargalos ordenados por impacto financeiro",
-                    "Custo mensal estimado do retrabalho em reais",
-                    "Plano de automação prioritário gerado por IA",
+                    "Quais processos estão drenando mais tempo e dinheiro",
+                    "O custo mensal exato do retrabalho na sua operação",
+                    "Por onde começar a automatizar (plano gerado por IA)",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="mt-0.5 flex-shrink-0">
@@ -163,16 +163,16 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
                 whileTap={{ scale: 0.98 }}
                 className="bg-gradient-to-r from-[#2546BD] to-[#00BFFF] text-white rounded-pill px-8 py-4 font-bold text-lg shadow-lg shadow-[#2546BD]/30 hover:shadow-xl hover:shadow-[#00BFFF]/20 transition-shadow duration-300 relative overflow-hidden"
               >
-                <span className="relative z-10">Iniciar análise agora</span>
+                <span className="relative z-10">Descobrir meu custo em 2 minutos</span>
                 <div className="absolute inset-0 bg-white/10 -translate-x-full skew-x-12 hover:translate-x-[200%] transition-transform duration-700" />
               </motion.button>
 
               {/* Trust metrics */}
               <div className="mt-10 flex items-center justify-center gap-8 sm:gap-12">
                 {[
-                  { value: "2 min", label: "para responder" },
-                  { value: "IA", label: "diagnóstico real" },
-                  { value: "R$", label: "custo calculado" },
+                  { value: "2 min", label: "do seu tempo" },
+                  { value: "IA", label: "análise real" },
+                  { value: "R$", label: "valor na ponta do lápis" },
                 ].map((item, i) => (
                   <motion.div
                     key={item.value}
@@ -228,7 +228,7 @@ export default function IntroPhase({ city, onStart }: IntroPhaseProps) {
                     ))}
                   </div>
                   <p className="text-[#CBD5E1] text-sm leading-relaxed">
-                    &ldquo;O diagnóstico mostrou gargalos que a gente sabia que existiam mas nunca tinha quantificado. Ajudou a priorizar o que automatizar primeiro.&rdquo;
+                    &ldquo;A gente sabia que tinha problema. Não sabia que custava R$ 14 mil por mês. O diagnóstico colocou número no que era só intuição.&rdquo;
                   </p>
                   <div className="flex items-center gap-2 mt-3">
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#2546BD] to-[#00BFFF] flex items-center justify-center text-white text-[10px] font-bold">

@@ -118,10 +118,33 @@ export default function DiagnosticoPage() {
   /* ── Analytics helper ── */
 
   function trackEvent(event: string, params?: Record<string, unknown>) {
-    if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
-      (window as unknown as { fbq: (...args: unknown[]) => void }).fbq("track", event, params);
+    try {
+      if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
+        (window as unknown as { fbq: (...args: unknown[]) => void }).fbq("track", event, params);
+      }
+      // Also push to dataLayer for GTM/GA4 if available
+      if (typeof window !== "undefined" && (window as unknown as { dataLayer?: unknown[] }).dataLayer) {
+        (window as unknown as { dataLayer: unknown[] }).dataLayer.push({ event, ...params });
+      }
+    } catch {
+      // silently continue
     }
   }
+
+  // Track quiz abandonment on page unload
+  useEffect(() => {
+    function handleBeforeUnload() {
+      if (phase === "quiz" && currentQ < QUESTIONS.length - 1) {
+        trackEvent("quiz_abandoned", {
+          last_question: QUESTIONS[currentQ]?.id,
+          progress: `${currentQ + 1}/${QUESTIONS.length}`,
+          partial_score: calculateScore(answers),
+        });
+      }
+    }
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [phase, currentQ, answers]);
 
   /* ── AI streaming call ── */
 

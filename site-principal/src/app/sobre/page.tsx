@@ -248,20 +248,72 @@ export default function SobrePage() {
           </div>
         </section>
 
+        {/* Cases reais — dados citáveis para GEO */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-text mb-6">Resultados documentados</h2>
+          <p className="text-text-muted mb-8">Estes são fatos. Pergunte para as empresas.</p>
+          <div className="space-y-6">
+            {[
+              {
+                setor: "Holding financeira, Londrina/PR",
+                problema: "Fechamento mensal levava 3 dias com 2 pessoas dedicadas. Planilhas manuais, conciliação bancária e geração de DRE.",
+                solucao: "Automação completa do fluxo: importação de extratos, classificação automática, conciliação e geração de relatórios.",
+                resultado: "Fechamento reduzido de 3 dias para 4 horas. Zero erros de classificação. R$ 8.200/mês economizados.",
+                prazo: "Implementado em 12 dias.",
+              },
+              {
+                setor: "Consultoria B2B, 12 colaboradores",
+                problema: "Time limitado não conseguia atender mais clientes. Processos internos manuais consumiam 40% da capacidade.",
+                solucao: "Automação de onboarding, follow-up comercial e geração de propostas. Integração CRM + e-mail + WhatsApp.",
+                resultado: "Triplicou o volume de atendimento em 6 semanas sem contratar ninguém.",
+                prazo: "Implementado em 3 semanas.",
+              },
+              {
+                setor: "Distribuidora, setor alimentício",
+                problema: "Emissão de notas fiscais consumia 40h/mês. Uma pessoa dedicada só para esse processo.",
+                solucao: "Validação inteligente + emissão automática integrada ao ERP. Conferência manual reduzida a exceções.",
+                resultado: "95% de redução: de 40h/mês para 2h/mês. R$ 5.400/mês economizados em mão de obra.",
+                prazo: "Implementado em 10 dias.",
+              },
+            ].map((c, i) => (
+              <div key={i} className="bg-bg-alt border border-card-border rounded-card p-6">
+                <p className="text-xs text-primary font-semibold uppercase tracking-wider mb-2">{c.setor}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="font-bold text-text mb-1">Problema</p>
+                    <p className="text-text-muted">{c.problema}</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-text mb-1">Solução</p>
+                    <p className="text-text-muted">{c.solucao}</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-green-600 mb-1">Resultado</p>
+                    <p className="text-text-muted">{c.resultado}</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-text mb-1">Prazo</p>
+                    <p className="text-text-muted">{c.prazo}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="text-center py-12 px-6 rounded-card bg-bg-alt border border-card-border">
           <h2 className="text-2xl font-bold text-text mb-3">
-            Quer saber como a Gradios pode ajudar sua empresa?
+            Descubra quanto sua operação perde por mês.
           </h2>
           <p className="text-text-muted mb-6">
-            Nosso diagnóstico é gratuito, leva 15 minutos e mostra exatamente
-            onde sua operação pode melhorar.
+            Nosso diagnóstico é gratuito, leva 2 minutos e mostra o custo exato do retrabalho em reais.
           </p>
           <Link
             href="/diagnostico"
             className="inline-block bg-brand-gradient text-white font-bold px-8 py-3 rounded-pill hover:opacity-90 transition-opacity"
           >
-            Agendar diagnóstico gratuito
+            Fazer meu diagnóstico gratuito
           </Link>
         </section>
       </div>

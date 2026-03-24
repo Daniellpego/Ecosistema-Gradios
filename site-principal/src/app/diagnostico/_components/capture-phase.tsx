@@ -26,12 +26,12 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
           className="mt-4 text-2xl sm:text-3xl font-bold text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Seu diagnóstico está pronto.
+          Seu resultado está pronto.
           <br />
-          <span className="text-[#00BFFF]">Só falta onde enviar.</span>
+          <span className="text-[#00BFFF]">Para quem a gente envia?</span>
         </h2>
         <p className="mt-2 text-[#94A3B8] text-sm">
-          Preencha seus dados para receber o diagnóstico completo gerado por IA.
+          Preencha abaixo e receba a análise completa com custo em reais.
         </p>
       </div>
 
@@ -121,7 +121,7 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
             placeholder="seu@empresa.com"
             className="w-full px-4 py-3 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-sm placeholder:text-[#475569] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
           />
-          <p className="text-[10px] text-[#475569] mt-1">Usamos apenas para enviar seu diagnóstico. Sem spam.</p>
+          <p className="text-[10px] text-[#475569] mt-1">Só para enviar seu diagnóstico e dicas relevantes. Pode cancelar a qualquer momento.</p>
         </div>
 
         <div>
@@ -142,7 +142,7 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
           disabled={!isFilled || isSubmitting}
           className="w-full mt-2 bg-gradient-to-r from-[#2546BD] to-[#00BFFF] text-white rounded-pill px-8 py-4 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#00BFFF]/25 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? "Gerando..." : "Gerar meu diagnóstico completo →"}
+          {isSubmitting ? "Gerando..." : "Ver meu resultado agora →"}
         </button>
 
         <div className="flex items-center justify-center gap-4 text-[10px] text-[#475569] mt-3">

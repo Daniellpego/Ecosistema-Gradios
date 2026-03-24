@@ -144,6 +144,41 @@ const sections: { title: string; items: QA[] }[] = [
     ],
   },
   {
+    title: "Automação por Setor",
+    items: [
+      {
+        q: "Como automatizar uma clínica ou consultório?",
+        a: "Clínicas perdem até 35% dos agendamentos por no-show. A automação resolve com confirmação automática via WhatsApp, lembretes 24h antes, reagendamento por link e ficha do paciente pré-preenchida. Recebíveis e glosas também podem rodar sem intervenção manual.",
+        bullets: ["Confirmação automática via WhatsApp reduz no-show em 35%", "Fichas e prontuários pré-preenchidos economizam 15min/consulta", "Conciliação de convênios e glosas automatizada"],
+      },
+      {
+        q: "Automação para varejo e e-commerce: o que é possível?",
+        a: "No varejo, os gargalos mais caros são estoque desatualizado, emissão manual de notas e falta de integração entre loja física e online. A automação conecta seu ERP (Tiny, Bling, VTEX) ao faturamento, logística e marketing num fluxo único.",
+        bullets: ["Estoque sincronizado entre loja física e e-commerce", "Emissão de NF automática após confirmação de pagamento", "Relatório de vendas por canal gerado todo dia às 8h"],
+      },
+      {
+        q: "Como automatizar processos de atacado e distribuição?",
+        a: "Atacadistas lidam com volume alto de pedidos, notas fiscais e logística. Automação elimina 80% das ligações de status ao enviar tracking automático por WhatsApp, gera romaneios sem digitação e concilia pagamentos com o ERP.",
+        bullets: ["Tracking automático por WhatsApp elimina ligações de status", "Romaneio e separação gerados automaticamente", "Conciliação de pagamentos integrada ao ERP"],
+      },
+      {
+        q: "Automação para contabilidade: quais processos?",
+        a: "Escritórios de contabilidade gastam 60% do tempo em tarefas repetitivas: importar extratos, classificar lançamentos, gerar DRE. A Gradios automatiza esse fluxo. Um cliente do setor financeiro reduziu o fechamento mensal de 3 dias para 4 horas.",
+        bullets: ["Importação e classificação automática de extratos bancários", "DRE e balancetes gerados sem intervenção manual", "Caso real: fechamento de 3 dias para 4 horas"],
+      },
+      {
+        q: "Barbearias e salões podem se beneficiar de automação?",
+        a: "Sim. Barbearias com mais de 2 cadeiras já se beneficiam de agendamento automatizado, lembrete por WhatsApp, controle de comissão por barbeiro e relatório de faturamento diário. Elimina caderno, planilha e WhatsApp manual.",
+        bullets: ["Agendamento online com confirmação automática", "Comissão calculada automaticamente por profissional", "Relatório de caixa diário enviado ao dono às 22h"],
+      },
+      {
+        q: "Automação para mercados e supermercados: funciona?",
+        a: "Mercados perdem margem com ruptura de estoque, erros em pedidos de reposição e falta de controle de validade. Automação monitora estoque mínimo, dispara pedidos ao fornecedor automaticamente e alerta sobre produtos próximos do vencimento.",
+        bullets: ["Alerta de estoque mínimo com pedido automático ao fornecedor", "Controle de validade com notificação antecipada", "DRE diário por departamento (açougue, padaria, FLV)"],
+      },
+    ],
+  },
+  {
     title: "Sobre a Gradios",
     items: [
       {

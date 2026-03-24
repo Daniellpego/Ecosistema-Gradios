@@ -51,11 +51,24 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
   // Parse AI text into visual blocks
   const aiBlocks = aiText.split("\n\n").filter((b) => b.trim());
 
+  function trackCta(cta: string) {
+    try {
+      if (typeof window !== "undefined" && (window as unknown as { dataLayer?: unknown[] }).dataLayer) {
+        (window as unknown as { dataLayer: unknown[] }).dataLayer.push({ event: "cta_clicked", cta, tier: tierInfo.tier, score });
+      }
+      if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).fbq) {
+        (window as unknown as { fbq: (...args: unknown[]) => void }).fbq("track", "cta_clicked", { cta, tier: tierInfo.tier });
+      }
+    } catch { /* silent */ }
+  }
+
   function handlePrint() {
+    trackCta("save_pdf");
     window.print();
   }
 
   function handleShare() {
+    trackCta("share");
     if (navigator.share) {
       navigator.share({
         title: `Diagnóstico ${lead.empresa} | Gradios`,
@@ -365,19 +378,19 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
 
         <div className="relative z-10 text-center">
           <p className="text-white text-xl sm:text-2xl font-bold mb-2" style={{ letterSpacing: "-0.02em" }}>
-            {tierInfo.tier === "A" ? "Falar com especialista (respondemos em até 2h)" :
-             tierInfo.tier === "B" ? "Agendar diagnóstico aprofundado" :
-             tierInfo.tier === "C" ? "Ver como empresas do seu setor automatizaram" :
-             "Baixar guia: primeiros passos em automação"}
+            {tierInfo.tier === "A" ? "Respondemos em até 2 horas." :
+             tierInfo.tier === "B" ? "Vamos conversar sobre isso?" :
+             tierInfo.tier === "C" ? "Quer entender por onde começar?" :
+             "Tem dúvida? A gente explica sem compromisso."}
           </p>
           <p className="text-[#94A3B8] text-sm max-w-md mx-auto mb-6">
             {tierInfo.tier === "A"
-              ? `${lead.nome.split(" ")[0]}, seu perfil indica urgência real. Um especialista da Gradios entra em contato nas próximas horas. Sem proposta pronta, só diagnóstico de perto.`
+              ? `${lead.nome.split(" ")[0]}, seu cenário tem urgência real. Manda uma mensagem e um especialista da Gradios te responde hoje.`
               : tierInfo.tier === "B"
-              ? `${lead.nome.split(" ")[0]}, os gargalos são claros. Se quiser antecipar, manda um oi no WhatsApp que a gente agenda uma conversa rápida.`
+              ? `${lead.nome.split(" ")[0]}, os gargalos são claros. Uma conversa rápida de 15 minutos mostra exatamente o que dá pra resolver primeiro.`
               : tierInfo.tier === "C"
-              ? `${lead.nome.split(" ")[0]}, já identificamos por onde começar. Fala com a gente quando quiser. Sem compromisso.`
-              : `${lead.nome.split(" ")[0]}, vamos te enviar material específico para ${setor}. Quando fizer sentido, a gente conversa.`
+              ? `${lead.nome.split(" ")[0]}, identificamos por onde começar. Se quiser entender melhor, é só chamar. Sem compromisso nenhum.`
+              : `${lead.nome.split(" ")[0]}, mesmo com perfil inicial, já tem coisa que dá pra resolver. Manda um oi quando quiser.`
             }
           </p>
 
@@ -386,6 +399,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
               href={`https://wa.me/5543988372540?text=${whatsAppMsg}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackCta("whatsapp")}
               className="inline-flex items-center gap-2.5 bg-[#25D366] text-white rounded-pill px-7 py-3.5 font-bold hover:bg-[#20BD5A] hover:shadow-lg hover:shadow-[#25D366]/30 transition-all duration-300 text-sm"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
