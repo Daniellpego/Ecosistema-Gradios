@@ -86,9 +86,11 @@ export function FAQ() {
                 variants={revealVariants(direction)}
               >
                 <button
+                  id={`faq-btn-${index}`}
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                   className="w-full flex items-center justify-between p-5 text-left group touch-feedback"
                   aria-expanded={isOpen}
+                  aria-controls={`faq-panel-${index}`}
                 >
                   <span className="text-base font-bold text-text pr-4">{item.question}</span>
                   <motion.div
@@ -107,6 +109,9 @@ export function FAQ() {
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
+                      id={`faq-panel-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-btn-${index}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
