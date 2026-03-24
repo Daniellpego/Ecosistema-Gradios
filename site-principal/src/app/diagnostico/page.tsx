@@ -353,13 +353,13 @@ REGRAS ABSOLUTAS:
 
   return (
     <section
-      className="relative z-10 min-h-screen bg-[#080E1A]"
+      className="relative z-10 min-h-[100dvh] bg-[#080E1A] overflow-x-hidden"
       style={{ background: "linear-gradient(180deg, #080E1A 0%, #0A1628 30%, #0F1D32 100%)" }}
     >
 
       <div className="max-w-2xl mx-auto px-4 py-12 sm:py-20">
         {phase === "intro" && (
-          <IntroPhase city={city} onStart={handleIntroStart} />
+          <IntroPhase onStart={handleIntroStart} />
         )}
 
         {phase === "quiz" && (

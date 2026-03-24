@@ -126,26 +126,15 @@ export function Hero() {
             O cérebro da sua operação
           </motion.div>
 
-          {/* Slogan acima do H1 */}
-          <motion.p
-            className="text-lg lg:text-xl font-medium text-primary mb-3 tracking-wide"
-            variants={heroEntrance}
-            initial="hidden"
-            animate="visible"
-            custom={0}
-          >
-            O cérebro da sua operação.
-          </motion.p>
-
           {/* H1 — Ogilvy: fato + promessa, sem floreio */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-text leading-[1.1] mb-6">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-text leading-[1.1] mb-6 mt-2">
             <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0.05}>
-              Seu time perde 40h por mês
+              Seu time perde <span className="text-highlight">40h por mês</span>
             </motion.span>
             <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0.15}>
               em tarefas que uma{" "}
               <span className="relative inline-block whitespace-nowrap">
-                máquina faz em 4.
+                <span className="text-highlight-strong">máquina faz em 4.</span>
                 <svg className="absolute -bottom-2 left-0 w-full overflow-visible" height="8" viewBox="0 0 300 8" fill="none" preserveAspectRatio="none">
                   <path d="M0 4 Q150 0 300 4" stroke="url(#underline-grad)" strokeWidth="5" strokeLinecap="round" fill="none" className="path-anim" />
                   <defs>
@@ -359,12 +348,12 @@ export function Hero() {
                           {[35, 50, 30, 65, 55, 80, 42, 90, 60, 85, 48, 72, 58, 78].map((h, i) => (
                             <div key={i} className="flex-1 flex flex-col justify-end h-full">
                               <div
-                                className="w-full rounded-sm transition-all ease-out"
+                                className="w-full rounded-sm"
                                 style={{
                                   height: mounted ? `${h}%` : "0%",
-                                  transitionDuration: `${800 + i * 60}ms`,
-                                  transitionDelay: `${i * 40}ms`,
                                   background: h > 70 ? "linear-gradient(to top, #2546BD, #00BFFF)" : "linear-gradient(to top, rgba(37,70,189,0.3), rgba(0,191,255,0.25))",
+                                  transition: `height ${800 + i * 60}ms ease-out ${i * 40}ms`,
+                                  animation: mounted ? `barBreath 3s ease-in-out ${1.5 + i * 0.15}s infinite` : "none",
                                 }}
                               />
                             </div>
@@ -389,11 +378,11 @@ export function Hero() {
                               </div>
                               <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
                                 <div
-                                  className={`h-full ${item.color} rounded-full transition-all ease-out`}
+                                  className={`h-full ${item.color} rounded-full`}
                                   style={{
                                     width: mounted ? `${item.pct}%` : "0%",
-                                    transitionDuration: "1200ms",
-                                    transitionDelay: `${i * 120}ms`,
+                                    transition: `width 1200ms ease-out ${i * 120}ms`,
+                                    animation: mounted ? `progressPulse 4s ease-in-out ${2 + i * 0.3}s infinite` : "none",
                                   }}
                                 />
                               </div>

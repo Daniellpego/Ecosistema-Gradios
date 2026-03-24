@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
-        display: ["var(--font-display)", "var(--font-inter)", "sans-serif"],
+        sans: ["var(--font-inter)", "Inter", "sans-serif"],
+        display: ["var(--font-inter)", "Inter", "sans-serif"],
       },
       colors: {
         primary: "#2546BD",

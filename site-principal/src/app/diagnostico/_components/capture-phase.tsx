@@ -17,7 +17,7 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
   const setor = answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : null;
 
   return (
-    <div className="animate-fade-slide-up">
+    <div className="animate-fade-slide-up overflow-y-auto pb-32">
       <div className="text-center mb-8">
         <span className="inline-flex items-center bg-[#00BFFF]/10 text-[#00BFFF] font-semibold border border-[#00BFFF]/20 rounded-pill text-sm px-4 py-1.5 tracking-wide">
           Última etapa
@@ -63,7 +63,7 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
               {setor ? ` · ${setor}` : ""}
             </p>
             <p className="text-[#64748B] text-xs">
-              Score parcial: {partialScore}/100 · O diagnóstico completo calcula seu custo mensal em reais.
+              Score {partialScore}/100 · O resultado completo inclui o custo em R$ e o plano de ação.
             </p>
           </div>
         </div>
@@ -122,19 +122,6 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
             className="w-full px-4 py-3 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-sm placeholder:text-[#475569] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
           />
           <p className="text-[10px] text-[#475569] mt-1">Só para enviar seu diagnóstico e dicas relevantes. Pode cancelar a qualquer momento.</p>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-[#CBD5E1] mb-1.5">
-            Telefone para agendamento <span className="text-[#64748B] font-normal">(opcional)</span>
-          </label>
-          <input
-            type="tel"
-            value={lead.whatsapp}
-            onChange={(e) => setLead((p) => ({ ...p, whatsapp: e.target.value }))}
-            placeholder="(00) 00000-0000"
-            className="w-full px-4 py-3 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-sm placeholder:text-[#475569] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
-          />
         </div>
 
         <button

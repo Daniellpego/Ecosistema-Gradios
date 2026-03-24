@@ -7,6 +7,23 @@ import { spring, revealVariants, staggerParent, viewport } from "@/lib/motion";
 import Image from "next/image";
 import Link from "next/link";
 
+function TimeBar({ percent, color, delay }: { percent: number; color: string; delay: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+
+  return (
+    <div
+      ref={ref}
+      className={`h-full ${color} rounded-full transition-all ease-out`}
+      style={{
+        width: isInView ? `${percent}%` : "0%",
+        transitionDuration: "1200ms",
+        transitionDelay: `${delay}s`,
+      }}
+    />
+  );
+}
+
 function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
@@ -95,12 +112,18 @@ export function Testimonials() {
                 <div className="bg-red-50 border border-red-200/60 rounded-xl p-5">
                   <div className="text-xs font-semibold text-red-400 uppercase tracking-wider mb-2">Antes</div>
                   <div className="text-3xl font-bold font-display text-red-600 mb-1">3 dias</div>
-                  <p className="text-sm text-red-400">Processo manual, planilhas, erros frequentes</p>
+                  <p className="text-sm text-red-400 mb-3">Processo manual, planilhas, erros frequentes</p>
+                  <div className="h-2 bg-red-100 rounded-full overflow-hidden">
+                    <TimeBar percent={100} color="bg-red-500" delay={0.3} />
+                  </div>
                 </div>
                 <div className="bg-green-50 border border-green-200/60 rounded-xl p-5">
                   <div className="text-xs font-semibold text-green-500 uppercase tracking-wider mb-2">Depois</div>
                   <div className="text-3xl font-bold font-display text-green-600 mb-1">4 horas</div>
-                  <p className="text-sm text-green-500">Automatizado, sem erro, relatório pronto</p>
+                  <p className="text-sm text-green-500 mb-3">Automatizado, sem erro, relatório pronto</p>
+                  <div className="h-2 bg-green-100 rounded-full overflow-hidden">
+                    <TimeBar percent={5.5} color="bg-green-500" delay={0.6} />
+                  </div>
                 </div>
               </div>
               <p className="text-text-muted leading-relaxed">

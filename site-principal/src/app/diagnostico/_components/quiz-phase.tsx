@@ -261,7 +261,7 @@ export default function QuizPhase({
               onClick={() => handleSelect(idx)}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              className={`quiz-option w-full text-left rounded-card transition-all duration-200 text-sm group ${
+              className={`quiz-option w-full text-left rounded-card transition-all duration-200 text-sm group min-h-[48px] ${
                 useGrid ? "px-4 py-3" : "px-5 py-4"
               } ${
                 selected

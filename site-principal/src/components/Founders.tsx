@@ -78,13 +78,13 @@ export function Founders() {
             <motion.div key={i} variants={revealVariants(founder.direction)}>
               <TiltCard className="bg-white border border-card-border rounded-card p-7 solution-card touch-feedback h-full">
                 <div className="flex items-center gap-4 mb-5">
-                  <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 shadow-lg shadow-primary/20 ring-2 ring-primary/20">
+                  <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-lg shadow-primary/20 ring-2 ring-primary/20">
                     <Image
                       src={founder.photo}
                       alt={`${founder.name}, ${founder.role} na Gradios`}
-                      width={56}
-                      height={56}
-                      className="w-full h-full object-cover"
+                      width={128}
+                      height={128}
+                      className="w-full h-full object-cover object-top"
                     />
                   </div>
                   <div>
@@ -101,19 +101,48 @@ export function Founders() {
           ))}
         </motion.div>
 
-        {/* Badges de parceria */}
+        {/* Stack & Parcerias */}
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-4 mt-12"
+          className="mt-14 max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ ...spring.smooth, delay: 0.3 }}
         >
-          {["n8n Partner", "Make Certified"].map((badge, i) => (
-            <div key={i} className="bg-white border border-card-border rounded-pill px-4 py-2 text-xs font-semibold text-text-muted hover:border-primary/30 hover:text-primary transition-all duration-300">
-              {badge}
-            </div>
-          ))}
+          <p className="text-xs text-text-muted/60 tracking-wider uppercase text-center mb-4 font-semibold">
+            Tecnologias e parcerias
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2.5">
+            {[
+              { label: "n8n Partner", accent: true },
+              { label: "Make Certified", accent: true },
+              { label: "Next.js", accent: false },
+              { label: "React", accent: false },
+              { label: "TypeScript", accent: false },
+              { label: "Node.js", accent: false },
+              { label: "Python", accent: false },
+              { label: "Supabase", accent: false },
+              { label: "PostgreSQL", accent: false },
+              { label: "Tailwind CSS", accent: false },
+              { label: "Vercel", accent: false },
+              { label: "OpenAI / Groq", accent: false },
+              { label: "WhatsApp API", accent: false },
+              { label: "Google Sheets API", accent: false },
+              { label: "Stripe", accent: false },
+              { label: "REST & Webhooks", accent: false },
+            ].map((badge, i) => (
+              <div
+                key={i}
+                className={`rounded-pill px-3.5 py-1.5 text-xs font-semibold transition-all duration-300 ${
+                  badge.accent
+                    ? "bg-primary/8 text-primary border border-primary/20 hover:bg-primary/15"
+                    : "bg-white border border-card-border text-text-muted hover:border-primary/30 hover:text-primary"
+                }`}
+              >
+                {badge.label}
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

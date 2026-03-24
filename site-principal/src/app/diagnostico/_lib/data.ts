@@ -51,8 +51,8 @@ export const QUESTIONS: Question[] = [
     ],
     scores: [10, 10, 8, 5, 0, 3],
     reactions: {
-      0: "Direto com quem decide. Isso muda tudo no diagnóstico.",
-      1: "C-level no comando. O diagnóstico vai ser estratégico.",
+      0: "Quem decide está respondendo. O diagnóstico vai direto ao ponto.",
+      1: "Perfil decisor. Vamos focar em números e impacto financeiro.",
     },
   },
   {
@@ -64,9 +64,9 @@ export const QUESTIONS: Question[] = [
     opcoes: ["Até 10", "11 a 50", "51 a 200", "201 a 500", "Mais de 500"],
     scores: [2, 5, 12, 18, 20],
     reactions: {
-      2: "51-200 é o tamanho onde automação gera mais impacto por real investido.",
-      3: "Com 200+ pessoas, cada processo manual custa caro. Vamos medir.",
-      4: "Operação grande. Cada gargalo tem efeito multiplicador.",
+      2: "Nessa faixa, cada processo manual custa proporcionalmente mais. Vamos medir.",
+      3: "200+ pessoas. Um gargalo que custa 2h/dia = 400h/mês de empresa. Vamos calcular.",
+      4: "Escala grande. Qualquer ineficiência se multiplica. Bom contexto para o diagnóstico.",
     },
   },
   {
@@ -117,8 +117,8 @@ export const QUESTIONS: Question[] = [
     opcoes: ["Nenhum", "1 a 2", "3 a 5", "6 a 10", "Mais de 10"],
     scores: [0, 5, 12, 18, 20],
     reactions: {
-      3: "6 a 10 processos manuais. Isso é uma equipe inteira em tarefas automáticas.",
-      4: "+10 processos. Sua operação depende de memória humana. É frágil.",
+      3: "6-10 processos manuais. Equivale a pelo menos 1 pessoa em tempo integral só nisso.",
+      4: "+10 processos. Se alguém sai de férias, o que para?",
     },
   },
   {
@@ -149,8 +149,8 @@ export const QUESTIONS: Question[] = [
     scores: [3, 8, 13, 15],
     horasMap: ["~20h", "~40-60h", "~65-160h", "+160h"],
     reactions: {
-      2: "16-40h/semana. Isso é quase uma pessoa inteira só em retrabalho.",
-      3: "+40h/semana. Equivale a um funcionário CLT fazendo trabalho que máquina faz melhor.",
+      2: "16-40h/semana = R$ 3.000-8.000/mês em salário queimado com retrabalho.",
+      3: "+40h/semana. Você está pagando um CLT inteiro para fazer o que um script faz em segundos.",
     },
   },
   {
@@ -169,8 +169,8 @@ export const QUESTIONS: Question[] = [
     ],
     scores: null,
     reactions: {
-      4: "Perda de cliente por lentidão. Esse é o custo que ninguém contabiliza.",
-      5: "Não escalar = teto de receita. Automação quebra esse teto.",
+      4: "Cliente perdido por lentidão não aparece no DRE, mas destrói o MRR.",
+      5: "Sem escalar, receita tem teto. Automação remove o teto sem contratar.",
     },
   },
   {
@@ -188,8 +188,8 @@ export const QUESTIONS: Question[] = [
     ],
     scores: [1, 4, 7, 9, 10],
     reactions: {
-      3: "30 dias. Bom — timing certo para a gente agir junto.",
-      4: "Imediato. Seu diagnóstico vai ter prioridade máxima.",
+      3: "30 dias. Janela curta. Vamos priorizar o que dá resultado mais rápido.",
+      4: "Prioridade imediata. O diagnóstico vai mostrar exatamente o primeiro passo.",
     },
   },
   {
@@ -208,8 +208,8 @@ export const QUESTIONS: Question[] = [
     ],
     scores: null,
     reactions: {
-      0: "Processos manuais primeiro. Rápido de resolver, retorno imediato.",
-      4: "IA no atendimento. Esse é o futuro — e a gente já faz.",
+      0: "Processos manuais primeiro. Menor investimento, maior retorno. Escolha certa.",
+      4: "IA aplicada. Temos cases rodando com Groq + n8n. O diagnóstico vai detalhar.",
     },
   },
 ];

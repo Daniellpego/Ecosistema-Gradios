@@ -7,15 +7,9 @@ import { WhatsAppFab } from "@/components/WhatsAppFab";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { SmoothScrollProvider } from "@/providers/smooth-scroll";
 
-const geist = localFont({
-  src: "./fonts/GeistVF.woff",
+const inter = localFont({
+  src: "./fonts/Inter.ttf",
   variable: "--font-inter",
-  display: "swap",
-});
-
-const geistDisplay = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-display",
   display: "swap",
 });
 
@@ -159,7 +153,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdHowTo) }}
         />
       </head>
-      <body className={`${geist.variable} ${geistDisplay.variable} font-sans`}>
+      <body className={`${inter.variable} font-sans`}>
         <SmoothScrollProvider>
           <a
             href="#conteudo-principal"

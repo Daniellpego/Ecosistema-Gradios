@@ -54,11 +54,24 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Right side: hamburger + CTA */}
+          {/* Desktop nav links */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm font-medium text-text-muted hover:text-primary transition-colors link-underline"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right side: hamburger (mobile only) + CTA */}
           <div className="flex items-center gap-3">
-            {/* Hamburger — all breakpoints */}
+            {/* Hamburger — mobile only */}
             <button
-              className="p-2 rounded-lg hover:bg-bg-alt transition text-text"
+              className="p-2 rounded-lg hover:bg-bg-alt transition text-text lg:hidden"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
               aria-expanded={menuOpen}
@@ -79,11 +92,11 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Dropdown menu — all breakpoints */}
+      {/* Dropdown menu — mobile only */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-b border-card-border shadow-lg overflow-hidden"
+            className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-b border-card-border shadow-lg overflow-hidden lg:hidden"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
