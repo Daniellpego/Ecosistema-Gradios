@@ -32,20 +32,6 @@ const faqItems = [
   },
 ];
 
-// Schema.org FAQPage data (exported for layout)
-export const faqSchemaData = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-};
-
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 

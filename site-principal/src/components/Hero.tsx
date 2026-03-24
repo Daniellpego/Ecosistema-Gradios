@@ -190,13 +190,13 @@ export function Hero() {
             </p>
             <div className="flex items-center justify-center gap-5 flex-wrap">
               {[
-                "/logo-cliente-7.webp",
-                "/logo-cliente-8.webp",
-                "/logo-cliente-9.webp",
-                "/logo-cliente-1.webp",
-                "/logo-cliente-2.webp",
-              ].map((src, i) => (
-                <Image key={i} src={src} alt="Cliente Gradios" width={80} height={28} className="h-7 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300" />
+                { src: "/logo-cliente-7.webp", alt: "Logo de cliente do setor de logística" },
+                { src: "/logo-cliente-8.webp", alt: "Logo de cliente do setor financeiro" },
+                { src: "/logo-cliente-9.webp", alt: "Logo de cliente do setor de varejo" },
+                { src: "/logo-cliente-1.webp", alt: "Logo da Soma Contabilidade, cliente Gradios" },
+                { src: "/logo-cliente-2.webp", alt: "Logo de cliente do setor de saúde" },
+              ].map((logo, i) => (
+                <Image key={i} src={logo.src} alt={logo.alt} width={80} height={28} className="h-7 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300" />
               ))}
             </div>
           </motion.div>

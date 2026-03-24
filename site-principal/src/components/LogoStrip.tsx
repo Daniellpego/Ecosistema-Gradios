@@ -3,15 +3,15 @@
 import Image from "next/image";
 
 const clientLogos = [
-  { src: "/logo-cliente-1.webp", alt: "Cliente 1" },
-  { src: "/logo-cliente-2.webp", alt: "Cliente 2" },
-  { src: "/logo-cliente-3.webp", alt: "Cliente 3" },
-  { src: "/logo-cliente-4.webp", alt: "Cliente 4" },
-  { src: "/logo-cliente-5.webp", alt: "Cliente 5" },
-  { src: "/logo-cliente-6.webp", alt: "Cliente 6" },
-  { src: "/logo-cliente-7.webp", alt: "Cliente 7" },
-  { src: "/logo-cliente-8.webp", alt: "Cliente 8" },
-  { src: "/logo-cliente-9.webp", alt: "Cliente 9" },
+  { src: "/logo-cliente-1.webp", alt: "Logo da Soma Contabilidade, cliente Gradios" },
+  { src: "/logo-cliente-2.webp", alt: "Logo de empresa cliente do setor de saúde" },
+  { src: "/logo-cliente-3.webp", alt: "Logo de empresa cliente do setor de varejo" },
+  { src: "/logo-cliente-4.webp", alt: "Logo de empresa cliente do setor financeiro" },
+  { src: "/logo-cliente-5.webp", alt: "Logo de empresa cliente do setor de serviços" },
+  { src: "/logo-cliente-6.webp", alt: "Logo de empresa cliente do setor de logística" },
+  { src: "/logo-cliente-7.webp", alt: "Logo de empresa cliente do setor industrial" },
+  { src: "/logo-cliente-8.webp", alt: "Logo de empresa cliente do setor de tecnologia" },
+  { src: "/logo-cliente-9.webp", alt: "Logo de empresa cliente do setor de distribuição" },
 ];
 
 export function LogoStrip() {

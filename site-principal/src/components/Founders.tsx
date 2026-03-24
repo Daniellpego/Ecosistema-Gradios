@@ -81,7 +81,7 @@ export function Founders() {
                   <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 shadow-lg shadow-primary/20 ring-2 ring-primary/20">
                     <Image
                       src={founder.photo}
-                      alt={founder.name}
+                      alt={`${founder.name}, ${founder.role} na Gradios`}
                       width={56}
                       height={56}
                       className="w-full h-full object-cover"

@@ -61,14 +61,7 @@ export default function DiagnosticoPage() {
       .catch(() => {});
   }, []);
 
-  /* ── Page meta ── */
-  useEffect(() => {
-    document.title = "Diagnóstico Gratuito | Gradios";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) {
-      meta.setAttribute("content", "Descubra em 2 minutos quanto sua empresa perde por mês com processos manuais. Diagnóstico personalizado por IA.");
-    }
-  }, []);
+  /* ── Page meta: handled by diagnostico/layout.tsx (SSR) ── */
 
   /* ── Save AI diagnosis to Supabase when stream completes ── */
   useEffect(() => {

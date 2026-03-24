@@ -66,6 +66,8 @@ export function Footer() {
               <li><Link href="#como-funciona" className="text-[#94A3B8] hover:text-white transition-colors block py-1.5">Como Funciona</Link></li>
               <li><Link href="#cases" className="text-[#94A3B8] hover:text-white transition-colors block py-1.5">Cases de Sucesso</Link></li>
               <li><Link href="/diagnostico" className="text-[#94A3B8] hover:text-white transition-colors block py-1.5">Diagnóstico Gratuito</Link></li>
+              <li><Link href="/sobre" className="text-[#94A3B8] hover:text-white transition-colors block py-1.5">Sobre a Gradios</Link></li>
+              <li><Link href="/respostas" className="text-[#94A3B8] hover:text-white transition-colors block py-1.5">Perguntas sobre Automação</Link></li>
               <li><Link href="#contato" className="text-[#94A3B8] hover:text-white transition-colors block py-1.5">Contato</Link></li>
             </ul>
           </div>
