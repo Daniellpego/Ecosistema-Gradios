@@ -4,6 +4,7 @@ import { motion, useInView, animate } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { WordReveal } from "./WordReveal";
 import { spring, revealVariants, staggerParent, viewport } from "@/lib/motion";
+import Image from "next/image";
 import Link from "next/link";
 
 function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
@@ -110,9 +111,7 @@ export function Testimonials() {
             {/* Testimonial + micro-CTA */}
             <div className="pt-4 border-t border-card-border space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xs font-bold">CF</span>
-                </div>
+                <Image src="/logo-cliente-4.webp" alt="Cliente" width={32} height={32} className="w-8 h-8 rounded-full object-cover bg-white border border-card-border flex-shrink-0" />
                 <div>
                   <span className="text-sm text-text font-semibold block">CFO de holding com 3 empresas no setor financeiro, Londrina/PR</span>
                   <span className="text-xs text-text-muted italic">&ldquo;O fechamento que levava 3 dias agora termina antes do almoço.&rdquo;</span>
@@ -156,9 +155,7 @@ export function Testimonials() {
                 <p className="text-sm text-text-muted">Empresa de serviços B2B com 12 colaboradores triplicou a capacidade de atendimento em 6 semanas com automação de processos internos.</p>
               </div>
               <div className="pt-4 mt-4 border-t border-card-border flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-[8px] font-bold">OP</span>
-                </div>
+                <Image src="/logo-cliente-5.webp" alt="Cliente" width={24} height={24} className="w-6 h-6 rounded-full object-cover bg-white border border-card-border flex-shrink-0" />
                 <span className="text-xs text-text-muted font-medium">Diretor de Operações, consultoria B2B</span>
               </div>
             </motion.div>
@@ -180,9 +177,7 @@ export function Testimonials() {
                 <p className="text-sm text-text-muted">Processo de emissão de notas fiscais que consumia uma semana por mês passou a rodar automaticamente com validação inteligente.</p>
               </div>
               <div className="pt-4 mt-4 border-t border-card-border flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-[8px] font-bold">GF</span>
-                </div>
+                <Image src="/logo-cliente-6.webp" alt="Cliente" width={24} height={24} className="w-6 h-6 rounded-full object-cover bg-white border border-card-border flex-shrink-0" />
                 <span className="text-xs text-text-muted font-medium">Gestor Financeiro, distribuidora</span>
               </div>
             </motion.div>

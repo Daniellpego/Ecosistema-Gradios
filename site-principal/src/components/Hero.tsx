@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { spring } from "@/lib/motion";
@@ -184,23 +185,20 @@ export function Hero() {
             animate="visible"
             custom={0.9}
           >
-            <p className="text-sm text-text-muted w-full text-center mb-1">
-              Empresas de <span className="font-bold text-text">5 setores</span> já eliminaram processos manuais com a Gradios
+            <p className="text-sm text-text-muted w-full text-center mb-3">
+              Empresas que já eliminaram processos manuais com a Gradios
             </p>
-            {[
-              { name: "Financeiro", icon: "M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" },
-              { name: "Saúde", icon: "M22 12h-4l-3 9L9 3l-3 9H2" },
-              { name: "Varejo", icon: "M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" },
-              { name: "Logística", icon: "M1 3h15v13H1zM16 8h4l3 3v5h-7V8zM5.5 21a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM18.5 21a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" },
-              { name: "SaaS", icon: "M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" },
-            ].map((sector, i) => (
-              <div key={i} className="flex items-center gap-1.5 text-text-muted/50">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d={sector.icon} />
-                </svg>
-                <span className="text-xs font-semibold tracking-tight">{sector.name}</span>
-              </div>
-            ))}
+            <div className="flex items-center justify-center gap-5 flex-wrap">
+              {[
+                "/logo-cliente-7.webp",
+                "/logo-cliente-8.webp",
+                "/logo-cliente-9.webp",
+                "/logo-cliente-1.webp",
+                "/logo-cliente-2.webp",
+              ].map((src, i) => (
+                <Image key={i} src={src} alt="Cliente Gradios" width={80} height={28} className="h-7 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300" />
+              ))}
+            </div>
           </motion.div>
         </div>
 
