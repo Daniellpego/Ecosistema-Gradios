@@ -10,7 +10,7 @@ const founders = [
   {
     initials: "GB",
     name: "Gustavo Batista",
-    photo: "/gustavo-batista.png",
+    photo: "/gustavo-batista.webp",
     role: "Co-fundador & Head de Automação",
     bio: "Especialista em automação de processos B2B. Já ajudou dezenas de empresas a eliminar gargalos operacionais usando n8n, Make e integrações com IA.",
     quote: "A maioria das empresas perde dezenas de horas por semana em tarefas que deveriam ser automáticas. Meu trabalho é encontrar esses gargalos e eliminá-los.",
@@ -19,7 +19,7 @@ const founders = [
   {
     initials: "DP",
     name: "Daniel Pego",
-    photo: "/daniel-pego.png",
+    photo: "/daniel-pego.webp",
     role: "Co-fundador & Head de Engenharia",
     bio: "Engenheiro de software full-stack com experiência em arquitetura de sistemas, dashboards financeiros e integrações complexas.",
     quote: "Cada empresa tem um jeito próprio de operar. A gente não força template. Entende primeiro, constrói depois.",
@@ -28,7 +28,7 @@ const founders = [
   {
     initials: "BG",
     name: "Bryan Gradi",
-    photo: "/bryan-gradi.png",
+    photo: "/bryan-gradi.webp",
     role: "Co-fundador & Head Comercial",
     bio: "Responsável pela estratégia comercial e relacionamento com clientes. Conecta a tecnologia ao resultado que o empresário precisa ver na prática.",
     quote: "A gente não vende software. A gente resolve problema. Se não faz sentido automatizar, a gente fala na lata.",

@@ -1,12 +1,14 @@
+import dynamic from "next/dynamic";
 import { Hero } from "@/components/Hero";
 import { LogoStrip } from "@/components/LogoStrip";
-import { Benefits } from "@/components/Benefits";
-import { FeatureShowcase } from "@/components/FeatureShowcase";
-import { Testimonials } from "@/components/Testimonials";
-import { MidCTA } from "@/components/MidCTA";
-import { Founders } from "@/components/Founders";
-import { FAQ } from "@/components/FAQ";
-import { LeadForm } from "@/components/LeadForm";
+
+const Benefits = dynamic(() => import("@/components/Benefits").then(m => m.Benefits));
+const FeatureShowcase = dynamic(() => import("@/components/FeatureShowcase").then(m => m.FeatureShowcase));
+const Testimonials = dynamic(() => import("@/components/Testimonials").then(m => m.Testimonials));
+const MidCTA = dynamic(() => import("@/components/MidCTA").then(m => m.MidCTA));
+const Founders = dynamic(() => import("@/components/Founders").then(m => m.Founders));
+const FAQ = dynamic(() => import("@/components/FAQ").then(m => m.FAQ));
+const LeadForm = dynamic(() => import("@/components/LeadForm").then(m => m.LeadForm));
 
 export default function Home() {
   return (

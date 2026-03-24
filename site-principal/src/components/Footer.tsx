@@ -15,7 +15,7 @@ export function Footer() {
           {/* Brand Col */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 mb-3">
-              <Image src="/logo.png" alt="Gradios" width={88} height={88} className="w-11 h-11 drop-shadow-md brightness-0 invert" />
+              <Image src="/logo.webp" alt="Gradios" width={88} height={88} className="w-11 h-11 drop-shadow-md brightness-0 invert" />
               <span className="text-xl font-bold text-white font-display">Gradios</span>
             </div>
             <p className="text-sm font-medium text-secondary mb-3">Automação e Software Sob Medida</p>
