@@ -19,7 +19,7 @@ export function MidCTA() {
   const textOpacity = useTransform(scrollYProgress, [0, 0.3], [0.6, 1]);
 
   return (
-    <section ref={sectionRef} className="relative py-16 lg:py-20 overflow-hidden">
+    <section ref={sectionRef} className="relative py-12 lg:py-14 overflow-hidden">
       {/* Background gradient — scales in with scroll */}
       <motion.div
         className="absolute inset-0 bg-brand-gradient -z-10 origin-center"
