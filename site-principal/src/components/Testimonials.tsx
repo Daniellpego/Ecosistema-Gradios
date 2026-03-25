@@ -121,14 +121,14 @@ function BeforeAfterSlider() {
           <div className="max-w-xs sm:max-w-sm ml-auto mr-4 sm:mr-8 lg:mr-16">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#00BFFF]" style={{ animation: "pulse 2s ease-in-out infinite" }} />
-              <span className="text-[9px] sm:text-[10px] font-bold text-[#2546BD] uppercase tracking-widest">Sistema ativo</span>
+              <span className="text-[10px] sm:text-[10px] font-bold text-[#2546BD] uppercase tracking-widest">Sistema ativo</span>
             </div>
             <div className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-[#0A1628] mb-1">4 horas</div>
             <p className="text-xs sm:text-sm text-[#2546BD]/60 mb-4">Automatizado. Zero erro. Relatório pronto.</p>
 
             <div className="space-y-2.5">
               <div>
-                <div className="flex justify-between text-[9px] sm:text-[10px] mb-1">
+                <div className="flex justify-between text-[10px] sm:text-[10px] mb-1">
                   <span className="text-text-muted">Conformidade</span>
                   <span className="text-[#2546BD] font-bold">100%</span>
                 </div>
@@ -143,7 +143,7 @@ function BeforeAfterSlider() {
                 </div>
               </div>
               <div>
-                <div className="flex justify-between text-[9px] sm:text-[10px] mb-1">
+                <div className="flex justify-between text-[10px] sm:text-[10px] mb-1">
                   <span className="text-text-muted">Tempo de execução</span>
                   <span className="text-green-600 font-bold">{afterExecWidth.toFixed(1)}%</span>
                 </div>
@@ -179,14 +179,14 @@ function BeforeAfterSlider() {
           <div className="max-w-xs sm:max-w-sm ml-4 sm:ml-8 lg:ml-16">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1.5 h-1.5 rounded-full bg-red-500" style={{ animation: "pulse 0.9s ease-in-out infinite" }} />
-              <span className="text-[9px] sm:text-[10px] font-bold text-red-500 uppercase tracking-widest">Processo manual</span>
+              <span className="text-[10px] sm:text-[10px] font-bold text-red-500 uppercase tracking-widest">Processo manual</span>
             </div>
             <div className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-[#0A1628] mb-1">3 dias</div>
             <p className="text-xs sm:text-sm text-red-500/60 mb-4">Planilhas. Retrabalho. Erros frequentes.</p>
 
             <div className="space-y-2.5">
               <div>
-                <div className="flex justify-between text-[9px] sm:text-[10px] mb-1">
+                <div className="flex justify-between text-[10px] sm:text-[10px] mb-1">
                   <span className="text-text-muted">Risco de fraude</span>
                   <span className="text-red-500 font-bold">Alto</span>
                 </div>
@@ -198,7 +198,7 @@ function BeforeAfterSlider() {
                 </div>
               </div>
               <div>
-                <div className="flex justify-between text-[9px] sm:text-[10px] mb-1">
+                <div className="flex justify-between text-[10px] sm:text-[10px] mb-1">
                   <span className="text-text-muted">Tempo consumido</span>
                   <span className="text-red-500 font-bold">100%</span>
                 </div>
@@ -243,7 +243,7 @@ function BeforeAfterSlider() {
                 : "0 1px 4px rgba(0,0,0,0.08)",
             }}
           >
-            <span className="text-[9px] sm:text-[10px] font-bold text-[#2546BD]">
+            <span className="text-[10px] sm:text-[10px] font-bold text-[#2546BD]">
               Economia: {economyHours}h
             </span>
           </div>
@@ -266,16 +266,16 @@ function BeforeAfterSlider() {
       </motion.div>
 
       {/* Labels — clean pills on white */}
-      <div className="absolute top-3 left-3 z-10 bg-red-50 text-red-600 text-[9px] sm:text-[10px] font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider border border-red-200/60">
+      <div className="absolute top-3 left-3 z-10 bg-red-50 text-red-600 text-[10px] sm:text-[10px] font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider border border-red-200/60">
         Antes
       </div>
-      <div className="absolute top-3 right-3 z-10 bg-blue-50 text-[#2546BD] text-[9px] sm:text-[10px] font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider border border-[#2546BD]/15">
+      <div className="absolute top-3 right-3 z-10 bg-blue-50 text-[#2546BD] text-[10px] sm:text-[10px] font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider border border-[#2546BD]/15">
         Depois
       </div>
 
       {/* Hint — fades after interaction */}
       <div
-        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 bg-[#0A1628]/60 backdrop-blur-sm text-white text-[9px] sm:text-[10px] font-medium px-3 py-1 rounded-full pointer-events-none transition-opacity duration-700"
+        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 bg-[#0A1628]/60 backdrop-blur-sm text-white text-[10px] sm:text-[10px] font-medium px-3 py-1 rounded-full pointer-events-none transition-opacity duration-700"
         style={{ opacity: hasInteracted ? 0 : 0.7 }}
       >
         Arraste para comparar

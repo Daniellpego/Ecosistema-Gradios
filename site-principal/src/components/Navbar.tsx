@@ -84,7 +84,7 @@ export function Navbar() {
             {/* CTA */}
             <Link
               href="/diagnostico"
-              className="bg-brand-gradient text-white rounded-pill py-2.5 px-6 font-bold text-center text-sm relative overflow-hidden hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
+              className="bg-brand-gradient text-white rounded-pill py-3 px-6 font-bold text-center text-sm sm:text-base relative overflow-hidden hover:shadow-lg hover:shadow-[#0A1B5C]/25 transition-all before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
             >
               Diagnóstico Gratuito
             </Link>

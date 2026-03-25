@@ -10,6 +10,7 @@ import { trackCTAClick } from "@/lib/meta-pixel";
 export function Hero() {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
+  const [showStickyButton, setShowStickyButton] = useState(false);
 
   const [count, setCount] = useState<number | null>(null);
   const dashRef = useRef<HTMLDivElement>(null);
@@ -33,6 +34,26 @@ export function Hero() {
     return () => {
       clearTimeout(t);
       window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // Show sticky button only when scrolled past hero (mobile only)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth < 640) { // sm breakpoint
+        setShowStickyButton(window.scrollY > 500); // Show after 500px scroll
+      } else {
+        setShowStickyButton(false); // Never show on desktop
+      }
+    };
+
+    handleScroll(); // Check initial state
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
     };
   }, []);
 
@@ -175,7 +196,7 @@ export function Hero() {
             <Link
               href="/diagnostico"
               onClick={() => trackCTAClick("Hero", "Diagnóstico Gratuito", "/diagnostico")}
-              className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:shadow-lg hover:shadow-[#2546BD]/30 hover:opacity-90 transition-all text-center w-full sm:w-auto relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
+              className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:shadow-lg hover:shadow-[#2546BD]/30 hover:opacity-90 transition-all text-center w-full sm:w-auto relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700 text-base sm:text-lg"
             >
               Diagnóstico Gratuito
             </Link>
@@ -334,9 +355,9 @@ export function Hero() {
                           <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-2 right-2 w-5 h-5 text-white/10 group-hover:text-white/20 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d={kpi.iconPath} />
                           </svg>
-                          <div className="text-[9px] sm:text-[10px] text-white/40 mb-1.5">{kpi.label}</div>
+                          <div className="text-[10px] sm:text-[10px] text-white/40 mb-1.5">{kpi.label}</div>
                           <div className={`text-lg sm:text-2xl font-bold ${i === 3 ? "text-secondary" : "text-white"}`}>{kpi.value}</div>
-                          <div className={`text-[9px] sm:text-[10px] mt-1 ${kpi.up ? "text-green-400" : "text-white/30"}`}>{kpi.delta}</div>
+                          <div className={`text-[10px] sm:text-[10px] mt-1 ${kpi.up ? "text-green-400" : "text-white/30"}`}>{kpi.delta}</div>
                         </div>
                       ))}
                     </div>
@@ -348,8 +369,8 @@ export function Hero() {
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-[11px] text-white/60 font-medium">Performance Semanal</span>
                           <div className="flex gap-1.5">
-                            <span className="text-[9px] text-white/30 bg-white/5 px-2 py-0.5 rounded">7d</span>
-                            <span className="text-[9px] text-white bg-brand-gradient px-2 py-0.5 rounded font-medium">30d</span>
+                            <span className="text-[10px] text-white/30 bg-white/5 px-2 py-0.5 rounded">7d</span>
+                            <span className="text-[10px] text-white bg-brand-gradient px-2 py-0.5 rounded font-medium">30d</span>
                           </div>
                         </div>
                         <div className="flex items-end gap-1 h-24 sm:h-28">
@@ -410,16 +431,24 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Mobile sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/90 backdrop-blur-md border-t border-card-border sm:hidden">
-        <Link
-          href="/diagnostico"
-          onClick={() => trackCTAClick("Hero Mobile Sticky", "Diagnóstico Gratuito", "/diagnostico")}
-          className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-6 py-3 font-bold text-center block text-sm"
+      {/* Mobile sticky CTA — only shows after scrolling past hero */}
+      {showStickyButton && (
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 100, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          className="fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-card-border sm:hidden"
         >
-          Diagnóstico Gratuito
-        </Link>
-      </div>
+          <Link
+            href="/diagnostico"
+            onClick={() => trackCTAClick("Hero Mobile Sticky", "Diagnóstico Gratuito", "/diagnostico")}
+            className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-6 py-4 font-bold text-center block text-base"
+          >
+            Diagnóstico Gratuito
+          </Link>
+        </motion.div>
+      )}
     </section>
   );
 }
