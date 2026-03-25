@@ -261,8 +261,8 @@ export default function QuizPhase({
               onClick={() => handleSelect(idx)}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              className={`quiz-option w-full text-left rounded-card transition-all duration-200 text-sm group min-h-[48px] ${
-                useGrid ? "px-4 py-3" : "px-5 py-4"
+              className={`quiz-option w-full text-left rounded-card transition-all duration-200 text-base group min-h-[56px] ${
+                useGrid ? "px-4 py-4" : "px-5 py-4"
               } ${
                 selected
                   ? "border border-[#00BFFF] bg-[#00BFFF]/10 text-[#00BFFF] font-medium shadow-sm shadow-[#00BFFF]/10"
@@ -310,7 +310,7 @@ export default function QuizPhase({
                   )}
                 </span>
 
-                <span className={useGrid ? "text-xs sm:text-sm" : ""}>{opt}</span>
+                <span className={useGrid ? "text-sm leading-snug" : ""}>{opt}</span>
               </span>
             </motion.button>
           );

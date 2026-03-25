@@ -181,7 +181,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #EF4444, transparent 70%)" }} />
           </div>
           <div className="relative z-10">
-            <p className="text-[#FCA5A5] text-[10px] font-semibold tracking-wider uppercase mb-1">Estimativa conservadora de retrabalho</p>
+            <p className="text-[#FCA5A5] text-xs font-semibold tracking-wider uppercase mb-1">Estimativa conservadora de retrabalho</p>
             <p className="text-[#94A3B8] text-sm mb-4">
               {roi.monthlyHours}h/mês × {formatBRL(roi.hourlyCost)}/hora (custo CLT + encargos, média CAGED/2024 para {setor}) × 0.8 (fator conservador)
             </p>
@@ -202,21 +202,21 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.28s" }}>
         {horasMes && (
           <div className="result-data-card col-span-2 sm:col-span-1">
-            <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Retrabalho/mês</p>
+            <p className="text-[#64748B] text-xs font-semibold tracking-wider uppercase">Retrabalho/mês</p>
             <p className="text-2xl sm:text-3xl font-black text-white mt-1">{horasMes}</p>
             <p className="text-[#EF4444] text-xs font-medium mt-1">desperdiçadas</p>
           </div>
         )}
         {sistemasLabel && (
           <div className="result-data-card">
-            <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Sistemas</p>
+            <p className="text-[#64748B] text-xs font-semibold tracking-wider uppercase">Sistemas</p>
             <p className="text-lg font-bold text-white mt-1">{sistemasLabel}</p>
             <p className="text-[#F59E0B] text-xs font-medium mt-1">desconectados</p>
           </div>
         )}
         {processosLabel && (
           <div className="result-data-card">
-            <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase">Processos manuais</p>
+            <p className="text-[#64748B] text-xs font-semibold tracking-wider uppercase">Processos manuais</p>
             <p className="text-lg font-bold text-white mt-1">{processosLabel}</p>
             <p className="text-[#F59E0B] text-xs font-medium mt-1">dependem de digitação</p>
           </div>
@@ -226,7 +226,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
       {/* ── BOTTLENECKS ── */}
       {gargalosTexts.length > 0 && (
         <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.35s" }}>
-          <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Gargalos identificados</p>
+          <p className="text-[#64748B] text-xs font-semibold tracking-wider uppercase mb-3">Gargalos identificados</p>
           <div className="flex flex-wrap gap-2">
             {gargalosTexts.map((g, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 bg-[#00BFFF]/10 border border-[#00BFFF]/20 text-[#7DD3FC] text-xs font-medium px-3 py-1.5 rounded-pill">
@@ -241,7 +241,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
       {/* ── IMPACTS ── */}
       {impactosTexts.length > 0 && (
         <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.4s" }}>
-          <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Impactos na operação</p>
+          <p className="text-[#64748B] text-xs font-semibold tracking-wider uppercase mb-3">Impactos na operação</p>
           <div className="flex flex-wrap gap-2">
             {impactosTexts.map((imp, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 bg-[#00BFFF]/8 border border-[#00BFFF]/15 text-[#7DD3FC] text-xs font-medium px-3 py-1.5 rounded-pill">
@@ -263,7 +263,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
           </div>
           <div>
             <p className="text-white text-sm font-bold">Análise da Gradios</p>
-            <p className="text-[#64748B] text-[10px]">Análise baseada nos dados reais da sua operação</p>
+            <p className="text-[#64748B] text-xs">Análise baseada nos dados reais da sua operação</p>
           </div>
         </div>
 
@@ -286,16 +286,16 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
                     }`}
                   >
                     {isDiagnostic && (
-                      <p className="text-[10px] font-semibold tracking-wider uppercase text-[#EF4444]/60 mb-2">Diagnóstico</p>
+                      <p className="text-xs font-semibold tracking-wider uppercase text-[#EF4444]/60 mb-2">Diagnóstico</p>
                     )}
                     {isClosing && (
-                      <p className="text-[10px] font-semibold tracking-wider uppercase text-[#00BFFF]/60 mb-2">Próximo passo</p>
+                      <p className="text-xs font-semibold tracking-wider uppercase text-[#00BFFF]/60 mb-2">Próximo passo</p>
                     )}
                     {i === 2 && aiBlocks.length >= 4 && (
-                      <p className="text-[10px] font-semibold tracking-wider uppercase text-[#64748B] mb-2">Contexto do setor</p>
+                      <p className="text-xs font-semibold tracking-wider uppercase text-[#64748B] mb-2">Contexto do setor</p>
                     )}
                     {i === 3 && aiBlocks.length >= 5 && (
-                      <p className="text-[10px] font-semibold tracking-wider uppercase text-[#00BFFF]/60 mb-2">O que a Gradios faria</p>
+                      <p className="text-xs font-semibold tracking-wider uppercase text-[#00BFFF]/60 mb-2">O que a Gradios faria</p>
                     )}
                     <p className="text-[#CBD5E1] text-sm sm:text-base leading-relaxed">{block}</p>
                   </div>
@@ -325,7 +325,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
       {/* ── PRIORITY ── */}
       {prioridadeLabel && (
         <div className="result-section opacity-0 animate-fade-slide-up" style={{ animationDelay: "0.6s" }}>
-          <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3">Sua prioridade</p>
+          <p className="text-[#64748B] text-xs font-semibold tracking-wider uppercase mb-3">Sua prioridade</p>
           <div className="bg-[#00BFFF]/10 border border-[#00BFFF]/20 rounded-2xl p-4 flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#00BFFF]/20 flex items-center justify-center flex-shrink-0">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -399,7 +399,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
               <a
                 href={`mailto:contato@gradios.com.br?subject=Quero receber o guia de automação&body=Olá! Fiz o diagnóstico da Gradios (Score: ${score}) e gostaria de receber o guia completo de automação por e-mail. Meu nome é ${lead.nome} da empresa ${lead.empresa}.`}
                 onClick={() => trackCta("email_nurture")}
-                className="inline-flex items-center gap-2.5 bg-gradient-to-r from-[#2546BD] to-[#00BFFF] text-white rounded-pill px-7 py-3.5 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#00BFFF]/25 transition-all duration-300 text-sm"
+                className="inline-flex items-center gap-2.5 bg-gradient-to-r from-[#2546BD] to-[#00BFFF] text-white rounded-pill px-8 py-4 font-bold hover:opacity-90 hover:shadow-lg hover:shadow-[#00BFFF]/25 transition-all duration-300 text-base"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -413,7 +413,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackCta("whatsapp")}
-                className="inline-flex items-center gap-2.5 bg-[#25D366] text-white rounded-pill px-7 py-3.5 font-bold hover:bg-[#20BD5A] hover:shadow-lg hover:shadow-[#25D366]/30 transition-all duration-300 text-sm"
+                className="inline-flex items-center gap-2.5 bg-[#25D366] text-white rounded-pill px-8 py-4 font-bold hover:bg-[#20BD5A] hover:shadow-lg hover:shadow-[#25D366]/30 transition-all duration-300 text-base"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -426,7 +426,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
 
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-2 text-[#94A3B8] hover:text-white border border-[#1E293B] hover:border-[#334155] rounded-pill px-6 py-3.5 font-medium transition-all duration-300 text-sm print:hidden"
+              className="inline-flex items-center gap-2 text-[#94A3B8] hover:text-white border border-[#1E293B] hover:border-[#334155] rounded-pill px-6 py-3.5 font-medium transition-all duration-300 text-base print:hidden"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 9V2h12v7" /><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" /><rect x="6" y="14" width="12" height="8" />
@@ -436,7 +436,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
 
             <button
               onClick={handleShare}
-              className="inline-flex items-center gap-2 text-[#94A3B8] hover:text-white border border-[#1E293B] hover:border-[#334155] rounded-pill px-6 py-3.5 font-medium transition-all duration-300 text-sm print:hidden"
+              className="inline-flex items-center gap-2 text-[#94A3B8] hover:text-white border border-[#1E293B] hover:border-[#334155] rounded-pill px-6 py-3.5 font-medium transition-all duration-300 text-base print:hidden"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
@@ -453,7 +453,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
 
       {/* ── SOCIAL PROOF ── */}
       <div className="result-section opacity-0 animate-fade-slide-up mt-8" style={{ animationDelay: "0.8s" }}>
-        <p className="text-[#64748B] text-[10px] font-semibold tracking-wider uppercase mb-3 text-center">Quem já automatizou</p>
+        <p className="text-[#64748B] text-xs font-semibold tracking-wider uppercase mb-3 text-center">Quem já automatizou</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-[#0F172A] border border-[#1E293B] rounded-2xl p-4">
             <p className="text-[#CBD5E1] text-sm italic mb-2">&ldquo;Reduzimos o fechamento financeiro de 5 dias para menos de 4 horas conectando os sistemas.&rdquo;</p>

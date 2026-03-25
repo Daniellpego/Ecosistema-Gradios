@@ -36,7 +36,7 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
 
       {/* Preview teaser */}
       <div className="bg-[#00BFFF]/[0.04] border border-[#00BFFF]/10 rounded-card p-4 mb-6 space-y-3">
-        <p className="text-[10px] font-semibold text-[#00BFFF] tracking-wider uppercase">Prévia do seu diagnóstico</p>
+        <p className="text-[11px] font-semibold text-[#00BFFF] tracking-wider uppercase">Prévia do seu diagnóstico</p>
         <div className="flex items-center gap-4">
           {/* Icon instead of gauge */}
           <div className="relative w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#2546BD] to-[#00BFFF] flex items-center justify-center shadow-lg shadow-[#00BFFF]/20">
@@ -77,49 +77,49 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
         <div className="-mx-6 -mt-6 mb-4 h-1 rounded-t-card bg-gradient-to-r from-[#2546BD] to-[#00BFFF]" />
 
         <div>
-          <label className="block text-sm font-medium text-[#CBD5E1] mb-1.5">Nome completo *</label>
+          <label className="block text-base font-medium text-[#CBD5E1] mb-2">Nome completo *</label>
           <input
             type="text"
             value={lead.nome}
             onChange={(e) => setLead((p) => ({ ...p, nome: e.target.value }))}
             placeholder="Seu nome completo"
-            className="w-full px-4 py-3 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-sm placeholder:text-[#475569] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
+            className="w-full px-4 py-4 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-base placeholder:text-[#64748B] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#CBD5E1] mb-1.5">Empresa *</label>
+          <label className="block text-base font-medium text-[#CBD5E1] mb-2">Empresa *</label>
           <input
             type="text"
             value={lead.empresa}
             onChange={(e) => setLead((p) => ({ ...p, empresa: e.target.value }))}
             placeholder="Nome da empresa"
-            className="w-full px-4 py-3 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-sm placeholder:text-[#475569] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
+            className="w-full px-4 py-4 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-base placeholder:text-[#64748B] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#CBD5E1] mb-1.5">E-mail corporativo *</label>
+          <label className="block text-base font-medium text-[#CBD5E1] mb-2">E-mail corporativo *</label>
           <input
             type="email"
             value={lead.email}
             onChange={(e) => setLead((p) => ({ ...p, email: e.target.value }))}
             placeholder="seu@empresa.com"
-            className="w-full px-4 py-3 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-sm placeholder:text-[#475569] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
+            className="w-full px-4 py-4 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-base placeholder:text-[#64748B] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
           />
-          <p className="text-[10px] text-[#475569] mt-1">Só para enviar seu diagnóstico e dicas relevantes. Pode cancelar a qualquer momento.</p>
+          <p className="text-xs text-[#64748B] mt-1.5">Só para enviar seu diagnóstico e dicas relevantes. Pode cancelar a qualquer momento.</p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#CBD5E1] mb-1.5">WhatsApp *</label>
+          <label className="block text-base font-medium text-[#CBD5E1] mb-2">WhatsApp *</label>
           <input
             type="tel"
             value={lead.whatsapp}
             onChange={(e) => setLead((p) => ({ ...p, whatsapp: e.target.value }))}
             placeholder="(43) 98837-2540"
-            className="w-full px-4 py-3 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-sm placeholder:text-[#475569] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
+            className="w-full px-4 py-4 rounded-card border border-[#1E293B] bg-[#0F1D32] text-white text-base placeholder:text-[#64748B] focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/20 focus:border-[#00BFFF] transition-all"
           />
-          <p className="text-[10px] text-[#475569] mt-1">Para recebermos seu diagnóstico mais rápido e você poder tirar dúvidas direto com a equipe.</p>
+          <p className="text-xs text-[#64748B] mt-1.5">Para recebermos seu diagnóstico mais rápido e você poder tirar dúvidas direto com a equipe.</p>
         </div>
 
         <button
@@ -130,14 +130,14 @@ export default function CapturePhase({ lead, setLead, answers, isSubmitting, onS
           {isSubmitting ? "Gerando..." : "Ver meu resultado agora →"}
         </button>
 
-        <div className="flex items-center justify-center gap-4 text-[10px] text-[#475569] mt-3">
-          <span className="flex items-center gap-1">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-[#64748B] mt-4">
+          <span className="flex items-center gap-1.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
             Dados protegidos
           </span>
-          <span>·</span>
+          <span className="hidden sm:inline">·</span>
           <span>Sem spam</span>
-          <span>·</span>
+          <span className="hidden sm:inline">·</span>
           <span>Resultado instantâneo</span>
         </div>
       </div>
