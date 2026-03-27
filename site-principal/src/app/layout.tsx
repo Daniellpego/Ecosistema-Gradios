@@ -145,6 +145,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <meta name="google-site-verification" content="7nYceyn4iiumWyr4hgV86mujYqaRa3Ni_qNShP5S67E" />
         <meta name="theme-color" content="#2546BD" />
 
         {/* Meta Pixel Code */}
