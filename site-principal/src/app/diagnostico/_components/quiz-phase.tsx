@@ -349,18 +349,18 @@ export default function QuizPhase({
         </div>
       )}
 
-      {/* Milestones */}
-      {currentQ === 5 && answeredCount >= 5 && (
+      {/* Milestones — dinâmicos */}
+      {currentQ === Math.floor(QUESTIONS.length / 2) && answeredCount >= Math.floor(QUESTIONS.length / 2) && (
         <div className="mt-3 text-center">
           <p className="text-xs text-[#00BFFF] font-semibold animate-fade-slide-up">
             Metade do caminho. Seu diagnóstico já está tomando forma.
           </p>
         </div>
       )}
-      {currentQ === 8 && answeredCount >= 8 && (
+      {currentQ === QUESTIONS.length - 3 && answeredCount >= QUESTIONS.length - 3 && (
         <div className="mt-3 text-center">
           <p className="text-xs text-[#00BFFF] font-semibold animate-fade-slide-up">
-            Quase lá! Faltam 3 perguntas para fechar o diagnóstico.
+            Quase lá! Faltam {QUESTIONS.length - currentQ - 1} perguntas para fechar o diagnóstico.
           </p>
         </div>
       )}
