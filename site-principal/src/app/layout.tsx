@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { SmoothScrollProvider } from "@/providers/smooth-scroll";
 
-const inter = localFont({
-  src: "./fonts/Inter.ttf",
+const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
 });
@@ -21,7 +21,7 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: 'Gradios | Elimine processos manuais e escale sua operação B2B',
-  description: 'Engenharia de software e IA para eliminar gargalos operacionais. Resultado em 14 dias. Diagnóstico gratuito.',
+  description: 'Automatize processos e elimine 40h/mês de retrabalho manual. Engenharia de software B2B com resultado em 14 dias. Diagnóstico gratuito.',
   keywords: ["automação b2b", "automação de processos", "desenvolvimento de software sob medida", "integração de sistemas", "dashboards empresariais", "ia para negócios", "software empresarial", "automação Londrina"],
   authors: [{ name: "Gradios Soluções em Tecnologia" }],
   metadataBase: new URL("https://gradios.com.br"),

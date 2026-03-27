@@ -3,6 +3,12 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Política de Privacidade | Gradios",
   description: "Política de privacidade da Gradios Soluções em Tecnologia.",
+  openGraph: {
+    title: "Política de Privacidade | Gradios",
+    description: "Como tratamos seus dados pessoais conforme a LGPD.",
+    type: "website",
+    url: "https://gradios.com.br/privacidade",
+  },
 };
 
 export default function PrivacidadePage() {
