@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: "Política de Privacidade | Gradios",
     description: "Como tratamos seus dados pessoais conforme a LGPD.",
     type: "website",
-    url: "https://gradios.com.br/privacidade",
+    url: "https://gradios.co/privacidade",
   },
 };
 

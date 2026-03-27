@@ -98,7 +98,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "Gradios Soluções em Tecnologia",
-  url: "https://gradios.com.br",
+  url: "https://gradios.co",
   description:
     "Empresa de engenharia de software e automação B2B sediada em Londrina, PR. Especializada em automação de processos, desenvolvimento sob medida, integrações e IA aplicada.",
   address: {

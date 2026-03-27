@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: "Termos de Uso | Gradios",
     description: "Termos e condições de uso dos serviços da Gradios.",
     type: "website",
-    url: "https://gradios.com.br/termos",
+    url: "https://gradios.co/termos",
   },
 };
 
