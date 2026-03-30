@@ -1,7 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Sitemap: https://gradios.co/sitemap.xml
 
-# LLMs
-LLMs-txt: https://gradios.co/llms.txt
+Sitemap: https://gradios.co/sitemap.xml

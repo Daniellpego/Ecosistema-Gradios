@@ -109,14 +109,14 @@
     50% { opacity: 0.9; }
   }
 
-  .animate-float { animation: float 4s ease-in-out infinite; }
-  .animate-shimmer { background-size: 200% auto; animation: shimmer 3s linear infinite; }
-  .animate-cta-pulse { animation: ctaPulse 3s ease-in-out infinite; }
-  .animate-marquee { animation: marquee 20s linear infinite; }
-  .animate-brain-float { animation: brainFloat 3s ease-in-out infinite; display: inline-block; }
-  .animate-status-pulse { animation: statusPulse 4s ease-in-out infinite; }
-  .animate-wpp-breath { animation: wppBreath 2.5s ease-in-out infinite; }
-  .animate-pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+  .animate-float { animation: float 4s ease-in-out infinite; will-change: transform; }
+  .animate-shimmer { background-size: 200% auto; animation: shimmer 3s linear infinite; will-change: background-position; }
+  .animate-cta-pulse { animation: ctaPulse 3s ease-in-out infinite; will-change: box-shadow; }
+  .animate-marquee { animation: marquee 20s linear infinite; will-change: transform; }
+  .animate-brain-float { animation: brainFloat 3s ease-in-out infinite; display: inline-block; will-change: transform; }
+  .animate-status-pulse { animation: statusPulse 4s ease-in-out infinite; will-change: box-shadow; }
+  .animate-wpp-breath { animation: wppBreath 2.5s ease-in-out infinite; will-change: box-shadow; }
+  .animate-pulse-glow { animation: pulseGlow 2s ease-in-out infinite; will-change: filter; }
 
   /* Marquee pause on hover */
   .marquee-container:hover .animate-marquee {
@@ -164,6 +164,7 @@
 
   .solution-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
   }
   .solution-card:hover {
     transform: translateY(-4px);

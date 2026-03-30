@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import dynamic from "next/dynamic";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ScrollProgress } from "@/components/ScrollProgress";
-import { SmoothScrollProvider } from "@/providers/smooth-scroll";
+
+// Non-critical UX enhancements — lazy load to reduce initial JS bundle
+const ScrollProgress = dynamic(() => import("@/components/ScrollProgress").then(m => m.ScrollProgress), { ssr: false });
+const SmoothScrollProvider = dynamic(() => import("@/providers/smooth-scroll").then(m => m.SmoothScrollProvider), { ssr: false });
 
 const inter = Inter({
   subsets: ["latin"],
@@ -147,6 +150,10 @@ export default function RootLayout({
       <head>
         <meta name="google-site-verification" content="7nYceyn4iiumWyr4hgV86mujYqaRa3Ni_qNShP5S67E" />
         <meta name="theme-color" content="#2546BD" />
+
+        {/* Preconnect to critical third-party origins */}
+        <link rel="preconnect" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
 
         {/* Meta Pixel Code */}
         <script

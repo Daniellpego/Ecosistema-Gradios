@@ -156,10 +156,10 @@ export function Hero() {
 
           {/* H1 — Ogilvy: fato + promessa, sem floreio */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-text leading-[1.1] mb-6 mt-2">
-            <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0.05}>
+            <span className="block">
               Seu time perde <span className="text-highlight">40h por mês</span>
-            </motion.span>
-            <motion.span className="block" variants={textLineVariants} initial="hidden" animate="visible" custom={0.15}>
+            </span>
+            <span className="block">
               em tarefas que uma{" "}
               <span className="relative inline-block whitespace-nowrap">
                 <span className="text-highlight-strong">máquina faz em 4.</span>
@@ -173,25 +173,17 @@ export function Hero() {
                   </defs>
                 </svg>
               </span>
-            </motion.span>
+            </span>
           </h1>
 
-          <motion.p
+          <p
             className="text-lg lg:text-xl text-text-muted mb-8 max-w-xl mx-auto leading-relaxed"
-            variants={heroEntrance}
-            initial="hidden"
-            animate="visible"
-            custom={0.6}
           >
             Nós conectamos seus sistemas e eliminamos o retrabalho manual. Uma operação eficiente não depende de esforço, e sim de inteligência.
-          </motion.p>
+          </p>
 
-          <motion.div
+          <div
             className="flex flex-col sm:flex-row gap-4 items-center justify-center"
-            variants={heroEntrance}
-            initial="hidden"
-            animate="visible"
-            custom={0.7}
           >
             <Link
               href="/diagnostico"
@@ -200,7 +192,7 @@ export function Hero() {
             >
               Diagnóstico Gratuito
             </Link>
-          </motion.div>
+          </div>
 
           {/* Social proof — setores inline */}
           <motion.div

@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/Hero";
-import { LogoStrip } from "@/components/LogoStrip";
 
+const LogoStrip = dynamic(() => import("@/components/LogoStrip").then(m => m.LogoStrip));
 const Benefits = dynamic(() => import("@/components/Benefits").then(m => m.Benefits));
 const FeatureShowcase = dynamic(() => import("@/components/FeatureShowcase").then(m => m.FeatureShowcase));
 const Testimonials = dynamic(() => import("@/components/Testimonials").then(m => m.Testimonials));
