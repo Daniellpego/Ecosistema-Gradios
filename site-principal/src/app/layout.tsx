@@ -172,8 +172,10 @@ fbq('track', 'PageView');
             `.trim(),
           }}
         />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <noscript>
           <img
+            alt=""
             height="1"
             width="1"
             style={{ display: 'none' }}

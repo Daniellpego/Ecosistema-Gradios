@@ -111,15 +111,6 @@ export function Hero() {
     },
   };
 
-  const textLineVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (delay: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { type: "spring" as const, stiffness: 80, damping: 16, delay },
-    }),
-  };
-
   return (
     <section className="relative pt-24 pb-8 lg:pt-28 lg:pb-12 overflow-hidden">
       {/* Hero gradient background */}
