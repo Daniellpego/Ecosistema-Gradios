@@ -27,7 +27,7 @@ const receitaSchema = z.object({
 
 const TIPO_LABELS: Record<ReceitaTipo, string> = {
   setup: 'Setup',
-  mensalidade: 'Mensalidade',
+  mensalidade: 'Mensalidade (MRR)',
   projeto_avulso: 'Projeto Avulso',
   consultoria: 'Consultoria',
   mvp: 'MVP',
@@ -59,7 +59,7 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
     tipo: 'mensalidade' as ReceitaTipo,
     valor_bruto: '',
     taxas: '0',
-    recorrente: false,
+    recorrente: true,
     status: 'previsto' as ReceitaStatus,
     categoria: '',
     observacoes: '',
@@ -89,7 +89,7 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
         tipo: 'mensalidade',
         valor_bruto: '',
         taxas: '0',
-        recorrente: false,
+        recorrente: true,
         status: 'previsto',
         categoria: '',
         observacoes: '',
@@ -197,7 +197,10 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label>Tipo</Label>
-              <Select value={form.tipo} onValueChange={(v) => setForm({ ...form, tipo: v as ReceitaTipo })}>
+              <Select value={form.tipo} onValueChange={(v) => {
+                const tipo = v as ReceitaTipo
+                setForm({ ...form, tipo, recorrente: tipo === 'mensalidade' })
+              }}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   {Object.entries(TIPO_LABELS).map(([k, v]) => (
@@ -248,14 +251,21 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
             </div>
           </div>
 
-          {/* Recorrente toggle */}
-          <div className="flex items-center justify-between">
-            <Label htmlFor="recorrente">Receita Recorrente</Label>
-            <Switch
-              id="recorrente"
-              checked={form.recorrente}
-              onCheckedChange={(checked) => setForm({ ...form, recorrente: checked })}
-            />
+          {/* Recorrente toggle (MRR) */}
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="recorrente">Receita Recorrente (MRR)</Label>
+              <Switch
+                id="recorrente"
+                checked={form.recorrente}
+                onCheckedChange={(checked) => setForm({ ...form, recorrente: checked })}
+              />
+            </div>
+            <p className="text-[11px] text-text-secondary">
+              {form.recorrente
+                ? 'Esta receita será contabilizada no MRR (Monthly Recurring Revenue).'
+                : 'Ative para incluir no cálculo de MRR.'}
+            </p>
           </div>
 
           {/* Descrição */}
