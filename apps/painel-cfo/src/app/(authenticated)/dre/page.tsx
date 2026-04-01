@@ -183,43 +183,46 @@ function CurrencyTooltip({ active, payload, label }: { active?: boolean; payload
 export default function DREPage() {
   useEffect(() => { document.title = 'DRE | Gradios CFO' }, [])
 
-  const { lines: rawLines, current, chartData, isLoading, isChartLoading } = useDRE()
+  const { lines: rawLines, current, ytd, chartData, isLoading, isChartLoading } = useDRE()
   const { simplesEnabled, aliquota } = useTax()
 
   // Inject Simples Nacional line when toggle is ON
   const lines = useMemo(() => {
     if (!simplesEnabled || isLoading) return rawLines
     const impostoSimples = current.receitaBruta * (aliquota / 100)
+    const impostoSimplesYtd = ytd.receitaBruta * (aliquota / 100)
     const rb = current.receitaBruta
+    const rbYtd = ytd.receitaBruta
     const result: DRELine[] = []
 
     for (const line of rawLines) {
       if (line.type === 'total' && line.label === '(=) RESULTADO LÍQUIDO') {
         // Before resultado liquido, inject simples line
         result.push({
-          label: '(-) SIMPLES NACIONAL (6%)',
+          label: `(-) SIMPLES NACIONAL (${aliquota}%)`,
           month: impostoSimples,
-          ytd: impostoSimples, // simplified - uses monthly value
+          ytd: impostoSimplesYtd,
           percent: rb > 0 ? (impostoSimples / rb) * 100 : 0,
-          percentYtd: rb > 0 ? (impostoSimples / rb) * 100 : 0,
+          percentYtd: rbYtd > 0 ? (impostoSimplesYtd / rbYtd) * 100 : 0,
           type: 'header',
         })
         result.push({ label: '', month: 0, ytd: 0, percent: 0, percentYtd: 0, type: 'separator' })
         // Adjust resultado liquido
         const adjustedRL = current.resultadoLiquido - impostoSimples
+        const adjustedRLYtd = ytd.resultadoLiquido - impostoSimplesYtd
         result.push({
           ...line,
           month: adjustedRL,
-          ytd: adjustedRL,
+          ytd: adjustedRLYtd,
           percent: rb > 0 ? (adjustedRL / rb) * 100 : 0,
-          percentYtd: rb > 0 ? (adjustedRL / rb) * 100 : 0,
+          percentYtd: rbYtd > 0 ? (adjustedRLYtd / rbYtd) * 100 : 0,
         })
       } else {
         result.push(line)
       }
     }
     return result
-  }, [rawLines, simplesEnabled, aliquota, current, isLoading])
+  }, [rawLines, simplesEnabled, aliquota, current, ytd, isLoading])
 
   const last6 = useMemo(() => chartData.slice(-6), [chartData])
 

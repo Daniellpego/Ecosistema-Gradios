@@ -266,6 +266,16 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
                 ? 'Esta receita será contabilizada no MRR (Monthly Recurring Revenue).'
                 : 'Ative para incluir no cálculo de MRR.'}
             </p>
+            {form.tipo === 'mensalidade' && !form.recorrente && (
+              <p className="text-[11px] text-status-warning">
+                Atenção: receitas do tipo Mensalidade geralmente são recorrentes (MRR).
+              </p>
+            )}
+            {form.tipo !== 'mensalidade' && form.recorrente && (
+              <p className="text-[11px] text-status-warning">
+                Atenção: esta receita será contada como MRR mesmo não sendo do tipo Mensalidade.
+              </p>
+            )}
           </div>
 
           {/* Descrição */}
