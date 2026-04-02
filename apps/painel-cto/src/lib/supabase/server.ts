@@ -5,13 +5,19 @@ export async function createServerSupabaseClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
+  const cookieStore = await cookies()
+
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error(
-      'Supabase nao configurado. Crie o arquivo .env.local com NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY'
+    console.error(
+      '[Supabase] NEXT_PUBLIC_SUPABASE_URL ou NEXT_PUBLIC_SUPABASE_ANON_KEY nao configurados.'
+    )
+    return createServerClient(
+      supabaseUrl || 'https://placeholder.supabase.co',
+      supabaseKey || 'placeholder-anon-key',
+      { cookies: { getAll() { return cookieStore.getAll() }, setAll() {} } }
     )
   }
 
-  const cookieStore = await cookies()
   return createServerClient(supabaseUrl, supabaseKey, {
     cookies: {
       getAll() { return cookieStore.getAll() },
