@@ -1,17 +1,17 @@
 'use client'
 
 import Image from 'next/image'
-import { cn } from '@/lib/utils'
 
 export function Logo({ collapsed = false }: { collapsed?: boolean }) {
   return (
     <div className="flex items-center gap-2.5">
       <Image
-        src="/logo-gradios.png"
+        src="/logo-64.png"
         alt="Gradios"
         width={32}
         height={32}
         className="rounded-lg shrink-0"
+        priority
       />
       {!collapsed && (
         <div className="flex flex-col">
