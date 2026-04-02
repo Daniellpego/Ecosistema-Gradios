@@ -44,10 +44,18 @@ export function KanbanBoard({ projetos }: KanbanBoardProps) {
     if (!over) return
 
     const projetoId = active.id as string
-    const targetColumn = over.id as ProjetoStatus
-
     const validStatuses: ProjetoStatus[] = ['backlog', 'em_andamento', 'revisao', 'entregue']
-    if (!validStatuses.includes(targetColumn)) return
+
+    // over.id can be a column status (dropped on empty column) or a card id (dropped on a card)
+    let targetColumn = over.id as ProjetoStatus
+    if (!validStatuses.includes(targetColumn)) {
+      // Dropped onto a card — find which column that card belongs to
+      const targetProjeto = projetos.find((p) => p.id === (over.id as string))
+      if (!targetProjeto) return
+      // em_revisao is a legacy alias mapped to the revisao column
+      targetColumn = targetProjeto.status === 'em_revisao' ? 'revisao' : targetProjeto.status as ProjetoStatus
+      if (!validStatuses.includes(targetColumn)) return
+    }
 
     const projeto = projetos.find((p) => p.id === projetoId)
     if (!projeto || projeto.status === targetColumn) return

@@ -33,13 +33,23 @@ function GanttBar({ projeto, minDate, totalDays }: { projeto: Projeto; minDate: 
           className="absolute top-1 h-8 rounded-lg transition-all duration-500"
           style={{ left: `${leftPct}%`, width: `${progressWidth}%`, background: projeto.cor ?? '#00C8F0' }}
         />
-        {/* Label */}
-        <span
-          className="absolute top-2 text-xs font-bold text-bg-navy px-2"
-          style={{ left: `${leftPct + 0.5}%` }}
-        >
-          {projeto.progresso}%
-        </span>
+        {/* Label — only visible when there's enough bar to display on */}
+        {projeto.progresso > 0 && (
+          <span
+            className="absolute top-2 text-xs font-bold text-bg-navy px-2"
+            style={{ left: `${leftPct + 0.5}%` }}
+          >
+            {projeto.progresso}%
+          </span>
+        )}
+        {projeto.progresso === 0 && (
+          <span
+            className="absolute top-2 text-xs font-medium text-text-muted px-2"
+            style={{ left: `${leftPct + 0.5}%` }}
+          >
+            0%
+          </span>
+        )}
       </div>
     </div>
   )
@@ -95,9 +105,9 @@ export default function TimelinePage() {
         <h1 className="text-xl font-bold text-text-primary">Timeline</h1>
 
         <div className="card-glass overflow-x-auto">
-          {/* Month headers */}
+          {/* Month headers — spacer must match GanttBar name column (w-48) */}
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-44 shrink-0" />
+            <div className="w-48 shrink-0" />
             <div className="flex-1 relative h-6">
               {monthHeaders.map((h, i) => (
                 <span key={i} className="absolute text-[10px] text-text-muted font-medium" style={{ left: `${h.leftPct}%` }}>
@@ -107,12 +117,17 @@ export default function TimelinePage() {
             </div>
           </div>
 
-          {/* Today line */}
+          {/* Today line — uses same flex structure as GanttBar to align correctly */}
           <div className="relative">
-            <div
-              className="absolute top-0 bottom-0 w-px bg-brand-cyan/40 z-10"
-              style={{ left: `calc(176px + ${todayPct}% * (100% - 176px) / 100)` }}
-            />
+            <div className="absolute inset-y-0 flex w-full pointer-events-none z-10">
+              <div className="w-48 shrink-0 gap-3" />
+              <div className="flex-1 relative">
+                <div
+                  className="absolute top-0 bottom-0 w-px bg-brand-cyan/40"
+                  style={{ left: `${todayPct}%` }}
+                />
+              </div>
+            </div>
 
             {sortedProjetos.map((p) => (
               <GanttBar key={p.id} projeto={p} minDate={minDate} totalDays={totalDays} />

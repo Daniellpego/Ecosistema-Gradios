@@ -26,14 +26,23 @@ export function PrioridadeBadge({ prioridade }: { prioridade: Prioridade }) {
 }
 
 export function StatusBadge({ status }: { status: ProjetoStatus }) {
-  const col = KANBAN_COLUMNS.find((c) => c.id === status)
-  if (!col) return null
+  // em_revisao is a legacy alias for revisao
+  const normalizedStatus = status === 'em_revisao' ? 'revisao' : status
+  const col = KANBAN_COLUMNS.find((c) => c.id === normalizedStatus)
+  if (col) {
+    return (
+      <span
+        className="text-xs font-semibold px-2.5 py-0.5 rounded-md"
+        style={{ color: col.color, background: col.bgColor }}
+      >
+        {col.label}
+      </span>
+    )
+  }
+  // Fallback for cancelado and any unrecognised status
   return (
-    <span
-      className="text-xs font-semibold px-2.5 py-0.5 rounded-md"
-      style={{ color: col.color, background: col.bgColor }}
-    >
-      {col.label}
+    <span className="badge-muted">
+      {status === 'cancelado' ? 'Cancelado' : status}
     </span>
   )
 }

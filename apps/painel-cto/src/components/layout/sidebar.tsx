@@ -64,10 +64,10 @@ export function Sidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 relative group',
+                'flex items-center gap-3 py-2.5 rounded-lg text-sm transition-all duration-200 relative group',
                 isActive
-                  ? 'bg-brand-cyan/10 text-brand-cyan font-bold border-l-4 border-brand-cyan shadow-[inset_4px_0_10px_-4px_rgba(0,200,240,0.15)]'
-                  : 'text-text-muted hover:bg-bg-hover hover:text-text-primary font-medium'
+                  ? 'pl-2 pr-3 bg-brand-cyan/10 text-brand-cyan font-bold border-l-4 border-brand-cyan shadow-[inset_4px_0_10px_-4px_rgba(0,200,240,0.15)]'
+                  : 'px-3 text-text-muted hover:bg-bg-hover hover:text-text-primary font-medium'
               )}
             >
               <Icon className={cn('h-5 w-5 shrink-0', isActive && 'text-brand-cyan')} />
