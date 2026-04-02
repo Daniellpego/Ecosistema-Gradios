@@ -3,15 +3,28 @@
 import { useQuery } from '@tanstack/react-query'
 import { createClient } from '@/lib/supabase/client'
 
+export interface CurrentUser {
+  id: string
+  email: string
+  nome: string
+  role: string
+}
+
+const FALLBACK_USER: CurrentUser = {
+  id: '',
+  email: '',
+  nome: 'Usuario',
+  role: 'dev',
+}
+
 export function useCurrentUser() {
   const supabase = createClient()
-  return useQuery({
+  const query = useQuery({
     queryKey: ['current-user'],
-    queryFn: async () => {
+    queryFn: async (): Promise<CurrentUser> => {
       const { data: { user }, error } = await supabase.auth.getUser()
-      if (error || !user) return null
+      if (error || !user) return FALLBACK_USER
 
-      // Try to get profile name
       const { data: profile } = await supabase
         .from('profiles')
         .select('nome, role')
@@ -25,6 +38,13 @@ export function useCurrentUser() {
         role: profile?.role ?? 'dev',
       }
     },
-    staleTime: 5 * 60 * 1000, // cache for 5 min
+    staleTime: 10 * 60 * 1000,
+    retry: 1,
   })
+
+  // Always return a usable user object, even during loading/error
+  return {
+    ...query,
+    user: query.data ?? FALLBACK_USER,
+  }
 }
