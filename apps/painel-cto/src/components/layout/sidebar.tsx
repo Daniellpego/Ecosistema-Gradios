@@ -28,7 +28,7 @@ export function Sidebar() {
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const { data: user } = useCurrentUser()
+  const { user } = useCurrentUser()
 
   async function handleLogout() {
     const supabase = createClient()
@@ -36,9 +36,8 @@ export function Sidebar() {
     router.push('/login')
   }
 
-  const initials = user?.nome
-    ? user.nome.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()
-    : '?'
+  const initials = user.nome
+    .split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase() || 'U'
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
@@ -95,7 +94,7 @@ export function Sidebar() {
 
       {/* User area */}
       <div className="p-4 space-y-3">
-        {!collapsed && user && (
+        {!collapsed && (
           <div className="flex items-center gap-3 px-2">
             <div
               className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold"
@@ -109,7 +108,7 @@ export function Sidebar() {
             </div>
           </div>
         )}
-        {collapsed && user && (
+        {collapsed && (
           <div className="flex justify-center">
             <div
               className="h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold"
