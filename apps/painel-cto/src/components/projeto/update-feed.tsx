@@ -26,7 +26,7 @@ const TIPO_CONFIG: Record<UpdateTipo, { icon: React.ElementType; color: string; 
 export function UpdateFeed({ projetoId }: { projetoId: string }) {
   const { data: updates, isLoading } = useUpdates(projetoId)
   const createUpdate = useCreateUpdate()
-  const { data: currentUser } = useCurrentUser()
+  const { user: currentUser } = useCurrentUser()
   const [conteudo, setConteudo] = useState('')
   const [tipo, setTipo] = useState<UpdateTipo>('nota')
   const [visivelSocio, setVisivelSocio] = useState(true)
@@ -35,7 +35,7 @@ export function UpdateFeed({ projetoId }: { projetoId: string }) {
     if (!conteudo.trim()) return
     createUpdate.mutate({
       projeto_id: projetoId,
-      autor: currentUser?.nome ?? 'Usuario',
+      autor: currentUser.nome,
       tipo,
       conteudo: conteudo.trim(),
       visivel_socio: visivelSocio,

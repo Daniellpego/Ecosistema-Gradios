@@ -5,11 +5,10 @@ import { Sidebar } from '@/components/layout/sidebar'
 import { useCurrentUser } from '@/hooks/use-current-user'
 
 export default function AuthenticatedLayoutClient({ children }: { children: ReactNode }) {
-  const { data: user } = useCurrentUser()
+  const { user } = useCurrentUser()
 
-  const initials = user?.nome
-    ? user.nome.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()
-    : '?'
+  const initials = user.nome
+    .split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase() || 'U'
 
   return (
     <div className="min-h-screen bg-bg-navy">
@@ -23,18 +22,15 @@ export default function AuthenticatedLayoutClient({ children }: { children: Reac
             </div>
             <div className="flex items-center gap-3">
               <div className="h-2 w-2 rounded-full bg-status-positive" style={{ boxShadow: '0 0 6px rgba(16,185,129,0.5)' }} />
-              {user && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-text-secondary font-medium hidden sm:inline">{user.nome}</span>
-                  <div
-                    className="h-7 w-7 rounded-lg flex items-center justify-center text-[10px] font-bold"
-                    style={{ background: 'linear-gradient(135deg, #00C8F0, #1A6AAA)', color: '#0A1628' }}
-                  >
-                    {initials}
-                  </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-text-secondary font-medium hidden sm:inline">{user.nome}</span>
+                <div
+                  className="h-7 w-7 rounded-lg flex items-center justify-center text-[10px] font-bold"
+                  style={{ background: 'linear-gradient(135deg, #00C8F0, #1A6AAA)', color: '#0A1628' }}
+                >
+                  {initials}
                 </div>
-              )}
-              {!user && <span className="text-xs text-text-muted">Carregando...</span>}
+              </div>
             </div>
           </div>
         </header>
