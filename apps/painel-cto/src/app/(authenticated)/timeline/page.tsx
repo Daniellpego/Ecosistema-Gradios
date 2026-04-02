@@ -33,23 +33,13 @@ function GanttBar({ projeto, minDate, totalDays }: { projeto: Projeto; minDate: 
           className="absolute top-1 h-8 rounded-lg transition-all duration-500"
           style={{ left: `${leftPct}%`, width: `${progressWidth}%`, background: projeto.cor ?? '#00C8F0' }}
         />
-        {/* Label — only visible when there's enough bar to display on */}
-        {projeto.progresso > 0 && (
-          <span
-            className="absolute top-2 text-xs font-bold text-bg-navy px-2"
-            style={{ left: `${leftPct + 0.5}%` }}
-          >
-            {projeto.progresso}%
-          </span>
-        )}
-        {projeto.progresso === 0 && (
-          <span
-            className="absolute top-2 text-xs font-medium text-text-muted px-2"
-            style={{ left: `${leftPct + 0.5}%` }}
-          >
-            0%
-          </span>
-        )}
+        {/* Label */}
+        <span
+          className={`absolute top-2 text-xs px-2 ${projeto.progresso > 0 ? 'font-bold text-bg-navy' : 'font-medium text-text-muted'}`}
+          style={{ left: `${leftPct + 0.5}%` }}
+        >
+          {projeto.progresso}%
+        </span>
       </div>
     </div>
   )
