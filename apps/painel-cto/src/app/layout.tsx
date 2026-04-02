@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import { QueryProvider } from '@/providers/query-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -32,6 +33,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <QueryProvider>
           <TooltipProvider delayDuration={200}>
             {children}
+            <Toaster
+              theme="dark"
+              position="bottom-right"
+              toastOptions={{
+                style: {
+                  background: '#131F35',
+                  border: '1px solid rgba(21,59,95,0.4)',
+                  color: '#F0F4F8',
+                  fontSize: '13px',
+                },
+              }}
+            />
           </TooltipProvider>
         </QueryProvider>
       </body>

@@ -1,19 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Plus } from 'lucide-react'
-import { useCreateProjeto } from '@/hooks/use-projetos'
+import { useCreateProjeto, useUpdateProjeto } from '@/hooks/use-projetos'
 import { CATEGORIA_LABELS } from '@/lib/kanban-config'
-import type { Prioridade, Categoria } from '@/types/database'
+import type { Projeto, Prioridade, Categoria } from '@/types/database'
 
-export function ProjetoFormDialog() {
+interface ProjetoFormDialogProps {
+  projeto?: Projeto
+  trigger?: ReactNode
+}
+
+export function ProjetoFormDialog({ projeto, trigger }: ProjetoFormDialogProps) {
+  const isEdit = !!projeto
   const [open, setOpen] = useState(false)
   const createProjeto = useCreateProjeto()
+  const updateProjeto = useUpdateProjeto()
 
   const [nome, setNome] = useState('')
   const [cliente, setCliente] = useState('')
@@ -22,6 +29,21 @@ export function ProjetoFormDialog() {
   const [categoria, setCategoria] = useState<Categoria>('projeto_avulso')
   const [valor, setValor] = useState('')
   const [dataEntrega, setDataEntrega] = useState('')
+
+  useEffect(() => {
+    if (open && isEdit && projeto) {
+      setNome(projeto.nome)
+      setCliente(projeto.cliente ?? '')
+      setDescricao(projeto.descricao ?? '')
+      setPrioridade(projeto.prioridade)
+      setCategoria(projeto.categoria ?? 'projeto_avulso')
+      setValor(projeto.valor != null ? String(projeto.valor) : '')
+      setDataEntrega(projeto.data_entrega ?? projeto.prazo ?? '')
+    }
+    if (!open && !isEdit) {
+      resetForm()
+    }
+  }, [open, isEdit, projeto])
 
   function resetForm() {
     setNome('')
@@ -37,44 +59,68 @@ export function ProjetoFormDialog() {
     e.preventDefault()
     if (!nome.trim()) return
 
-    createProjeto.mutate(
-      {
-        nome: nome.trim(),
-        titulo: null,
-        deal_id: null,
-        descricao: descricao.trim() || null,
-        cliente: cliente.trim() || null,
-        status: 'backlog',
-        valor: valor ? Number(valor) : null,
-        prazo: null,
-        data_inicio: new Date().toISOString().split('T')[0] ?? null,
-        data_entrega: dataEntrega || null,
-        responsavel: null,
-        tags: null,
-        prioridade,
-        categoria,
-        cor: null,
-        user_id: null,
-      },
-      {
-        onSuccess: () => {
-          resetForm()
-          setOpen(false)
+    if (isEdit && projeto) {
+      updateProjeto.mutate(
+        {
+          id: projeto.id,
+          nome: nome.trim(),
+          descricao: descricao.trim() || null,
+          cliente: cliente.trim() || null,
+          valor: valor ? Number(valor) : null,
+          data_entrega: dataEntrega || null,
+          prioridade,
+          categoria,
         },
-      }
-    )
+        {
+          onSuccess: () => {
+            setOpen(false)
+          },
+        }
+      )
+    } else {
+      createProjeto.mutate(
+        {
+          nome: nome.trim(),
+          titulo: null,
+          deal_id: null,
+          descricao: descricao.trim() || null,
+          cliente: cliente.trim() || null,
+          status: 'backlog',
+          valor: valor ? Number(valor) : null,
+          prazo: null,
+          data_inicio: new Date().toISOString().split('T')[0] ?? null,
+          data_entrega: dataEntrega || null,
+          responsavel: null,
+          tags: null,
+          prioridade,
+          categoria,
+          cor: null,
+          user_id: null,
+        },
+        {
+          onSuccess: () => {
+            resetForm()
+            setOpen(false)
+          },
+        }
+      )
+    }
   }
+
+  const isPending = isEdit ? updateProjeto.isPending : createProjeto.isPending
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">
-          <Plus className="h-3.5 w-3.5" /> Novo Projeto
-        </Button>
+        {trigger ?? (
+          <Button size="sm">
+            <Plus className="h-3.5 w-3.5" /> Novo Projeto
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Novo Projeto</DialogTitle>
+          <DialogTitle>{isEdit ? 'Editar Projeto' : 'Novo Projeto'}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -137,8 +183,10 @@ export function ProjetoFormDialog() {
 
           <div className="flex gap-2 justify-end pt-2">
             <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
-            <Button type="submit" disabled={!nome.trim() || createProjeto.isPending}>
-              {createProjeto.isPending ? 'Criando...' : 'Criar Projeto'}
+            <Button type="submit" disabled={!nome.trim() || isPending}>
+              {isEdit
+                ? (isPending ? 'Salvando...' : 'Salvar Alteracoes')
+                : (isPending ? 'Criando...' : 'Criar Projeto')}
             </Button>
           </div>
         </form>
