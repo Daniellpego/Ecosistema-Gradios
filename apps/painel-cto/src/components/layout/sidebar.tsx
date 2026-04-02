@@ -5,13 +5,14 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  LayoutDashboard, Kanban, FolderOpen, GanttChart, Calendar,
+  LayoutDashboard, Kanban, GanttChart, Calendar,
   FileBarChart, Users, LogOut, Menu, X, ChevronLeft,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/layout/logo'
 import { Separator } from '@/components/ui/separator'
 import { createClient } from '@/lib/supabase/client'
+import { useCurrentUser } from '@/hooks/use-current-user'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -27,12 +28,17 @@ export function Sidebar() {
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { data: user } = useCurrentUser()
 
   async function handleLogout() {
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push('/login')
   }
+
+  const initials = user?.nome
+    ? user.nome.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()
+    : '?'
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
@@ -64,14 +70,22 @@ export function Sidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-3 py-2.5 rounded-lg text-sm transition-all duration-200 relative group',
+                'flex items-center gap-3 py-2.5 rounded-xl text-sm transition-all duration-200 relative group',
+                collapsed ? 'justify-center px-2' : '',
                 isActive
-                  ? 'pl-2 pr-3 bg-brand-cyan/10 text-brand-cyan font-bold border-l-4 border-brand-cyan shadow-[inset_4px_0_10px_-4px_rgba(0,200,240,0.15)]'
+                  ? 'bg-brand-cyan/10 text-brand-cyan font-bold shadow-[inset_0_0_20px_-8px_rgba(0,200,240,0.15)]'
                   : 'px-3 text-text-muted hover:bg-bg-hover hover:text-text-primary font-medium'
               )}
+              style={isActive ? { border: '1px solid rgba(0,200,240,0.15)' } : undefined}
             >
-              <Icon className={cn('h-5 w-5 shrink-0', isActive && 'text-brand-cyan')} />
+              {isActive && !collapsed && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 rounded-r-full bg-brand-cyan" />
+              )}
+              <Icon className={cn('h-5 w-5 shrink-0', isActive && 'text-brand-cyan', !collapsed && isActive && 'ml-2')} />
               {!collapsed && <span>{item.label}</span>}
+              {collapsed && isActive && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-r-full bg-brand-cyan" />
+              )}
             </Link>
           )
         })}
@@ -79,10 +93,39 @@ export function Sidebar() {
 
       <Separator />
 
-      <div className="p-4">
+      {/* User area */}
+      <div className="p-4 space-y-3">
+        {!collapsed && user && (
+          <div className="flex items-center gap-3 px-2">
+            <div
+              className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold"
+              style={{ background: 'linear-gradient(135deg, #00C8F0, #1A6AAA)', color: '#0A1628' }}
+            >
+              {initials}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-text-primary truncate">{user.nome}</p>
+              <p className="text-[10px] text-text-muted truncate">{user.email}</p>
+            </div>
+          </div>
+        )}
+        {collapsed && user && (
+          <div className="flex justify-center">
+            <div
+              className="h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold"
+              style={{ background: 'linear-gradient(135deg, #00C8F0, #1A6AAA)', color: '#0A1628' }}
+              title={user.nome}
+            >
+              {initials}
+            </div>
+          </div>
+        )}
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:bg-bg-hover hover:text-status-negative transition-colors"
+          className={cn(
+            'flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm text-text-secondary hover:bg-status-negative/10 hover:text-status-negative transition-colors',
+            collapsed && 'justify-center'
+          )}
         >
           <LogOut className="h-5 w-5 shrink-0" />
           {!collapsed && <span>Sair</span>}
@@ -96,7 +139,7 @@ export function Sidebar() {
       <button
         onClick={() => setMobileOpen(true)}
         aria-label="Abrir menu"
-        className="lg:hidden fixed top-4 left-4 z-50 h-10 w-10 flex items-center justify-center rounded-lg bg-bg-card border border-brand-blue-deep/40 text-text-primary shadow-sm"
+        className="lg:hidden fixed top-4 left-4 z-50 h-10 w-10 flex items-center justify-center rounded-xl bg-bg-card border border-brand-blue-deep/40 text-text-primary shadow-lg"
       >
         <Menu className="h-5 w-5" />
       </button>
@@ -133,9 +176,10 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          'hidden lg:flex flex-col fixed left-0 top-0 bottom-0 bg-bg-card/70 backdrop-blur-xl border-r border-brand-blue-deep/30 transition-all duration-300 z-30',
+          'hidden lg:flex flex-col fixed left-0 top-0 bottom-0 backdrop-blur-xl border-r border-brand-blue-deep/30 transition-all duration-300 z-30',
           collapsed ? 'w-[72px]' : 'w-[260px]'
         )}
+        style={{ background: 'rgba(19,31,53,0.85)' }}
       >
         {sidebarContent}
       </aside>

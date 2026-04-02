@@ -44,8 +44,9 @@
 @layer components {
   /* ── Cards ── */
   .card-glass {
-    @apply bg-bg-card border border-brand-blue-deep/30 p-5 shadow-sm;
-    border-radius: 14px;
+    @apply bg-bg-card/80 backdrop-blur-sm p-5 shadow-sm;
+    border: 1px solid rgba(21, 59, 95, 0.35);
+    border-radius: 16px;
   }
 
   .card-glass-hover {
@@ -56,7 +57,22 @@
   .card-glass-hover:hover {
     transform: translateY(-2px);
     border-color: rgba(0, 200, 240, 0.25);
-    box-shadow: 0 8px 24px rgba(0, 200, 240, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 200, 240, 0.08), 0 0 0 1px rgba(0, 200, 240, 0.1);
+  }
+
+  /* ── Card with glow accent ── */
+  .card-glow {
+    @apply card-glass relative overflow-hidden;
+  }
+
+  .card-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 200, 240, 0.4), transparent);
   }
 
   /* ── Gradients ── */
@@ -71,6 +87,11 @@
   .text-gradient {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #00C8F0, #1A6AAA);
+  }
+
+  /* ── Section header ── */
+  .section-header-icon {
+    @apply h-7 w-7 rounded-lg flex items-center justify-center shrink-0;
   }
 
   /* ── Badges ── */
@@ -106,17 +127,20 @@
 
   /* ── Kanban ── */
   .kanban-column {
-    @apply bg-bg-navy/50 rounded-xl p-3 min-w-[280px] max-w-[320px] flex flex-col gap-2;
-    border: 1px solid rgba(21, 59, 95, 0.4);
+    @apply rounded-2xl p-3 min-w-[280px] max-w-[320px] flex flex-col gap-2;
+    background: rgba(10, 22, 40, 0.6);
+    border: 1px solid rgba(21, 59, 95, 0.35);
+    backdrop-filter: blur(4px);
   }
 
   .kanban-card {
-    @apply card-glass cursor-grab active:cursor-grabbing transition-all duration-150;
+    @apply card-glass cursor-grab active:cursor-grabbing transition-all duration-150 relative overflow-hidden;
   }
 
   .kanban-card:hover {
     border-color: rgba(0, 200, 240, 0.3);
-    box-shadow: 0 4px 16px rgba(0, 200, 240, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 200, 240, 0.08);
+    transform: translateY(-1px);
   }
 
   .kanban-card.dragging {
@@ -126,12 +150,12 @@
 
   /* ── Tables ── */
   .table-header {
-    @apply bg-bg-card text-text-secondary text-xs font-semibold uppercase tracking-wider;
+    @apply bg-bg-card/60 text-text-secondary text-xs font-semibold uppercase tracking-wider;
   }
 
   .table-row {
     @apply border-b transition-colors;
-    border-color: rgba(21, 59, 95, 0.3);
+    border-color: rgba(21, 59, 95, 0.25);
   }
 
   .table-row:hover {
@@ -151,9 +175,10 @@
 
   /* ── Tooltip ── */
   .tooltip-brand {
-    @apply text-sm text-text-primary bg-bg-card shadow-xl;
-    border: 1px solid rgba(21, 59, 95, 0.5);
-    border-radius: 8px;
+    @apply text-sm text-text-primary shadow-xl;
+    background: #0E1B30;
+    border: 1px solid rgba(21, 59, 95, 0.6);
+    border-radius: 10px;
     padding: 8px 12px;
   }
 
@@ -169,6 +194,31 @@
 
   /* ── Priority indicator ── */
   .priority-bar {
-    @apply absolute left-0 top-0 bottom-0 w-1 rounded-l-card;
+    @apply absolute left-0 top-0 bottom-0 w-1 rounded-l-[16px];
+  }
+
+  /* ── Glow accents ── */
+  .glow-cyan {
+    box-shadow: 0 0 20px rgba(0, 200, 240, 0.15), 0 0 60px rgba(0, 200, 240, 0.05);
+  }
+
+  .glow-line-top {
+    position: relative;
+  }
+
+  .glow-line-top::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 200, 240, 0.5), transparent);
+  }
+
+  /* ── Input dark ── */
+  .input-dark {
+    @apply w-full rounded-xl bg-bg-input border border-brand-blue-deep/30 px-3 py-2 text-sm text-text-primary;
+    @apply placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-cyan/30 focus:border-brand-cyan/50;
   }
 }

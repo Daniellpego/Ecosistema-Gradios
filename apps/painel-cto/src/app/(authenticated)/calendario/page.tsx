@@ -1,12 +1,11 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { ChevronLeft, ChevronRight, Milestone, ListTodo, Calendar as CalIcon } from 'lucide-react'
-import { PageTransition, StaggerContainer, StaggerItem } from '@/components/motion'
+import { ChevronLeft, ChevronRight, Milestone, Calendar as CalIcon } from 'lucide-react'
+import { PageTransition, StaggerItem } from '@/components/motion'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from '@/lib/utils'
+import { cn, normalizeColor } from '@/lib/utils'
 import { useAllMilestones } from '@/hooks/use-milestones'
 
 const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
@@ -38,7 +37,7 @@ export default function CalendarioPage() {
       title: m.titulo,
       date: m.data_prevista,
       type: 'milestone' as const,
-      color: m.projetos?.cor ?? '#00C8F0',
+      color: normalizeColor(m.projetos?.cor),
       project: m.projetos?.titulo ?? undefined,
     }))
   }, [milestones])
@@ -47,18 +46,15 @@ export default function CalendarioPage() {
     const firstDay = new Date(year, month, 1).getDay()
     const days: { date: number; month: number; isCurrentMonth: boolean }[] = []
 
-    // Previous month padding
     const prevLastDay = new Date(year, month, 0).getDate()
     for (let i = firstDay - 1; i >= 0; i--) {
       days.push({ date: prevLastDay - i, month: month - 1, isCurrentMonth: false })
     }
 
-    // Current month
     for (let d = 1; d <= lastDay; d++) {
       days.push({ date: d, month, isCurrentMonth: true })
     }
 
-    // Next month padding
     const remaining = 42 - days.length
     for (let d = 1; d <= remaining; d++) {
       days.push({ date: d, month: month + 1, isCurrentMonth: false })
@@ -75,97 +71,112 @@ export default function CalendarioPage() {
     return events.filter((e) => e.date === dateStr)
   }
 
-  function prevMonth() {
-    setCurrentDate(new Date(year, month - 1, 1))
-  }
-
-  function nextMonth() {
-    setCurrentDate(new Date(year, month + 1, 1))
-  }
-
   if (isLoading) {
-    return <PageTransition><Skeleton className="h-8 w-48 mb-4" /><Skeleton className="h-[600px] w-full" /></PageTransition>
+    return (
+      <PageTransition>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-8 w-48 rounded-xl" />
+            <Skeleton className="h-9 w-48 rounded-xl" />
+          </div>
+          <Skeleton className="h-[600px] w-full rounded-2xl" />
+        </div>
+      </PageTransition>
+    )
   }
 
   return (
     <PageTransition>
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-text-primary">Calendario</h1>
+          <div className="flex items-center gap-3">
+            <div className="section-header-icon" style={{ background: 'rgba(0,200,240,0.12)', border: '1px solid rgba(0,200,240,0.2)' }}>
+              <CalIcon className="h-4 w-4 text-brand-cyan" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-text-primary">Calendario</h1>
+              <p className="text-xs text-text-muted">{events.length} evento{events.length !== 1 ? 's' : ''} neste mes</p>
+            </div>
+          </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={prevMonth}><ChevronLeft className="h-4 w-4" /></Button>
-            <span className="text-sm font-semibold text-text-primary min-w-[140px] text-center">
+            <Button variant="ghost" size="icon" onClick={() => setCurrentDate(new Date(year, month - 1, 1))} className="h-8 w-8 rounded-lg">
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-sm font-bold text-text-primary min-w-[160px] text-center px-3 py-1.5 rounded-lg" style={{ background: 'rgba(21,59,95,0.3)' }}>
               {MONTHS[month]} {year}
             </span>
-            <Button variant="ghost" size="icon" onClick={nextMonth}><ChevronRight className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="icon" onClick={() => setCurrentDate(new Date(year, month + 1, 1))} className="h-8 w-8 rounded-lg">
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
         </div>
 
-        <div className="card-glass !p-0 overflow-hidden">
-          {/* Weekday headers */}
-          <div className="grid grid-cols-7 border-b border-brand-blue-deep/20">
-            {WEEKDAYS.map((day) => (
-              <div key={day} className="text-center text-xs font-semibold text-text-muted py-3">
-                {day}
-              </div>
-            ))}
-          </div>
-
-          {/* Days grid */}
-          <div className="grid grid-cols-7">
-            {calendarDays.map((day, i) => {
-              const dayEvents = day.isCurrentMonth ? getEventsForDay(day.date) : []
-              return (
-                <div
-                  key={i}
-                  className={cn(
-                    'min-h-[100px] border-b border-r border-brand-blue-deep/15 p-1.5',
-                    !day.isCurrentMonth && 'bg-bg-navy/50',
-                    isToday(day.date, day.month) && 'bg-brand-cyan/5'
-                  )}
-                >
-                  <span className={cn(
-                    'text-xs font-medium inline-flex h-6 w-6 items-center justify-center rounded-full',
-                    !day.isCurrentMonth && 'text-text-muted/40',
-                    day.isCurrentMonth && 'text-text-secondary',
-                    isToday(day.date, day.month) && 'bg-brand-cyan text-bg-navy font-bold'
-                  )}>
-                    {day.date}
-                  </span>
-                  <div className="mt-1 space-y-0.5">
-                    {dayEvents.slice(0, 3).map((evt) => (
-                      <div
-                        key={evt.id}
-                        className="text-[10px] px-1.5 py-0.5 rounded truncate font-medium"
-                        style={{ background: `${evt.color}20`, color: evt.color }}
-                        title={`${evt.title} - ${evt.project ?? ''}`}
-                      >
-                        {evt.title}
-                      </div>
-                    ))}
-                    {dayEvents.length > 3 && (
-                      <span className="text-[10px] text-text-muted px-1.5">+{dayEvents.length - 3}</span>
-                    )}
-                  </div>
+        <StaggerItem>
+          <div className="card-glass !p-0 overflow-hidden">
+            {/* Weekday headers */}
+            <div className="grid grid-cols-7 border-b border-brand-blue-deep/20">
+              {WEEKDAYS.map((day) => (
+                <div key={day} className="text-center text-xs font-bold uppercase tracking-wider text-text-muted py-3">
+                  {day}
                 </div>
-              )
-            })}
+              ))}
+            </div>
+
+            {/* Days grid */}
+            <div className="grid grid-cols-7">
+              {calendarDays.map((day, i) => {
+                const dayEvents = day.isCurrentMonth ? getEventsForDay(day.date) : []
+                const todayMatch = isToday(day.date, day.month)
+                return (
+                  <div
+                    key={i}
+                    className={cn(
+                      'min-h-[100px] border-b border-r border-brand-blue-deep/12 p-1.5 transition-colors hover:bg-bg-hover/20',
+                      !day.isCurrentMonth && 'bg-bg-navy/40',
+                      todayMatch && 'bg-brand-cyan/[0.04]'
+                    )}
+                  >
+                    <span className={cn(
+                      'text-xs font-medium inline-flex h-6 w-6 items-center justify-center rounded-full',
+                      !day.isCurrentMonth && 'text-text-muted/30',
+                      day.isCurrentMonth && 'text-text-secondary',
+                      todayMatch && 'bg-brand-cyan text-bg-navy font-bold shadow-sm'
+                    )}
+                    style={todayMatch ? { boxShadow: '0 0 8px rgba(0,200,240,0.4)' } : undefined}
+                    >
+                      {day.date}
+                    </span>
+                    <div className="mt-1 space-y-0.5">
+                      {dayEvents.slice(0, 3).map((evt) => (
+                        <div
+                          key={evt.id}
+                          className="text-[10px] px-1.5 py-0.5 rounded-md truncate font-medium cursor-default"
+                          style={{ background: `${evt.color}18`, color: evt.color, border: `1px solid ${evt.color}20` }}
+                          title={`${evt.title} - ${evt.project ?? ''}`}
+                        >
+                          {evt.title}
+                        </div>
+                      ))}
+                      {dayEvents.length > 3 && (
+                        <span className="text-[10px] text-text-muted px-1.5 font-medium">+{dayEvents.length - 3}</span>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
-        </div>
+        </StaggerItem>
 
         {/* Legend */}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="h-2.5 w-2.5 rounded-full bg-brand-cyan" style={{ boxShadow: '0 0 6px rgba(0,200,240,0.4)' }} />
+            <span className="text-xs text-text-muted font-medium">Hoje</span>
+          </div>
+          <div className="flex items-center gap-2">
             <Milestone className="h-3.5 w-3.5 text-brand-cyan" />
-            <span className="text-xs text-text-muted">Milestones</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <ListTodo className="h-3.5 w-3.5 text-status-warning" />
-            <span className="text-xs text-text-muted">Tarefas</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <CalIcon className="h-3.5 w-3.5 text-text-muted" />
-            <span className="text-xs text-text-muted">Google Calendar</span>
+            <span className="text-xs text-text-muted font-medium">Milestones</span>
           </div>
         </div>
       </div>

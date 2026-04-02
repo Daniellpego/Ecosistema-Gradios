@@ -1,6 +1,7 @@
 'use client'
 
-import { Users, Download, FileText, Eye, MessageSquare, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react'
+import { Users, Download, FileText, Eye, MessageSquare, TrendingUp, AlertTriangle, CheckCircle2, Building2, ArrowUpRight } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { PageTransition, StaggerContainer, StaggerItem } from '@/components/motion'
 import { StatusBadge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -11,22 +12,14 @@ import { getProjetoTitulo, getProjetoEntrega } from '@/types/database'
 import { usePortalUpdates } from '@/hooks/use-updates'
 import { usePresentations } from '@/hooks/use-relatorios'
 import { formatCurrency, formatDate, formatRelative } from '@/lib/format'
-import { cn } from '@/lib/utils'
+import { cn, normalizeColor } from '@/lib/utils'
 
-const UPDATE_ICONS: Record<string, React.ElementType> = {
-  nota: MessageSquare,
-  status_change: TrendingUp,
-  milestone: CheckCircle2,
-  bloqueio: AlertTriangle,
-  entrega: CheckCircle2,
-}
-
-const UPDATE_COLORS: Record<string, string> = {
-  nota: '#00C8F0',
-  status_change: '#94A3B8',
-  milestone: '#F59E0B',
-  bloqueio: '#EF4444',
-  entrega: '#10B981',
+const UPDATE_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
+  nota: { icon: MessageSquare, color: '#00C8F0' },
+  status_change: { icon: TrendingUp, color: '#94A3B8' },
+  milestone: { icon: CheckCircle2, color: '#F59E0B' },
+  bloqueio: { icon: AlertTriangle, color: '#EF4444' },
+  entrega: { icon: CheckCircle2, color: '#10B981' },
 }
 
 export default function PortalPage() {
@@ -39,10 +32,13 @@ export default function PortalPage() {
   if (isLoading) {
     return (
       <PageTransition>
-        <div className="space-y-4">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-64 w-full" />
-          <Skeleton className="h-48 w-full" />
+        <div className="space-y-5">
+          <Skeleton className="h-16 w-80 rounded-xl" />
+          <Skeleton className="h-72 w-full rounded-2xl" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Skeleton className="h-64 rounded-2xl" />
+            <Skeleton className="h-64 rounded-2xl" />
+          </div>
         </div>
       </PageTransition>
     )
@@ -54,112 +50,168 @@ export default function PortalPage() {
       return (order[a.status] ?? 9) - (order[b.status] ?? 9)
     })
 
+  const totalValor = activeProjetos.reduce((s, p) => s + (p.valor ?? 0), 0)
+  const avgProgresso = activeProjetos.length > 0
+    ? Math.round(activeProjetos.reduce((s, p) => s + p.progresso, 0) / activeProjetos.length)
+    : 0
+
   return (
     <PageTransition>
       <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center">
-            <Users className="h-5 w-5 text-brand-cyan" />
+        {/* Header */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div
+              className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0"
+              style={{ background: 'linear-gradient(135deg, rgba(0,200,240,0.15), rgba(26,106,170,0.1))', border: '1px solid rgba(0,200,240,0.2)' }}
+            >
+              <Users className="h-6 w-6 text-brand-cyan" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-text-primary tracking-tight">Portal dos Socios</h1>
+              <p className="text-sm text-text-secondary">Visao macro de projetos e operacoes</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-text-primary">Portal dos Socios</h1>
-            <p className="text-xs text-text-muted">Visao macro de projetos e operacoes</p>
+          {/* Summary pills */}
+          <div className="hidden sm:flex items-center gap-3">
+            <div className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: 'rgba(0,200,240,0.1)', color: '#00C8F0' }}>
+              {activeProjetos.length} projetos
+            </div>
+            <div className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: 'rgba(16,185,129,0.1)', color: '#10B981' }}>
+              {formatCurrency(totalValor)}
+            </div>
+            <div className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B' }}>
+              {avgProgresso}% medio
+            </div>
           </div>
         </div>
 
         {/* Projects Table */}
-        <div className="card-glass !p-0 overflow-hidden">
-          <div className="px-5 py-3 border-b border-brand-blue-deep/20">
-            <h3 className="text-sm font-semibold text-text-primary">Projetos</h3>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="table-header">
-                  <th className="text-left px-5 py-3">Projeto</th>
-                  <th className="text-left px-3 py-3">Cliente</th>
-                  <th className="text-left px-3 py-3">Status</th>
-                  <th className="text-left px-3 py-3">Progresso</th>
-                  <th className="text-left px-3 py-3">Prazo</th>
-                  <th className="text-right px-5 py-3">Valor</th>
-                </tr>
-              </thead>
-              <tbody>
-                {activeProjetos.map((p) => (
-                  <tr key={p.id} className="table-row">
-                    <td className="px-5 py-3">
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full shrink-0" style={{ background: p.cor ?? '#00C8F0' }} />
-                        <span className="text-sm font-medium text-text-primary">{getProjetoTitulo(p)}</span>
-                      </div>
-                    </td>
-                    <td className="px-3 py-3 text-sm text-text-secondary">{p.cliente ?? '-'}</td>
-                    <td className="px-3 py-3"><StatusBadge status={p.status} /></td>
-                    <td className="px-3 py-3"><Progress value={p.progresso} showLabel className="w-24" /></td>
-                    <td className="px-3 py-3 text-sm text-text-secondary">{getProjetoEntrega(p) ? formatDate(getProjetoEntrega(p)!) : '-'}</td>
-                    <td className="px-5 py-3 text-sm text-text-primary text-right font-medium">{p.valor ? formatCurrency(p.valor) : '-'}</td>
+        <StaggerItem>
+          <div className="card-glass !p-0 overflow-hidden">
+            <div className="px-5 py-3.5 border-b border-brand-blue-deep/20 flex items-center gap-2">
+              <Building2 className="h-4 w-4 text-brand-cyan" />
+              <h3 className="text-sm font-semibold text-text-primary">Projetos Ativos</h3>
+              <span className="text-xs text-text-muted ml-auto">{activeProjetos.length} projetos</span>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="table-header">
+                    <th className="text-left px-5 py-3">Projeto</th>
+                    <th className="text-left px-3 py-3">Cliente</th>
+                    <th className="text-left px-3 py-3">Status</th>
+                    <th className="text-left px-3 py-3 w-32">Progresso</th>
+                    <th className="text-left px-3 py-3">Prazo</th>
+                    <th className="text-right px-5 py-3">Valor</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {activeProjetos.map((p) => (
+                    <tr key={p.id} className="table-row group">
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-2.5">
+                          <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: normalizeColor(p.cor), boxShadow: `0 0 6px ${normalizeColor(p.cor)}40` }} />
+                          <span className="text-sm font-semibold text-text-primary group-hover:text-brand-cyan transition-colors">{getProjetoTitulo(p)}</span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-3.5 text-sm text-text-secondary">{p.cliente ?? '-'}</td>
+                      <td className="px-3 py-3.5"><StatusBadge status={p.status} /></td>
+                      <td className="px-3 py-3.5"><Progress value={p.progresso} showLabel className="w-28" /></td>
+                      <td className="px-3 py-3.5 text-sm text-text-secondary">{getProjetoEntrega(p) ? formatDate(getProjetoEntrega(p)!) : '-'}</td>
+                      <td className="px-5 py-3.5 text-sm text-text-primary text-right font-semibold">{p.valor ? formatCurrency(p.valor) : '-'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </StaggerItem>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Updates Feed */}
-          <div className="card-glass">
-            <div className="flex items-center gap-2 mb-4">
-              <Eye className="h-4 w-4 text-brand-cyan" />
-              <h3 className="text-sm font-semibold text-text-primary">Atualizacoes</h3>
-            </div>
-            <div className="space-y-3 max-h-[400px] overflow-y-auto">
-              {updates?.map((u) => {
-                const Icon = UPDATE_ICONS[u.tipo] ?? MessageSquare
-                const color = UPDATE_COLORS[u.tipo] ?? '#00C8F0'
-                return (
-                  <div key={u.id} className="flex items-start gap-3 py-2 border-b border-brand-blue-deep/15 last:border-0">
-                    <div className="h-6 w-6 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${color}15` }}>
-                      <Icon className="h-3.5 w-3.5" style={{ color }} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm text-text-primary">{u.conteudo}</p>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xs text-brand-cyan">{u.projeto_titulo}</span>
-                        <span className="text-xs text-text-muted">&middot; {formatRelative(u.created_at)}</span>
+          <StaggerItem>
+            <div className="card-glass h-full">
+              <div className="flex items-center gap-2 mb-5">
+                <div className="section-header-icon" style={{ background: 'rgba(0,200,240,0.12)', border: '1px solid rgba(0,200,240,0.2)' }}>
+                  <Eye className="h-3.5 w-3.5 text-brand-cyan" />
+                </div>
+                <h3 className="text-sm font-semibold text-text-primary">Atualizacoes</h3>
+                <span className="ml-auto text-xs text-text-muted">{updates?.length ?? 0} recentes</span>
+              </div>
+              <div className="space-y-2 max-h-[400px] overflow-y-auto">
+                {updates?.map((u) => {
+                  const cfg = UPDATE_ICONS[u.tipo] ?? { icon: MessageSquare, color: '#00C8F0' }
+                  const Icon = cfg.icon
+                  return (
+                    <motion.div
+                      key={u.id}
+                      whileHover={{ x: 2 }}
+                      className="flex items-start gap-3 py-2.5 px-3 rounded-xl transition-colors"
+                      style={{ background: 'rgba(21,59,95,0.12)', border: '1px solid rgba(21,59,95,0.2)' }}
+                    >
+                      <div className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${cfg.color}15`, border: `1px solid ${cfg.color}25` }}>
+                        <Icon className="h-3.5 w-3.5" style={{ color: cfg.color }} />
                       </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm text-text-primary leading-snug">{u.conteudo}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-xs font-medium flex items-center gap-0.5" style={{ color: '#00C8F0' }}>
+                            <ArrowUpRight className="h-3 w-3" />
+                            {u.projeto_titulo}
+                          </span>
+                          <span className="text-xs text-text-muted">&middot; {formatRelative(u.created_at)}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )
+                })}
+                {(!updates || updates.length === 0) && (
+                  <div className="flex flex-col items-center py-10 text-center">
+                    <div className="h-10 w-10 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(0,200,240,0.08)', border: '1px dashed rgba(0,200,240,0.25)' }}>
+                      <Eye className="h-5 w-5 text-brand-cyan opacity-50" />
                     </div>
+                    <p className="text-sm text-text-secondary font-medium">Sem atualizacoes</p>
+                    <p className="text-xs text-text-muted mt-0.5">As atualizacoes visiveis para socios aparecerao aqui</p>
                   </div>
-                )
-              })}
-              {(!updates || updates.length === 0) && (
-                <p className="text-xs text-text-muted text-center py-4">Nenhuma atualizacao</p>
-              )}
+                )}
+              </div>
             </div>
-          </div>
+          </StaggerItem>
 
           {/* Reports */}
-          <div className="card-glass">
-            <div className="flex items-center gap-2 mb-4">
-              <FileText className="h-4 w-4 text-brand-cyan" />
-              <h3 className="text-sm font-semibold text-text-primary">Relatorios</h3>
-            </div>
-            <div className="space-y-3">
-              {presentations?.slice(0, 5).map((p) => (
-                <div key={p.id} className="flex items-center justify-between py-2 border-b border-brand-blue-deep/15 last:border-0">
-                  <div>
-                    <p className="text-sm font-medium text-text-primary">{p.titulo}</p>
-                    <p className="text-xs text-text-muted">{formatDate(p.created_at)}</p>
-                  </div>
-                  <Button size="sm" variant="ghost" asChild>
-                    <a href={p.storage_url} download><Download className="h-3 w-3" /></a>
-                  </Button>
+          <StaggerItem>
+            <div className="card-glass h-full">
+              <div className="flex items-center gap-2 mb-5">
+                <div className="section-header-icon" style={{ background: 'rgba(26,106,170,0.15)', border: '1px solid rgba(26,106,170,0.25)' }}>
+                  <FileText className="h-3.5 w-3.5 text-brand-blue" />
                 </div>
-              ))}
-              {(!presentations || presentations.length === 0) && (
-                <p className="text-xs text-text-muted text-center py-4">Nenhum relatorio disponivel</p>
-              )}
+                <h3 className="text-sm font-semibold text-text-primary">Relatorios</h3>
+              </div>
+              <div className="space-y-2">
+                {presentations?.slice(0, 5).map((p) => (
+                  <div key={p.id} className="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-bg-hover/50 transition-colors" style={{ border: '1px solid rgba(21,59,95,0.15)' }}>
+                    <div>
+                      <p className="text-sm font-medium text-text-primary">{p.titulo}</p>
+                      <p className="text-xs text-text-muted">{formatDate(p.created_at)}</p>
+                    </div>
+                    <Button size="sm" variant="ghost" asChild>
+                      <a href={p.storage_url} download><Download className="h-3.5 w-3.5" /></a>
+                    </Button>
+                  </div>
+                ))}
+                {(!presentations || presentations.length === 0) && (
+                  <div className="flex flex-col items-center py-10 text-center">
+                    <div className="h-10 w-10 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(26,106,170,0.1)', border: '1px dashed rgba(26,106,170,0.25)' }}>
+                      <FileText className="h-5 w-5 text-brand-blue opacity-50" />
+                    </div>
+                    <p className="text-sm text-text-secondary font-medium">Nenhum relatorio</p>
+                    <p className="text-xs text-text-muted mt-0.5">Relatorios gerados aparecerão aqui</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </StaggerItem>
         </div>
       </div>
     </PageTransition>
