@@ -1,17 +1,21 @@
 'use client'
 
-import { use } from 'react'
+import { use, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Calendar, DollarSign, User, Tag, Clock } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { ArrowLeft, Calendar, DollarSign, User, Tag, Clock, Pencil, Trash2 } from 'lucide-react'
 import { PageTransition, StaggerItem } from '@/components/motion'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { StatusBadge, PrioridadeBadge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@/components/ui/button'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { ProjetoFormDialog } from '@/components/projeto/projeto-form-dialog'
 import { TaskBoard } from '@/components/projeto/task-board'
 import { MilestoneList } from '@/components/projeto/milestone-list'
 import { UpdateFeed } from '@/components/projeto/update-feed'
-import { useProjeto } from '@/hooks/use-projetos'
+import { useProjeto, useDeleteProjeto } from '@/hooks/use-projetos'
 import { getProjetoTitulo, getProjetoEntrega } from '@/types/database'
 import { formatCurrency, formatDate, daysUntil } from '@/lib/format'
 import { normalizeColor, cn } from '@/lib/utils'
@@ -19,6 +23,17 @@ import { normalizeColor, cn } from '@/lib/utils'
 export default function ProjetoDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const { data: projeto, isLoading } = useProjeto(id)
+  const deleteProjeto = useDeleteProjeto()
+  const router = useRouter()
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false)
+
+  function handleDeleteConfirm() {
+    deleteProjeto.mutate(id, {
+      onSuccess: () => {
+        router.push('/kanban')
+      },
+    })
+  }
 
   if (isLoading || !projeto) {
     return (
@@ -41,10 +56,39 @@ export default function ProjetoDetailPage({ params }: { params: Promise<{ id: st
   return (
     <PageTransition>
       <div className="space-y-6">
-        {/* Back link */}
-        <Link href="/kanban" className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-brand-cyan transition-colors group">
-          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" /> Voltar ao Kanban
-        </Link>
+        {/* Back link + actions */}
+        <div className="flex items-center justify-between gap-3">
+          <Link href="/kanban" className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-brand-cyan transition-colors group">
+            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" /> Voltar ao Kanban
+          </Link>
+          <div className="flex items-center gap-2">
+            <ProjetoFormDialog
+              projeto={projeto}
+              trigger={
+                <Button size="sm" variant="secondary">
+                  <Pencil className="h-3.5 w-3.5" /> Editar
+                </Button>
+              }
+            />
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={() => setConfirmDeleteOpen(true)}
+            >
+              <Trash2 className="h-3.5 w-3.5" /> Excluir
+            </Button>
+          </div>
+        </div>
+
+        <ConfirmDialog
+          open={confirmDeleteOpen}
+          onOpenChange={setConfirmDeleteOpen}
+          title="Excluir Projeto"
+          description={`Tem certeza que deseja excluir "${getProjetoTitulo(projeto)}"? Todas as tarefas e milestones serao removidos permanentemente.`}
+          confirmLabel="Excluir"
+          onConfirm={handleDeleteConfirm}
+          variant="danger"
+        />
 
         {/* Project header card */}
         <StaggerItem>

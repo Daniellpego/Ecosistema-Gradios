@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createClient } from '@/lib/supabase/client'
 import type { Tarefa, TarefaInsert } from '@/types/database'
+import { toast } from 'sonner'
 
 export function useTarefas(projetoId: string) {
   const supabase = createClient()
@@ -56,6 +57,10 @@ export function useCreateTarefa() {
       qc.invalidateQueries({ queryKey: ['tarefas', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['tarefa-count', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['projetos'] })
+      toast.success('Tarefa criada com sucesso')
+    },
+    onError: () => {
+      toast.error('Erro ao criar tarefa')
     },
   })
 }
@@ -78,6 +83,10 @@ export function useUpdateTarefa() {
       qc.invalidateQueries({ queryKey: ['tarefas', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['tarefa-count', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['projetos'] })
+      toast.success('Tarefa atualizada')
+    },
+    onError: () => {
+      toast.error('Erro ao atualizar tarefa')
     },
   })
 }
@@ -95,6 +104,10 @@ export function useDeleteTarefa() {
       qc.invalidateQueries({ queryKey: ['tarefas', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['tarefa-count', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['projetos'] })
+      toast.success('Tarefa removida')
+    },
+    onError: () => {
+      toast.error('Erro ao remover tarefa')
     },
   })
 }

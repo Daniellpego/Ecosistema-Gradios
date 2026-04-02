@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createClient } from '@/lib/supabase/client'
 import type { ProjectMilestone, MilestoneInsert, MilestoneWithProjeto } from '@/types/database'
+import { toast } from 'sonner'
 
 export function useMilestones(projetoId: string) {
   const supabase = createClient()
@@ -59,6 +60,10 @@ export function useCreateMilestone() {
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ['milestones', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['milestones-all'] })
+      toast.success('Milestone criado com sucesso')
+    },
+    onError: () => {
+      toast.error('Erro ao criar milestone')
     },
   })
 }
@@ -80,6 +85,10 @@ export function useUpdateMilestone() {
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ['milestones', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['milestones-all'] })
+      toast.success('Milestone atualizado')
+    },
+    onError: () => {
+      toast.error('Erro ao atualizar milestone')
     },
   })
 }
@@ -96,6 +105,10 @@ export function useDeleteMilestone() {
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ['milestones', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['milestones-all'] })
+      toast.success('Milestone removido')
+    },
+    onError: () => {
+      toast.error('Erro ao remover milestone')
     },
   })
 }

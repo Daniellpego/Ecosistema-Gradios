@@ -1,6 +1,7 @@
 'use client'
 
-import { Users, Download, FileText, Eye, MessageSquare, TrendingUp, AlertTriangle, CheckCircle2, Building2, ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
+import { Users, Download, FileText, Eye, MessageSquare, TrendingUp, AlertTriangle, CheckCircle2, Building2, ArrowUpRight, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { PageTransition, StaggerContainer, StaggerItem } from '@/components/motion'
 import { StatusBadge } from '@/components/ui/badge'
@@ -108,7 +109,7 @@ export default function PortalPage() {
                 </thead>
                 <tbody>
                   {activeProjetos.map((p) => (
-                    <tr key={p.id} className="table-row group">
+                    <tr key={p.id} className="table-row group cursor-pointer" onClick={() => window.location.href = `/projetos/${p.id}`}>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2.5">
                           <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: normalizeColor(p.cor), boxShadow: `0 0 6px ${normalizeColor(p.cor)}40` }} />
@@ -119,7 +120,12 @@ export default function PortalPage() {
                       <td className="px-3 py-3.5"><StatusBadge status={p.status} /></td>
                       <td className="px-3 py-3.5"><Progress value={p.progresso} showLabel className="w-28" /></td>
                       <td className="px-3 py-3.5 text-sm text-text-secondary">{getProjetoEntrega(p) ? formatDate(getProjetoEntrega(p)!) : '-'}</td>
-                      <td className="px-5 py-3.5 text-sm text-text-primary text-right font-semibold">{p.valor ? formatCurrency(p.valor) : '-'}</td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="text-sm text-text-primary font-semibold">{p.valor ? formatCurrency(p.valor) : '-'}</span>
+                          <ExternalLink className="h-3.5 w-3.5 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

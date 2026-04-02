@@ -1,14 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Trash2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { Plus, Trash2, ListTodo } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PrioridadeBadge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { EmptyState } from '@/components/ui/empty-state'
-import { ListTodo } from 'lucide-react'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { TASK_COLUMNS } from '@/lib/kanban-config'
 import { useTarefas, useCreateTarefa, useUpdateTarefa, useDeleteTarefa } from '@/hooks/use-tarefas'
 import type { TarefaStatus } from '@/types/database'
@@ -20,6 +19,7 @@ export function TaskBoard({ projetoId }: { projetoId: string }) {
   const deleteTarefa = useDeleteTarefa()
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [addingTo, setAddingTo] = useState<TarefaStatus | null>(null)
+  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null)
 
   function handleAddTask(status: TarefaStatus) {
     if (!newTaskTitle.trim()) return
@@ -57,6 +57,7 @@ export function TaskBoard({ projetoId }: { projetoId: string }) {
   }
 
   return (
+    <>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
       {TASK_COLUMNS.map((col) => {
         const columnTasks = (tarefas ?? []).filter((t) => t.status === col.id)
@@ -79,7 +80,7 @@ export function TaskBoard({ projetoId }: { projetoId: string }) {
                   <div className="flex items-start justify-between gap-1 mb-1">
                     <p className="text-sm text-text-primary">{task.titulo}</p>
                     <button
-                      onClick={() => deleteTarefa.mutate({ id: task.id, projeto_id: projetoId })}
+                      onClick={() => setDeletingTaskId(task.id)}
                       className="opacity-0 group-hover:opacity-100 text-text-muted hover:text-status-negative transition-all shrink-0 mt-0.5"
                       title="Excluir tarefa"
                     >
@@ -124,5 +125,21 @@ export function TaskBoard({ projetoId }: { projetoId: string }) {
         )
       })}
     </div>
+
+    <ConfirmDialog
+      open={deletingTaskId !== null}
+      onOpenChange={(o) => { if (!o) setDeletingTaskId(null) }}
+      title="Excluir Tarefa"
+      description="Tem certeza que deseja excluir esta tarefa? Esta acao nao pode ser desfeita."
+      confirmLabel="Excluir"
+      onConfirm={() => {
+        if (deletingTaskId) {
+          deleteTarefa.mutate({ id: deletingTaskId, projeto_id: projetoId })
+          setDeletingTaskId(null)
+        }
+      }}
+      variant="danger"
+    />
+    </>
   )
 }

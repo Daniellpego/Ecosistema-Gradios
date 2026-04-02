@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createClient } from '@/lib/supabase/client'
 import type { ProjectUpdate, UpdateInsert, UpdateWithProjeto } from '@/types/database'
+import { toast } from 'sonner'
 
 export function useUpdates(projetoId: string) {
   const supabase = createClient()
@@ -78,6 +79,10 @@ export function useCreateUpdate() {
       qc.invalidateQueries({ queryKey: ['updates', data.projeto_id] })
       qc.invalidateQueries({ queryKey: ['updates-global'] })
       qc.invalidateQueries({ queryKey: ['updates-portal'] })
+      toast.success('Update criado com sucesso')
+    },
+    onError: () => {
+      toast.error('Erro ao criar update')
     },
   })
 }

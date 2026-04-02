@@ -11,6 +11,7 @@ import { MilestoneBadge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { EmptyState } from '@/components/ui/empty-state'
 import { useMilestones, useCreateMilestone, useUpdateMilestone, useDeleteMilestone } from '@/hooks/use-milestones'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { formatDate, daysUntil } from '@/lib/format'
 
 export function MilestoneList({ projetoId }: { projetoId: string }) {
@@ -21,6 +22,7 @@ export function MilestoneList({ projetoId }: { projetoId: string }) {
   const [showForm, setShowForm] = useState(false)
   const [titulo, setTitulo] = useState('')
   const [dataPrevista, setDataPrevista] = useState('')
+  const [deletingMilestoneId, setDeletingMilestoneId] = useState<string | null>(null)
 
   function handleCreate() {
     if (!titulo.trim() || !dataPrevista) return
@@ -120,7 +122,7 @@ export function MilestoneList({ projetoId }: { projetoId: string }) {
               <div className="flex items-center gap-2">
                 <MilestoneBadge status={m.status} />
                 <button
-                  onClick={() => deleteMilestone.mutate({ id: m.id, projeto_id: projetoId })}
+                  onClick={() => setDeletingMilestoneId(m.id)}
                   className="opacity-0 group-hover:opacity-100 text-text-muted hover:text-status-negative transition-all"
                   title="Excluir milestone"
                 >
@@ -131,6 +133,21 @@ export function MilestoneList({ projetoId }: { projetoId: string }) {
           )
         })}
       </div>
+
+      <ConfirmDialog
+        open={deletingMilestoneId !== null}
+        onOpenChange={(o) => { if (!o) setDeletingMilestoneId(null) }}
+        title="Excluir Milestone"
+        description="Tem certeza que deseja excluir este milestone? Esta acao nao pode ser desfeita."
+        confirmLabel="Excluir"
+        onConfirm={() => {
+          if (deletingMilestoneId) {
+            deleteMilestone.mutate({ id: deletingMilestoneId, projeto_id: projetoId })
+            setDeletingMilestoneId(null)
+          }
+        }}
+        variant="danger"
+      />
     </div>
   )
 }
