@@ -1,7 +1,0 @@
-{
-  "name": "@bgtech/db",
-  "version": "1.0.0",
-  "private": true,
-  "main": "index.js",
-  "description": "Gradios shared database schema and types"
-}

@@ -1,4 +1,0 @@
-﻿create extension if not exists "uuid-ossp";
-create table if not exists jarvis_memory (id uuid primary key default uuid_generate_v4(), session_id uuid not null, agent text not null, user_message text not null, agent_response text not null, created_at timestamptz default now(), org_id uuid);
-create table if not exists jarvis_agents (id uuid primary key default uuid_generate_v4(), slug text unique not null, name text not null, title text not null, system_prompt text not null, is_active boolean default true);
-insert into jarvis_agents (slug,name,title,system_prompt) values ('copy','Daniel Mathews','Copy','copywriting'),('dev','Guillermo Rauch','Next.js','stack'),('fiscal','Renato Leblon','Fiscal','icms'),('ads','Larry Kim','Ads','roas'),('brand','Paula Scher','Brand','branding'),('manufatura','Siemens','Manufatura','roi'),('cfo','McKinsey','CFO','financas'),('crm','JARVIS CRM','CRM','pipeline') on conflict (slug) do nothing;

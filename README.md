@@ -1,21 +1,19 @@
 <p align="center">
-  <img src="public/logo-gradios.png" alt="Gradios" width="200" />
+  <img src="apps/painel-cfo/public/logo-gradios-small.webp" alt="Gradios" width="200" />
 </p>
 
 <h1 align="center">GRADIOS Ecosystem 2026</h1>
 
 <p align="center">
-  <strong>Plataforma de automacao empresarial com IA C-Level integrada</strong><br/>
-  7 sistemas interligados em tempo real &mdash; CRM, CFO, CTO, Projetos, Site, Quiz e JARVIS AI
+  <strong>Plataforma de automacao empresarial com IA integrada</strong><br/>
+  5 sistemas interligados em tempo real &mdash; Site, CRM, CFO, CTO e Quiz
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Producao-10B981?style=flat-square&logo=vercel" />
-  <img src="https://img.shields.io/badge/Sistemas-7-6366F1?style=flat-square" />
-  <img src="https://img.shields.io/badge/AI_Agents-8-F59E0B?style=flat-square" />
+  <img src="https://img.shields.io/badge/Sistemas-5-6366F1?style=flat-square" />
   <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=flat-square&logo=supabase" />
   <img src="https://img.shields.io/badge/Next.js-15-000?style=flat-square&logo=nextdotjs" />
-  <img src="https://img.shields.io/badge/Ollama-Qwen2.5:14b-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/Deploy-Vercel-000?style=flat-square&logo=vercel" />
 </p>
 
@@ -31,38 +29,38 @@
 ## Arquitetura
 
 ```
-                            gradios.co
-                         (Site Principal)
-                               |
-                    Lead preenche o Quiz
-                               |
-                               v
-                      +----------------+
-                      |   SUPABASE     |
-                      |  quiz_leads    |------> Trigger 009
-                      +-------+--------+              |
-                              |                       v
-              +---------------+---------------+  POST /jarvis/crm/novo-lead
-              |               |               |       |
-              v               v               v       v
-       +----------+    +-----------+    +---------+  +------------------+
-       |  PAINEL  |    |  PAINEL   |    | PAINEL  |  |  JARVIS AI       |
-       |   CRM    |    |   CFO     |    | PROJETOS|  |  8 Agents        |
-       |          |    |           |    |         |  |  C-Level 24/7    |
-       | Leads    |    | Receitas  |    | Kanban  |  |                  |
-       | Deals    |    | DRE       |    | Tasks   |  | CRM: Aaron Ross  |
-       | Pipeline |    | Projecoes |    | Timeline|  | CFO: Cerbasi     |
-       | Scripts  |    | Caixa     |    |         |  | Copy: Wiebe      |
-       +----+-----+    +-----+-----+    +----+----+  | Dev: Rauch       |
-            |               |               |        | Ads: Larry Kim   |
-            +-------+-------+-------+-------+        | Fiscal: EY Tax   |
-                    |               |                 | Brand: Scher     |
-                    v               v                 | Manufatura: Siemens
-             +-----------+   +-----------+            +--------+---------+
-             | Triggers  |   | Realtime  |                     |
-             | Cross-    |   | WebSocket |              Ollama qwen2.5:14b
-             | Panel     |   |           |              RTX 4070Ti (local)
-             +-----------+   +-----------+
+                         gradios.co
+                      (Site Principal)
+                            |
+                 Lead preenche o Quiz
+                            |
+                            v
+                   +----------------+
+                   |   SUPABASE     |
+                   |  quiz_leads    |------> Webhooks Discord/n8n
+                   +-------+--------+
+                           |
+           +---------------+---------------+
+           |               |               |
+           v               v               v
+    +----------+    +-----------+    +-----------+
+    |  PAINEL  |    |  PAINEL   |    |  PAINEL   |
+    |   CRM    |    |   CFO     |    |   CTO     |
+    |          |    |           |    |           |
+    | Leads    |    | Receitas  |    | Projetos  |
+    | Deals    |    | DRE       |    | Kanban    |
+    | Pipeline |    | Projecoes |    | Timeline  |
+    | Scripts  |    | Caixa     |    | Calendar  |
+    +----+-----+    +-----+-----+    +-----+----+
+         |               |               |
+         +-------+-------+-------+-------+
+                 |               |
+                 v               v
+          +-----------+   +-----------+
+          | Triggers  |   | Realtime  |
+          | Cross-    |   | WebSocket |
+          | Panel     |   |           |
+          +-----------+   +-----------+
 ```
 
 ---
@@ -81,8 +79,7 @@
 | **Quiz** | 10 perguntas de qualificacao, score 0-100, tier A/B/C/D |
 | **IA** | Claude Sonnet gera diagnostico personalizado via streaming |
 | **Tracking** | Meta Pixel, UTM params, geolocalizacao por IP |
-| **Webhook** | Notifica equipe no Discord/Slack quando lead entra |
-| **Integracao** | Grava em `quiz_leads` → trigger notifica JARVIS automaticamente |
+| **Webhook** | Notifica equipe no Discord quando lead entra |
 
 ### 2. Painel CRM &mdash; `apps/painel-crm/`
 
@@ -92,14 +89,13 @@
 |---|---|
 | **Stack** | Next.js 15, React 19, TanStack Query v5, Radix UI, Recharts, dnd-kit |
 | **Auth** | Supabase Auth SSR + middleware redirect |
-| **Porta** | `localhost:3001` |
 
 | Pagina | Funcionalidade |
 |--------|---------------|
 | `/dashboard` | KPIs de leads, conversao, receita pipeline |
 | `/leads` | CRUD com filtros (status, origem, temperatura, busca) |
 | `/leads/[id]` | Detalhe + timeline de atividades + quiz session |
-| `/pipeline` | Kanban drag-and-drop (novo → qualificado → reuniao → proposta → ganho) |
+| `/pipeline` | Kanban drag-and-drop (novo &rarr; qualificado &rarr; reuniao &rarr; proposta &rarr; ganho) |
 | `/deals` | Negocios com valor, MRR, probabilidade, tipo servico |
 | `/deals/[id]` | Detalhe com historico |
 | `/analytics` | Graficos de conversao e performance |
@@ -126,126 +122,44 @@
 | `/projecoes` | 3 cenarios (conservador, realista, agressivo) x 12 meses |
 | `/balanco-anual` | Grid 12 meses com drill-down |
 | `/academy` | Glossario financeiro + chat IA |
-| `/relatorios` | Relatorios gerenciais |
 
 **Regra critica:** Simples Nacional &mdash; impostos sobre faturamento, nao sobre lucro.
 
-### 4. Painel Projetos &mdash; `apps/painel-projetos/`
+### 4. Painel CTO &mdash; `apps/painel-cto/`
 
-> Gestao de projetos e tarefas (legado)
-
-| | |
-|---|---|
-| **Stack** | HTML/CSS/JS puro (static) |
-| **Views** | Dashboard, Kanban (todo/doing/done), Projetos, Timeline |
-
-### 5. JARVIS AI &mdash; `gradios-jarvis/`
-
-> Orquestrador multi-agent C-Level com IA local
+> Gestao de projetos, entregas e operacao tecnica
 
 | | |
 |---|---|
-| **Stack** | FastAPI 0.115, Python 3.14, httpx |
-| **IA local** | Ollama qwen2.5:14b na RTX 4070Ti (12GB VRAM) |
-| **IA premium** | Claude Opus (Anthropic API) para casos complexos |
-| **Supabase** | REST API direto via httpx &mdash; zero SDK externo |
-| **Porta** | `localhost:8001` |
+| **Stack** | Next.js 15, React 19, TanStack Query v5, Framer Motion, dnd-kit |
+| **Auth** | Supabase Auth SSR |
 
-#### 8 Agents de Elite
-
-| Agent | Persona | Especialidade |
-|-------|---------|---------------|
-| **CRM** | Aaron Ross (Predictable Revenue) | Pipeline B2B, scripts de abordagem, follow-up sequences |
-| **CFO** | Gustavo Cerbasi + Aswath Damodaran | DRE, Simples Nacional, precificacao, valuation |
-| **Copy** | Joanna Wiebe + Gary Halbert + Andre Siqueira | Copy B2B, 6 frameworks (AIDA, PAS, PASTOR, 4Ps, BAB), 3 variacoes |
-| **Dev** | Guillermo Rauch + Theo Browne | Stack completa do ecossistema, codigo producao |
-| **Fiscal** | Renato Leblon (EY Tax) | Simples Nacional Anexo III, Reforma Tributaria 2026 (CBS/IBS/IS) |
-| **Ads** | Larry Kim + Rafael Kiso | Meta/Google Ads B2B, CAC/ROAS, estrutura campanha completa |
-| **Brand** | Paula Scher + Marty Neumeier | Identidade visual, brand guidelines, vocabulario GRADIOS |
-| **Manufatura** | Siemens + McKinsey Ops | ROI industrial, OEE, NR-12, Industry 4.0, payback |
-
-#### API Endpoints
-
-```
-GET    /                              Status da API
-GET    /agents                        Lista 8 agents
-GET    /health                        Health check (Ollama + Supabase + Claude)
-
-POST   /jarvis/{agent}                Chamar agent (contexto CRM/CFO automatico)
-POST   /jarvis/{agent}/stream         Streaming SSE token a token
-POST   /jarvis/orchestrate            Multi-agent automatico por keywords
-
-GET    /jarvis/crm/leads              Analise do pipeline com IA
-POST   /jarvis/crm/novo-lead          Webhook: quiz → scripts WhatsApp + email
-POST   /jarvis/crm/gerar-proposta     Proposta comercial markdown com 1 clique
-
-GET    /jarvis/cfo/resumo             DRE + KPIs + analise IA do mes
-```
-
-#### Fluxo: Lead → Proposta (automatico)
-
-```
-Lead completa quiz no gradios.co/diagnostico
-        |
-        v
-Supabase grava em quiz_leads
-        |
-        v
-Trigger 009 dispara pg_net HTTP POST
-        |
-        v
-POST /jarvis/crm/novo-lead
-        |
-        v
-Aaron Ross (CRM agent) analisa com Ollama:
-  - Classifica: Tier A/B/C/D por score
-  - Gera script WhatsApp personalizado
-  - Gera script email personalizado
-  - Define proxima acao + SLA
-  - Salva em jarvis_studies + jarvis_memory
-        |
-        v
-POST /jarvis/crm/gerar-proposta (1 clique)
-        |
-        v
-Copy agent (Wiebe+Halbert) gera proposta completa:
-  - Problema (especifico, com numeros)
-  - Solucao (servicos concretos)
-  - Cronograma (3 fases, 6 semanas)
-  - 3 opcoes de valor (essencial/completa/premium)
-  - CTA com urgencia
-  - Salva em crm_proposals + jarvis_studies
-```
-
-### 6. JARVIS UI &mdash; `apps/gradios-ui/`
-
-> Interface dark mode premium para o JARVIS
-
-| | |
-|---|---|
-| **Stack** | Next.js 15, React 19, Tailwind 3.4, lucide-react |
-| **Features** | Chat streaming, markdown rendering, syntax highlight |
-| **Porta** | `localhost:3000` |
-| **Paginas** | `/` chat, `/dashboard` status, `/estudos` biblioteca, `/config` |
+| Pagina | Funcionalidade |
+|--------|---------------|
+| `/dashboard` | KPIs de projetos, entregas, milestones, atrasados |
+| `/kanban` | Board drag-and-drop com colunas customizaveis |
+| `/timeline` | Gantt chart de projetos e entregas |
+| `/calendario` | Calendario de eventos e deadlines |
+| `/relatorios` | Geracao de relatorios PPTX |
+| `/portal` | Portal dos socios com visao macro |
 
 ---
 
 ## Database Schema
 
 ```
-SUPABASE (PostgreSQL) — 21 tabelas + 3 views + 5 enums + 9 triggers
+SUPABASE (PostgreSQL) — 17+ tabelas + 3 views + 5 enums + 9 triggers
 
 CRM ────────────────────────────────────────────────────────────
   leads (BIGINT PK)          Leads do quiz + diretos
   crm_accounts (UUID PK)     Contas/empresas
   crm_contacts (UUID PK)     Contatos por conta
   crm_opportunities (UUID)   Pipeline de negocios
-  crm_proposals (UUID)       Propostas comerciais (+ campos JARVIS)
+  crm_proposals (UUID)       Propostas comerciais
   crm_slas (UUID)            SLAs por conta
 
 QUIZ ───────────────────────────────────────────────────────────
   quiz_leads (UUID PK)       Respostas completas do diagnostico
-                             → trigger 009: notifica JARVIS
 
 CFO ────────────────────────────────────────────────────────────
   receitas                   Faturamento (valor_liquido = generated column)
@@ -256,13 +170,6 @@ CFO ─────────────────────────�
   metas_financeiras          Metas por periodo e metrica
   emprestimo_socio           Emprestimos entre socios
   historico_decisoes         Log de decisoes estrategicas
-  configuracoes_cfo          Configuracoes do painel
-
-JARVIS ─────────────────────────────────────────────────────────
-  jarvis_agents              8 agents com system prompts configuravel
-  jarvis_memory              Historico de conversas por sessao (FK → leads)
-  jarvis_studies             Estudos e analises gerados
-  jarvis_orchestrations      Log de chamadas multi-agent (JSONB)
 
 VIEWS ──────────────────────────────────────────────────────────
   vw_resumo_mensal           Receita bruta/liquida, MRR, clientes por mes
@@ -277,7 +184,7 @@ Deal status → 'ganho'        → Cria receita no CFO + Cria projeto automatica
 Projeto status → 'entregue'  → Log no historico_decisoes
 Lead origem → 'meta_ads'     → Cria gasto variavel no CFO (10% valor estimado)
 Lead status muda             → Cria atividade automatica na timeline CRM
-Quiz lead INSERT             → HTTP POST para JARVIS /crm/novo-lead
+Quiz lead INSERT             → Webhooks Discord/n8n
 Proposta status → 'Aceita'   → Seta respondida_em + sent_date automaticamente
 ```
 
@@ -291,9 +198,10 @@ Proposta status → 'Aceita'   → Seta respondida_em + sent_date automaticament
 | 004 | `crm_enhancements.sql` | atividades, colunas extras em leads/deals, trigger status |
 | 005 | `anon_insert_leads.sql` | Abre INSERT anon para quiz publico |
 | 006 | `quiz_leads_table.sql` | Tabela quiz_leads para diagnostico do site |
-| 007 | `jarvis_schema.sql` | jarvis_agents, jarvis_memory, jarvis_studies, jarvis_orchestrations |
-| 008 | `propostas.sql` | Extende crm_proposals com campos JARVIS |
-| 009 | `quiz_lead_webhook.sql` | Trigger quiz_leads INSERT → pg_net → JARVIS |
+| 007 | `jarvis_schema.sql` | Tabelas de agentes e memoria |
+| 008 | `propostas.sql` | Extende crm_proposals |
+| 009 | `quiz_lead_webhook.sql` | Trigger quiz_leads INSERT &rarr; webhook |
+| 010 | `quiz_lead_discord_n8n_webhooks.sql` | Webhooks Discord e n8n |
 
 ---
 
@@ -310,24 +218,14 @@ FRONTEND
   dnd-kit             Drag and drop (Kanban pipeline)
   Zod                 Validacao de forms
   lucide-react        Icones consistentes
-  react-markdown      Rendering markdown nas respostas do JARVIS
-
-BACKEND
-  FastAPI 0.115       API async Python
-  httpx               HTTP client (Ollama + Supabase REST)
-  Pydantic v2         Validacao de payloads
-  Ollama              Inference local (qwen2.5:14b)
-  Anthropic SDK       Claude API para casos premium
 
 DATABASE
   Supabase            PostgreSQL 15 + Auth + Realtime + Storage
   RLS                 Row Level Security em todas as tabelas
-  pg_net              Webhooks HTTP async (trigger → JARVIS)
 
 INFRA
   Vercel              Deploy frontend (zero-config)
-  Docker Compose      Ollama GPU + API + UI + Redis
-  RTX 4070Ti          12GB VRAM para inference local
+  n8n                 Automacao de workflows (email nurturing)
 ```
 
 ---
@@ -337,8 +235,6 @@ INFRA
 ### Pre-requisitos
 
 - Node.js 20+
-- Python 3.12+
-- Ollama com modelo `qwen2.5:14b`
 - Conta Supabase (gratuita funciona)
 
 ### 1. Clone
@@ -352,83 +248,36 @@ cd Ecosistema-BG-Tech-2026
 
 ```bash
 # Crie projeto em supabase.com
-# SQL Editor → cole e rode cada migration em ordem (001 a 009)
-# Ou use o arquivo consolidado:
-# SQL Editor → cole APPLY_MIGRATIONS_007_008.sql → RUN
+# SQL Editor → cole e rode cada migration em ordem (001 a 010)
 ```
 
-### 3. JARVIS API
+### 3. Paineis
 
 ```bash
-cd gradios-jarvis
-python -m venv venv
-venv\Scripts\activate          # Windows
-pip install -r requirements.txt
+# CRM
+cd apps/painel-crm && npm install && npm run dev
 
-# Configure .env
-echo SUPABASE_URL=https://urpuiznydrlwmaqhdids.supabase.co > .env
-echo SUPABASE_KEY=sua_service_role_key >> .env
-echo OLLAMA_URL=http://localhost:11434 >> .env
-echo OLLAMA_MODEL=qwen2.5:14b >> .env
+# CFO
+cd apps/painel-cfo && npm install && npm run dev
 
-# Suba
-uvicorn app:app --host 0.0.0.0 --port 8001 --reload
+# CTO
+cd apps/painel-cto && npm install && npm run dev
 ```
 
-### 4. JARVIS UI
+### 4. Site Principal
 
 ```bash
-cd apps/gradios-ui
-npm install
-npm run dev    # localhost:3000
-```
-
-### 5. Paineis (CRM/CFO)
-
-```bash
-cd apps/painel-crm && npm install && npm run dev    # localhost:3001
-cd apps/painel-cfo && npm install && npm run dev    # localhost:3000
-```
-
-### 6. Testar
-
-```bash
-# Health check
-curl http://localhost:8001/health
-
-# Testar agent CRM
-curl -X POST http://localhost:8001/jarvis/crm \
-  -H "Content-Type: application/json" \
-  -d '{"message": "analise o pipeline atual"}'
-
-# Simular novo lead do quiz
-curl -X POST http://localhost:8001/jarvis/crm/novo-lead \
-  -H "Content-Type: application/json" \
-  -d '{"lead": {"nome": "Carlos Silva", "empresa": "TechFlow", "score": 78, "setor": "SaaS"}}'
-
-# Gerar proposta com 1 clique
-curl -X POST http://localhost:8001/jarvis/crm/gerar-proposta \
-  -H "Content-Type: application/json" \
-  -d '{"dados_lead": {"nome": "Carlos Silva", "empresa": "TechFlow", "segmento": "SaaS", "dor_principal": "CRM desatualizado", "score": 78}, "valor_estimado": 15000, "servicos": ["automacao", "integracao CRM"]}'
-```
-
-### Docker (alternativa)
-
-```bash
-docker-compose up -d    # Ollama GPU + API + UI + Redis
+cd site-principal && npm install && npm run dev
 ```
 
 ---
 
 ## Seguranca
 
-- **RLS** em todas as 21 tabelas &mdash; zero tabela aberta
+- **RLS** em todas as tabelas &mdash; zero tabela aberta
 - **Auth** via Supabase (email/senha) com SSR middleware
 - **Anon** bloqueado por policy restritiva (exceto INSERT quiz publico)
-- **Service role** apenas no JARVIS API (bypassa RLS)
-- **CORS** configurado no FastAPI
 - **Variaveis** de ambiente em `.env` (nunca versionadas)
-- **Retry** 3x com backoff no Ollama (nao expoe erros ao usuario)
 
 ---
 
@@ -438,72 +287,37 @@ docker-compose up -d    # Ollama GPU + API + UI + Redis
 Ecosistema-BG-Tech-2026/
 |
 |-- site-principal/                  Next.js 14 — gradios.co
-|   |-- src/app/diagnostico/         Quiz de qualificacao (1190 linhas)
+|   |-- src/app/diagnostico/         Quiz de qualificacao
 |   |-- src/components/              Hero, FAQ, LeadForm, Testimonials
 |   +-- src/app/api/diagnostico/     Claude streaming API route
 |
 |-- apps/
 |   |-- painel-crm/                  Next.js 15 — CRM completo
 |   |   |-- src/app/(authenticated)/ 9 paginas protegidas
-|   |   |-- src/hooks/               useLeads, useDeals, usePipeline
-|   |   +-- src/types/database.ts    Tipos CRM (195 linhas)
+|   |   +-- src/hooks/               useLeads, useDeals, usePipeline
 |   |
 |   |-- painel-cfo/                  Next.js 15 — CFO dashboard
 |   |   |-- src/app/(authenticated)/ 10 paginas protegidas
-|   |   |-- src/hooks/               useDashboard, useDRE, useProjecoes
-|   |   +-- src/types/database.ts    Tipos CFO (177 linhas)
+|   |   +-- src/hooks/               useDashboard, useDRE, useProjecoes
 |   |
-|   |-- painel-projetos/             HTML/JS — gestao projetos
-|   |
-|   +-- gradios-ui/                  Next.js 15 — JARVIS interface
-|       |-- app/                     Chat, dashboard, estudos, config
-|       |-- components/              ChatMessage, AgentCard, Markdown
-|       +-- lib/                     API client, hooks, constants
-|
-|-- gradios-jarvis/                  FastAPI — JARVIS API
-|   |-- app.py                       API completa (~1300 linhas)
-|   |-- requirements.txt             7 dependencias (zero supabase-py)
-|   |-- Dockerfile                   Python 3.12 slim
-|   +-- supabase/agents.sql          Schema original dos agents
+|   +-- painel-cto/                  Next.js 15 — CTO operacoes
+|       |-- src/app/(authenticated)/ 7 paginas protegidas
+|       +-- src/hooks/               useProjetos, useKanban
 |
 |-- supabase/
-|   |-- migrations/
-|   |   |-- 001_unified_schema.sql   CRM + triggers cross-panel
-|   |   |-- 002_cfo_tables.sql       8 tabelas CFO + 3 views
-|   |   |-- 003_fix_crm_cfo.sql      Bridge CRM↔CFO corrigido
-|   |   |-- 004_crm_enhancements.sql Atividades + colunas extras
-|   |   |-- 005_anon_insert.sql      Quiz publico (anon INSERT)
-|   |   |-- 006_quiz_leads.sql       Tabela quiz_leads
-|   |   |-- 007_jarvis_schema.sql    4 tabelas JARVIS
-|   |   |-- 008_propostas.sql        Extende crm_proposals
-|   |   +-- 009_quiz_webhook.sql     Trigger → JARVIS
+|   |-- migrations/                  10 migrations versionadas (001-010)
 |   +-- functions/
 |       +-- groq-analysis/           Edge Function para CFO IA
 |
-|-- ECOSYSTEM.md                     Mapa completo do ecossistema
-|-- APPLY_MIGRATIONS_007_008.sql     SQL consolidado para Supabase
-|-- docker-compose.yml               Ollama GPU + API + UI + Redis
-|-- start.bat / stop.bat             Scripts Windows
-|-- test_jarvis_integrations.py      Teste completo da API
-+-- test_novo_lead_webhook.bat       Teste do webhook de lead
+|-- infra/
+|   +-- supabase/rls-hardening.sql   Policies RLS extras
+|
+|-- n8n-workflows/                   Automacoes n8n (email nurturing)
+|
+|-- .github/workflows/               CI/CD (Playwright tests)
+|-- CLAUDE.md                        Guia do ecossistema para Claude Code
++-- ECOSYSTEM.md                     Contexto completo do ecossistema
 ```
-
----
-
-## Metricas do Projeto
-
-| Metrica | Valor |
-|---------|-------|
-| Tabelas Supabase | 21 |
-| Views SQL | 3 |
-| Triggers cross-panel | 9 |
-| Migrations versionadas | 9 |
-| Agents IA | 8 |
-| API endpoints | 10 |
-| Paginas frontend (total) | 25+ |
-| Dependencias JARVIS | 7 |
-| Tempo de geracao proposta | ~68s (local RTX 4070Ti) |
-| Tempo analise novo lead | ~45s (local) |
 
 ---
 
