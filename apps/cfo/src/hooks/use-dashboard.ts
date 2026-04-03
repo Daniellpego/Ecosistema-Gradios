@@ -35,6 +35,8 @@ export interface DashboardKPIs {
   caixaDisponivel: number
   runway: number // in months
   margem: number // percentage
+  breakEven: number // monthly revenue needed
+  margemBruta: number // percentage
 }
 
 export interface DashboardVariation {
@@ -283,11 +285,24 @@ export function useDashboard(): DashboardData {
     const totalGastosVar = gastosVarSemImpostos.reduce((s, g) => s + Number(g.valor || 0), 0)
     const impostos = gastos.filter(g => g.tipo === 'impostos').reduce((s, g) => s + Number(g.valor || 0), 0)
     
-    const burnRate = totalCustosFixos + totalGastosVar + impostos
+    // Burn Rate with 3-month avg of variable costs
+    const gastos6m = gastos6mQuery.data ?? []
+    const threeMonthsAgoDate = subtractMonths(year, month, 2)
+    const threeMonthsStart = `${threeMonthsAgoDate.year}-${String(threeMonthsAgoDate.month).padStart(2, '0')}-01`
+    const gastos3m = gastos6m.filter(g => g.data >= threeMonthsStart && g.data <= endDate)
+    const totalGastos3m = gastos3m.reduce((s, g) => s + Number(g.valor || 0), 0)
+    const avgGastosVar3m = totalGastos3m / 3
+
+    const burnRate = totalCustosFixos + avgGastosVar3m
     // DRE cascade: Receita - CV - CF - Impostos
-    const margemBruta = receitaTotal - totalGastosVar
-    const resultadoOperacional = margemBruta - totalCustosFixos
+    const margemBrutaVal = receitaTotal - totalGastosVar
+    const resultadoOperacional = margemBrutaVal - totalCustosFixos
     const resultadoLiquido = resultadoOperacional - impostos
+
+    // Break-even point (monthly revenue to cover fixed costs)
+    const cvRatio = receitaTotal > 0 ? totalGastosVar / receitaTotal : 0
+    const breakEven = cvRatio < 1 ? totalCustosFixos / (1 - cvRatio) : 0
+    const margemBruta = receitaTotal > 0 ? ((receitaTotal - totalGastosVar) / receitaTotal) * 100 : 0
     const caixaDisponivel = caixaEntries.length > 0 ? Number(caixaEntries[0]?.saldo || 0) : 0
     const runway = burnRate > 0 ? caixaDisponivel / burnRate : caixaDisponivel > 0 ? 99 : 0
     const margem = receitaTotal > 0 ? (resultadoLiquido / receitaTotal) * 100 : 0
@@ -302,6 +317,8 @@ export function useDashboard(): DashboardData {
       caixaDisponivel,
       runway,
       margem,
+      breakEven,
+      margemBruta,
     }
 
     // Previous month KPIs for variation
@@ -336,7 +353,11 @@ export function useDashboard(): DashboardData {
     custosFixosQuery.data,
     gastosQuery.data,
     gastosPrevQuery.data,
+    gastos6mQuery.data,
     caixaQuery.data,
+    year,
+    month,
+    endDate,
   ])
 
   const { kpis, variations } = kpisAndVariations

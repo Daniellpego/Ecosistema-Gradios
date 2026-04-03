@@ -15,6 +15,7 @@ import {
   HelpCircle,
   X,
   Sparkles,
+  Crosshair,
 } from 'lucide-react'
 import Link from 'next/link'
 import { PageTransition } from '@/components/motion'
@@ -312,7 +313,7 @@ export default function DashboardPage() {
       value: formatCurrency(kpis.burnRate),
       variation: variations.burnRate,
       icon: <Flame className="h-4 w-4" />,
-      tooltip: 'Gasto total mensal — custos fixos + variáveis + impostos. Menor é melhor.',
+      tooltip: 'Custos Fixos + Média 3 meses de Custos Variáveis. Menor é melhor.',
       invertVariation: true,
       href: '/custos-fixos',
     },
@@ -356,6 +357,14 @@ export default function DashboardPage() {
       icon: <Clock className="h-4 w-4" />,
       tooltip: 'Quanto tempo a empresa sobrevive sem novas receitas — Caixa ÷ Burn Rate',
       href: '/projecoes',
+    },
+    {
+      label: 'Break-even',
+      value: kpis.receitaTotal === 0 ? 'N/D' : formatCurrency(kpis.breakEven),
+      variation: null,
+      icon: <Crosshair className="h-4 w-4" />,
+      tooltip: 'Receita mensal necessária para cobrir custos fixos. CF ÷ (1 - CV/Receita)',
+      href: '/dre',
     },
   ]
 

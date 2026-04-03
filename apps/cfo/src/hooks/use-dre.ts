@@ -589,6 +589,24 @@ export function useDRE() {
         percentYtd: pct(ytd.impostos, rbYtd),
         type: 'header' as const,
       },
+      {
+        label: 'Impostos sobre Faturamento',
+        month: current.impostos,
+        ytd: ytd.impostos,
+        percent: pct(current.impostos, rb),
+        percentYtd: pct(ytd.impostos, rbYtd),
+        type: 'sub' as const,
+        indent: true,
+      },
+      {
+        label: 'Outros Impostos',
+        month: 0,
+        ytd: 0,
+        percent: 0,
+        percentYtd: 0,
+        type: 'sub' as const,
+        indent: true,
+      },
       { label: '', month: 0, ytd: 0, percent: 0, percentYtd: 0, type: 'separator' as const },
 
       // RESULTADO LIQUIDO
