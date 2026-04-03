@@ -55,7 +55,7 @@ export function Founders() {
             Quem faz acontecer
           </motion.div>
           <WordReveal
-            text="Você sabe com quem está falando"
+            text="Sem gerente de contas. Quem vende é quem entrega."
             className="text-4xl lg:text-5xl font-bold text-text text-center leading-tight mb-4"
           />
           <motion.p

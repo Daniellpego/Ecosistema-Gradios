@@ -1,9 +1,20 @@
 "use client";
 
+import Link from "next/link";
+
 const setores = [
-  "Clínicas", "Varejo", "Atacado", "Mercados", "Barbearias",
-  "Contabilidade", "Logística", "Indústria", "Saúde", "SaaS",
-  "Financeiro", "Serviços B2B",
+  { nome: "Clínicas", href: "/respostas#automacao" },
+  { nome: "Varejo", href: "/respostas#automacao" },
+  { nome: "Atacado", href: "/respostas#automacao" },
+  { nome: "Mercados", href: "/respostas#automacao" },
+  { nome: "Barbearias", href: "/respostas#automacao" },
+  { nome: "Contabilidade", href: "/respostas#automacao" },
+  { nome: "Logística", href: "/respostas#setores" },
+  { nome: "Indústria", href: "/respostas#setores" },
+  { nome: "Saúde", href: "/respostas#setores" },
+  { nome: "SaaS", href: "/respostas#dev-sob-medida" },
+  { nome: "Financeiro", href: "/respostas#automacao" },
+  { nome: "Serviços B2B", href: "/respostas#sobre-a-gradios" },
 ];
 
 export function LogoStrip() {
@@ -15,12 +26,13 @@ export function LogoStrip() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-2">
           {setores.map((setor, i) => (
-            <span
+            <Link
               key={i}
+              href={setor.href}
               className="text-xs font-semibold text-text-muted/50 bg-bg-alt border border-card-border rounded-pill px-3 py-1 hover:text-primary hover:border-primary/20 transition-colors"
             >
-              {setor}
-            </span>
+              {setor.nome}
+            </Link>
           ))}
         </div>
       </div>

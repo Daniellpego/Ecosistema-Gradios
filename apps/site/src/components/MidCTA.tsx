@@ -75,7 +75,7 @@ export function MidCTA() {
               href="/diagnostico"
               className="inline-block bg-white text-primary rounded-pill px-8 py-4 font-bold text-lg hover:bg-white/90 hover:shadow-xl transition-all relative overflow-hidden before:absolute before:inset-0 before:bg-primary/5 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
             >
-              Quero meu diagnóstico gratuito →
+              Ver quanto minha empresa perde por mês →
             </Link>
             <p className="text-white/60 text-sm mt-4">Gratuito. Sem compromisso. Resultado na hora.</p>
           </motion.div>

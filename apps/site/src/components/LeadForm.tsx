@@ -85,7 +85,7 @@ export function LeadForm() {
             <motion.div variants={revealVariants("scale")}>
               <Link
                 href="/diagnostico"
-                onClick={() => trackCTAClick("Final CTA Section", "Fazer meu diagnóstico agora", "/diagnostico")}
+                onClick={() => trackCTAClick("Final CTA Section", "Ver quanto perco por mês", "/diagnostico")}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
                 className="inline-block bg-gradient-to-r from-[#2546BD] to-[#00BFFF] text-white rounded-pill px-10 py-5 font-bold text-lg transition-all duration-500 relative overflow-hidden before:absolute before:inset-0 before:bg-white/15 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700"
@@ -95,7 +95,7 @@ export function LeadForm() {
                     : "0 4px 14px rgba(37,70,189,0.25)",
                 }}
               >
-                Fazer meu diagnóstico agora
+                Ver quanto minha empresa perde por mês
               </Link>
               <p className="text-[#475569] text-sm mt-4">Gratuito. Sem compromisso. Resultado gerado por IA na hora.</p>
             </motion.div>

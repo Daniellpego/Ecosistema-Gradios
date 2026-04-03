@@ -170,7 +170,7 @@ export function Hero() {
           <p
             className="text-lg lg:text-xl text-text-muted mb-8 max-w-xl mx-auto leading-relaxed"
           >
-            Nós conectamos seus sistemas e eliminamos o retrabalho manual. Uma operação eficiente não depende de esforço, e sim de inteligência.
+            Conectamos seu ERP, CRM e WhatsApp num fluxo só. Acabou o copiar e colar.
           </p>
 
           <div
@@ -178,10 +178,10 @@ export function Hero() {
           >
             <Link
               href="/diagnostico"
-              onClick={() => trackCTAClick("Hero", "Diagnóstico Gratuito", "/diagnostico")}
+              onClick={() => trackCTAClick("Hero", "Descobrir quanto perco", "/diagnostico")}
               className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-8 py-4 font-bold hover:shadow-lg hover:shadow-[#2546BD]/30 hover:opacity-90 transition-all text-center w-full sm:w-auto relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:skew-x-12 hover:before:translate-x-[200%] before:transition-transform before:duration-700 text-base sm:text-lg"
             >
-              Diagnóstico Gratuito
+              Descobrir quanto perco por mês
             </Link>
           </div>
 
@@ -425,10 +425,10 @@ export function Hero() {
         >
           <Link
             href="/diagnostico"
-            onClick={() => trackCTAClick("Hero Mobile Sticky", "Diagnóstico Gratuito", "/diagnostico")}
+            onClick={() => trackCTAClick("Hero Mobile Sticky", "Descobrir quanto perco", "/diagnostico")}
             className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-6 py-4 font-bold text-center block text-base"
           >
-            Diagnóstico Gratuito
+            Descobrir quanto perco por mês
           </Link>
         </motion.div>
       )}
