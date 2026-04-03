@@ -2,8 +2,8 @@
 
 export const dynamic = 'force-dynamic'
 
-import { useState, useEffect } from 'react'
-import { GraduationCap, HelpCircle, TrendingUp, DollarSign, BarChart3, Target, AlertTriangle, Calculator, Shield, Lightbulb, Send, Loader2, Bot, ChevronDown, ChevronUp } from 'lucide-react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { GraduationCap, HelpCircle, TrendingUp, DollarSign, BarChart3, Target, AlertTriangle, Calculator, Shield, Lightbulb, Send, Loader2, Bot, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useGroqAnalysis } from '@/hooks/use-groq'
@@ -88,6 +88,31 @@ const GUIDES = [
 
 interface ChatMessage { role: 'user' | 'assistant'; content: string }
 
+function useAcademyProgress() {
+  const STORAGE_KEY = 'bg-academy-progress'
+  const [readItems, setReadItems] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      if (stored) setReadItems(new Set(JSON.parse(stored)))
+    } catch { /* ignore */ }
+  }, [])
+
+  const markRead = useCallback((id: string) => {
+    setReadItems((prev) => {
+      const next = new Set(prev).add(id)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...next]))
+      return next
+    })
+  }, [])
+
+  const totalItems = GLOSSARY.length + GUIDES.length
+  const readCount = readItems.size
+
+  return { readItems, markRead, totalItems, readCount }
+}
+
 export default function AcademyPage() {
   useEffect(() => { document.title = 'Academy | Gradios CFO' }, [])
 
@@ -95,6 +120,18 @@ export default function AcademyPage() {
   const [question, setQuestion] = useState('')
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([])
   const [expandedGuide, setExpandedGuide] = useState<number | null>(null)
+  const { readItems, markRead, totalItems, readCount } = useAcademyProgress()
+  const guideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Auto-mark guide as read after 5s expanded
+  useEffect(() => {
+    if (guideTimerRef.current) clearTimeout(guideTimerRef.current)
+    if (expandedGuide !== null) {
+      const guideId = `guide-${expandedGuide}`
+      guideTimerRef.current = setTimeout(() => markRead(guideId), 5000)
+    }
+    return () => { if (guideTimerRef.current) clearTimeout(guideTimerRef.current) }
+  }, [expandedGuide, markRead])
 
   async function handleAskAI(e: React.FormEvent) {
     e.preventDefault()
@@ -114,6 +151,17 @@ export default function AcademyPage() {
         <p className="text-sm text-text-muted font-medium">Guia prático e educacional sobre os conceitos financeiros aplicados na Gradios.</p>
       </div>
 
+      {/* Progress bar */}
+      <div className="card-glass flex items-center gap-4">
+        <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+          <div
+            className="h-full bg-brand-cyan rounded-full transition-all duration-500"
+            style={{ width: `${totalItems > 0 ? (readCount / totalItems) * 100 : 0}%` }}
+          />
+        </div>
+        <span className="text-xs text-text-secondary font-medium whitespace-nowrap">{readCount} de {totalItems} concluídos</span>
+      </div>
+
       {/* Glossário */}
       <section className="space-y-4">
         <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
@@ -121,10 +169,17 @@ export default function AcademyPage() {
           Glossário Financeiro
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {GLOSSARY.map((item) => (
-            <div key={item.title} className="card-glass-hover space-y-3">
+          {GLOSSARY.map((item, idx) => {
+            const glossaryId = `glossary-${idx}`
+            const isRead = readItems.has(glossaryId)
+            return (
+            <div
+              key={item.title}
+              className="card-glass-hover space-y-3 cursor-pointer"
+              onClick={() => markRead(glossaryId)}
+            >
               <div className="flex items-center gap-2">
-                <item.icon className="h-5 w-5 text-brand-cyan" />
+                {isRead ? <CheckCircle2 className="h-5 w-5 text-status-positive" /> : <item.icon className="h-5 w-5 text-brand-cyan" />}
                 <div>
                   <h3 className="text-sm font-bold text-text-primary">{item.title}</h3>
                   <p className="text-[10px] text-text-secondary">{item.subtitle}</p>
@@ -140,7 +195,8 @@ export default function AcademyPage() {
                 <p className="text-xs text-text-secondary">{item.action}</p>
               </div>
             </div>
-          ))}
+          )
+          })}
         </div>
       </section>
 
@@ -151,17 +207,24 @@ export default function AcademyPage() {
           Guias Práticos
         </h2>
         <div className="space-y-2">
-          {GUIDES.map((guide, i) => (
+          {GUIDES.map((guide, i) => {
+            const guideId = `guide-${i}`
+            const isRead = readItems.has(guideId)
+            return (
             <div key={i} className="card-glass">
               <button onClick={() => setExpandedGuide(expandedGuide === i ? null : i)} className="w-full flex items-center justify-between text-left">
-                <span className="text-sm font-medium text-text-primary">{guide.title}</span>
+                <div className="flex items-center gap-2">
+                  {isRead && <CheckCircle2 className="h-4 w-4 text-status-positive shrink-0" />}
+                  <span className="text-sm font-medium text-text-primary">{guide.title}</span>
+                </div>
                 {expandedGuide === i ? <ChevronUp className="h-4 w-4 text-text-secondary shrink-0" /> : <ChevronDown className="h-4 w-4 text-text-secondary shrink-0" />}
               </button>
               {expandedGuide === i && (
                 <p className="mt-3 pt-3 border-t border-brand-blue-deep/20 text-sm text-text-secondary leading-relaxed">{guide.content}</p>
               )}
             </div>
-          ))}
+          )
+          })}
         </div>
       </section>
 

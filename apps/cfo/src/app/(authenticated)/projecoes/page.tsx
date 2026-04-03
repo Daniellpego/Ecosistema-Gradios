@@ -406,10 +406,12 @@ function ProjecaoForm({
   open,
   onClose,
   editingCenario,
+  templateDefaults,
 }: {
   open: boolean
   onClose: () => void
   editingCenario?: Projecao | null
+  templateDefaults?: Partial<Projecao> | null
 }) {
   const createProjecao = useCreateProjecao()
   const updateProjecao = useUpdateProjecao()
@@ -431,6 +433,13 @@ function ProjecaoForm({
       setMensalidade(String(editingCenario.ticket_medio))
       setSetupCliente(String(editingCenario.setup_por_cliente ?? 0))
       setCustoVariavel(String(editingCenario.custo_variavel_percentual))
+    } else if (templateDefaults) {
+      setNome(templateDefaults.nome ?? 'Realista')
+      setTaxaCrescimento(String(templateDefaults.taxa_crescimento_mensal ?? 5))
+      setNovosClientes(String(templateDefaults.novos_clientes_mes ?? 2))
+      setMensalidade(String(templateDefaults.ticket_medio ?? 500))
+      setSetupCliente(String(templateDefaults.setup_por_cliente ?? 1100))
+      setCustoVariavel(String(templateDefaults.custo_variavel_percentual ?? 20))
     } else {
       setNome('Realista')
       setTaxaCrescimento('5')
@@ -439,7 +448,7 @@ function ProjecaoForm({
       setSetupCliente('1100')
       setCustoVariavel('20')
     }
-  }, [editingCenario])
+  }, [editingCenario, templateDefaults])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -563,6 +572,7 @@ export default function ProjecoesPage() {
   const deleteProjecao = useDeleteProjecao()
   const [formOpen, setFormOpen] = useState(false)
   const [editingCenario, setEditingCenario] = useState<Projecao | null>(null)
+  const [templateDefaults, setTemplateDefaults] = useState<Partial<Projecao> | null>(null)
   const [deletingCenario, setDeletingCenario] = useState<Projecao | null>(null)
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined)
 
@@ -625,15 +635,46 @@ export default function ProjecoesPage() {
           <Skeleton className="h-64 w-full" />
         </div>
       ) : projecoes.length === 0 ? (
-        <EmptyState 
-          title="Nenhuma projeção criada ainda" 
-          description="Crie cenários financeiros (Conservador, Realista, Agressivo) para simular o futuro do caixa e resultados da Gradios."
-          className="card-glass py-20"
-          action={{
-            label: "Criar Primeira Projeção",
-            onClick: () => setFormOpen(true)
-          }}
-        />
+        <div className="space-y-6">
+          <div className="card-glass py-10 text-center">
+            <LineChartIcon className="h-10 w-10 text-brand-cyan/40 mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-text-primary mb-1">Crie sua primeira projeção</h3>
+            <p className="text-sm text-text-secondary max-w-md mx-auto">Escolha um template abaixo para começar. Você pode ajustar os valores depois.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { nome: 'Conservador', emoji: '🟢', desc: 'Crescimento lento e seguro', crescimento: '5', clientes: '1', mensalidade: '500', setup: '1100', custoVar: '20', color: 'text-status-positive' },
+              { nome: 'Realista', emoji: '🟡', desc: 'Projeção baseada no ritmo atual', crescimento: '10', clientes: '2', mensalidade: '500', setup: '1100', custoVar: '20', color: 'text-status-warning' },
+              { nome: 'Agressivo', emoji: '🔵', desc: 'Meta ambiciosa de crescimento', crescimento: '20', clientes: '4', mensalidade: '500', setup: '1100', custoVar: '20', color: 'text-brand-cyan' },
+            ].map((t) => (
+              <button
+                key={t.nome}
+                onClick={() => {
+                  setTemplateDefaults({
+                    nome: t.nome,
+                    taxa_crescimento_mensal: Number(t.crescimento),
+                    novos_clientes_mes: Number(t.clientes),
+                    ticket_medio: Number(t.mensalidade),
+                    setup_por_cliente: Number(t.setup),
+                    custo_variavel_percentual: Number(t.custoVar),
+                  } as Partial<Projecao>)
+                  setFormOpen(true)
+                }}
+                className="card-glass text-left hover:ring-1 hover:ring-brand-cyan/30 transition-all"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-lg">{t.emoji}</span>
+                  <span className={cn('text-sm font-bold', t.color)}>{t.nome}</span>
+                </div>
+                <p className="text-xs text-text-secondary mb-3">{t.desc}</p>
+                <div className="space-y-1 text-[11px] text-text-muted">
+                  <p>{t.clientes} cliente{Number(t.clientes) > 1 ? 's' : ''}/mês · {t.crescimento}% crescimento</p>
+                  <p>Setup R$ {t.setup} · Mensalidade R$ {t.mensalidade}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
       ) : (
         <Tabs value={activeTab ?? defaultTab} onValueChange={setActiveTab}>
           <TabsList>
@@ -664,8 +705,9 @@ export default function ProjecoesPage() {
 
     <ProjecaoForm
       open={formOpen}
-      onClose={handleCloseForm}
+      onClose={() => { handleCloseForm(); setTemplateDefaults(null) }}
       editingCenario={editingCenario}
+      templateDefaults={templateDefaults}
     />
 
     {deletingCenario && (

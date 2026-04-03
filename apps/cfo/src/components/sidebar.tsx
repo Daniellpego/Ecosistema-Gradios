@@ -81,7 +81,7 @@ export function Sidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 relative group',
                 isActive
-                  ? 'bg-gradient-to-r from-brand-cyan/10 to-transparent text-brand-cyan font-bold border-l-4 border-brand-cyan shadow-[inset_4px_0_10px_-4px_rgba(0,191,255,0.15)]'
+                  ? 'bg-gradient-to-r from-brand-cyan/15 to-transparent text-brand-cyan font-bold border-l-[3px] border-l-brand-cyan bg-brand-cyan/10 shadow-[inset_4px_0_10px_-4px_rgba(0,191,255,0.15)]'
                   : 'text-text-muted hover:bg-slate-50 hover:text-text-primary font-medium'
               )}
             >

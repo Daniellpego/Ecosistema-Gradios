@@ -66,6 +66,7 @@ export type HealthStatus = 'saudavel' | 'atencao' | 'critico' | 'sem_dados'
 export interface DashboardAlert {
   id: string
   type: 'critical' | 'warning' | 'info'
+  priority: number // 1=urgente, 2=atenção, 3=info
   icon: string
   title: string
   description: string
@@ -439,6 +440,7 @@ export function useDashboard(): DashboardData {
         alerts.push({
           id: 'runway-critical',
           type: 'critical',
+          priority: 1,
           icon: '🚨',
           title: 'Runway crítico',
           description: `Caixa cobre menos de 1 mês de operação. Runway atual: ${kpis.runway.toFixed(1)} meses.`,
@@ -448,6 +450,7 @@ export function useDashboard(): DashboardData {
         alerts.push({
           id: 'runway-low',
           type: 'warning',
+          priority: 2,
           icon: '⚠️',
           title: 'Runway baixo',
           description: `Runway de ${kpis.runway.toFixed(1)} meses. Recomendado mínimo de 3 meses.`,
@@ -459,6 +462,7 @@ export function useDashboard(): DashboardData {
         alerts.push({
           id: 'burn-exceeds-revenue',
           type: 'critical',
+          priority: 1,
           icon: '🔥',
           title: 'Burn rate superior à receita',
           description: `Custos totais (${kpis.burnRate.toFixed(0)}) excedem receita (${kpis.receitaTotal.toFixed(0)}).`,
@@ -470,6 +474,7 @@ export function useDashboard(): DashboardData {
         alerts.push({
           id: 'cash-declining',
           type: 'critical',
+          priority: 1,
           icon: '📉',
           title: 'Caixa em queda por 3 meses',
           description: 'O saldo de caixa está caindo consecutivamente nos últimos 3 registros.',
@@ -481,6 +486,7 @@ export function useDashboard(): DashboardData {
         alerts.push({
           id: 'negative-result',
           type: 'warning',
+          priority: 1,
           icon: '📊',
           title: 'Resultado líquido negativo',
           description: `Prejuízo de R$ ${Math.abs(kpis.resultadoLiquido).toFixed(2)} no período.`,
@@ -492,6 +498,7 @@ export function useDashboard(): DashboardData {
         alerts.push({
           id: 'low-margin',
           type: 'warning',
+          priority: 2,
           icon: '💹',
           title: 'Margem abaixo do ideal',
           description: `Margem líquida de ${kpis.margem.toFixed(1)}%. Meta: 30%.`,
@@ -503,12 +510,15 @@ export function useDashboard(): DashboardData {
         alerts.push({
           id: 'no-mrr',
           type: 'info',
+          priority: 3,
           icon: '🔄',
           title: 'Sem receita recorrente',
           description: 'Nenhuma receita recorrente identificada este mês.',
           action: 'Considere criar planos mensais',
         })
       }
+
+      alerts.sort((a, b) => a.priority - b.priority)
     }
     return alerts
   }, [hasData, kpis, caixaDropping3m])
