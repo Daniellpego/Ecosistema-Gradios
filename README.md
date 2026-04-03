@@ -198,7 +198,7 @@ Proposta status → 'Aceita'   → Seta respondida_em + sent_date automaticament
 | 004 | `crm_enhancements.sql` | atividades, colunas extras em leads/deals, trigger status |
 | 005 | `anon_insert_leads.sql` | Abre INSERT anon para quiz publico |
 | 006 | `quiz_leads_table.sql` | Tabela quiz_leads para diagnostico do site |
-| 007 | `jarvis_schema.sql` | Tabelas de agentes e memoria |
+| 007 | `jarvis_schema.sql` | Tabelas auxiliares (legado) |
 | 008 | `propostas.sql` | Extende crm_proposals |
 | 009 | `quiz_lead_webhook.sql` | Trigger quiz_leads INSERT &rarr; webhook |
 | 010 | `quiz_lead_discord_n8n_webhooks.sql` | Webhooks Discord e n8n |
