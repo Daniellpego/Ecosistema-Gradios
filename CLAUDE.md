@@ -9,7 +9,7 @@ apps/
   cto/       — Gestao de projetos e entregas
   site/      — Landing page + quiz diagnostico (gradios.co)
 supabase/
-  migrations/  — 10 migrations versionadas (001-010)
+  migrations/  — 12 migrations versionadas (001-012)
   functions/   — Edge Function groq-analysis
   rls-hardening.sql
 n8n-workflows/ — Automacoes (email nurturing)
