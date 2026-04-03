@@ -41,8 +41,8 @@ export default function RelatoriosPage() {
             <FileBarChart className="h-4 w-4 text-brand-cyan" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-text-primary">Relatorios</h1>
-            <p className="text-xs text-text-muted">Gere e acesse apresentacoes da operacao</p>
+            <h1 className="text-xl font-bold text-text-primary">Relatórios</h1>
+            <p className="text-xs text-text-muted">Gere e acesse apresentações da operação</p>
           </div>
         </div>
 
@@ -55,8 +55,8 @@ export default function RelatoriosPage() {
               <h3 className="text-sm font-semibold text-text-primary">Gerar Relatorio</h3>
             </div>
             <p className="text-xs text-text-muted mb-4 leading-relaxed">
-              Use o Claude Code com as skills de PPTX para gerar apresentacoes automaticamente.
-              Diga: &quot;gere um relatorio de status&quot; ou &quot;apresentacao financeira&quot;.
+              Selecione o tipo de relatório abaixo para gerar uma apresentação automaticamente.
+              Você pode criar relatórios de status, roadmap, financeiro ou personalizado.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {Object.entries(TIPO_CONFIG).map(([key, cfg]) => {
@@ -94,8 +94,8 @@ export default function RelatoriosPage() {
               <div className="h-14 w-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(0,200,240,0.08)', border: '1px dashed rgba(0,200,240,0.25)' }}>
                 <FileBarChart className="h-7 w-7 text-brand-cyan opacity-50" />
               </div>
-              <p className="text-sm font-semibold text-text-secondary">Nenhuma apresentacao gerada</p>
-              <p className="text-xs text-text-muted mt-1 max-w-sm">Use o comando de geracao acima para criar seu primeiro relatorio PPTX</p>
+              <p className="text-sm font-semibold text-text-secondary">Nenhuma apresentação gerada</p>
+              <p className="text-xs text-text-muted mt-1 max-w-sm">Selecione um tipo de relatório acima para gerar sua primeira apresentação</p>
             </div>
           )}
 

@@ -474,8 +474,8 @@ export default function DashboardPage() {
             <div className="flex flex-wrap divide-x divide-brand-blue-deep/40">
               <QuickStat icon={BarChart3}  label="Total de Projetos"   value={String(totalProjetos)}              color="#00C8F0" />
               <QuickStat icon={Rocket}     label="Projetos Ativos"     value={String(kpis.projetosAtivos)}        color="#1A6AAA" />
-              <QuickStat icon={Target}     label="Entregas no Mes"     value={String(kpis.entreguesMes)}          color="#10B981" />
-              <QuickStat icon={Timer}      label="Proximas Entregas"   value={String(proximasEntregas.length)}    color="#F59E0B" />
+              <QuickStat icon={Target}     label="Entregas no Mês"     value={String(kpis.entreguesMes)}          color="#10B981" />
+              <QuickStat icon={Timer}      label="Próximas Entregas"   value={String(proximasEntregas.length)}    color="#F59E0B" />
               <QuickStat icon={Users}      label="Milestones (14d)"    value={String(proximosMilestones.length)}  color="#94A3B8" />
               {kpis.atrasados > 0 && (
                 <QuickStat icon={AlertTriangle} label="Atrasados"      value={String(kpis.atrasados)}             color="#EF4444" />
@@ -650,7 +650,7 @@ export default function DashboardPage() {
 
               <SectionHeader
                 icon={Clock}
-                title="Proximas Entregas"
+                title="Próximas Entregas"
                 iconBg="rgba(245,158,11,0.12)"
                 iconColor="#F59E0B"
                 badge={
@@ -749,7 +749,7 @@ export default function DashboardPage() {
 
               <SectionHeader
                 icon={Milestone}
-                title="Proximos Milestones"
+                title="Próximos Milestones"
                 iconBg="rgba(26,106,170,0.15)"
                 iconColor="#1A6AAA"
                 badge={

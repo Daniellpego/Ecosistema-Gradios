@@ -134,8 +134,11 @@ export function ProjetoFormDialog({ projeto, trigger }: ProjetoFormDialogProps) 
               <Input value={cliente} onChange={(e) => setCliente(e.target.value)} placeholder="Nome do cliente" className="mt-1" />
             </div>
             <div>
-              <Label>Valor (R$)</Label>
-              <Input type="number" step="0.01" value={valor} onChange={(e) => setValor(e.target.value)} placeholder="0,00" className="mt-1" />
+              <Label>Valor</Label>
+              <div className="relative mt-1">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-text-muted font-medium">R$</span>
+                <Input type="number" step="0.01" value={valor} onChange={(e) => setValor(e.target.value)} placeholder="0,00" className="pl-10" />
+              </div>
             </div>
           </div>
 
@@ -171,11 +174,11 @@ export function ProjetoFormDialog({ projeto, trigger }: ProjetoFormDialogProps) 
           </div>
 
           <div>
-            <Label>Descricao</Label>
+            <Label>Descrição</Label>
             <textarea
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
-              placeholder="Breve descricao do projeto..."
+              placeholder="Breve descrição do projeto..."
               rows={3}
               className="mt-1 w-full rounded-lg bg-bg-input border border-brand-blue-deep/30 px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-cyan/30 focus:border-brand-cyan/50 resize-none"
             />
@@ -185,7 +188,7 @@ export function ProjetoFormDialog({ projeto, trigger }: ProjetoFormDialogProps) 
             <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
             <Button type="submit" disabled={!nome.trim() || isPending}>
               {isEdit
-                ? (isPending ? 'Salvando...' : 'Salvar Alteracoes')
+                ? (isPending ? 'Salvando...' : 'Salvar Alterações')
                 : (isPending ? 'Criando...' : 'Criar Projeto')}
             </Button>
           </div>

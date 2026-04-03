@@ -18,9 +18,9 @@ const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/kanban', label: 'Kanban', icon: Kanban },
   { href: '/timeline', label: 'Timeline', icon: GanttChart },
-  { href: '/calendario', label: 'Calendario', icon: Calendar },
-  { href: '/relatorios', label: 'Relatorios', icon: FileBarChart },
-  { href: '/portal', label: 'Portal Socios', icon: Users },
+  { href: '/calendario', label: 'Calendário', icon: Calendar },
+  { href: '/relatorios', label: 'Relatórios', icon: FileBarChart },
+  { href: '/portal', label: 'Portal Sócios', icon: Users },
 ] as const
 
 export function Sidebar() {

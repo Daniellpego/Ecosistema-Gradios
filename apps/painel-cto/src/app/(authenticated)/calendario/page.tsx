@@ -105,8 +105,8 @@ export default function CalendarioPage() {
               <CalIcon className="h-4 w-4 text-brand-cyan" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-text-primary">Calendario</h1>
-              <p className="text-xs text-text-muted">{events.length} evento{events.length !== 1 ? 's' : ''} neste mes</p>
+              <h1 className="text-xl font-bold text-text-primary">Calendário</h1>
+              <p className="text-xs text-text-muted">{events.length} evento{events.length !== 1 ? 's' : ''} neste mês</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

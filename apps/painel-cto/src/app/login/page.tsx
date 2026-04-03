@@ -84,7 +84,16 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Senha</Label>
+                <button
+                  type="button"
+                  onClick={() => {/* TODO: implement password reset flow */}}
+                  className="text-xs text-brand-cyan hover:text-brand-cyan/80 transition-colors"
+                >
+                  Esqueci minha senha
+                </button>
+              </div>
               <div className="relative">
                 <Input
                   id="password"

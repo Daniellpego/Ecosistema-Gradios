@@ -69,8 +69,8 @@ export default function PortalPage() {
               <Users className="h-6 w-6 text-brand-cyan" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-text-primary tracking-tight">Portal dos Socios</h1>
-              <p className="text-sm text-text-secondary">Visao macro de projetos e operacoes</p>
+              <h1 className="text-2xl font-bold text-text-primary tracking-tight">Portal dos Sócios</h1>
+              <p className="text-sm text-text-secondary">Visão macro de projetos e operações</p>
             </div>
           </div>
           {/* Summary pills */}
@@ -82,7 +82,7 @@ export default function PortalPage() {
               {formatCurrency(totalValor)}
             </div>
             <div className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B' }}>
-              {avgProgresso}% medio
+              {avgProgresso}% médio
             </div>
           </div>
         </div>
@@ -177,8 +177,8 @@ export default function PortalPage() {
                     <div className="h-10 w-10 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(0,200,240,0.08)', border: '1px dashed rgba(0,200,240,0.25)' }}>
                       <Eye className="h-5 w-5 text-brand-cyan opacity-50" />
                     </div>
-                    <p className="text-sm text-text-secondary font-medium">Sem atualizacoes</p>
-                    <p className="text-xs text-text-muted mt-0.5">As atualizacoes visiveis para socios aparecerao aqui</p>
+                    <p className="text-sm text-text-secondary font-medium">Sem atualizações</p>
+                    <p className="text-xs text-text-muted mt-0.5">As atualizações visíveis para sócios aparecerão aqui</p>
                   </div>
                 )}
               </div>
