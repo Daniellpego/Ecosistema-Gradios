@@ -38,7 +38,7 @@ export function KanbanColumn({ id, label, color, bgColor, projetos }: KanbanColu
               boxShadow: `0 0 6px ${color}99`,
             }}
           />
-          <h3 className="text-sm font-semibold text-text-primary tracking-wide">{label}</h3>
+          <h3 className="text-sm font-semibold text-text-primary tracking-wide" id={`col-${id}`}>{label}</h3>
         </div>
 
         {/* Counter badge with glow */}
@@ -63,7 +63,7 @@ export function KanbanColumn({ id, label, color, bgColor, projetos }: KanbanColu
       />
 
       <SortableContext items={projetos.map((p) => p.id)} strategy={verticalListSortingStrategy}>
-        <div className="space-y-2 min-h-[120px]">
+        <div className="space-y-2 min-h-[120px]" role="list" aria-labelledby={`col-${id}`}>
           {projetos.length === 0 ? (
             <div
               className={cn(

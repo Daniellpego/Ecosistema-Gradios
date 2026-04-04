@@ -35,14 +35,14 @@ export default function RelatoriosPage() {
 
   return (
     <PageTransition>
-      <div className="space-y-6">
-        <div className="flex items-center gap-3">
+      <div className="space-y-4 sm:space-y-6">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div className="section-header-icon" style={{ background: 'rgba(0,200,240,0.12)', border: '1px solid rgba(0,200,240,0.2)' }}>
             <FileBarChart className="h-4 w-4 text-brand-cyan" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-text-primary">Relatórios</h1>
-            <p className="text-xs text-text-muted">Gere e acesse apresentações da operação</p>
+            <h1 className="text-lg sm:text-xl font-bold text-text-primary">Relatórios</h1>
+            <p className="text-[10px] sm:text-xs text-text-muted">Gere e acesse apresentações da operação</p>
           </div>
         </div>
 
@@ -58,14 +58,14 @@ export default function RelatoriosPage() {
               Selecione o tipo de relatório abaixo para gerar uma apresentação automaticamente.
               Você pode criar relatórios de status, roadmap, financeiro ou personalizado.
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
               {Object.entries(TIPO_CONFIG).map(([key, cfg]) => {
                 const Icon = cfg.icon
                 return (
                   <motion.div
                     key={key}
                     whileHover={{ y: -2, transition: { duration: 0.2 } }}
-                    className="rounded-xl p-4 flex flex-col items-center gap-2.5 text-center cursor-pointer transition-colors"
+                    className="rounded-xl p-3 sm:p-4 flex flex-col items-center gap-2 sm:gap-2.5 text-center cursor-pointer transition-colors active:scale-[0.98]"
                     style={{ background: `${cfg.color}08`, border: `1px solid ${cfg.color}18` }}
                   >
                     <div

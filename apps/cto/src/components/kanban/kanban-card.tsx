@@ -41,6 +41,8 @@ export function KanbanCard({ projeto, overlay }: KanbanCardProps) {
       style={style}
       {...attributes}
       {...listeners}
+      role="listitem"
+      aria-label={`Projeto ${getProjetoTitulo(projeto)} — ${projeto.progresso}% concluido`}
       className={cn(
         'kanban-card relative group',
         isDragging && 'dragging',

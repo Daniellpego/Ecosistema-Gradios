@@ -109,12 +109,12 @@ function KPICard({
           style={{ background: `${normalizeColor(accentColor)}08` }}
         />
 
-        <div className="relative p-5">
+        <div className="relative p-3 sm:p-5">
           {/* Icon + alert badge */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-2 sm:mb-4">
             <div
               className={cn(
-                'h-11 w-11 rounded-xl flex items-center justify-center',
+                'h-9 w-9 sm:h-11 sm:w-11 rounded-[10px] sm:rounded-xl flex items-center justify-center',
                 alert && 'animate-pulse'
               )}
               style={{
@@ -123,7 +123,7 @@ function KPICard({
                 boxShadow: alert ? `0 0 16px ${normalizeColor(accentColor)}40` : 'none',
               }}
             >
-              <Icon className="h-5 w-5" style={{ color: normalizeColor(accentColor) }} />
+              <Icon className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: normalizeColor(accentColor) }} />
             </div>
 
             {trend !== 'neutral' && (
@@ -143,7 +143,7 @@ function KPICard({
           {/* Value */}
           <div className="mb-1">
             <p
-              className="text-3xl font-bold tracking-tight leading-none"
+              className="text-xl sm:text-3xl font-bold tracking-tight leading-none"
               style={{ color: normalizeColor(accentColor) }}
             >
               <AnimatedNumber value={value} format={format} />
@@ -151,7 +151,7 @@ function KPICard({
           </div>
 
           {/* Label */}
-          <p className="text-xs font-semibold uppercase tracking-widest text-text-secondary mb-1">
+          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider sm:tracking-widest text-text-secondary mb-0.5 sm:mb-1">
             {label}
           </p>
 
@@ -184,11 +184,11 @@ interface QuickStatProps {
 
 function QuickStat({ icon: Icon, label, value, color }: QuickStatProps) {
   return (
-    <div className="flex items-center gap-2.5 px-4 py-2.5">
-      <Icon className="h-4 w-4 shrink-0" style={{ color: normalizeColor(color) }} />
+    <div className="flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 shrink-0 snap-center">
+      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" style={{ color: normalizeColor(color) }} />
       <div className="min-w-0">
-        <p className="text-xs text-text-muted leading-none mb-0.5">{label}</p>
-        <p className="text-sm font-bold text-text-primary leading-none">{value}</p>
+        <p className="text-[10px] sm:text-xs text-text-muted leading-none mb-0.5 whitespace-nowrap">{label}</p>
+        <p className="text-xs sm:text-sm font-bold text-text-primary leading-none">{value}</p>
       </div>
     </div>
   )
@@ -269,17 +269,17 @@ interface SectionHeaderProps {
 
 function SectionHeader({ icon: Icon, title, iconBg, iconColor, badge }: SectionHeaderProps) {
   return (
-    <div className="flex items-center gap-2.5 mb-5">
+    <div className="flex items-center gap-2 sm:gap-2.5 mb-3 sm:mb-5">
       <div
-        className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0"
+        className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0"
         style={{
           background: iconBg ?? 'rgba(0,200,240,0.12)',
           border: `1px solid ${iconColor ?? '#00C8F0'}25`,
         }}
       >
-        <Icon className="h-4 w-4" style={{ color: iconColor ?? '#00C8F0' }} />
+        <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: iconColor ?? '#00C8F0' }} />
       </div>
-      <h3 className="text-sm font-bold text-text-primary tracking-tight">{title}</h3>
+      <h3 className="text-xs sm:text-sm font-bold text-text-primary tracking-tight">{title}</h3>
       {badge && <div className="ml-auto">{badge}</div>}
     </div>
   )
@@ -348,26 +348,26 @@ function EmptyState({
 
 function DashboardSkeleton() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="flex items-center justify-between">
         <div className="space-y-2">
-          <Skeleton className="h-8 w-48 rounded-xl" />
-          <Skeleton className="h-4 w-72 rounded-lg" />
+          <Skeleton className="h-6 sm:h-8 w-40 sm:w-48 rounded-xl" />
+          <Skeleton className="h-4 w-56 sm:w-72 rounded-lg" />
         </div>
-        <Skeleton className="h-9 w-24 rounded-xl" />
+        <Skeleton className="h-9 w-24 rounded-xl hidden sm:block" />
       </div>
-      <Skeleton className="h-14 rounded-2xl" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <Skeleton className="h-12 sm:h-14 rounded-2xl" />
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} className="h-36 rounded-2xl" />
+          <Skeleton key={i} className="h-28 sm:h-36 rounded-2xl" />
         ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <Skeleton className="h-88 rounded-2xl" />
-        <Skeleton className="h-88 rounded-2xl" />
-        <Skeleton className="h-88 rounded-2xl" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
+        <Skeleton className="h-72 sm:h-88 rounded-2xl" />
+        <Skeleton className="h-72 sm:h-88 rounded-2xl" />
+        <Skeleton className="h-72 sm:h-88 rounded-2xl" />
       </div>
-      <Skeleton className="h-64 rounded-2xl" />
+      <Skeleton className="h-48 sm:h-64 rounded-2xl" />
     </div>
   )
 }
@@ -406,21 +406,21 @@ export default function DashboardPage() {
 
   return (
     <PageTransition>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Sparkles className="h-4 w-4 text-brand-cyan opacity-70" />
-              <span className="text-xs font-medium text-text-muted uppercase tracking-widest">
+              <span className="text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-widest">
                 {greeting}
               </span>
             </div>
-            <h1 className="text-2xl font-bold text-text-primary tracking-tight">
+            <h1 className="text-lg sm:text-2xl font-bold text-text-primary tracking-tight">
               Painel de Controle CTO
             </h1>
-            <p className="text-sm text-text-secondary mt-0.5">
+            <p className="text-xs sm:text-sm text-text-secondary mt-0.5 hidden sm:block">
               Visao estrategica em tempo real dos projetos e entregas
             </p>
           </div>
@@ -471,7 +471,7 @@ export default function DashboardPage() {
               style={{ background: 'linear-gradient(90deg, transparent, rgba(0,200,240,0.4), transparent)' }}
             />
 
-            <div className="flex flex-wrap divide-x divide-brand-blue-deep/40">
+            <div className="flex overflow-x-auto divide-x divide-brand-blue-deep/40 -mx-1 px-1 snap-x">
               <QuickStat icon={BarChart3}  label="Total de Projetos"   value={String(totalProjetos)}              color="#00C8F0" />
               <QuickStat icon={Rocket}     label="Projetos Ativos"     value={String(kpis.projetosAtivos)}        color="#1A6AAA" />
               <QuickStat icon={Target}     label="Entregas no Mês"     value={String(kpis.entreguesMes)}          color="#10B981" />
@@ -485,7 +485,7 @@ export default function DashboardPage() {
         </StaggerItem>
 
         {/* ── KPI Cards ───────────────────────────────────────────────────── */}
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <KPICard
             icon={LayoutDashboard}
             label="Projetos Ativos"
@@ -538,12 +538,12 @@ export default function DashboardPage() {
         </StaggerContainer>
 
         {/* ── Middle row ──────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
 
           {/* ── Status Donut ─────────────────────────────────────────────── */}
           <StaggerItem>
             <div
-              className="relative overflow-hidden rounded-2xl p-5 h-full"
+              className="relative overflow-hidden rounded-2xl p-3.5 sm:p-5 h-full"
               style={{
                 background: 'linear-gradient(145deg, rgba(0,200,240,0.05) 0%, rgba(19,31,53,0.95) 60%)',
                 border: '1px solid rgba(0,200,240,0.12)',
@@ -635,7 +635,7 @@ export default function DashboardPage() {
           {/* ── Proximas Entregas ────────────────────────────────────────── */}
           <StaggerItem>
             <div
-              className="relative overflow-hidden rounded-2xl p-5 h-full"
+              className="relative overflow-hidden rounded-2xl p-3.5 sm:p-5 h-full"
               style={{
                 background: 'linear-gradient(145deg, rgba(245,158,11,0.04) 0%, rgba(19,31,53,0.95) 60%)',
                 border: '1px solid rgba(245,158,11,0.12)',
@@ -734,7 +734,7 @@ export default function DashboardPage() {
           {/* ── Proximos Milestones ──────────────────────────────────────── */}
           <StaggerItem>
             <div
-              className="relative overflow-hidden rounded-2xl p-5 h-full"
+              className="relative overflow-hidden rounded-2xl p-3.5 sm:p-5 h-full"
               style={{
                 background: 'linear-gradient(145deg, rgba(26,106,170,0.06) 0%, rgba(19,31,53,0.95) 60%)',
                 border: '1px solid rgba(26,106,170,0.14)',
@@ -835,7 +835,7 @@ export default function DashboardPage() {
         {/* ── Activity Feed ────────────────────────────────────────────────── */}
         <StaggerItem>
           <div
-            className="relative overflow-hidden rounded-2xl p-5"
+            className="relative overflow-hidden rounded-2xl p-3.5 sm:p-5"
             style={{
               background: 'linear-gradient(145deg, rgba(0,200,240,0.04) 0%, rgba(19,31,53,0.95) 60%)',
               border: '1px solid rgba(0,200,240,0.1)',

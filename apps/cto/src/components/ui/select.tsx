@@ -16,9 +16,9 @@ const SelectTrigger = forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex h-10 w-full items-center justify-between rounded-[12px] bg-bg-input border border-brand-blue-deep/40 px-3 py-2 text-sm text-text-primary',
-      'placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-cyan/30',
-      'disabled:cursor-not-allowed disabled:opacity-50',
+      'flex h-10 w-full items-center justify-between rounded-[10px] bg-bg-input border border-brand-blue-deep/30 px-3 py-2 text-sm text-text-primary',
+      'placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-cyan/25 focus:border-brand-cyan/40',
+      'disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 shadow-sm',
       className
     )}
     {...props}
@@ -39,7 +39,7 @@ const SelectContent = forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-xl bg-bg-card border border-brand-blue-deep/40 shadow-xl',
+        'relative z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-xl bg-bg-card border border-brand-blue-deep/30 shadow-xl shadow-black/30',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
         'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -67,7 +67,7 @@ const SelectItem = forwardRef<
     ref={ref}
     className={cn(
       'relative flex w-full cursor-pointer select-none items-center rounded-lg py-2 pl-8 pr-2 text-sm text-text-primary outline-none',
-      'focus:bg-bg-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'focus:bg-bg-hover hover:bg-bg-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-50 transition-colors duration-150',
       className
     )}
     {...props}
