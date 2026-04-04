@@ -44,8 +44,13 @@
 
 @layer components {
   .card-glass {
-    @apply bg-white border border-slate-200/60 p-5 shadow-sm;
-    border-radius: 14px;
+    @apply bg-white border border-slate-200/60 p-3.5 sm:p-5 shadow-sm;
+    border-radius: 12px;
+  }
+  @media (min-width: 640px) {
+    .card-glass {
+      border-radius: 14px;
+    }
   }
 
   .card-glass-hover {

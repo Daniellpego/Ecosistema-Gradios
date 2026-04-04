@@ -61,21 +61,25 @@ export default function ReceitasPage() {
 
   return (
     <PageTransition>
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-black text-text-primary tracking-tight">Receitas</h1>
-          <p className="text-sm text-text-muted font-medium">Gestão de entradas, faturamento recorrente e análise de crescimento.</p>
+      <div className="flex items-start sm:items-center justify-between gap-3 mb-2">
+        <div className="flex flex-col gap-0.5">
+          <h1 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">Receitas</h1>
+          <p className="text-xs sm:text-sm text-text-muted font-medium hidden sm:block">Gestão de entradas, faturamento recorrente e análise de crescimento.</p>
         </div>
-        <Button onClick={handleNew} className="shadow-sm">
+        <Button onClick={handleNew} size="sm" className="shadow-sm shrink-0 sm:hidden">
+          <Plus className="h-4 w-4" />
+          Nova
+        </Button>
+        <Button onClick={handleNew} className="shadow-sm shrink-0 hidden sm:inline-flex">
           <Plus className="h-4 w-4 mr-2" />
           Nova Receita
         </Button>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
         {cards.map((card) => (
           <div key={card.label} className="card-glass">
             {isLoading ? (

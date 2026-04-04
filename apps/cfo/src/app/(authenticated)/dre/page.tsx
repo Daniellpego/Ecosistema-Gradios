@@ -61,8 +61,8 @@ function DRERow({ line }: { line: DRELine }) {
   if (line.type === 'separator') {
     return (
       <tr>
-        <td colSpan={4} className="py-1">
-          <div className="border-t border-brand-blue-deep/40" />
+        <td colSpan={4} className="py-0.5 sm:py-1">
+          <div className="border-t border-slate-200" />
         </td>
       </tr>
     )
@@ -92,15 +92,15 @@ function DRERow({ line }: { line: DRELine }) {
       {/* Label */}
       <td
         className={cn(
-          'py-2 pr-4',
-          line.indent && 'pl-8',
-          !line.indent && 'pl-3',
-          isTotal && 'text-lg font-bold text-text-primary',
-          isSubtotal && 'font-semibold text-text-primary',
-          isPositiveHeader && 'font-bold text-status-positive',
-          isSimplesLine && 'font-semibold text-status-warning',
-          isNegativeHeader && !isSubtotal && !isTotal && 'font-semibold text-status-negative',
-          isSub && 'text-sm text-text-secondary'
+          'py-1.5 sm:py-2 pr-2 sm:pr-4',
+          line.indent && 'pl-4 sm:pl-8',
+          !line.indent && 'pl-2 sm:pl-3',
+          isTotal && 'text-sm sm:text-lg font-bold text-text-primary',
+          isSubtotal && 'font-semibold text-text-primary text-xs sm:text-sm',
+          isPositiveHeader && 'font-bold text-status-positive text-xs sm:text-sm',
+          isSimplesLine && 'font-semibold text-status-warning text-xs sm:text-sm',
+          isNegativeHeader && !isSubtotal && !isTotal && 'font-semibold text-status-negative text-xs sm:text-sm',
+          isSub && 'text-xs sm:text-sm text-text-secondary'
         )}
       >
         {line.label}
@@ -109,10 +109,10 @@ function DRERow({ line }: { line: DRELine }) {
       {/* Mes Selecionado */}
       <td
         className={cn(
-          'py-2 px-4 text-right font-mono whitespace-nowrap',
-          isTotal && 'text-lg font-bold',
-          isSubtotal && 'font-semibold',
-          isSub && 'text-sm',
+          'py-1.5 sm:py-2 px-2 sm:px-4 text-right font-mono whitespace-nowrap',
+          isTotal && 'text-sm sm:text-lg font-bold',
+          isSubtotal && 'font-semibold text-xs sm:text-sm',
+          isSub && 'text-xs sm:text-sm',
           isSimplesLine
             ? 'text-status-warning'
             : isTotal || isSubtotal
@@ -133,10 +133,10 @@ function DRERow({ line }: { line: DRELine }) {
       {/* Acumulado Ano */}
       <td
         className={cn(
-          'py-2 px-4 text-right font-mono whitespace-nowrap',
-          isTotal && 'text-lg font-bold',
-          isSubtotal && 'font-semibold',
-          isSub && 'text-sm',
+          'py-1.5 sm:py-2 px-2 sm:px-4 text-right font-mono whitespace-nowrap hidden sm:table-cell',
+          isTotal && 'text-sm sm:text-lg font-bold',
+          isSubtotal && 'font-semibold text-xs sm:text-sm',
+          isSub && 'text-xs sm:text-sm',
           isSimplesLine
             ? 'text-status-warning'
             : isTotal || isSubtotal
@@ -153,10 +153,10 @@ function DRERow({ line }: { line: DRELine }) {
       {/* % Receita */}
       <td
         className={cn(
-          'py-2 pl-4 pr-3 text-right font-mono whitespace-nowrap',
-          isTotal && 'text-lg font-bold',
-          isSubtotal && 'font-semibold',
-          isSub && 'text-sm',
+          'py-1.5 sm:py-2 pl-2 sm:pl-4 pr-2 sm:pr-3 text-right font-mono whitespace-nowrap hidden md:table-cell',
+          isTotal && 'text-sm sm:text-lg font-bold',
+          isSubtotal && 'font-semibold text-xs sm:text-sm',
+          isSub && 'text-xs sm:text-sm',
           valuePositive ? 'text-status-positive' : 'text-status-negative'
         )}
       >
@@ -242,15 +242,15 @@ export default function DREPage() {
 
   return (
     <PageTransition>
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-1 mb-2">
-        <h1 className="text-2xl font-black text-text-primary tracking-tight">DRE Simplificada</h1>
-        <p className="text-sm text-text-muted font-medium">Demonstrativo de Resultados do Exercício — Visão Gerencial.</p>
+      <div className="flex flex-col gap-0.5 mb-1">
+        <h1 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">DRE Simplificada</h1>
+        <p className="text-xs sm:text-sm text-text-muted font-medium">Demonstrativo de Resultados do Exercício — Visão Gerencial.</p>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
         {isLoading ? (
           Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="card-glass">
@@ -265,7 +265,7 @@ export default function DREPage() {
                 <TrendingUp className="h-4 w-4 text-status-positive" />
                 <span className="text-xs text-text-secondary">Receita Bruta</span>
               </div>
-              <p className="text-lg font-bold text-status-positive">
+              <p className="text-base sm:text-lg font-bold text-status-positive">
                 {formatCurrency(kpis!.receitaBruta)}
               </p>
             </div>
@@ -332,19 +332,19 @@ export default function DREPage() {
         />
       ) : (
         <div className="card-glass overflow-x-auto">
-          <table className="w-full min-w-[600px]">
+          <table className="w-full">
             <thead>
-              <tr className="border-b border-brand-blue-deep/60">
-                <th className="py-3 pl-3 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
+              <tr className="border-b border-slate-200">
+                <th className="py-2.5 sm:py-3 pl-2 sm:pl-3 pr-2 sm:pr-4 text-left text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary">
                   Conta
                 </th>
-                <th className="py-3 px-4 text-right text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                <th className="py-2.5 sm:py-3 px-2 sm:px-4 text-right text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary">
                   Mês Atual
                 </th>
-                <th className="py-3 px-4 text-right text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                <th className="py-2.5 sm:py-3 px-2 sm:px-4 text-right text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary hidden sm:table-cell">
                   Acumulado Ano
                 </th>
-                <th className="py-3 pl-4 pr-3 text-right text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                <th className="py-2.5 sm:py-3 pl-2 sm:pl-4 pr-2 sm:pr-3 text-right text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary hidden md:table-cell">
                   % Receita
                 </th>
               </tr>
@@ -359,7 +359,7 @@ export default function DREPage() {
       )}
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Receita vs Custos - last 6 months */}
         {isChartLoading ? (
           <ChartSkeleton />

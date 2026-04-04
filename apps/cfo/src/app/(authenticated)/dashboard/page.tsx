@@ -18,6 +18,7 @@ import {
   Crosshair,
 } from 'lucide-react'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 import { PageTransition } from '@/components/motion'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercent } from '@/lib/format'
@@ -80,21 +81,23 @@ function HealthBanner({ status }: { status: HealthStatus }) {
   return (
     <div
       className={cn(
-        'rounded-xl border px-4 py-3 flex items-center gap-3',
+        'rounded-xl border px-3 sm:px-4 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-3',
         config.bg,
         config.border
       )}
     >
-      <span className="text-xl">{config.emoji}</span>
-      <span className={cn('font-semibold text-sm tracking-wide', config.text)}>
-        {config.label}
-      </span>
-      <span className="text-text-secondary text-sm">
-        {status === 'saudavel' && 'Finanças dentro dos parâmetros saudáveis'}
-        {status === 'atencao' && 'Alguns indicadores requerem atenção'}
-        {status === 'critico' && 'Indicadores críticos detectados — ação necessária'}
-        {status === 'sem_dados' && 'Comece cadastrando receitas e custos para ver o status da operação'}
-      </span>
+      <span className="text-lg sm:text-xl shrink-0">{config.emoji}</span>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2 min-w-0">
+        <span className={cn('font-semibold text-xs sm:text-sm tracking-wide shrink-0', config.text)}>
+          {config.label}
+        </span>
+        <span className="text-text-secondary text-[11px] sm:text-sm leading-snug">
+          {status === 'saudavel' && 'Finanças dentro dos parâmetros saudáveis'}
+          {status === 'atencao' && 'Alguns indicadores requerem atenção'}
+          {status === 'critico' && 'Indicadores críticos detectados — ação necessária'}
+          {status === 'sem_dados' && 'Comece cadastrando receitas e custos para ver o status da operação'}
+        </span>
+      </div>
     </div>
   )
 }
@@ -116,13 +119,13 @@ function KPICard({ label, value, variation, icon, tooltip, invertVariation, href
 
   const content = (
     <div className={cn(
-      'card-glass p-4 space-y-3 transition-all',
+      'card-glass p-3 sm:p-4 space-y-2 sm:space-y-3 transition-all active:scale-[0.98]',
       href && 'hover:ring-1 hover:ring-brand-cyan/30 cursor-pointer'
     )}>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="text-brand-cyan/80">{icon}</div>
-          <span className="text-[10px] text-text-muted font-bold tracking-widest uppercase">
+          <span className="text-[9px] sm:text-[10px] text-text-muted font-bold tracking-wider uppercase">
             {label}
           </span>
         </div>
@@ -141,15 +144,15 @@ function KPICard({ label, value, variation, icon, tooltip, invertVariation, href
       </div>
 
       <div className="flex flex-col items-end">
-        <p className="text-2xl font-black text-text-primary tracking-tight font-inter">
+        <p className="text-lg sm:text-2xl font-black text-text-primary tracking-tight font-inter">
           {value || '--'}
         </p>
 
         {variation !== null ? (
-          <div className="flex items-center gap-1 mt-1">
+          <div className="flex items-center gap-1 mt-0.5 sm:mt-1">
             <span
               className={cn(
-                'text-[11px] font-bold tracking-tight',
+                'text-[10px] sm:text-[11px] font-bold tracking-tight',
                 isPositive && 'text-status-positive',
                 isNegative && 'text-status-negative',
                 !isPositive && !isNegative && 'text-text-muted'
@@ -158,10 +161,10 @@ function KPICard({ label, value, variation, icon, tooltip, invertVariation, href
               {isPositive && '+'}
               {formatPercent(variation)}
             </span>
-            <span className="text-[10px] text-text-muted/60 font-medium">vs mês ant.</span>
+            <span className="text-[9px] sm:text-[10px] text-text-muted/60 font-medium">vs mês ant.</span>
           </div>
         ) : (
-          <div className="h-4" />
+          <div className="h-3 sm:h-4" />
         )}
       </div>
     </div>
@@ -207,20 +210,20 @@ function AlertCard({
         : 'bg-slate-50'
 
   return (
-    <div className={cn('rounded-xl border p-4 flex items-start gap-3', borderColor, bgColor)}>
-      <span className="text-lg shrink-0 mt-0.5">{alert.icon}</span>
+    <div className={cn('rounded-xl border p-3 sm:p-4 flex items-start gap-2 sm:gap-3', borderColor, bgColor)}>
+      <span className="text-base sm:text-lg shrink-0 mt-0.5">{alert.icon}</span>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-text-primary">{alert.title}</p>
-        <p className="text-xs text-text-secondary mt-0.5">{alert.description}</p>
+        <p className="text-xs sm:text-sm font-semibold text-text-primary">{alert.title}</p>
+        <p className="text-[11px] sm:text-xs text-text-secondary mt-0.5 leading-relaxed">{alert.description}</p>
         {alert.action && (
-          <p className="text-xs text-brand-cyan mt-1 font-medium">{alert.action}</p>
+          <p className="text-[11px] sm:text-xs text-brand-cyan mt-1 font-medium">{alert.action}</p>
         )}
       </div>
       <button
         onClick={() => onDismiss(alert.id)}
-        className="text-text-dark hover:text-text-secondary transition-colors shrink-0"
+        className="text-slate-300 hover:text-slate-500 transition-colors shrink-0"
       >
-        <X className="h-4 w-4" />
+        <X className="h-3.5 w-3.5" />
       </button>
     </div>
   )
@@ -371,11 +374,11 @@ export default function DashboardPage() {
   // ── Render ────────────────────────────────────────────────────────
   return (
     <PageTransition>
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Title */}
-      <div className="flex flex-col gap-1 mb-2">
-        <h1 className="text-2xl font-black text-text-primary tracking-tight">Painel Geral</h1>
-        <p className="text-sm text-text-muted font-medium">Visão geral do desempenho financeiro da operação.</p>
+      <div className="flex flex-col gap-0.5 mb-1">
+        <h1 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">Painel Geral</h1>
+        <p className="text-xs sm:text-sm text-text-muted font-medium">Visão geral do desempenho financeiro da operação.</p>
       </div>
 
       {/* Error state */}
@@ -409,7 +412,7 @@ export default function DashboardPage() {
       )}
 
       {/* Section 2 — KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
         {isLoading
           ? Array.from({ length: 8 }).map((_, i) => <KPICardSkeleton key={i} />)
           : kpiCards.map((card) => <KPICard key={card.label} {...card} />)}
@@ -435,8 +438,8 @@ export default function DashboardPage() {
       )}
 
       {/* Section 4 — Revenue vs Expenses Chart */}
-      <div className="card-glass p-4 sm:p-6">
-        <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-4">
+      <div className="card-glass p-3 sm:p-6">
+        <h2 className="text-xs sm:text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3 sm:mb-4">
           Receita vs Despesas (6 meses)
         </h2>
         {isLoading ? (
@@ -454,8 +457,8 @@ export default function DashboardPage() {
       </div>
 
       {/* Section 5 — Cost Distribution */}
-      <div className="card-glass p-4 sm:p-6">
-        <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-4">
+      <div className="card-glass p-3 sm:p-6">
+        <h2 className="text-xs sm:text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3 sm:mb-4">
           Distribuição de Custos
         </h2>
         {isLoading ? (
@@ -474,20 +477,20 @@ export default function DashboardPage() {
       </div>
 
       {/* Section 6 — AI Summary */}
-      <div className="card-glass p-4 sm:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wide flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-brand-cyan" />
+      <div className="card-glass p-3 sm:p-6">
+        <div className="flex items-center justify-between gap-2 mb-3 sm:mb-4">
+          <h2 className="text-xs sm:text-sm font-semibold text-text-secondary uppercase tracking-wide flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-cyan" />
             Análise IA
           </h2>
           <Button
             onClick={handleGenerateAI}
             disabled={aiLoading || isLoading}
-            className="text-xs"
+            className="text-[11px] sm:text-xs"
             variant="outline"
             size="sm"
           >
-            {aiLoading ? 'Analisando...' : 'Gerar análise do mês'}
+            {aiLoading ? 'Analisando...' : 'Gerar análise'}
           </Button>
         </div>
 
@@ -502,8 +505,23 @@ export default function DashboardPage() {
         )}
 
         {aiSummary ? (
-          <div className="prose prose-sm prose-invert max-w-none text-text-secondary text-sm leading-relaxed whitespace-pre-wrap">
-            {aiSummary}
+          <div className="ai-analysis-content text-sm leading-relaxed">
+            <ReactMarkdown
+              components={{
+                h1: ({ children }) => <h1 className="text-lg font-bold text-text-primary mt-4 mb-2">{children}</h1>,
+                h2: ({ children }) => <h2 className="text-base font-bold text-text-primary mt-4 mb-2">{children}</h2>,
+                h3: ({ children }) => <h3 className="text-sm font-bold text-text-primary mt-3 mb-1.5">{children}</h3>,
+                h4: ({ children }) => <h4 className="text-sm font-semibold text-text-primary mt-3 mb-1">{children}</h4>,
+                p: ({ children }) => <p className="text-text-secondary mb-2 leading-relaxed">{children}</p>,
+                strong: ({ children }) => <strong className="font-semibold text-text-primary">{children}</strong>,
+                ul: ({ children }) => <ul className="list-disc list-inside space-y-1 mb-3 text-text-secondary">{children}</ul>,
+                ol: ({ children }) => <ol className="list-decimal list-inside space-y-1 mb-3 text-text-secondary">{children}</ol>,
+                li: ({ children }) => <li className="text-text-secondary leading-relaxed">{children}</li>,
+                hr: () => <hr className="border-slate-200 my-3" />,
+              }}
+            >
+              {aiSummary}
+            </ReactMarkdown>
           </div>
         ) : (
           <div className="flex items-center justify-center h-24 text-text-dark text-sm">
