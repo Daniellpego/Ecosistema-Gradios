@@ -55,18 +55,18 @@ export default function ProjetoDetailPage({ params }: { params: Promise<{ id: st
 
   return (
     <PageTransition>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {/* Back link + actions */}
-        <div className="flex items-center justify-between gap-3">
-          <Link href="/kanban" className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-brand-cyan transition-colors group">
-            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" /> Voltar ao Kanban
+        <div className="flex items-center justify-between gap-2">
+          <Link href="/kanban" className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-text-muted hover:text-brand-cyan transition-colors group">
+            <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:-translate-x-0.5 transition-transform" /> Voltar
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <ProjetoFormDialog
               projeto={projeto}
               trigger={
-                <Button size="sm" variant="secondary">
-                  <Pencil className="h-3.5 w-3.5" /> Editar
+                <Button size="sm" variant="secondary" className="h-8 text-xs">
+                  <Pencil className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> <span className="hidden sm:inline">Editar</span>
                 </Button>
               }
             />
@@ -74,8 +74,9 @@ export default function ProjetoDetailPage({ params }: { params: Promise<{ id: st
               size="sm"
               variant="destructive"
               onClick={() => setConfirmDeleteOpen(true)}
+              className="h-8 text-xs"
             >
-              <Trash2 className="h-3.5 w-3.5" /> Excluir
+              <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> <span className="hidden sm:inline">Excluir</span>
             </Button>
           </div>
         </div>
@@ -106,15 +107,15 @@ export default function ProjetoDetailPage({ params }: { params: Promise<{ id: st
 
             <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                   <div
-                    className="h-4 w-4 rounded-full shrink-0"
+                    className="h-3 w-3 sm:h-4 sm:w-4 rounded-full shrink-0"
                     style={{ background: color, boxShadow: `0 0 10px ${color}50` }}
                   />
-                  <h1 className="text-2xl font-bold text-text-primary truncate tracking-tight">{getProjetoTitulo(projeto)}</h1>
+                  <h1 className="text-lg sm:text-2xl font-bold text-text-primary truncate tracking-tight">{getProjetoTitulo(projeto)}</h1>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2.5 mb-4">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2.5 mb-3 sm:mb-4">
                   <StatusBadge status={projeto.status} />
                   <PrioridadeBadge prioridade={projeto.prioridade} />
                   {projeto.categoria && (
@@ -125,7 +126,7 @@ export default function ProjetoDetailPage({ params }: { params: Promise<{ id: st
                   )}
                 </div>
 
-                <div className="flex flex-wrap items-center gap-5 text-xs text-text-secondary">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-5 text-[10px] sm:text-xs text-text-secondary">
                   {projeto.cliente && (
                     <span className="flex items-center gap-1.5"><User className="h-3.5 w-3.5" />{projeto.cliente}</span>
                   )}
@@ -149,9 +150,9 @@ export default function ProjetoDetailPage({ params }: { params: Promise<{ id: st
               </div>
 
               <div className="w-full sm:w-44">
-                <p className="text-xs text-text-muted mb-2 font-medium">Progresso Geral</p>
-                <div className="card-glass !p-3 !bg-bg-navy/40">
-                  <div className="text-2xl font-bold mb-2" style={{ color }}>{projeto.progresso}%</div>
+                <p className="text-[10px] sm:text-xs text-text-muted mb-1.5 sm:mb-2 font-medium">Progresso Geral</p>
+                <div className="card-glass !p-2.5 sm:!p-3 !bg-bg-navy/40">
+                  <div className="text-xl sm:text-2xl font-bold mb-1.5 sm:mb-2" style={{ color }}>{projeto.progresso}%</div>
                   <Progress value={projeto.progresso} />
                 </div>
               </div>

@@ -48,8 +48,8 @@ export function UpdateFeed({ projetoId }: { projetoId: string }) {
   return (
     <div className="space-y-4">
       {/* Post form */}
-      <div className="card-glass space-y-3">
-        <div className="flex gap-2">
+      <div className="card-glass space-y-2.5 sm:space-y-3">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Input
             placeholder="Postar um update..."
             value={conteudo}
@@ -57,19 +57,21 @@ export function UpdateFeed({ projetoId }: { projetoId: string }) {
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
             className="flex-1"
           />
-          <Select value={tipo} onValueChange={(v) => setTipo(v as UpdateTipo)}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.entries(TIPO_CONFIG).filter(([key]) => key !== 'status_change').map(([key, cfg]) => (
-                <SelectItem key={key} value={key}>{cfg.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Button onClick={handleSubmit} disabled={!conteudo.trim()}>
-            <Send className="h-4 w-4" />
-          </Button>
+          <div className="flex gap-2">
+            <Select value={tipo} onValueChange={(v) => setTipo(v as UpdateTipo)}>
+              <SelectTrigger className="w-full sm:w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(TIPO_CONFIG).filter(([key]) => key !== 'status_change').map(([key, cfg]) => (
+                  <SelectItem key={key} value={key}>{cfg.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button onClick={handleSubmit} disabled={!conteudo.trim()} className="shrink-0">
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Switch checked={visivelSocio} onCheckedChange={setVisivelSocio} />

@@ -46,7 +46,7 @@ export function Sidebar() {
         <button
           onClick={() => setCollapsed(!collapsed)}
           aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}
-          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-colors"
+          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-[8px] text-text-muted hover:text-text-primary hover:bg-bg-hover transition-all duration-200"
         >
           <ChevronLeft className={cn('h-4 w-4 transition-transform', collapsed && 'rotate-180')} />
         </button>
@@ -56,7 +56,7 @@ export function Sidebar() {
 
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
         {!collapsed && (
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted/60 px-3 mb-2 block">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-text-muted/50 px-3 mb-2 block">
             Gradios CTO
           </span>
         )}
@@ -69,13 +69,12 @@ export function Sidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-3 py-2.5 rounded-xl text-sm transition-all duration-200 relative group',
+                'flex items-center gap-3 py-2 rounded-[10px] text-[13px] transition-all duration-200 relative group',
                 collapsed ? 'justify-center px-2' : '',
                 isActive
-                  ? 'bg-brand-cyan/10 text-brand-cyan font-bold shadow-[inset_0_0_20px_-8px_rgba(0,200,240,0.15)]'
+                  ? 'bg-brand-cyan/10 text-brand-cyan font-semibold border border-brand-cyan/10 shadow-sm'
                   : 'px-3 text-text-muted hover:bg-bg-hover hover:text-text-primary font-medium'
               )}
-              style={isActive ? { border: '1px solid rgba(0,200,240,0.15)' } : undefined}
             >
               {isActive && !collapsed && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 rounded-r-full bg-brand-cyan" />
@@ -122,7 +121,7 @@ export function Sidebar() {
         <button
           onClick={handleLogout}
           className={cn(
-            'flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm text-text-secondary hover:bg-status-negative/10 hover:text-status-negative transition-colors',
+            'flex items-center gap-3 w-full px-3 py-2 rounded-[10px] text-[13px] font-medium text-text-muted hover:bg-status-negative/10 hover:text-status-negative transition-all duration-200',
             collapsed && 'justify-center'
           )}
         >
@@ -138,7 +137,7 @@ export function Sidebar() {
       <button
         onClick={() => setMobileOpen(true)}
         aria-label="Abrir menu"
-        className="lg:hidden fixed top-4 left-4 z-50 h-10 w-10 flex items-center justify-center rounded-xl bg-bg-card border border-brand-blue-deep/40 text-text-primary shadow-lg"
+        className="lg:hidden fixed top-4 left-4 z-50 h-9 w-9 flex items-center justify-center rounded-[10px] bg-bg-card/90 backdrop-blur-sm border border-brand-blue-deep/30 text-text-primary shadow-lg active:scale-95 transition-all duration-200"
       >
         <Menu className="h-5 w-5" />
       </button>

@@ -24,21 +24,21 @@ function GanttBar({ projeto, minDate, totalDays }: { projeto: Projeto; minDate: 
   return (
     <Link
       href={`/projetos/${projeto.id}`}
-      className="flex items-center gap-3 py-3 border-b border-brand-blue-deep/15 group hover:bg-bg-hover/30 transition-colors -mx-3 px-3 rounded-lg"
+      className="flex items-center gap-2 sm:gap-3 py-2.5 sm:py-3 border-b border-brand-blue-deep/15 group hover:bg-bg-hover/30 transition-colors -mx-3 px-3 rounded-lg"
     >
-      <div className="w-44 shrink-0">
-        <div className="flex items-center gap-2 mb-0.5">
+      <div className="w-28 sm:w-44 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5">
           <div className="h-2 w-2 rounded-full shrink-0" style={{ background: color }} />
-          <p className="text-sm font-semibold text-text-primary truncate group-hover:text-brand-cyan transition-colors">
+          <p className="text-xs sm:text-sm font-semibold text-text-primary truncate group-hover:text-brand-cyan transition-colors">
             {getProjetoTitulo(projeto)}
           </p>
         </div>
-        <div className="flex items-center gap-2 ml-4">
-          <p className="text-xs text-text-muted truncate">{projeto.cliente ?? '-'}</p>
+        <div className="flex items-center gap-1.5 sm:gap-2 ml-3.5 sm:ml-4">
+          <p className="text-[10px] sm:text-xs text-text-muted truncate">{projeto.cliente ?? '-'}</p>
           <PrioridadeBadge prioridade={projeto.prioridade} />
         </div>
       </div>
-      <div className="flex-1 relative h-10">
+      <div className="flex-1 relative h-8 sm:h-10">
         {/* Background bar */}
         <div
           className="absolute top-1 h-8 rounded-lg opacity-15 transition-opacity group-hover:opacity-25"
@@ -119,18 +119,18 @@ export default function TimelinePage() {
 
   return (
     <PageTransition>
-      <div className="space-y-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <div className="space-y-3 sm:space-y-5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className="section-header-icon" style={{ background: 'rgba(0,200,240,0.12)', border: '1px solid rgba(0,200,240,0.2)' }}>
               <GanttChart className="h-4 w-4 text-brand-cyan" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-text-primary">Timeline</h1>
-              <p className="text-xs text-text-muted">{sortedProjetos.length} projetos com datas</p>
+              <h1 className="text-lg sm:text-xl font-bold text-text-primary">Timeline</h1>
+              <p className="text-[10px] sm:text-xs text-text-muted">{sortedProjetos.length} projetos com datas</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-xs text-text-muted">
+          <div className="hidden sm:flex items-center gap-2 text-xs text-text-muted">
             <Calendar className="h-3.5 w-3.5" />
             <span>Hoje: {formatDate(new Date())}</span>
           </div>
@@ -139,8 +139,8 @@ export default function TimelinePage() {
         <StaggerItem>
           <div className="card-glass overflow-x-auto">
             {/* Month headers */}
-            <div className="flex items-center gap-3 mb-2 px-3">
-              <div className="w-44 shrink-0" />
+            <div className="flex items-center gap-2 sm:gap-3 mb-2 px-3">
+              <div className="w-28 sm:w-44 shrink-0" />
               <div className="flex-1 relative h-6">
                 {monthHeaders.map((h, i) => (
                   <span key={i} className="absolute text-[10px] text-text-muted font-semibold uppercase tracking-wider" style={{ left: `${h.leftPct}%` }}>
@@ -153,7 +153,7 @@ export default function TimelinePage() {
             {/* Today line */}
             <div className="relative">
               <div className="absolute inset-y-0 flex w-full pointer-events-none z-10">
-                <div className="w-44 shrink-0 gap-3" />
+                <div className="w-28 sm:w-44 shrink-0 gap-3" />
                 <div className="flex-1 relative">
                   <div
                     className="absolute top-0 bottom-0 w-px"

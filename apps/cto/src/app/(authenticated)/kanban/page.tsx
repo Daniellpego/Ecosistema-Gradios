@@ -79,15 +79,15 @@ export default function KanbanPage() {
 
   return (
     <PageTransition>
-      <div className="space-y-5">
+      <div className="space-y-3 sm:space-y-5">
         {/* Page header */}
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-3">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Layers className="h-5 w-5 text-brand-cyan" />
-              <h1 className="text-xl font-bold text-text-primary">Kanban</h1>
+            <div className="flex items-center gap-2 mb-0.5">
+              <Layers className="h-4 w-4 sm:h-5 sm:w-5 text-brand-cyan" />
+              <h1 className="text-lg sm:text-xl font-bold text-text-primary">Kanban</h1>
             </div>
-            <p className="text-sm text-text-secondary">
+            <p className="text-xs sm:text-sm text-text-secondary">
               {totalProjetos === 0
                 ? 'Nenhum projeto cadastrado'
                 : visibleCount === totalProjetos
@@ -100,21 +100,21 @@ export default function KanbanPage() {
         </div>
 
         {/* Filters row */}
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Search */}
-          <div className="relative flex-1 min-w-[180px] max-w-xs">
+          <div className="relative flex-1 min-w-0 sm:max-w-xs">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted pointer-events-none" />
             <Input
-              placeholder="Buscar projeto ou cliente..."
+              placeholder="Buscar..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-8 h-9 text-xs bg-bg-card border-brand-blue-deep/60 focus:border-brand-cyan/60 placeholder:text-text-muted"
+              className="pl-8 h-9 text-xs"
             />
           </div>
 
           {/* Priority filter */}
           <Select value={filterPrioridade} onValueChange={(v) => setFilterPrioridade(v as Prioridade | 'all')}>
-            <SelectTrigger className="w-40 h-9 text-xs">
+            <SelectTrigger className="w-28 sm:w-40 h-9 text-xs shrink-0">
               <Filter className="h-3 w-3 mr-1 text-text-muted" />
               <SelectValue placeholder="Prioridade" />
             </SelectTrigger>

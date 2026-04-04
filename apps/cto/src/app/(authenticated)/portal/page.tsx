@@ -36,7 +36,7 @@ export default function PortalPage() {
         <div className="space-y-5">
           <Skeleton className="h-16 w-80 rounded-xl" />
           <Skeleton className="h-72 w-full rounded-2xl" />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
             <Skeleton className="h-64 rounded-2xl" />
             <Skeleton className="h-64 rounded-2xl" />
           </div>
@@ -58,19 +58,19 @@ export default function PortalPage() {
 
   return (
     <PageTransition>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-4">
             <div
-              className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0"
+              className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0"
               style={{ background: 'linear-gradient(135deg, rgba(0,200,240,0.15), rgba(26,106,170,0.1))', border: '1px solid rgba(0,200,240,0.2)' }}
             >
-              <Users className="h-6 w-6 text-brand-cyan" />
+              <Users className="h-5 w-5 sm:h-6 sm:w-6 text-brand-cyan" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-text-primary tracking-tight">Portal dos Sócios</h1>
-              <p className="text-sm text-text-secondary">Visão macro de projetos e operações</p>
+              <h1 className="text-lg sm:text-2xl font-bold text-text-primary tracking-tight">Portal dos Sócios</h1>
+              <p className="text-xs sm:text-sm text-text-secondary">Visão macro de projetos e operações</p>
             </div>
           </div>
           {/* Summary pills */}
@@ -87,9 +87,22 @@ export default function PortalPage() {
           </div>
         </div>
 
-        {/* Projects Table */}
+        {/* Mobile summary pills */}
+        <div className="flex sm:hidden items-center gap-2 overflow-x-auto -mx-1 px-1">
+          <div className="px-2.5 py-1 rounded-lg text-[10px] font-semibold shrink-0" style={{ background: 'rgba(0,200,240,0.1)', color: '#00C8F0' }}>
+            {activeProjetos.length} projetos
+          </div>
+          <div className="px-2.5 py-1 rounded-lg text-[10px] font-semibold shrink-0" style={{ background: 'rgba(16,185,129,0.1)', color: '#10B981' }}>
+            {formatCurrency(totalValor)}
+          </div>
+          <div className="px-2.5 py-1 rounded-lg text-[10px] font-semibold shrink-0" style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B' }}>
+            {avgProgresso}% médio
+          </div>
+        </div>
+
+        {/* Projects Table (desktop) */}
         <StaggerItem>
-          <div className="card-glass !p-0 overflow-hidden">
+          <div className="card-glass !p-0 overflow-hidden hidden sm:block">
             <div className="px-5 py-3.5 border-b border-brand-blue-deep/20 flex items-center gap-2">
               <Building2 className="h-4 w-4 text-brand-cyan" />
               <h3 className="text-sm font-semibold text-text-primary">Projetos Ativos</h3>
@@ -134,7 +147,31 @@ export default function PortalPage() {
           </div>
         </StaggerItem>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Projects Cards (mobile) */}
+        <div className="sm:hidden space-y-2">
+          <div className="flex items-center gap-2 px-1">
+            <Building2 className="h-4 w-4 text-brand-cyan" />
+            <h3 className="text-sm font-semibold text-text-primary">Projetos Ativos</h3>
+          </div>
+          {activeProjetos.map((p) => (
+            <Link key={p.id} href={`/projetos/${p.id}`} className="card-glass !p-3 block active:scale-[0.98] transition-transform">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: normalizeColor(p.cor) }} />
+                  <span className="text-sm font-semibold text-text-primary truncate">{getProjetoTitulo(p)}</span>
+                </div>
+                <StatusBadge status={p.status} />
+              </div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs text-text-muted truncate">{p.cliente ?? '-'}</span>
+                {p.valor && <span className="text-xs font-semibold text-status-positive shrink-0">{formatCurrency(p.valor)}</span>}
+              </div>
+              <Progress value={p.progresso} showLabel />
+            </Link>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
           {/* Updates Feed */}
           <StaggerItem>
             <div className="card-glass h-full">

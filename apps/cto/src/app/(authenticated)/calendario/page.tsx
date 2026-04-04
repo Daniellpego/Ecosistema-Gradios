@@ -98,25 +98,25 @@ export default function CalendarioPage() {
 
   return (
     <PageTransition>
-      <div className="space-y-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <div className="space-y-3 sm:space-y-5">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className="section-header-icon" style={{ background: 'rgba(0,200,240,0.12)', border: '1px solid rgba(0,200,240,0.2)' }}>
               <CalIcon className="h-4 w-4 text-brand-cyan" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-text-primary">Calendário</h1>
-              <p className="text-xs text-text-muted">{events.length} evento{events.length !== 1 ? 's' : ''} neste mês</p>
+              <h1 className="text-lg sm:text-xl font-bold text-text-primary">Calendário</h1>
+              <p className="text-[10px] sm:text-xs text-text-muted">{events.length} evento{events.length !== 1 ? 's' : ''} neste mês</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => { setCurrentDate(new Date(year, month - 1, 1)); setSelectedDay(null) }} className="h-8 w-8 rounded-lg">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Button variant="ghost" size="icon" onClick={() => { setCurrentDate(new Date(year, month - 1, 1)); setSelectedDay(null) }} className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg">
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <span className="text-sm font-bold text-text-primary min-w-[160px] text-center px-3 py-1.5 rounded-lg" style={{ background: 'rgba(21,59,95,0.3)' }}>
+            <span className="text-xs sm:text-sm font-bold text-text-primary min-w-[120px] sm:min-w-[160px] text-center px-2 sm:px-3 py-1.5 rounded-lg" style={{ background: 'rgba(21,59,95,0.3)' }}>
               {MONTHS[month]} {year}
             </span>
-            <Button variant="ghost" size="icon" onClick={() => { setCurrentDate(new Date(year, month + 1, 1)); setSelectedDay(null) }} className="h-8 w-8 rounded-lg">
+            <Button variant="ghost" size="icon" onClick={() => { setCurrentDate(new Date(year, month + 1, 1)); setSelectedDay(null) }} className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
@@ -128,8 +128,8 @@ export default function CalendarioPage() {
             <div className="card-glass !p-0 overflow-hidden flex-1">
               <div className="grid grid-cols-7 border-b border-brand-blue-deep/20">
                 {WEEKDAYS.map((day) => (
-                  <div key={day} className="text-center text-xs font-bold uppercase tracking-wider text-text-muted py-3">
-                    {day}
+                  <div key={day} className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-text-muted py-2 sm:py-3">
+                    {day.slice(0, 1)}<span className="hidden sm:inline">{day.slice(1)}</span>
                   </div>
                 ))}
               </div>
@@ -144,7 +144,7 @@ export default function CalendarioPage() {
                       key={i}
                       onClick={() => day.isCurrentMonth && setSelectedDay(day.date === selectedDay ? null : day.date)}
                       className={cn(
-                        'min-h-[90px] border-b border-r border-brand-blue-deep/12 p-1.5 text-left transition-all',
+                        'min-h-[52px] sm:min-h-[90px] border-b border-r border-brand-blue-deep/12 p-1 sm:p-1.5 text-left transition-all',
                         day.isCurrentMonth ? 'hover:bg-brand-cyan/[0.04] cursor-pointer' : 'bg-bg-navy/40 cursor-default',
                         todayMatch && 'bg-brand-cyan/[0.04]',
                         isSelected && 'ring-2 ring-brand-cyan/40 bg-brand-cyan/[0.06]'
@@ -160,19 +160,27 @@ export default function CalendarioPage() {
                       >
                         {day.date}
                       </span>
-                      <div className="mt-1 space-y-0.5">
+                      <div className="mt-0.5 sm:mt-1 space-y-0.5">
                         {dayEvents.slice(0, 2).map((evt) => (
                           <div
                             key={evt.id}
-                            className="text-[10px] px-1.5 py-0.5 rounded-md truncate font-medium"
+                            className="text-[8px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 rounded-md truncate font-medium hidden sm:block"
                             style={{ background: `${evt.color}18`, color: evt.color, border: `1px solid ${evt.color}20` }}
                             title={`${evt.title} - ${evt.project ?? ''}`}
                           >
                             {evt.title}
                           </div>
                         ))}
+                        {/* Mobile: just show dots */}
+                        {dayEvents.length > 0 && (
+                          <div className="flex gap-0.5 sm:hidden justify-center">
+                            {dayEvents.slice(0, 3).map((evt) => (
+                              <div key={evt.id} className="h-1 w-1 rounded-full" style={{ background: evt.color }} />
+                            ))}
+                          </div>
+                        )}
                         {dayEvents.length > 2 && (
-                          <span className="text-[10px] text-brand-cyan px-1.5 font-semibold">+{dayEvents.length - 2}</span>
+                          <span className="text-[10px] text-brand-cyan px-1.5 font-semibold hidden sm:inline">+{dayEvents.length - 2}</span>
                         )}
                       </div>
                     </button>
@@ -238,8 +246,41 @@ export default function CalendarioPage() {
           </AnimatePresence>
         </div>
 
+        {/* Mobile day detail (shown below calendar on mobile) */}
+        {selectedDay !== null && (
+          <div className="lg:hidden card-glass">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-bold text-text-primary">{selectedDateStr}</h3>
+              <button onClick={() => setSelectedDay(null)} className="text-text-muted hover:text-text-primary transition-colors">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            {selectedDayEvents.length === 0 ? (
+              <p className="text-xs text-text-muted py-4 text-center">Nenhum evento neste dia</p>
+            ) : (
+              <div className="space-y-2">
+                {selectedDayEvents.map((evt) => (
+                  <Link
+                    key={evt.id}
+                    href={`/projetos/${evt.projectId}`}
+                    className="flex items-start gap-3 p-3 rounded-xl transition-all hover:bg-bg-hover/50 group"
+                    style={{ border: `1px solid ${evt.color}20` }}
+                  >
+                    <div className="h-2 w-2 rounded-full shrink-0 mt-1.5" style={{ background: evt.color }} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-text-primary group-hover:text-brand-cyan transition-colors truncate">{evt.title}</p>
+                      <p className="text-xs text-text-muted mt-0.5 truncate">{evt.project ?? '-'}</p>
+                    </div>
+                    <ExternalLink className="h-3.5 w-3.5 text-text-muted shrink-0 mt-0.5" />
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Legend */}
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-6">
           <div className="flex items-center gap-2">
             <div className="h-2.5 w-2.5 rounded-full bg-brand-cyan" style={{ boxShadow: '0 0 6px rgba(0,200,240,0.4)' }} />
             <span className="text-xs text-text-muted font-medium">Hoje</span>
@@ -248,7 +289,7 @@ export default function CalendarioPage() {
             <Milestone className="h-3.5 w-3.5 text-brand-cyan" />
             <span className="text-xs text-text-muted font-medium">Milestones</span>
           </div>
-          <div className="flex items-center gap-2 text-xs text-text-muted">
+          <div className="hidden sm:flex items-center gap-2 text-xs text-text-muted">
             Clique em um dia para ver detalhes
           </div>
         </div>
