@@ -49,7 +49,7 @@ export default function RelatoriosPage() {
         {/* Quick Generate */}
         <StaggerItem>
           <div className="card-glass relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,200,240,0.4), transparent)' }} />
+            <div className="absolute top-0 left-0 right-0 h-px bg-brand-cyan/20" />
             <div className="flex items-center gap-2 mb-3">
               <Sparkles className="h-4 w-4 text-brand-cyan" />
               <h3 className="text-sm font-semibold text-text-primary">Gerar Relatorio</h3>

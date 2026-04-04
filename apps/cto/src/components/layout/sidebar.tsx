@@ -138,7 +138,7 @@ export function Sidebar() {
       <button
         onClick={() => setMobileOpen(true)}
         aria-label="Abrir menu"
-        className="lg:hidden fixed top-[11px] left-3 z-30 h-8 w-8 flex items-center justify-center rounded-[10px] bg-bg-card/90 backdrop-blur-sm border border-brand-blue-deep/30 text-text-primary shadow-lg active:scale-95 transition-all duration-200"
+        className="lg:hidden fixed top-[10px] left-3 z-30 h-8 w-8 flex items-center justify-center rounded-lg bg-bg-card/90 backdrop-blur border border-brand-blue-deep/25 text-text-primary active:scale-95 transition-transform"
       >
         <Menu className="h-5 w-5" />
       </button>

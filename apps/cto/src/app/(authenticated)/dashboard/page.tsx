@@ -59,12 +59,8 @@ interface KPICardProps {
   value: number
   format: (n: number) => string
   accentColor: string
-  glowColor: string
-  gradientStart: string
-  gradientEnd: string
   alert?: boolean
   subtitle?: string
-  trend?: 'up' | 'down' | 'neutral'
 }
 
 function KPICard({
@@ -73,102 +69,37 @@ function KPICard({
   value,
   format,
   accentColor,
-  glowColor,
-  gradientStart,
-  gradientEnd,
   alert,
   subtitle,
-  trend = 'neutral',
 }: KPICardProps) {
+  const color = normalizeColor(accentColor)
   return (
     <StaggerItem>
-      <motion.div
-        whileHover={{ y: -4, scale: 1.01, transition: { duration: 0.2, ease: 'easeOut' } }}
-        className="relative overflow-hidden rounded-2xl cursor-default"
-        style={{
-          background: `linear-gradient(145deg, ${normalizeColor(gradientStart)}22 0%, ${normalizeColor(gradientEnd)}10 100%)`,
-          border: `1px solid ${normalizeColor(accentColor)}25`,
-          boxShadow: `0 0 30px ${normalizeColor(glowColor)}10, inset 0 1px 0 ${normalizeColor(accentColor)}15`,
-        }}
-      >
-        {/* Top shimmer line */}
-        <div
-          className="absolute top-0 left-0 right-0 h-px"
-          style={{
-            background: `linear-gradient(90deg, transparent 0%, ${normalizeColor(accentColor)}60 40%, ${normalizeColor(accentColor)}80 60%, transparent 100%)`,
-          }}
-        />
-
-        {/* Background glow blob */}
-        <div
-          className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-3xl pointer-events-none"
-          style={{ background: `${normalizeColor(glowColor)}15` }}
-        />
-        <div
-          className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full blur-2xl pointer-events-none"
-          style={{ background: `${normalizeColor(accentColor)}08` }}
-        />
-
-        <div className="relative p-3 sm:p-5">
-          {/* Icon + alert badge */}
-          <div className="flex items-start justify-between mb-2 sm:mb-4">
-            <div
-              className={cn(
-                'h-9 w-9 sm:h-11 sm:w-11 rounded-[10px] sm:rounded-xl flex items-center justify-center',
-                alert && 'animate-pulse'
-              )}
-              style={{
-                background: `linear-gradient(135deg, ${normalizeColor(accentColor)}20, ${normalizeColor(gradientEnd)}12)`,
-                border: `1px solid ${normalizeColor(accentColor)}30`,
-                boxShadow: alert ? `0 0 16px ${normalizeColor(accentColor)}40` : 'none',
-              }}
-            >
-              <Icon className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: normalizeColor(accentColor) }} />
-            </div>
-
-            {trend !== 'neutral' && (
-              <div
-                className="flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full"
-                style={{
-                  background: trend === 'up' ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
-                  color: trend === 'up' ? '#10B981' : '#EF4444',
-                  border: `1px solid ${trend === 'up' ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}`,
-                }}
-              >
-                <TrendingUp className={cn('h-3 w-3', trend === 'down' && 'rotate-180')} />
-              </div>
-            )}
+      <div className="card-glass">
+        <div className="flex items-start justify-between mb-3">
+          <div
+            className="h-9 w-9 rounded-[10px] flex items-center justify-center"
+            style={{ background: `${color}12`, border: `1px solid ${color}20` }}
+          >
+            <Icon className="h-4 w-4" style={{ color }} />
           </div>
-
-          {/* Value */}
-          <div className="mb-1">
-            <p
-              className="text-xl sm:text-3xl font-bold tracking-tight leading-none"
-              style={{ color: normalizeColor(accentColor) }}
-            >
-              <AnimatedNumber value={value} format={format} />
-            </p>
-          </div>
-
-          {/* Label */}
-          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider sm:tracking-widest text-text-secondary mb-0.5 sm:mb-1">
-            {label}
-          </p>
-
-          {/* Subtitle */}
-          {subtitle && (
-            <p className="text-xs text-text-muted leading-snug">{subtitle}</p>
+          {alert && (
+            <div className="h-2 w-2 rounded-full bg-status-negative animate-pulse" />
           )}
         </div>
 
-        {/* Bottom accent bar */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-0.5"
-          style={{
-            background: `linear-gradient(90deg, transparent 0%, ${normalizeColor(accentColor)}50 30%, ${normalizeColor(accentColor)}80 60%, transparent 100%)`,
-          }}
-        />
-      </motion.div>
+        <p className="text-xl sm:text-2xl font-bold tracking-tight mb-0.5" style={{ color }}>
+          <AnimatedNumber value={value} format={format} />
+        </p>
+
+        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          {label}
+        </p>
+
+        {subtitle && (
+          <p className="text-[10px] sm:text-xs text-text-muted mt-1">{subtitle}</p>
+        )}
+      </div>
     </StaggerItem>
   )
 }
@@ -269,17 +200,14 @@ interface SectionHeaderProps {
 
 function SectionHeader({ icon: Icon, title, iconBg, iconColor, badge }: SectionHeaderProps) {
   return (
-    <div className="flex items-center gap-2 sm:gap-2.5 mb-3 sm:mb-5">
+    <div className="flex items-center gap-2 mb-4">
       <div
-        className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0"
-        style={{
-          background: iconBg ?? 'rgba(0,200,240,0.12)',
-          border: `1px solid ${iconColor ?? '#00C8F0'}25`,
-        }}
+        className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0"
+        style={{ background: iconBg ?? 'rgba(0,200,240,0.1)' }}
       >
-        <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: iconColor ?? '#00C8F0' }} />
+        <Icon className="h-3.5 w-3.5" style={{ color: iconColor ?? '#00C8F0' }} />
       </div>
-      <h3 className="text-xs sm:text-sm font-bold text-text-primary tracking-tight">{title}</h3>
+      <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
       {badge && <div className="ml-auto">{badge}</div>}
     </div>
   )
@@ -301,7 +229,6 @@ function TimelineDot({ color, glow }: { color: string; glow?: boolean }) {
         style={{
           background: `${normalizeColor(color)}25`,
           borderColor: normalizeColor(color),
-          boxShadow: glow ? `0 0 8px ${normalizeColor(color)}60` : 'none',
         }}
       />
     </div>
@@ -324,17 +251,13 @@ function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center py-10 text-center gap-4">
       <div
-        className="relative h-16 w-16 rounded-2xl flex items-center justify-center"
+        className="h-16 w-16 rounded-2xl flex items-center justify-center"
         style={{
           background: `${accentColor}08`,
           border: `1px dashed ${accentColor}30`,
         }}
       >
-        <div
-          className="absolute inset-0 rounded-2xl blur-xl opacity-30"
-          style={{ background: accentColor }}
-        />
-        <Icon className="h-6 w-6 relative z-10 opacity-50" style={{ color: accentColor }} />
+        <Icon className="h-6 w-6 opacity-50" style={{ color: accentColor }} />
       </div>
       <div className="space-y-1">
         <p className="text-sm font-semibold text-text-secondary">{title}</p>
@@ -457,19 +380,7 @@ export default function DashboardPage() {
 
         {/* ── Quick Stats Bar ──────────────────────────────────────────────── */}
         <StaggerItem>
-          <motion.div
-            className="relative overflow-hidden rounded-2xl"
-            style={{
-              background: 'linear-gradient(135deg, rgba(0,200,240,0.06) 0%, rgba(26,106,170,0.08) 50%, rgba(21,59,95,0.12) 100%)',
-              border: '1px solid rgba(0,200,240,0.12)',
-              boxShadow: '0 0 40px rgba(0,200,240,0.04)',
-            }}
-          >
-            {/* Top shimmer */}
-            <div
-              className="absolute top-0 left-0 right-0 h-px"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(0,200,240,0.4), transparent)' }}
-            />
+          <div className="card-glass !p-0 overflow-hidden">
 
             {/* Desktop: horizontal row */}
             <div className="hidden sm:flex divide-x divide-brand-blue-deep/40">
@@ -495,7 +406,7 @@ export default function DashboardPage() {
                 <div />
               )}
             </div>
-          </motion.div>
+          </div>
         </StaggerItem>
 
         {/* ── KPI Cards ───────────────────────────────────────────────────── */}
@@ -506,10 +417,6 @@ export default function DashboardPage() {
             value={kpis.projetosAtivos}
             format={(n) => String(n)}
             accentColor="#00C8F0"
-            glowColor="#00C8F0"
-            gradientStart="#00C8F0"
-            gradientEnd="#1A6AAA"
-            trend="up"
             subtitle="Backlog, andamento e revisao"
           />
           <KPICard
@@ -518,10 +425,6 @@ export default function DashboardPage() {
             value={kpis.entreguesMes}
             format={(n) => String(n)}
             accentColor="#10B981"
-            glowColor="#10B981"
-            gradientStart="#10B981"
-            gradientEnd="#059669"
-            trend="up"
             subtitle="Concluidos esse mes"
           />
           <KPICard
@@ -530,12 +433,8 @@ export default function DashboardPage() {
             value={kpis.atrasados}
             format={(n) => String(n)}
             accentColor="#EF4444"
-            glowColor="#EF4444"
-            gradientStart="#EF4444"
-            gradientEnd="#B91C1C"
             alert={kpis.atrasados > 0}
-            trend={kpis.atrasados > 0 ? 'down' : 'neutral'}
-            subtitle={kpis.atrasados > 0 ? 'Requer atencao imediata' : 'Tudo em dia'}
+            subtitle={kpis.atrasados > 0 ? 'Requer atencao' : 'Tudo em dia'}
           />
           <KPICard
             icon={DollarSign}
@@ -543,10 +442,6 @@ export default function DashboardPage() {
             value={kpis.valorPipeline}
             format={formatCurrency}
             accentColor="#F59E0B"
-            glowColor="#F59E0B"
-            gradientStart="#F59E0B"
-            gradientEnd="#D97706"
-            trend="up"
             subtitle="Projetos ativos somados"
           />
         </StaggerContainer>
@@ -556,19 +451,7 @@ export default function DashboardPage() {
 
           {/* ── Status Donut ─────────────────────────────────────────────── */}
           <StaggerItem>
-            <div
-              className="relative overflow-hidden rounded-2xl p-3.5 sm:p-5 h-full"
-              style={{
-                background: 'linear-gradient(145deg, rgba(0,200,240,0.05) 0%, rgba(19,31,53,0.95) 60%)',
-                border: '1px solid rgba(0,200,240,0.12)',
-                boxShadow: '0 0 30px rgba(0,200,240,0.04)',
-              }}
-            >
-              {/* top shimmer */}
-              <div
-                className="absolute top-0 left-0 right-0 h-px"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(0,200,240,0.35), transparent)' }}
-              />
+            <div className="card-glass h-full">
 
               <SectionHeader
                 icon={BarChart3}
@@ -606,8 +489,7 @@ export default function DashboardPage() {
                 {/* Center text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                   <span
-                    className="text-3xl font-black leading-none"
-                    style={{ color: '#00C8F0', textShadow: '0 0 20px rgba(0,200,240,0.4)' }}
+                    className="text-3xl font-black leading-none text-brand-cyan"
                   >
                     {totalProjetos}
                   </span>
@@ -648,19 +530,7 @@ export default function DashboardPage() {
 
           {/* ── Proximas Entregas ────────────────────────────────────────── */}
           <StaggerItem>
-            <div
-              className="relative overflow-hidden rounded-2xl p-3.5 sm:p-5 h-full"
-              style={{
-                background: 'linear-gradient(145deg, rgba(245,158,11,0.04) 0%, rgba(19,31,53,0.95) 60%)',
-                border: '1px solid rgba(245,158,11,0.12)',
-                boxShadow: '0 0 30px rgba(245,158,11,0.03)',
-              }}
-            >
-              {/* top shimmer */}
-              <div
-                className="absolute top-0 left-0 right-0 h-px"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(245,158,11,0.4), transparent)' }}
-              />
+            <div className="card-glass h-full">
 
               <SectionHeader
                 icon={Clock}
@@ -747,19 +617,7 @@ export default function DashboardPage() {
 
           {/* ── Proximos Milestones ──────────────────────────────────────── */}
           <StaggerItem>
-            <div
-              className="relative overflow-hidden rounded-2xl p-3.5 sm:p-5 h-full"
-              style={{
-                background: 'linear-gradient(145deg, rgba(26,106,170,0.06) 0%, rgba(19,31,53,0.95) 60%)',
-                border: '1px solid rgba(26,106,170,0.14)',
-                boxShadow: '0 0 30px rgba(26,106,170,0.04)',
-              }}
-            >
-              {/* top shimmer */}
-              <div
-                className="absolute top-0 left-0 right-0 h-px"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(26,106,170,0.5), transparent)' }}
-              />
+            <div className="card-glass h-full">
 
               <SectionHeader
                 icon={Milestone}
@@ -848,19 +706,7 @@ export default function DashboardPage() {
 
         {/* ── Activity Feed ────────────────────────────────────────────────── */}
         <StaggerItem>
-          <div
-            className="relative overflow-hidden rounded-2xl p-3.5 sm:p-5"
-            style={{
-              background: 'linear-gradient(145deg, rgba(0,200,240,0.04) 0%, rgba(19,31,53,0.95) 60%)',
-              border: '1px solid rgba(0,200,240,0.1)',
-              boxShadow: '0 0 40px rgba(0,200,240,0.03)',
-            }}
-          >
-            {/* Top shimmer */}
-            <div
-              className="absolute top-0 left-0 right-0 h-px"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(0,200,240,0.35), transparent)' }}
-            />
+          <div className="card-glass">
 
             <div className="flex items-center justify-between mb-5">
               <SectionHeader

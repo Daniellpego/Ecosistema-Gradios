@@ -64,7 +64,7 @@ export default function PortalPage() {
           <div className="flex items-center gap-2.5 sm:gap-4">
             <div
               className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: 'linear-gradient(135deg, rgba(0,200,240,0.15), rgba(26,106,170,0.1))', border: '1px solid rgba(0,200,240,0.2)' }}
+              style={{ background: 'rgba(0,200,240,0.1)', border: '1px solid rgba(0,200,240,0.15)' }}
             >
               <Users className="h-5 w-5 sm:h-6 sm:w-6 text-brand-cyan" />
             </div>
@@ -125,7 +125,7 @@ export default function PortalPage() {
                     <tr key={p.id} className="table-row group cursor-pointer" onClick={() => window.location.href = `/projetos/${p.id}`}>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2.5">
-                          <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: normalizeColor(p.cor), boxShadow: `0 0 6px ${normalizeColor(p.cor)}40` }} />
+                          <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: normalizeColor(p.cor) }} />
                           <span className="text-sm font-semibold text-text-primary group-hover:text-brand-cyan transition-colors">{getProjetoTitulo(p)}</span>
                         </div>
                       </td>

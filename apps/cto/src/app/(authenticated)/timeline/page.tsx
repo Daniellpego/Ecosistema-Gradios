@@ -51,8 +51,7 @@ function GanttBar({ projeto, minDate, totalDays }: { projeto: Projeto; minDate: 
           style={{
             left: `${leftPct}%`,
             width: `${progressWidth}%`,
-            background: `linear-gradient(90deg, ${color}cc, ${color})`,
-            boxShadow: `0 0 12px ${color}30`,
+            background: color,
           }}
         />
         <span
@@ -240,8 +239,8 @@ export default function TimelinePage() {
                       className="absolute top-0 bottom-0 w-px"
                       style={{
                         left: `${todayPct}%`,
-                        background: 'linear-gradient(to bottom, #00C8F0, transparent)',
-                        boxShadow: '0 0 6px rgba(0,200,240,0.3)',
+                        background: '#00C8F0',
+                        opacity: 0.5,
                       }}
                     />
                     <div

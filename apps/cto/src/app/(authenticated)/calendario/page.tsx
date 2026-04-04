@@ -156,7 +156,6 @@ export default function CalendarioPage() {
                         day.isCurrentMonth && 'text-text-secondary',
                         todayMatch && 'bg-brand-cyan text-bg-navy font-bold shadow-sm'
                       )}
-                      style={todayMatch ? { boxShadow: '0 0 8px rgba(0,200,240,0.4)' } : undefined}
                       >
                         {day.date}
                       </span>
@@ -227,7 +226,7 @@ export default function CalendarioPage() {
                         >
                           <div
                             className="h-2 w-2 rounded-full shrink-0 mt-1.5"
-                            style={{ background: evt.color, boxShadow: `0 0 6px ${evt.color}50` }}
+                            style={{ background: evt.color }}
                           />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-text-primary group-hover:text-brand-cyan transition-colors truncate">
@@ -282,7 +281,7 @@ export default function CalendarioPage() {
         {/* Legend */}
         <div className="flex flex-wrap items-center gap-3 sm:gap-6">
           <div className="flex items-center gap-2">
-            <div className="h-2.5 w-2.5 rounded-full bg-brand-cyan" style={{ boxShadow: '0 0 6px rgba(0,200,240,0.4)' }} />
+            <div className="h-2.5 w-2.5 rounded-full bg-brand-cyan" />
             <span className="text-xs text-text-muted font-medium">Hoje</span>
           </div>
           <div className="flex items-center gap-2">
