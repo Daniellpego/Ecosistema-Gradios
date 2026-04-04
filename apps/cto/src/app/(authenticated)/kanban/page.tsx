@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { Filter, Search, Layers } from 'lucide-react'
 import { PageTransition } from '@/components/motion'
 import { KanbanBoard } from '@/components/kanban/kanban-board'
@@ -13,9 +14,61 @@ import { useProjetos } from '@/hooks/use-projetos'
 import type { Prioridade } from '@/types/database'
 
 export default function KanbanPage() {
+  return (
+    <Suspense fallback={<KanbanSkeleton />}>
+      <KanbanContent />
+    </Suspense>
+  )
+}
+
+function KanbanSkeleton() {
+  return (
+    <PageTransition>
+      <div className="space-y-6">
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <Skeleton className="h-7 w-40" />
+            <Skeleton className="h-4 w-56" />
+          </div>
+          <Skeleton className="h-9 w-32" />
+        </div>
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-9 flex-1 max-w-xs" />
+          <Skeleton className="h-9 w-40" />
+        </div>
+        <div className="flex gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="flex-1 space-y-3">
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-px w-full" />
+              {[1, 2, 3].map((j) => (
+                <Skeleton key={j} className="h-28 w-full rounded-xl" />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </PageTransition>
+  )
+}
+
+function KanbanContent() {
   const { data: projetos, isLoading, error } = useProjetos()
-  const [filterPrioridade, setFilterPrioridade] = useState<Prioridade | 'all'>('all')
-  const [search, setSearch] = useState('')
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  const filterPrioridade = (searchParams.get('prioridade') ?? 'all') as Prioridade | 'all'
+  const search = searchParams.get('q') ?? ''
+
+  function updateParams(key: string, value: string) {
+    const params = new URLSearchParams(searchParams.toString())
+    if (value && value !== 'all' && value !== '') {
+      params.set(key, value)
+    } else {
+      params.delete(key)
+    }
+    router.replace(`/kanban?${params.toString()}`, { scroll: false })
+  }
 
   const filteredProjetos = useMemo(() => {
     return (projetos ?? []).filter((p) => {
@@ -42,39 +95,7 @@ export default function KanbanPage() {
   }
 
   if (isLoading) {
-    return (
-      <PageTransition>
-        <div className="space-y-6">
-          {/* Header skeleton */}
-          <div className="flex items-start justify-between">
-            <div className="space-y-2">
-              <Skeleton className="h-7 w-40" />
-              <Skeleton className="h-4 w-56" />
-            </div>
-            <Skeleton className="h-9 w-32" />
-          </div>
-
-          {/* Filters skeleton */}
-          <div className="flex items-center gap-3">
-            <Skeleton className="h-9 flex-1 max-w-xs" />
-            <Skeleton className="h-9 w-40" />
-          </div>
-
-          {/* Board skeleton */}
-          <div className="flex gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex-1 space-y-3">
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-px w-full" />
-                {[1, 2, 3].map((j) => (
-                  <Skeleton key={j} className="h-28 w-full rounded-xl" />
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </PageTransition>
-    )
+    return <KanbanSkeleton />
   }
 
   return (
@@ -107,14 +128,15 @@ export default function KanbanPage() {
             <Input
               placeholder="Buscar..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => updateParams('q', e.target.value)}
               className="pl-8 h-9 text-xs"
+              aria-label="Buscar projetos por nome ou cliente"
             />
           </div>
 
           {/* Priority filter */}
-          <Select value={filterPrioridade} onValueChange={(v) => setFilterPrioridade(v as Prioridade | 'all')}>
-            <SelectTrigger className="w-28 sm:w-40 h-9 text-xs shrink-0">
+          <Select value={filterPrioridade} onValueChange={(v) => updateParams('prioridade', v)}>
+            <SelectTrigger className="w-28 sm:w-40 h-9 text-xs shrink-0" aria-label="Filtrar por prioridade">
               <Filter className="h-3 w-3 mr-1 text-text-muted" />
               <SelectValue placeholder="Prioridade" />
             </SelectTrigger>

@@ -124,6 +124,7 @@ export function MilestoneList({ projetoId }: { projetoId: string }) {
                 <button
                   onClick={() => setDeletingMilestoneId(m.id)}
                   className="opacity-0 group-hover:opacity-100 text-text-muted hover:text-status-negative transition-all"
+                  aria-label={`Excluir milestone ${m.titulo}`}
                   title="Excluir milestone"
                 >
                   <Trash2 className="h-3.5 w-3.5" />

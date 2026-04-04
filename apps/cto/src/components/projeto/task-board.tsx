@@ -69,7 +69,7 @@ export function TaskBoard({ projetoId }: { projetoId: string }) {
                 <span className="text-xs font-semibold text-text-primary">{col.label}</span>
                 <span className="text-xs text-text-muted">({columnTasks.length})</span>
               </div>
-              <button onClick={() => setAddingTo(col.id)} className="text-text-muted hover:text-brand-cyan transition-colors">
+              <button onClick={() => setAddingTo(col.id)} className="text-text-muted hover:text-brand-cyan transition-colors" aria-label={`Adicionar tarefa em ${col.label}`}>
                 <Plus className="h-4 w-4" />
               </button>
             </div>

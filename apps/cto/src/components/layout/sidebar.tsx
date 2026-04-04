@@ -54,7 +54,7 @@ export function Sidebar() {
 
       <Separator />
 
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto" role="navigation" aria-label="Menu principal">
         {!collapsed && (
           <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-text-muted/50 px-3 mb-2 block">
             Gradios CTO
@@ -120,6 +120,7 @@ export function Sidebar() {
         )}
         <button
           onClick={handleLogout}
+          aria-label="Sair da conta"
           className={cn(
             'flex items-center gap-3 w-full px-3 py-2 rounded-[10px] text-[13px] font-medium text-text-muted hover:bg-status-negative/10 hover:text-status-negative transition-all duration-200',
             collapsed && 'justify-center'
