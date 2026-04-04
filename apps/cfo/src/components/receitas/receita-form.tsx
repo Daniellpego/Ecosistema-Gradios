@@ -1,15 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { z } from 'zod'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Calendar, Repeat } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { useCreateReceita, useUpdateReceita, useClientesSuggestions, type ReceitaInsert } from '@/hooks/use-receitas'
+import { useCreateReceita, useCreateReceitasBatch, useUpdateReceita, useClientesSuggestions, type ReceitaInsert } from '@/hooks/use-receitas'
 import type { Receita, ReceitaTipo, ReceitaStatus } from '@/types/database'
 
 const receitaSchema = z.object({
@@ -53,6 +53,7 @@ interface ReceitaFormProps {
 
 export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
   const createMutation = useCreateReceita()
+  const createBatchMutation = useCreateReceitasBatch()
   const updateMutation = useUpdateReceita()
   const { data: clientes } = useClientesSuggestions()
   const isEditing = !!receita
@@ -70,9 +71,23 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
     observacoes: '',
     nf_numero: '',
     nf_chave_acesso: '',
+    duracao_meses: '1',
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [showSuggestions, setShowSuggestions] = useState(false)
+
+  const duracaoPreview = useMemo(() => {
+    const duracao = parseInt(form.duracao_meses) || 1
+    if (duracao <= 1 || !form.data) return []
+    const baseDate = new Date(form.data + 'T12:00:00')
+    const months: string[] = []
+    for (let i = 0; i < duracao; i++) {
+      const d = new Date(baseDate)
+      d.setMonth(d.getMonth() + i)
+      months.push(d.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }))
+    }
+    return months
+  }, [form.data, form.duracao_meses])
 
   useEffect(() => {
     if (receita) {
@@ -89,6 +104,7 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
         observacoes: receita.observacoes ?? '',
         nf_numero: (receita as unknown as Record<string, unknown>).nf_numero as string ?? '',
         nf_chave_acesso: (receita as unknown as Record<string, unknown>).nf_chave_acesso as string ?? '',
+        duracao_meses: '1',
       })
     } else {
       setForm({
@@ -104,6 +120,7 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
         observacoes: '',
         nf_numero: '',
         nf_chave_acesso: '',
+        duracao_meses: '1',
       })
     }
     setErrors({})
@@ -138,10 +155,13 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
     }
 
     const payload: ReceitaInsert = parsed.data
+    const duracao = parseInt(form.duracao_meses) || 1
 
     try {
       if (isEditing && receita) {
         await updateMutation.mutateAsync({ id: receita.id, ...payload })
+      } else if (form.recorrente && duracao > 1) {
+        await createBatchMutation.mutateAsync({ receita: payload, duracaoMeses: duracao })
       } else {
         await createMutation.mutateAsync(payload)
       }
@@ -151,7 +171,7 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
     }
   }
 
-  const isPending = createMutation.isPending || updateMutation.isPending
+  const isPending = createMutation.isPending || updateMutation.isPending || createBatchMutation.isPending
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -291,6 +311,53 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
             )}
           </div>
 
+          {/* Duração do contrato (apenas para recorrente e criação) */}
+          {form.recorrente && !isEditing && (
+            <div className="space-y-2 rounded-xl bg-brand-cyan/5 border border-brand-cyan/15 p-3">
+              <div className="flex items-center gap-2">
+                <Repeat className="h-4 w-4 text-brand-cyan" />
+                <Label htmlFor="duracao_meses" className="text-sm font-semibold text-text-primary">
+                  Duração do contrato
+                </Label>
+              </div>
+              <div className="flex items-center gap-3">
+                <Select
+                  value={form.duracao_meses}
+                  onValueChange={(v) => setForm({ ...form, duracao_meses: v })}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n) => (
+                      <SelectItem key={n} value={String(n)}>
+                        {n === 1 ? 'Apenas este mês' : `${n} meses`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {duracaoPreview.length > 1 && (
+                <div className="space-y-1.5">
+                  <p className="text-[11px] text-text-secondary flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    Receitas serão criadas automaticamente:
+                  </p>
+                  <div className="flex flex-wrap gap-1">
+                    {duracaoPreview.map((month, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center px-2 py-0.5 rounded-md bg-brand-cyan/10 text-brand-cyan text-[11px] font-medium"
+                      >
+                        {month}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Descrição */}
           <div className="space-y-1.5">
             <Label htmlFor="descricao">Descrição (opcional)</Label>
@@ -346,7 +413,7 @@ export function ReceitaForm({ open, onOpenChange, receita }: ReceitaFormProps) {
               placeholder="Notas adicionais..."
               value={form.observacoes}
               onChange={(e) => setForm({ ...form, observacoes: e.target.value })}
-              className="flex w-full rounded-lg border border-brand-blue-deep/30 bg-bg-navy px-3 py-2 text-sm text-text-primary placeholder:text-text-dark focus:border-brand-cyan focus:outline-none focus:ring-1 focus:ring-brand-cyan/50 resize-none transition-colors"
+              className="flex w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-sm text-text-primary placeholder:text-slate-400 focus:border-brand-cyan focus:outline-none focus:ring-2 focus:ring-brand-cyan/20 resize-none transition-all duration-200 shadow-sm"
             />
           </div>
 

@@ -64,7 +64,7 @@ export function Sidebar() {
         <Logo collapsed={collapsed} />
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-colors"
+          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-[8px] text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all duration-200"
         >
           <ChevronLeft className={cn('h-4 w-4 transition-transform', collapsed && 'rotate-180')} />
         </button>
@@ -74,7 +74,7 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400/80 px-4 mb-2">Gradios Ecosystem</span>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400 px-3 mb-2 block">Gradios Ecosystem</span>
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href
           const Icon = item.icon
@@ -86,10 +86,10 @@ export function Sidebar() {
               onClick={() => setMobileOpen(false)}
               onMouseEnter={item.href === '/dashboard' ? preloadCharts : undefined}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 relative group',
+                'flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] transition-all duration-200 relative group',
                 isActive
-                  ? 'bg-gradient-to-r from-brand-cyan/15 to-transparent text-brand-cyan font-bold border-l-[3px] border-l-brand-cyan bg-brand-cyan/10 shadow-[inset_4px_0_10px_-4px_rgba(0,191,255,0.15)]'
-                  : 'text-text-muted hover:bg-slate-50 hover:text-text-primary font-medium'
+                  ? 'bg-brand-cyan/10 text-brand-cyan font-semibold shadow-sm border border-brand-cyan/10'
+                  : 'text-slate-500 hover:bg-slate-100/80 hover:text-slate-900 font-medium'
               )}
             >
               <Icon className={cn('h-5 w-5 shrink-0', isActive && 'text-brand-cyan')} />
@@ -105,7 +105,7 @@ export function Sidebar() {
       <div className="p-4">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:bg-bg-hover hover:text-status-negative transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2 rounded-[10px] text-[13px] font-medium text-slate-400 hover:bg-red-50 hover:text-status-negative transition-all duration-200"
         >
           <LogOut className="h-5 w-5 shrink-0" />
           {!collapsed && <span>Sair</span>}
@@ -119,7 +119,7 @@ export function Sidebar() {
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-slate-200 text-slate-900 shadow-sm"
+        className="lg:hidden fixed top-4 left-4 z-50 h-9 w-9 flex items-center justify-center rounded-[10px] bg-white/90 backdrop-blur-sm border border-slate-200/60 text-slate-700 shadow-sm hover:shadow-md transition-all duration-200 active:scale-95"
       >
         <Menu className="h-5 w-5" />
       </button>

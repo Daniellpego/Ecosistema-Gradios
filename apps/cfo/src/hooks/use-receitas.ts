@@ -135,6 +135,49 @@ export function useCreateReceita() {
   })
 }
 
+export function useCreateReceitasBatch() {
+  const queryClient = useQueryClient()
+  const supabase = createClient()
+
+  return useMutation({
+    mutationFn: async ({ receita, duracaoMeses }: { receita: ReceitaInsert; duracaoMeses: number }) => {
+      const payloads: Array<Record<string, unknown>> = []
+      const baseDate = new Date(receita.data + 'T12:00:00')
+
+      for (let i = 0; i < duracaoMeses; i++) {
+        const date = new Date(baseDate)
+        date.setMonth(date.getMonth() + i)
+        const dateStr = date.toISOString().split('T')[0]
+
+        payloads.push({
+          ...receita,
+          data: dateStr,
+          taxas: receita.taxas != null ? receita.taxas : 0,
+        } as unknown as Record<string, unknown>)
+      }
+
+      const { data, error } = await supabase
+        .from('receitas')
+        .insert(payloads)
+        .select()
+
+      if (error) throw error
+      return data as Receita[]
+    },
+    onSuccess: (data) => {
+      data.forEach((r) => logAction('create', 'receitas', r.id))
+      toast.success(`${data.length} receitas criadas para os próximos meses!`)
+      queryClient.invalidateQueries({ queryKey: ['receitas'] })
+      queryClient.invalidateQueries({ queryKey: ['receitas-ano'] })
+      queryClient.invalidateQueries({ queryKey: ['receitas-prev'] })
+      queryClient.invalidateQueries({ queryKey: ['clientes-suggestions'] })
+    },
+    onError: (error: Error) => {
+      toast.error(`Erro ao criar receitas: ${error.message}`)
+    },
+  })
+}
+
 export function useUpdateReceita() {
   const queryClient = useQueryClient()
   const supabase = createClient()
