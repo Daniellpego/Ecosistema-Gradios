@@ -4,21 +4,21 @@ import { forwardRef, type ButtonHTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan/50 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan/40 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-40',
   {
     variants: {
       variant: {
-        default: 'gradient-cyan text-[#0A1628] hover:opacity-90 rounded-[12px]',
-        secondary: 'bg-bg-card text-text-primary hover:bg-bg-hover rounded-[12px] [border:1.5px_solid_#153B5F]',
-        ghost: 'text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded-lg',
-        destructive: 'bg-status-negative/10 text-status-negative hover:bg-status-negative/20 rounded-[12px]',
-        outline: 'text-text-primary hover:bg-bg-hover rounded-[12px] [border:1.5px_solid_#153B5F]',
+        default: 'btn-apple-primary text-white rounded-[10px] shadow-sm hover:shadow-md active:scale-[0.98]',
+        secondary: 'bg-slate-100 text-text-primary hover:bg-slate-200/80 rounded-[10px] border border-slate-200/60 shadow-sm active:scale-[0.98]',
+        ghost: 'text-text-secondary hover:bg-slate-100 hover:text-text-primary rounded-[10px] active:scale-[0.97]',
+        destructive: 'bg-red-50 text-status-negative hover:bg-red-100 rounded-[10px] border border-red-100 active:scale-[0.98]',
+        outline: 'text-text-primary bg-white hover:bg-slate-50 rounded-[10px] border border-slate-200 shadow-sm active:scale-[0.98]',
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-8 px-3 text-xs',
-        lg: 'h-12 px-6 text-base',
-        icon: 'h-10 w-10',
+        default: 'h-10 px-5 py-2',
+        sm: 'h-8 px-3.5 text-xs',
+        lg: 'h-11 px-6 text-[15px]',
+        icon: 'h-9 w-9',
       },
     },
     defaultVariants: {
