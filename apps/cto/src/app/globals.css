@@ -151,7 +151,7 @@
 
   /* ── Kanban ── */
   .kanban-column {
-    @apply rounded-2xl p-2.5 sm:p-3 min-w-[260px] sm:min-w-[280px] max-w-[300px] sm:max-w-[320px] flex flex-col gap-2 snap-center;
+    @apply rounded-2xl p-3 min-w-[75vw] sm:min-w-[280px] max-w-[85vw] sm:max-w-[320px] flex flex-col gap-2 snap-center;
     background: rgba(10, 22, 40, 0.6);
     border: 1px solid rgba(21, 59, 95, 0.35);
     backdrop-filter: blur(4px);

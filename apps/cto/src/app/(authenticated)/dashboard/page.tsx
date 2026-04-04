@@ -184,11 +184,11 @@ interface QuickStatProps {
 
 function QuickStat({ icon: Icon, label, value, color }: QuickStatProps) {
   return (
-    <div className="flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 shrink-0 snap-center">
-      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" style={{ color: normalizeColor(color) }} />
-      <div className="min-w-0">
-        <p className="text-[10px] sm:text-xs text-text-muted leading-none mb-0.5 whitespace-nowrap">{label}</p>
-        <p className="text-xs sm:text-sm font-bold text-text-primary leading-none">{value}</p>
+    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-2.5 px-2 sm:px-4 py-2.5 sm:py-2.5 bg-bg-card/40 sm:bg-transparent">
+      <Icon className="h-4 w-4 shrink-0" style={{ color: normalizeColor(color) }} />
+      <div className="text-center sm:text-left min-w-0">
+        <p className="text-lg sm:text-sm font-bold text-text-primary leading-none sm:order-2">{value}</p>
+        <p className="text-[9px] sm:text-xs text-text-muted leading-none mt-0.5 whitespace-nowrap">{label}</p>
       </div>
     </div>
   )
@@ -471,7 +471,8 @@ export default function DashboardPage() {
               style={{ background: 'linear-gradient(90deg, transparent, rgba(0,200,240,0.4), transparent)' }}
             />
 
-            <div className="flex overflow-x-auto divide-x divide-brand-blue-deep/40 -mx-1 px-1 snap-x">
+            {/* Desktop: horizontal row */}
+            <div className="hidden sm:flex divide-x divide-brand-blue-deep/40">
               <QuickStat icon={BarChart3}  label="Total de Projetos"   value={String(totalProjetos)}              color="#00C8F0" />
               <QuickStat icon={Rocket}     label="Projetos Ativos"     value={String(kpis.projetosAtivos)}        color="#1A6AAA" />
               <QuickStat icon={Target}     label="Entregas no Mês"     value={String(kpis.entreguesMes)}          color="#10B981" />
@@ -479,6 +480,19 @@ export default function DashboardPage() {
               <QuickStat icon={Users}      label="Milestones (14d)"    value={String(proximosMilestones.length)}  color="#94A3B8" />
               {kpis.atrasados > 0 && (
                 <QuickStat icon={AlertTriangle} label="Atrasados"      value={String(kpis.atrasados)}             color="#EF4444" />
+              )}
+            </div>
+            {/* Mobile: grid */}
+            <div className="grid grid-cols-3 gap-px sm:hidden bg-brand-blue-deep/20 rounded-xl overflow-hidden">
+              <QuickStat icon={BarChart3}  label="Total"          value={String(totalProjetos)}            color="#00C8F0" />
+              <QuickStat icon={Rocket}     label="Ativos"         value={String(kpis.projetosAtivos)}      color="#1A6AAA" />
+              <QuickStat icon={Target}     label="Entregas"       value={String(kpis.entreguesMes)}        color="#10B981" />
+              <QuickStat icon={Timer}      label="Proximas"       value={String(proximasEntregas.length)}  color="#F59E0B" />
+              <QuickStat icon={Users}      label="Milestones"     value={String(proximosMilestones.length)}color="#94A3B8" />
+              {kpis.atrasados > 0 ? (
+                <QuickStat icon={AlertTriangle} label="Atrasados" value={String(kpis.atrasados)}          color="#EF4444" />
+              ) : (
+                <div />
               )}
             </div>
           </motion.div>

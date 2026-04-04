@@ -2,15 +2,18 @@
 
 import { useMemo } from 'react'
 import Link from 'next/link'
-import { GanttChart, Calendar } from 'lucide-react'
-import { PageTransition, StaggerItem } from '@/components/motion'
+import { GanttChart, Calendar, Clock, ArrowRight } from 'lucide-react'
+import { PageTransition, StaggerItem, StaggerContainer } from '@/components/motion'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorState } from '@/components/ui/error-state'
 import { PrioridadeBadge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
 import { cn, normalizeColor } from '@/lib/utils'
 import { useProjetos } from '@/hooks/use-projetos'
-import { formatDate } from '@/lib/format'
+import { formatDate, daysUntil } from '@/lib/format'
 import { getProjetoTitulo, getProjetoEntrega, type Projeto } from '@/types/database'
+
+/* ── Desktop Gantt Bar ─────────────────────────────────────────────────────── */
 
 function GanttBar({ projeto, minDate, totalDays }: { projeto: Projeto; minDate: number; totalDays: number }) {
   const entrega = getProjetoEntrega(projeto)
@@ -24,27 +27,25 @@ function GanttBar({ projeto, minDate, totalDays }: { projeto: Projeto; minDate: 
   return (
     <Link
       href={`/projetos/${projeto.id}`}
-      className="flex items-center gap-2 sm:gap-3 py-2.5 sm:py-3 border-b border-brand-blue-deep/15 group hover:bg-bg-hover/30 transition-colors -mx-3 px-3 rounded-lg"
+      className="flex items-center gap-3 py-3 border-b border-brand-blue-deep/15 group hover:bg-bg-hover/30 transition-colors -mx-3 px-3 rounded-lg"
     >
-      <div className="w-28 sm:w-44 shrink-0">
-        <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5">
+      <div className="w-44 shrink-0">
+        <div className="flex items-center gap-2 mb-0.5">
           <div className="h-2 w-2 rounded-full shrink-0" style={{ background: color }} />
-          <p className="text-xs sm:text-sm font-semibold text-text-primary truncate group-hover:text-brand-cyan transition-colors">
+          <p className="text-sm font-semibold text-text-primary truncate group-hover:text-brand-cyan transition-colors">
             {getProjetoTitulo(projeto)}
           </p>
         </div>
-        <div className="flex items-center gap-1.5 sm:gap-2 ml-3.5 sm:ml-4">
-          <p className="text-[10px] sm:text-xs text-text-muted truncate">{projeto.cliente ?? '-'}</p>
+        <div className="flex items-center gap-2 ml-4">
+          <p className="text-xs text-text-muted truncate">{projeto.cliente ?? '-'}</p>
           <PrioridadeBadge prioridade={projeto.prioridade} />
         </div>
       </div>
-      <div className="flex-1 relative h-8 sm:h-10">
-        {/* Background bar */}
+      <div className="flex-1 relative h-10">
         <div
           className="absolute top-1 h-8 rounded-lg opacity-15 transition-opacity group-hover:opacity-25"
           style={{ left: `${leftPct}%`, width: `${widthPct}%`, background: color }}
         />
-        {/* Progress fill */}
         <div
           className="absolute top-1 h-8 rounded-lg transition-all duration-500"
           style={{
@@ -54,7 +55,6 @@ function GanttBar({ projeto, minDate, totalDays }: { projeto: Projeto; minDate: 
             boxShadow: `0 0 12px ${color}30`,
           }}
         />
-        {/* Label */}
         <span
           className={cn(
             'absolute top-2 text-xs px-2',
@@ -68,6 +68,62 @@ function GanttBar({ projeto, minDate, totalDays }: { projeto: Projeto; minDate: 
     </Link>
   )
 }
+
+/* ── Mobile Project Card ───────────────────────────────────────────────────── */
+
+function MobileProjectCard({ projeto }: { projeto: Projeto }) {
+  const color = normalizeColor(projeto.cor)
+  const entrega = getProjetoEntrega(projeto)
+  const days = entrega ? daysUntil(entrega) : null
+  const isLate = days !== null && days < 0
+
+  return (
+    <StaggerItem>
+      <Link
+        href={`/projetos/${projeto.id}`}
+        className="block card-glass !p-3.5 relative overflow-hidden active:scale-[0.98] transition-transform"
+      >
+        {/* Left color bar */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-xl"
+          style={{ background: color }}
+        />
+
+        <div className="pl-2">
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold text-text-primary truncate">{getProjetoTitulo(projeto)}</p>
+              {projeto.cliente && (
+                <p className="text-xs text-text-muted mt-0.5 truncate">{projeto.cliente}</p>
+              )}
+            </div>
+            <PrioridadeBadge prioridade={projeto.prioridade} />
+          </div>
+
+          <Progress value={projeto.progresso} showLabel className="mb-2" />
+
+          <div className="flex items-center justify-between text-xs">
+            {entrega ? (
+              <div className={cn(
+                'flex items-center gap-1 font-medium',
+                isLate ? 'text-status-negative' : days !== null && days <= 3 ? 'text-status-warning' : 'text-text-muted'
+              )}>
+                <Clock className="h-3 w-3" />
+                <span>{formatDate(entrega)}</span>
+                {isLate && <span className="text-[10px]">({Math.abs(days!)}d atrasado)</span>}
+              </div>
+            ) : (
+              <span className="text-text-muted">Sem prazo</span>
+            )}
+            <ArrowRight className="h-3.5 w-3.5 text-text-muted" />
+          </div>
+        </div>
+      </Link>
+    </StaggerItem>
+  )
+}
+
+/* ── Main ──────────────────────────────────────────────────────────────────── */
 
 export default function TimelinePage() {
   const { data: projetos, isLoading, error } = useProjetos()
@@ -109,7 +165,10 @@ export default function TimelinePage() {
       <PageTransition>
         <div className="space-y-4">
           <Skeleton className="h-8 w-48 rounded-xl" />
-          <Skeleton className="h-[500px] w-full rounded-2xl" />
+          <div className="hidden sm:block"><Skeleton className="h-[500px] w-full rounded-2xl" /></div>
+          <div className="sm:hidden space-y-3">
+            {[1, 2, 3].map((i) => <Skeleton key={i} className="h-28 w-full rounded-xl" />)}
+          </div>
         </div>
       </PageTransition>
     )
@@ -119,9 +178,10 @@ export default function TimelinePage() {
 
   return (
     <PageTransition>
-      <div className="space-y-3 sm:space-y-5">
+      <div className="space-y-4">
+        {/* Header */}
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2.5">
             <div className="section-header-icon" style={{ background: 'rgba(0,200,240,0.12)', border: '1px solid rgba(0,200,240,0.2)' }}>
               <GanttChart className="h-4 w-4 text-brand-cyan" />
             </div>
@@ -130,64 +190,86 @@ export default function TimelinePage() {
               <p className="text-[10px] sm:text-xs text-text-muted">{sortedProjetos.length} projetos com datas</p>
             </div>
           </div>
-          <div className="hidden sm:flex items-center gap-2 text-xs text-text-muted">
-            <Calendar className="h-3.5 w-3.5" />
-            <span>Hoje: {formatDate(new Date())}</span>
+          <div className="flex items-center gap-1.5 text-xs text-text-muted">
+            <Calendar className="h-3.5 w-3.5 hidden sm:block" />
+            <span className="text-[10px] sm:text-xs">{formatDate(new Date())}</span>
           </div>
         </div>
 
-        <StaggerItem>
-          <div className="card-glass overflow-x-auto">
-            {/* Month headers */}
-            <div className="flex items-center gap-2 sm:gap-3 mb-2 px-3">
-              <div className="w-28 sm:w-44 shrink-0" />
-              <div className="flex-1 relative h-6">
-                {monthHeaders.map((h, i) => (
-                  <span key={i} className="absolute text-[10px] text-text-muted font-semibold uppercase tracking-wider" style={{ left: `${h.leftPct}%` }}>
-                    {h.label}
-                  </span>
-                ))}
+        {/* ── Mobile: Card list ── */}
+        <div className="sm:hidden">
+          {sortedProjetos.length === 0 ? (
+            <div className="card-glass flex flex-col items-center justify-center py-16 text-center">
+              <div className="h-12 w-12 rounded-2xl flex items-center justify-center mb-3" style={{ background: 'rgba(0,200,240,0.08)', border: '1px dashed rgba(0,200,240,0.25)' }}>
+                <GanttChart className="h-5 w-5 text-brand-cyan opacity-60" />
               </div>
+              <p className="text-sm font-semibold text-text-secondary">Nenhum projeto com datas</p>
+              <p className="text-xs text-text-muted mt-1">Adicione datas de inicio e entrega aos projetos</p>
             </div>
+          ) : (
+            <StaggerContainer className="space-y-2.5">
+              {sortedProjetos.map((p) => (
+                <MobileProjectCard key={p.id} projeto={p} />
+              ))}
+            </StaggerContainer>
+          )}
+        </div>
 
-            {/* Today line */}
-            <div className="relative">
-              <div className="absolute inset-y-0 flex w-full pointer-events-none z-10">
-                <div className="w-28 sm:w-44 shrink-0 gap-3" />
-                <div className="flex-1 relative">
-                  <div
-                    className="absolute top-0 bottom-0 w-px"
-                    style={{
-                      left: `${todayPct}%`,
-                      background: 'linear-gradient(to bottom, #00C8F0, transparent)',
-                      boxShadow: '0 0 6px rgba(0,200,240,0.3)',
-                    }}
-                  />
-                  <div
-                    className="absolute w-2 h-2 rounded-full bg-brand-cyan"
-                    style={{ left: `calc(${todayPct}% - 4px)`, top: -1 }}
-                  />
+        {/* ── Desktop: Gantt chart ── */}
+        <div className="hidden sm:block">
+          <StaggerItem>
+            <div className="card-glass overflow-x-auto">
+              {/* Month headers */}
+              <div className="flex items-center gap-3 mb-2 px-3">
+                <div className="w-44 shrink-0" />
+                <div className="flex-1 relative h-6">
+                  {monthHeaders.map((h, i) => (
+                    <span key={i} className="absolute text-[10px] text-text-muted font-semibold uppercase tracking-wider whitespace-nowrap" style={{ left: `${h.leftPct}%` }}>
+                      {h.label}
+                    </span>
+                  ))}
                 </div>
               </div>
 
-              <div className="px-3">
-                {sortedProjetos.map((p) => (
-                  <GanttBar key={p.id} projeto={p} minDate={minDate} totalDays={totalDays} />
-                ))}
-              </div>
-
-              {sortedProjetos.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="h-12 w-12 rounded-2xl flex items-center justify-center mb-3" style={{ background: 'rgba(0,200,240,0.08)', border: '1px dashed rgba(0,200,240,0.25)' }}>
-                    <GanttChart className="h-5 w-5 text-brand-cyan opacity-60" />
+              {/* Today line */}
+              <div className="relative">
+                <div className="absolute inset-y-0 flex w-full pointer-events-none z-10">
+                  <div className="w-44 shrink-0" />
+                  <div className="flex-1 relative">
+                    <div
+                      className="absolute top-0 bottom-0 w-px"
+                      style={{
+                        left: `${todayPct}%`,
+                        background: 'linear-gradient(to bottom, #00C8F0, transparent)',
+                        boxShadow: '0 0 6px rgba(0,200,240,0.3)',
+                      }}
+                    />
+                    <div
+                      className="absolute w-2 h-2 rounded-full bg-brand-cyan"
+                      style={{ left: `calc(${todayPct}% - 4px)`, top: -1 }}
+                    />
                   </div>
-                  <p className="text-sm font-semibold text-text-secondary">Nenhum projeto com datas</p>
-                  <p className="text-xs text-text-muted mt-0.5">Adicione datas de inicio e entrega aos projetos</p>
                 </div>
-              )}
+
+                <div className="px-3">
+                  {sortedProjetos.map((p) => (
+                    <GanttBar key={p.id} projeto={p} minDate={minDate} totalDays={totalDays} />
+                  ))}
+                </div>
+
+                {sortedProjetos.length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-16 text-center">
+                    <div className="h-12 w-12 rounded-2xl flex items-center justify-center mb-3" style={{ background: 'rgba(0,200,240,0.08)', border: '1px dashed rgba(0,200,240,0.25)' }}>
+                      <GanttChart className="h-5 w-5 text-brand-cyan opacity-60" />
+                    </div>
+                    <p className="text-sm font-semibold text-text-secondary">Nenhum projeto com datas</p>
+                    <p className="text-xs text-text-muted mt-0.5">Adicione datas de inicio e entrega aos projetos</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </StaggerItem>
+          </StaggerItem>
+        </div>
       </div>
     </PageTransition>
   )
