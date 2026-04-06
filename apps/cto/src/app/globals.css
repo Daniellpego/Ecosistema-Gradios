@@ -4,117 +4,101 @@
 
 @layer base {
   * {
-    @apply border-brand-blue-deep/20;
+    @apply border-slate-200/60;
   }
 
   body {
-    @apply bg-bg-navy text-text-primary font-poppins antialiased;
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    overscroll-behavior-y: contain;
-    -webkit-overflow-scrolling: touch;
+    @apply bg-white text-text-primary font-inter antialiased;
   }
 
-  @media all and (display-mode: standalone) {
-    body { padding-top: env(safe-area-inset-top); }
-    a, img { -webkit-touch-callout: none; }
-    * { -webkit-tap-highlight-color: rgba(0, 200, 240, 0.06); }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(10, 27, 92, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10, 27, 92, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
 
   ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #F8FAFC;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-brand-blue-deep/50 rounded-full;
+    @apply bg-slate-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400;
   }
 }
 
 @layer components {
-  /* ── Cards ── */
   .card-glass {
-    @apply bg-bg-card/90 p-4 sm:p-5;
-    border: 1px solid rgba(21, 59, 95, 0.25);
+    @apply bg-white border border-slate-200/60 p-5 shadow-sm;
     border-radius: 14px;
   }
 
   .card-glass-hover {
-    @apply card-glass transition-all duration-200;
+    @apply card-glass transition-all;
   }
 
   .card-glass-hover:hover {
     transform: translateY(-2px);
-    border-color: rgba(0, 200, 240, 0.2);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 191, 255, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   }
 
-  /* ── Gradients ── */
   .gradient-cyan {
-    background: linear-gradient(135deg, #00C8F0, #1A6AAA);
-  }
-
-  .btn-apple-cyan {
-    background: linear-gradient(180deg, #00D4FA 0%, #00A8D0 100%);
-    box-shadow: 0 1px 3px rgba(0, 168, 208, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-  .btn-apple-cyan:hover {
-    background: linear-gradient(180deg, #1AE0FF 0%, #00BFEF 100%);
-    box-shadow: 0 2px 8px rgba(0, 168, 208, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, #0A1B5C, #00BFFF);
   }
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #00C8F0, #1A6AAA);
+    background-image: linear-gradient(135deg, #0A1B5C, #00BFFF);
   }
 
-  /* ── Section header ── */
-  .section-header-icon {
-    @apply h-7 w-7 rounded-lg flex items-center justify-center shrink-0;
-  }
-
-  /* ── Badges ── */
   .badge-positive {
-    @apply text-status-positive text-xs font-semibold px-2 py-0.5;
-    background: rgba(16, 185, 129, 0.12);
+    @apply text-status-positive text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(16, 185, 129, 0.1);
     border-radius: 6px;
   }
 
   .badge-negative {
-    @apply text-status-negative text-xs font-semibold px-2 py-0.5;
-    background: rgba(239, 68, 68, 0.12);
+    @apply text-status-negative text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(239, 68, 68, 0.1);
     border-radius: 6px;
   }
 
   .badge-warning {
-    @apply text-status-warning text-xs font-semibold px-2 py-0.5;
-    background: rgba(245, 158, 11, 0.12);
+    @apply text-status-warning text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(245, 158, 11, 0.1);
     border-radius: 6px;
   }
 
   .badge-cyan {
-    @apply text-brand-cyan text-xs font-semibold px-2 py-0.5;
-    background: rgba(0, 200, 240, 0.12);
+    @apply text-brand-cyan text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(0, 191, 255, 0.1);
     border-radius: 6px;
   }
 
   .badge-muted {
-    @apply text-text-secondary text-xs font-semibold px-2 py-0.5;
-    background: rgba(148, 163, 184, 0.1);
+    @apply text-text-secondary text-xs font-semibold px-2.5 py-0.5;
+    background: rgba(100, 116, 139, 0.1);
     border-radius: 6px;
   }
 
-  /* ── Kanban ── */
   .kanban-column {
-    @apply rounded-xl p-3 min-w-[75vw] sm:min-w-[280px] max-w-[85vw] sm:max-w-[320px] flex flex-col gap-2 snap-center;
-    background: rgba(19, 31, 53, 0.5);
-    border: 1px solid rgba(21, 59, 95, 0.25);
+    @apply bg-slate-50/50 rounded-2xl p-3 min-w-[280px] max-w-[320px] flex flex-col gap-2;
+    border: 1px solid rgba(226, 232, 240, 0.6);
   }
 
   .kanban-card {
@@ -122,45 +106,39 @@
   }
 
   .kanban-card:hover {
-    border-color: rgba(0, 200, 240, 0.25);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 191, 255, 0.25);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     transform: translateY(-1px);
   }
 
   .kanban-card.dragging {
-    @apply opacity-50 scale-[1.02];
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    @apply opacity-50 scale-[1.02] rotate-1;
+    box-shadow: 0 12px 32px rgba(0, 191, 255, 0.12);
   }
 
-  /* ── Tables ── */
   .table-header {
-    @apply bg-bg-card/40 text-text-secondary text-xs font-semibold uppercase tracking-wider;
+    @apply bg-slate-50/80 text-text-secondary text-xs font-semibold uppercase tracking-wider;
   }
 
   .table-row {
-    @apply border-b transition-colors;
-    border-color: rgba(21, 59, 95, 0.2);
+    @apply border-b transition-colors bg-white;
+    border-color: #F1F5F9;
   }
 
   .table-row:hover {
-    @apply bg-bg-hover;
+    @apply bg-slate-50/50;
   }
 
-  /* ── Progress Bar ── */
   .progress-bar {
-    @apply h-1.5 rounded-full overflow-hidden;
-    background: rgba(21, 59, 95, 0.4);
+    @apply h-2 rounded-full overflow-hidden;
+    background: rgba(226, 232, 240, 0.5);
   }
 
-  .progress-bar-fill {
-    @apply h-full rounded-full transition-all duration-500;
-    background: linear-gradient(90deg, #1A6AAA, #00C8F0);
+  .priority-bar {
+    @apply absolute left-0 top-0 bottom-0 w-1 rounded-l-[14px];
   }
 
-  /* ── Input dark ── */
-  .input-dark {
-    @apply w-full rounded-xl bg-bg-navy/60 border border-brand-blue-deep/25 px-3 py-2 text-sm text-text-primary;
-    @apply placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-cyan/20 focus:border-brand-cyan/40;
-    @apply transition-all duration-200;
+  .section-header-icon {
+    @apply h-7 w-7 rounded-lg flex items-center justify-center shrink-0;
   }
 }
