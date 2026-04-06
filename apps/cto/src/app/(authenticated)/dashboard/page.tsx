@@ -115,7 +115,7 @@ interface QuickStatProps {
 
 function QuickStat({ icon: Icon, label, value, color }: QuickStatProps) {
   return (
-    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-2.5 px-2 sm:px-4 py-2.5 sm:py-2.5 bg-bg-card/40 sm:bg-transparent">
+    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-2.5 px-2 sm:px-4 py-2.5 sm:py-2.5 bg-white/40 sm:bg-transparent">
       <Icon className="h-4 w-4 shrink-0" style={{ color: normalizeColor(color) }} />
       <div className="text-center sm:text-left min-w-0">
         <p className="text-lg sm:text-sm font-bold text-text-primary leading-none sm:order-2">{value}</p>
@@ -131,7 +131,7 @@ function urgencyConfig(days: number): { color: string; bg: string; label: string
   if (days <= 0) return { color: '#EF4444', bg: 'rgba(239,68,68,0.1)', label: 'Hoje', pulse: true }
   if (days === 1) return { color: '#EF4444', bg: 'rgba(239,68,68,0.08)', label: 'Amanha', pulse: true }
   if (days <= 3) return { color: '#F59E0B', bg: 'rgba(245,158,11,0.08)', label: `${days}d`, pulse: false }
-  return { color: '#00C8F0', bg: 'rgba(0,200,240,0.06)', label: `${days}d`, pulse: false }
+  return { color: '#00BFFF', bg: 'rgba(0,191,255,0.06)', label: `${days}d`, pulse: false }
 }
 
 // ─── Activity icon map ────────────────────────────────────────────────────────
@@ -144,7 +144,7 @@ function UpdateIcon({ tipo }: { tipo: string }) {
     status_change:{ icon: GitMerge,     color: '#1A6AAA', bg: 'rgba(26,106,170,0.15)' },
     nota:         { icon: MessageSquare,color: '#94A3B8', bg: 'rgba(148,163,184,0.10)' },
   }
-  const cfg = map[tipo] ?? { icon: Activity, color: '#00C8F0', bg: 'rgba(0,200,240,0.10)' }
+  const cfg = map[tipo] ?? { icon: Activity, color: '#00BFFF', bg: 'rgba(0,191,255,0.10)' }
   const Ic = cfg.icon
   return (
     <div
@@ -170,10 +170,10 @@ function PieTooltip({ active, payload }: PieTooltipProps) {
     <div
       className="rounded-xl px-3 py-2 text-xs font-medium shadow-2xl"
       style={{
-        background: '#0D1B2E',
-        border: '1px solid rgba(21,59,95,0.8)',
-        color: '#F0F4F8',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+        background: '#FFFFFF',
+        border: '1px solid rgba(226,232,240,0.8)',
+        color: '#0F172A',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
       }}
     >
       <div className="flex items-center gap-2">
@@ -203,9 +203,9 @@ function SectionHeader({ icon: Icon, title, iconBg, iconColor, badge }: SectionH
     <div className="flex items-center gap-2 mb-4">
       <div
         className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0"
-        style={{ background: iconBg ?? 'rgba(0,200,240,0.1)' }}
+        style={{ background: iconBg ?? 'rgba(0,191,255,0.12)' }}
       >
-        <Icon className="h-3.5 w-3.5" style={{ color: iconColor ?? '#00C8F0' }} />
+        <Icon className="h-3.5 w-3.5" style={{ color: iconColor ?? '#00BFFF' }} />
       </div>
       <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
       {badge && <div className="ml-auto">{badge}</div>}
@@ -241,7 +241,7 @@ function EmptyState({
   icon: Icon,
   title,
   subtitle,
-  accentColor = '#00C8F0',
+  accentColor = '#00BFFF',
 }: {
   icon: React.ElementType
   title: string
@@ -367,9 +367,9 @@ export default function DashboardPage() {
             <div
               className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold"
               style={{
-                background: 'rgba(0,200,240,0.08)',
-                border: '1px solid rgba(0,200,240,0.2)',
-                color: '#00C8F0',
+                background: 'rgba(0,191,255,0.08)',
+                border: '1px solid rgba(0,191,255,0.2)',
+                color: '#00BFFF',
               }}
             >
               <div className="h-1.5 w-1.5 rounded-full bg-brand-cyan animate-pulse" />
@@ -383,8 +383,8 @@ export default function DashboardPage() {
           <div className="card-glass !p-0 overflow-hidden">
 
             {/* Desktop: horizontal row */}
-            <div className="hidden sm:flex divide-x divide-brand-blue-deep/40">
-              <QuickStat icon={BarChart3}  label="Total de Projetos"   value={String(totalProjetos)}              color="#00C8F0" />
+            <div className="hidden sm:flex divide-x divide-slate-200">
+              <QuickStat icon={BarChart3}  label="Total de Projetos"   value={String(totalProjetos)}              color="#00BFFF" />
               <QuickStat icon={Rocket}     label="Projetos Ativos"     value={String(kpis.projetosAtivos)}        color="#1A6AAA" />
               <QuickStat icon={Target}     label="Entregas no Mês"     value={String(kpis.entreguesMes)}          color="#10B981" />
               <QuickStat icon={Timer}      label="Próximas Entregas"   value={String(proximasEntregas.length)}    color="#F59E0B" />
@@ -394,8 +394,8 @@ export default function DashboardPage() {
               )}
             </div>
             {/* Mobile: grid */}
-            <div className="grid grid-cols-3 gap-px sm:hidden bg-brand-blue-deep/20 rounded-xl overflow-hidden">
-              <QuickStat icon={BarChart3}  label="Total"          value={String(totalProjetos)}            color="#00C8F0" />
+            <div className="grid grid-cols-3 gap-px sm:hidden bg-slate-100 rounded-xl overflow-hidden">
+              <QuickStat icon={BarChart3}  label="Total"          value={String(totalProjetos)}            color="#00BFFF" />
               <QuickStat icon={Rocket}     label="Ativos"         value={String(kpis.projetosAtivos)}      color="#1A6AAA" />
               <QuickStat icon={Target}     label="Entregas"       value={String(kpis.entreguesMes)}        color="#10B981" />
               <QuickStat icon={Timer}      label="Proximas"       value={String(proximasEntregas.length)}  color="#F59E0B" />
@@ -416,7 +416,7 @@ export default function DashboardPage() {
             label="Projetos Ativos"
             value={kpis.projetosAtivos}
             format={(n) => String(n)}
-            accentColor="#00C8F0"
+            accentColor="#00BFFF"
             subtitle="Backlog, andamento e revisao"
           />
           <KPICard
@@ -456,8 +456,8 @@ export default function DashboardPage() {
               <SectionHeader
                 icon={BarChart3}
                 title="Status dos Projetos"
-                iconBg="rgba(0,200,240,0.12)"
-                iconColor="#00C8F0"
+                iconBg="rgba(0,191,255,0.12)"
+                iconColor="#00BFFF"
               />
 
               {/* Donut chart */}
@@ -659,7 +659,7 @@ export default function DashboardPage() {
                     {proximosMilestones.map((m, idx) => {
                       const dotColor =
                         m.status === 'atrasado'    ? '#EF4444' :
-                        m.status === 'em_andamento'? '#00C8F0' :
+                        m.status === 'em_andamento'? '#00BFFF' :
                         m.status === 'concluido'   ? '#10B981' : '#94A3B8'
 
                       return (
@@ -712,8 +712,8 @@ export default function DashboardPage() {
               <SectionHeader
                 icon={Zap}
                 title="Atividade Recente"
-                iconBg="rgba(0,200,240,0.12)"
-                iconColor="#00C8F0"
+                iconBg="rgba(0,191,255,0.12)"
+                iconColor="#00BFFF"
               />
               <span
                 className="text-xs font-medium text-text-muted hidden sm:block"
@@ -728,7 +728,7 @@ export default function DashboardPage() {
                 icon={Activity}
                 title="Sem atividade recente"
                 subtitle="As atualizacoes e eventos dos projetos aparecerão aqui assim que forem registrados."
-                accentColor="#00C8F0"
+                accentColor="#00BFFF"
               />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -741,20 +741,20 @@ export default function DashboardPage() {
                     whileHover={{ x: 2, transition: { duration: 0.15 } }}
                     className="flex items-start gap-3 p-3 rounded-xl group cursor-default"
                     style={{
-                      background: 'rgba(21,59,95,0.12)',
-                      border: '1px solid rgba(21,59,95,0.25)',
+                      background: 'rgba(226,232,240,0.12)',
+                      border: '1px solid rgba(226,232,240,0.25)',
                     }}
                   >
                     <UpdateIcon tipo={u.tipo} />
 
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm text-text-primary leading-snug line-clamp-2 group-hover:text-white transition-colors">
+                      <p className="text-sm text-text-primary leading-snug line-clamp-2 group-hover:text-brand-cyan transition-colors">
                         {u.conteudo}
                       </p>
                       <div className="flex items-center gap-2 mt-1.5">
                         <div
                           className="flex items-center gap-1 text-xs font-semibold"
-                          style={{ color: '#00C8F0' }}
+                          style={{ color: '#00BFFF' }}
                         >
                           <ArrowUpRight className="h-3 w-3" />
                           <span className="truncate max-w-[120px]">{u.projeto_titulo}</span>
