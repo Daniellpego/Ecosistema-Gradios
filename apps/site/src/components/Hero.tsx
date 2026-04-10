@@ -10,7 +10,6 @@ import { trackCTAClick } from "@/lib/meta-pixel";
 export function Hero() {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
-  const [showStickyButton, setShowStickyButton] = useState(false);
 
   const [count, setCount] = useState<number | null>(null);
   const dashRef = useRef<HTMLDivElement>(null);
@@ -34,26 +33,6 @@ export function Hero() {
     return () => {
       clearTimeout(t);
       window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  // Show sticky button only when scrolled past hero (mobile only)
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerWidth < 640) { // sm breakpoint
-        setShowStickyButton(window.scrollY > 500); // Show after 500px scroll
-      } else {
-        setShowStickyButton(false); // Never show on desktop
-      }
-    };
-
-    handleScroll(); // Check initial state
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
     };
   }, []);
 
@@ -414,24 +393,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Mobile sticky CTA — only shows after scrolling past hero */}
-      {showStickyButton && (
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-card-border sm:hidden"
-        >
-          <Link
-            href="/diagnostico"
-            onClick={() => trackCTAClick("Hero Mobile Sticky", "Descobrir quanto perco", "/diagnostico")}
-            className="animate-cta-pulse bg-brand-gradient text-white rounded-pill px-6 py-4 font-bold text-center block text-base"
-          >
-            Descobrir quanto perco por mês
-          </Link>
-        </motion.div>
-      )}
     </section>
   );
 }
