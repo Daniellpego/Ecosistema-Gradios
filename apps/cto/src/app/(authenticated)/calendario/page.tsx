@@ -126,15 +126,16 @@ export default function CalendarioPage() {
           {/* Calendar grid */}
           <StaggerItem className="flex-1 min-w-0">
             <div className="card-glass !p-0 overflow-hidden">
-              <div className="grid grid-cols-7 border-b border-slate-200/60">
+              <div className="grid grid-cols-7 gap-1.5 sm:gap-2 px-2 sm:px-3 pt-3 pb-1">
                 {WEEKDAYS.map((day) => (
-                  <div key={day} className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-text-muted py-2 sm:py-3">
-                    {day.slice(0, 1)}<span className="hidden sm:inline">{day.slice(1)}</span>
+                  <div key={day} className="text-center text-[10px] xs:text-[11px] font-bold uppercase tracking-widest text-slate-400 py-1" aria-label={day}>
+                    <span className="xs:hidden">{day.slice(0, 1)}</span>
+                    <span className="hidden xs:inline">{day}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="grid grid-cols-7">
+              <div className="grid grid-cols-7 gap-1.5 sm:gap-2 p-2 sm:p-3">
                 {calendarDays.map((day, i) => {
                   const dayEvents = day.isCurrentMonth ? getEventsForDay(day.date) : []
                   const todayMatch = isToday(day.date, day.month)
@@ -144,44 +145,21 @@ export default function CalendarioPage() {
                       key={i}
                       onClick={() => day.isCurrentMonth && setSelectedDay(day.date === selectedDay ? null : day.date)}
                       className={cn(
-                        'min-h-[44px] sm:min-h-[90px] border-b border-r border-slate-100 p-0.5 sm:p-1.5 text-left transition-all',
-                        day.isCurrentMonth ? 'hover:bg-brand-cyan/[0.04] cursor-pointer bg-white' : 'bg-slate-50/80 cursor-default',
-                        todayMatch && 'bg-brand-cyan/[0.04]',
-                        isSelected && 'ring-2 ring-brand-cyan/40 bg-brand-cyan/[0.06]'
+                        'aspect-square flex flex-col items-center justify-center rounded-[10px] text-sm font-medium transition-all',
+                        day.isCurrentMonth ? 'hover:bg-slate-100 cursor-pointer text-text-secondary' : 'cursor-default',
+                        todayMatch && 'bg-brand-cyan text-white font-bold shadow-md shadow-brand-cyan/20',
+                        isSelected && !todayMatch && 'ring-2 ring-brand-cyan/40 bg-brand-cyan/[0.06]'
                       )}
+                      style={!day.isCurrentMonth ? { color: '#bcc8d1' } : undefined}
                     >
-                      <span className={cn(
-                        'text-xs font-medium inline-flex h-6 w-6 items-center justify-center rounded-full',
-                        !day.isCurrentMonth && 'text-text-muted/30',
-                        day.isCurrentMonth && 'text-text-secondary',
-                        todayMatch && 'bg-brand-cyan text-bg-navy font-bold shadow-sm'
+                      <span>{day.date}</span>
+                      {dayEvents.length > 0 && (
+                        <div className="flex gap-0.5 mt-0.5">
+                          {dayEvents.slice(0, 3).map((evt) => (
+                            <div key={evt.id} className="h-1.5 w-1.5 rounded-full" style={{ background: todayMatch ? '#fff' : evt.color }} />
+                          ))}
+                        </div>
                       )}
-                      >
-                        {day.date}
-                      </span>
-                      <div className="mt-0.5 sm:mt-1 space-y-0.5">
-                        {dayEvents.slice(0, 2).map((evt) => (
-                          <div
-                            key={evt.id}
-                            className="text-[8px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 rounded-md truncate font-medium hidden sm:block"
-                            style={{ background: `${evt.color}18`, color: evt.color, border: `1px solid ${evt.color}20` }}
-                            title={`${evt.title} - ${evt.project ?? ''}`}
-                          >
-                            {evt.title}
-                          </div>
-                        ))}
-                        {/* Mobile: just show dots */}
-                        {dayEvents.length > 0 && (
-                          <div className="flex gap-0.5 sm:hidden justify-center mt-0.5">
-                            {dayEvents.slice(0, 3).map((evt) => (
-                              <div key={evt.id} className="h-1.5 w-1.5 rounded-full" style={{ background: evt.color }} />
-                            ))}
-                          </div>
-                        )}
-                        {dayEvents.length > 2 && (
-                          <span className="text-[10px] text-brand-cyan px-1.5 font-semibold hidden sm:inline">+{dayEvents.length - 2}</span>
-                        )}
-                      </div>
                     </button>
                   )
                 })}

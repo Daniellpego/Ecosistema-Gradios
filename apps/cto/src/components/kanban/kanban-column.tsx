@@ -30,11 +30,14 @@ export function KanbanColumn({ id, label, color, bgColor, projetos }: KanbanColu
         <div className="space-y-3 min-h-[120px]">
           {projetos.length === 0 ? (
             <div className={cn(
-              'flex flex-col items-center justify-center min-h-[100px] rounded-[14px] border-2 border-dashed transition-colors',
-              isOver ? 'border-brand-cyan/50 bg-brand-cyan/5' : 'border-slate-200/60 bg-white/30'
+              'flex flex-col items-center justify-center py-8 rounded-[14px] border-2 border-dashed transition-colors cursor-pointer',
+              isOver
+                ? 'border-brand-cyan/50 bg-brand-cyan/5'
+                : 'border-slate-200/40 hover:bg-slate-50/50'
             )}>
-              <LayoutGrid className="h-5 w-5 mb-1.5 opacity-30" style={{ color: isOver ? color : '#94A3B8' }} />
-              <span className="text-[11px] text-text-muted font-medium">{isOver ? 'Soltar aqui' : 'Nenhum projeto'}</span>
+              <span className="text-xs font-medium text-text-muted">
+                {isOver ? 'Soltar aqui' : 'Nenhum projeto'}
+              </span>
             </div>
           ) : projetos.map((p) => <KanbanCard key={p.id} projeto={p} />)}
         </div>

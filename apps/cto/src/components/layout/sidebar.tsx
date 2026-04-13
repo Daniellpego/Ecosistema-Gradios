@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion'
 import {
   LayoutDashboard, Kanban, GanttChart, Calendar,
-  FileBarChart, Users, LogOut, Menu, X, ChevronLeft,
+  FileBarChart, Users, LogOut, X, ChevronLeft,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/layout/logo'
@@ -23,12 +23,30 @@ const NAV_ITEMS = [
   { href: '/portal', label: 'Portal Sócios', icon: Users },
 ] as const
 
+const SIDEBAR_WIDTH = 260
+
 export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const { user } = useCurrentUser()
+
+  // Swipe-to-close
+  const x = useMotionValue(0)
+  const overlayOpacity = useTransform(x, [-SIDEBAR_WIDTH, 0], [0, 1])
+
+  useEffect(() => {
+    const handler = () => setMobileOpen(true)
+    window.addEventListener('toggle-mobile-sidebar', handler)
+    return () => window.removeEventListener('toggle-mobile-sidebar', handler)
+  }, [])
+
+  const handleDragEnd = useCallback((_: never, info: PanInfo) => {
+    if (info.offset.x < -80 || info.velocity.x < -300) {
+      setMobileOpen(false)
+    }
+  }, [])
 
   async function handleLogout() {
     const supabase = createClient()
@@ -54,7 +72,7 @@ export function Sidebar() {
 
       <Separator />
 
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto" role="navigation" aria-label="Menu principal">
+      <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto" role="navigation" aria-label="Menu principal">
         {!collapsed && (
           <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-text-muted/50 px-3 mb-2 block">
             Gradios CTO
@@ -69,11 +87,11 @@ export function Sidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-3 py-2 rounded-[10px] text-[13px] transition-all duration-200 relative group',
+                'flex items-center gap-3 min-h-[44px] rounded-[10px] text-[13px] transition-all duration-200 relative',
                 collapsed ? 'justify-center px-2' : '',
                 isActive
                   ? 'bg-brand-cyan/10 text-brand-cyan font-semibold border border-brand-cyan/10 shadow-sm'
-                  : 'px-3 text-text-muted hover:bg-bg-hover hover:text-text-primary font-medium'
+                  : 'px-3 text-text-muted active:bg-bg-hover active:text-text-primary font-medium'
               )}
             >
               {isActive && !collapsed && (
@@ -91,7 +109,6 @@ export function Sidebar() {
 
       <Separator />
 
-      {/* User area */}
       <div className="p-4 space-y-3">
         {!collapsed && (
           <div className="flex items-center gap-3 px-2">
@@ -103,7 +120,7 @@ export function Sidebar() {
             </div>
             <div className="min-w-0">
               <p className="text-sm font-semibold text-text-primary truncate">{user.nome}</p>
-              <p className="text-[10px] text-text-muted truncate">{user.email}</p>
+              <p className="text-[11px] text-text-muted truncate">{user.email}</p>
             </div>
           </div>
         )}
@@ -122,7 +139,7 @@ export function Sidebar() {
           onClick={handleLogout}
           aria-label="Sair da conta"
           className={cn(
-            'flex items-center gap-3 w-full px-3 py-2 rounded-[10px] text-[13px] font-medium text-text-muted hover:bg-status-negative/10 hover:text-status-negative transition-all duration-200',
+            'flex items-center gap-3 w-full min-h-[44px] px-3 rounded-[10px] text-[13px] font-medium text-text-muted active:bg-status-negative/10 active:text-status-negative transition-all duration-200',
             collapsed && 'justify-center'
           )}
         >
@@ -135,35 +152,35 @@ export function Sidebar() {
 
   return (
     <>
-      <button
-        onClick={() => setMobileOpen(true)}
-        aria-label="Abrir menu"
-        className="lg:hidden fixed top-[7px] left-3 z-30 h-8 w-8 flex items-center justify-center rounded-lg text-text-secondary hover:text-text-primary active:scale-95 transition-all"
-      >
-        <Menu className="h-5 w-5" />
-      </button>
-
       <AnimatePresence>
         {mobileOpen && (
           <>
+            {/* Overlay — taps to close */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              style={{ opacity: overlayOpacity }}
               onClick={() => setMobileOpen(false)}
-              className="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+              className="lg:hidden fixed inset-0 z-40 bg-black/40"
             />
+            {/* Sidebar — swipe left to close */}
             <motion.aside
-              initial={{ x: -280 }}
+              initial={{ x: -SIDEBAR_WIDTH }}
               animate={{ x: 0 }}
-              exit={{ x: -280 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-bg-card border-r border-brand-blue-deep/40"
+              exit={{ x: -SIDEBAR_WIDTH }}
+              transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+              drag="x"
+              dragConstraints={{ left: -SIDEBAR_WIDTH, right: 0 }}
+              dragElastic={0.1}
+              onDragEnd={handleDragEnd}
+              style={{ x }}
+              className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-bg-card border-r border-brand-blue-deep/40 touch-pan-y"
             >
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Fechar menu"
-                className="absolute top-4 right-4 h-8 w-8 flex items-center justify-center rounded-md text-text-secondary hover:text-text-primary"
+                className="absolute top-3 right-3 h-11 w-11 flex items-center justify-center rounded-lg text-text-secondary active:text-text-primary active:bg-slate-100 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>

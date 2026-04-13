@@ -45,10 +45,12 @@
     @apply card-glass transition-all duration-200;
   }
 
-  .card-glass-hover:hover {
-    transform: translateY(-3px);
-    border-color: rgba(0, 191, 255, 0.2);
-    box-shadow: 0 12px 40px rgba(0, 102, 138, 0.08);
+  @media (hover: hover) {
+    .card-glass-hover:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0, 191, 255, 0.2);
+      box-shadow: 0 12px 40px rgba(0, 102, 138, 0.08);
+    }
   }
 
   .glass-panel {
@@ -99,9 +101,15 @@
 
   .kanban-column {
     @apply rounded-2xl p-3 flex flex-col gap-3;
-    min-width: min(300px, 85vw);
+    min-width: min(260px, 80vw);
     max-width: 320px;
     background: transparent;
+  }
+
+  @media (min-width: 380px) {
+    .kanban-column {
+      min-width: min(280px, 82vw);
+    }
   }
 
   @media (min-width: 640px) {
@@ -141,8 +149,10 @@
     border-color: #F1F5F9;
   }
 
-  .table-row:hover {
-    @apply bg-slate-50/50;
+  @media (hover: hover) {
+    .table-row:hover {
+      @apply bg-slate-50/50;
+    }
   }
 
   .progress-bar {
@@ -165,5 +175,22 @@
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Focus visible ring for keyboard navigation */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan/50 focus-visible:ring-offset-2;
+  }
+
+  /* Prevent iOS zoom on inputs */
+  @supports (-webkit-touch-callout: none) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+    @media (min-width: 640px) {
+      input, select, textarea {
+        font-size: inherit !important;
+      }
+    }
   }
 }
