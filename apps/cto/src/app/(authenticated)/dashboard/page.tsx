@@ -85,9 +85,9 @@ function KPICard({
         )}
 
         <div className="relative flex items-start justify-between mb-3 sm:mb-4">
-          <p className="text-[13px] sm:text-sm font-medium text-text-secondary">{label}</p>
+          <p className="text-sm font-medium text-text-secondary">{label}</p>
           <div
-            className="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
+            className="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center shrink-0"
             style={{ background: `${color}12` }}
           >
             <Icon className="h-[18px] w-[18px] sm:h-5 sm:w-5" style={{ color }} />
@@ -99,7 +99,7 @@ function KPICard({
         </p>
 
         {subtitle && (
-          <p className="relative text-[11px] sm:text-xs text-text-muted mt-1">{subtitle}</p>
+          <p className="relative text-xs text-text-muted mt-1">{subtitle}</p>
         )}
       </div>
     </StaggerItem>
@@ -126,7 +126,7 @@ function QuickStat({ label, value, color, isAlert }: QuickStatProps & { isAlert?
       }}
     >
       <p
-        className="text-[10px] font-bold uppercase tracking-widest"
+        className="text-[11px] font-bold uppercase tracking-widest"
         style={{ color: isAlert ? '#EF4444' : '#6d7981' }}
       >
         {label}

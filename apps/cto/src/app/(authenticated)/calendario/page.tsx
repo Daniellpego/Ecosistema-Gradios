@@ -128,8 +128,9 @@ export default function CalendarioPage() {
             <div className="card-glass !p-0 overflow-hidden">
               <div className="grid grid-cols-7 gap-1.5 sm:gap-2 px-2 sm:px-3 pt-3 pb-1">
                 {WEEKDAYS.map((day) => (
-                  <div key={day} className="text-center text-[10px] font-bold uppercase tracking-widest text-slate-400 py-1">
-                    {day.slice(0, 1)}
+                  <div key={day} className="text-center text-[10px] xs:text-[11px] font-bold uppercase tracking-widest text-slate-400 py-1" aria-label={day}>
+                    <span className="xs:hidden">{day.slice(0, 1)}</span>
+                    <span className="hidden xs:inline">{day}</span>
                   </div>
                 ))}
               </div>

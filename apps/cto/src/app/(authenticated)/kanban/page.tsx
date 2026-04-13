@@ -131,14 +131,14 @@ function KanbanContent() {
               placeholder="Buscar..."
               value={search}
               onChange={(e) => updateParams('q', e.target.value)}
-              className="pl-8 h-9 text-xs"
+              className="pl-8"
               aria-label="Buscar projetos por nome ou cliente"
             />
           </div>
 
           {/* Priority filter */}
           <Select value={filterPrioridade} onValueChange={(v) => updateParams('prioridade', v)}>
-            <SelectTrigger className="w-32 sm:w-40 h-9 text-xs shrink-0" aria-label="Filtrar por prioridade">
+            <SelectTrigger className="w-32 sm:w-40 shrink-0" aria-label="Filtrar por prioridade">
               <Filter className="h-3 w-3 mr-1 text-text-muted" />
               <SelectValue placeholder="Prioridade" />
             </SelectTrigger>
