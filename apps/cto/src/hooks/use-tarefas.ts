@@ -32,8 +32,9 @@ export function useTarefaCount(projetoId: string) {
         .select('id, status')
         .eq('projeto_id', projetoId)
       if (error) throw error
-      const total = data.length
-      const done = data.filter((t) => t.status === 'done').length
+      const items = data ?? []
+      const total = items.length
+      const done = items.filter((t) => t.status === 'done').length
       return { total, done }
     },
     enabled: !!projetoId,

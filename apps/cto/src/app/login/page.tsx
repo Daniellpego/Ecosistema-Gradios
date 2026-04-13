@@ -24,7 +24,22 @@ export default function LoginPage() {
     setLoading(true)
     const supabase = createClient()
     const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
-    if (authError) { setError('Email ou senha incorretos.'); setLoading(false); return }
+    if (authError) {
+      const msg = authError.message?.toLowerCase() ?? ''
+      if (msg.includes('invalid') || msg.includes('credentials')) {
+        setError('Email ou senha incorretos.')
+      } else if (msg.includes('email not confirmed')) {
+        setError('Email ainda nao verificado. Verifique sua caixa de entrada.')
+      } else if (msg.includes('rate') || msg.includes('too many')) {
+        setError('Muitas tentativas. Aguarde alguns minutos.')
+      } else if (msg.includes('fetch') || msg.includes('network')) {
+        setError('Erro de conexao. Verifique sua internet.')
+      } else {
+        setError('Erro ao fazer login. Tente novamente.')
+      }
+      setLoading(false)
+      return
+    }
     router.push('/dashboard')
     router.refresh()
   }

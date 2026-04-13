@@ -273,16 +273,20 @@ function EmptyState({
   title,
   subtitle,
   accentColor = '#00BFFF',
+  actionLabel,
+  actionHref,
 }: {
   icon: React.ElementType
   title: string
   subtitle: string
   accentColor?: string
+  actionLabel?: string
+  actionHref?: string
 }) {
   return (
     <div className="flex flex-col items-center justify-center py-6 sm:py-10 text-center gap-3">
       <div
-        className="h-12 w-12 sm:h-16 sm:w-16 rounded-xl sm:rounded-2xl flex items-center justify-center"
+        className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl flex items-center justify-center"
         style={{
           background: `${accentColor}0C`,
           border: `1.5px solid ${accentColor}20`,
@@ -290,10 +294,19 @@ function EmptyState({
       >
         <Icon className="h-5 w-5 sm:h-6 sm:w-6 opacity-60" style={{ color: accentColor }} />
       </div>
-      <div className="space-y-0.5 sm:space-y-1">
+      <div className="space-y-1">
         <p className="text-sm font-semibold text-text-secondary">{title}</p>
         <p className="text-xs text-text-muted max-w-[240px] leading-relaxed">{subtitle}</p>
       </div>
+      {actionLabel && actionHref && (
+        <a
+          href={actionHref}
+          className="inline-flex items-center gap-1.5 mt-1 px-4 py-2 rounded-xl text-xs font-semibold transition-all active:scale-95"
+          style={{ background: `${accentColor}10`, color: accentColor, border: `1px solid ${accentColor}20` }}
+        >
+          {actionLabel}
+        </a>
+      )}
     </div>
   )
 }
@@ -544,8 +557,10 @@ export default function DashboardPage() {
                 <EmptyState
                   icon={CheckCircle2}
                   title="Nenhuma entrega urgente"
-                  subtitle="Sem projetos com deadline nos proximos 7 dias. Aproveite para planejar!"
+                  subtitle="Sem projetos com deadline nos proximos 7 dias."
                   accentColor="#10B981"
+                  actionLabel="Ir pro Kanban"
+                  actionHref="/kanban"
                 />
               ) : (
                 <div className="space-y-3">
@@ -627,8 +642,10 @@ export default function DashboardPage() {
                 <EmptyState
                   icon={Target}
                   title="Sem milestones proximos"
-                  subtitle="Nenhum marco previsto para os proximos 14 dias. Adicione marcos ao seu plano."
+                  subtitle="Nenhum marco previsto para os proximos 14 dias."
                   accentColor="#1A6AAA"
+                  actionLabel="Adicionar projeto"
+                  actionHref="/kanban"
                 />
               ) : (
                 <div className="relative">
@@ -709,8 +726,10 @@ export default function DashboardPage() {
               <EmptyState
                 icon={Activity}
                 title="Sem atividade recente"
-                subtitle="As atualizacoes e eventos dos projetos aparecerão aqui assim que forem registrados."
+                subtitle="As atualizacoes aparecerão aqui ao criar projetos e registrar entregas."
                 accentColor="#00BFFF"
+                actionLabel="Criar primeiro projeto"
+                actionHref="/kanban"
               />
             ) : (
               <div className="relative space-y-5">

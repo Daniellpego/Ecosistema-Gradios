@@ -8,13 +8,8 @@ export async function createServerSupabaseClient() {
   const cookieStore = await cookies()
 
   if (!supabaseUrl || !supabaseKey) {
-    console.error(
+    throw new Error(
       '[Supabase] NEXT_PUBLIC_SUPABASE_URL ou NEXT_PUBLIC_SUPABASE_ANON_KEY nao configurados.'
-    )
-    return createServerClient(
-      supabaseUrl || 'https://placeholder.supabase.co',
-      supabaseKey || 'placeholder-anon-key',
-      { cookies: { getAll() { return cookieStore.getAll() }, setAll() {} } }
     )
   }
 
