@@ -150,12 +150,13 @@ export default function CalendarioPage() {
                         isSelected && 'ring-2 ring-brand-cyan/40 bg-brand-cyan/[0.06]'
                       )}
                     >
-                      <span className={cn(
-                        'text-xs font-medium inline-flex h-6 w-6 items-center justify-center rounded-full',
-                        !day.isCurrentMonth && 'text-text-muted/30',
-                        day.isCurrentMonth && 'text-text-secondary',
-                        todayMatch && 'bg-brand-cyan text-bg-navy font-bold shadow-sm'
-                      )}
+                      <span
+                        className={cn(
+                          'text-xs font-medium inline-flex h-6 w-6 items-center justify-center rounded-full',
+                          day.isCurrentMonth && !todayMatch && 'text-text-secondary',
+                          todayMatch && 'bg-brand-cyan text-white font-bold shadow-sm'
+                        )}
+                        style={!day.isCurrentMonth ? { color: '#bcc8d1' } : undefined}
                       >
                         {day.date}
                       </span>

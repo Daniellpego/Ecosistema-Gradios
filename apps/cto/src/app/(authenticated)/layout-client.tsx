@@ -16,12 +16,12 @@ export default function AuthenticatedLayoutClient({ children }: { children: Reac
       <main className="lg:pl-[260px] transition-all duration-300" role="main">
         <header
           className="sticky top-0 z-20 backdrop-blur-md px-4 sm:px-6 h-14 flex items-center"
-          style={{ background: 'rgba(247,249,251,0.80)' }}
+          style={{ background: 'rgba(247,249,251,0.85)' }}
           role="banner"
         >
-          <div className="flex items-center justify-between w-full pl-9 lg:pl-0">
+          <div className="flex items-center justify-between w-full pl-10 lg:pl-0">
             <h2
-              className="text-sm sm:text-base font-bold bg-gradient-to-br from-[#00668a] to-[#00BFFF] bg-clip-text text-transparent tracking-tight"
+              className="text-[15px] sm:text-base font-extrabold bg-gradient-to-br from-[#00668a] to-[#00BFFF] bg-clip-text text-transparent tracking-tight"
             >
               Gradios CTO
             </h2>
