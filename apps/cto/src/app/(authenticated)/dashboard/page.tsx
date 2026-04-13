@@ -366,13 +366,15 @@ export default function DashboardPage() {
         <section className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-negative text-white text-[10px] font-bold uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                Ao Vivo
-              </span>
-              {urgentCount > 0 && (
-                <span className="text-status-negative font-semibold text-xs">
-                  {urgentCount} entrega{urgentCount > 1 ? 's' : ''} urgente{urgentCount > 1 ? 's' : ''}
+              {urgentCount > 0 ? (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-negative text-white text-[10px] font-bold uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  {urgentCount} urgente{urgentCount > 1 ? 's' : ''}
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider" style={{ background: 'rgba(16,185,129,0.1)', color: '#10B981' }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-status-positive animate-pulse" />
+                  Tudo em dia
                 </span>
               )}
             </div>

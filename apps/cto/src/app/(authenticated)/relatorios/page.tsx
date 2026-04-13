@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { usePresentations } from '@/hooks/use-relatorios'
 import { formatDate } from '@/lib/format'
+import { toast } from 'sonner'
 
 const TIPO_CONFIG: Record<string, { icon: React.ElementType; color: string; label: string }> = {
   status_report: { icon: FileText, color: '#00BFFF', label: 'Status Report' },
@@ -31,9 +32,16 @@ export default function RelatoriosPage() {
             <div className="flex items-center gap-2 mb-3"><Sparkles className="h-4 w-4 text-brand-cyan" /><h3 className="text-sm font-semibold text-text-primary">Gerar Relatorio</h3></div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
               {Object.entries(TIPO_CONFIG).map(([key, cfg]) => { const Icon = cfg.icon; return (
-                <motion.div key={key} whileHover={{ y: -2 }} className="rounded-xl p-3 sm:p-4 flex flex-col items-center gap-2 text-center cursor-pointer active:scale-[0.98]" style={{ background: `${cfg.color}08`, border: `1px solid ${cfg.color}18` }}>
+                <motion.div
+                  key={key}
+                  whileHover={{ y: -2 }}
+                  className="rounded-xl p-3 sm:p-4 flex flex-col items-center gap-2 text-center cursor-pointer active:scale-[0.98] relative overflow-hidden"
+                  style={{ background: `${cfg.color}08`, border: `1px solid ${cfg.color}18` }}
+                  onClick={() => toast.info(`Geração de ${cfg.label} será disponibilizada em breve.`)}
+                >
                   <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: `${cfg.color}15` }}><Icon className="h-5 w-5" style={{ color: cfg.color }} /></div>
                   <span className="text-xs font-semibold text-text-primary">{cfg.label}</span>
+                  <span className="text-[9px] text-text-muted uppercase tracking-wider">Em breve</span>
                 </motion.div>
               )})}
             </div>
