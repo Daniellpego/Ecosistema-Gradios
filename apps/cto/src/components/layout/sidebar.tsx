@@ -13,6 +13,7 @@ import { Logo } from '@/components/layout/logo'
 import { Separator } from '@/components/ui/separator'
 import { createClient } from '@/lib/supabase/client'
 import { useCurrentUser } from '@/hooks/use-current-user'
+import { UserAvatar } from '@/components/layout/user-avatar'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -53,9 +54,6 @@ export function Sidebar() {
     await supabase.auth.signOut()
     router.push('/login')
   }
-
-  const initials = user.nome
-    .split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase() || 'U'
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
@@ -112,12 +110,7 @@ export function Sidebar() {
       <div className="p-4 space-y-3">
         {!collapsed && (
           <div className="flex items-center gap-3 px-2">
-            <div
-              className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold"
-              style={{ background: 'linear-gradient(135deg, #00C8F0, #1A6AAA)', color: '#0A1628' }}
-            >
-              {initials}
-            </div>
+            <UserAvatar size="sm" editable />
             <div className="min-w-0">
               <p className="text-sm font-semibold text-text-primary truncate">{user.nome}</p>
               <p className="text-[11px] text-text-muted truncate">{user.email}</p>
@@ -126,13 +119,7 @@ export function Sidebar() {
         )}
         {collapsed && (
           <div className="flex justify-center">
-            <div
-              className="h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold"
-              style={{ background: 'linear-gradient(135deg, #00C8F0, #1A6AAA)', color: '#0A1628' }}
-              title={user.nome}
-            >
-              {initials}
-            </div>
+            <UserAvatar size="sm" />
           </div>
         )}
         <button
@@ -175,12 +162,17 @@ export function Sidebar() {
               dragElastic={0.1}
               onDragEnd={handleDragEnd}
               style={{ x }}
-              className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-bg-card border-r border-brand-blue-deep/40 touch-pan-y"
+              className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[280px] bg-white touch-pan-y"
+              style={{
+                paddingTop: 'env(safe-area-inset-top, 0px)',
+                paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+              }}
             >
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Fechar menu"
-                className="absolute top-3 right-3 h-11 w-11 flex items-center justify-center rounded-lg text-text-secondary active:text-text-primary active:bg-slate-100 transition-colors"
+                className="absolute right-3 h-11 w-11 flex items-center justify-center rounded-xl text-text-secondary active:text-text-primary active:bg-slate-100 transition-colors z-10"
+                style={{ top: 'calc(12px + env(safe-area-inset-top, 0px))' }}
               >
                 <X className="h-5 w-5" />
               </button>

@@ -8,6 +8,7 @@ export interface CurrentUser {
   email: string
   nome: string
   role: string
+  avatar_url: string | null
 }
 
 const FALLBACK_USER: CurrentUser = {
@@ -15,6 +16,7 @@ const FALLBACK_USER: CurrentUser = {
   email: '',
   nome: 'Usuario',
   role: 'dev',
+  avatar_url: null,
 }
 
 export function useCurrentUser() {
@@ -27,7 +29,7 @@ export function useCurrentUser() {
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('nome, role')
+        .select('nome, role, avatar_url')
         .eq('user_id', user.id)
         .single()
 
@@ -36,6 +38,7 @@ export function useCurrentUser() {
         email: user.email ?? '',
         nome: profile?.nome ?? user.email?.split('@')[0] ?? 'Usuario',
         role: profile?.role ?? 'dev',
+        avatar_url: profile?.avatar_url ?? null,
       }
     },
     staleTime: 10 * 60 * 1000,

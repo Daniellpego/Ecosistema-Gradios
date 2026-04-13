@@ -5,17 +5,13 @@ import { Menu } from 'lucide-react'
 import { Sidebar } from '@/components/layout/sidebar'
 import { BottomNav } from '@/components/layout/bottom-nav'
 import { CommandPalette } from '@/components/command-palette'
-import { useCurrentUser } from '@/hooks/use-current-user'
+import { UserAvatar } from '@/components/layout/user-avatar'
 
 export default function AuthenticatedLayoutClient({ children }: { children: ReactNode }) {
-  const { user } = useCurrentUser()
-  const initials = user.nome.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase() || 'U'
-
   return (
     <div className="min-h-screen min-h-[100dvh]" style={{ background: '#f7f9fb' }}>
       <Sidebar />
       <main className="lg:pl-[260px] transition-all duration-300" role="main">
-        {/* Header with iOS safe area padding */}
         <header
           className="sticky top-0 z-20 backdrop-blur-md px-3 sm:px-6 flex items-center"
           style={{
@@ -40,12 +36,7 @@ export default function AuthenticatedLayoutClient({ children }: { children: Reac
             </div>
             <div className="flex items-center gap-2">
               <CommandPalette />
-              <div
-                className="h-10 w-10 rounded-full flex items-center justify-center text-[11px] font-bold overflow-hidden border-2 border-brand-cyan/20"
-                style={{ background: 'linear-gradient(135deg, #00BFFF, #1A6AAA)', color: '#FFFFFF' }}
-              >
-                {initials}
-              </div>
+              <UserAvatar size="md" />
             </div>
           </div>
         </header>
