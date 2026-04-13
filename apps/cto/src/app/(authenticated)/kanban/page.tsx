@@ -105,10 +105,12 @@ function KanbanContent() {
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 mb-0.5">
-              <Layers className="h-4 w-4 sm:h-5 sm:w-5 text-brand-cyan" />
+              <div className="h-8 w-8 sm:h-auto sm:w-auto rounded-lg sm:rounded-none flex items-center justify-center sm:block" style={{ background: 'rgba(0,191,255,0.10)' }}>
+                <Layers className="h-4 w-4 sm:h-5 sm:w-5 text-brand-cyan" />
+              </div>
               <h1 className="text-lg sm:text-xl font-bold text-text-primary">Kanban</h1>
             </div>
-            <p className="text-xs sm:text-sm text-text-secondary">
+            <p className="text-[11px] sm:text-sm text-text-secondary">
               {totalProjetos === 0
                 ? 'Nenhum projeto cadastrado'
                 : visibleCount === totalProjetos
@@ -136,7 +138,7 @@ function KanbanContent() {
 
           {/* Priority filter */}
           <Select value={filterPrioridade} onValueChange={(v) => updateParams('prioridade', v)}>
-            <SelectTrigger className="w-28 sm:w-40 h-9 text-xs shrink-0" aria-label="Filtrar por prioridade">
+            <SelectTrigger className="w-32 sm:w-40 h-9 text-xs shrink-0" aria-label="Filtrar por prioridade">
               <Filter className="h-3 w-3 mr-1 text-text-muted" />
               <SelectValue placeholder="Prioridade" />
             </SelectTrigger>

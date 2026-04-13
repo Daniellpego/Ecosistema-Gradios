@@ -75,29 +75,35 @@ function KPICard({
   const color = normalizeColor(accentColor)
   return (
     <StaggerItem>
-      <div className="card-glass">
-        <div className="flex items-start justify-between mb-3">
+      <div className="card-glass relative overflow-hidden">
+        {/* Subtle accent gradient at top */}
+        <div
+          className="absolute top-0 left-0 right-0 h-1 rounded-t-[14px]"
+          style={{ background: `linear-gradient(90deg, ${color}, ${color}44)` }}
+        />
+
+        <div className="flex items-start justify-between mb-2 sm:mb-3 pt-1">
           <div
-            className="h-9 w-9 rounded-[10px] flex items-center justify-center"
+            className="h-10 w-10 sm:h-9 sm:w-9 rounded-xl sm:rounded-[10px] flex items-center justify-center"
             style={{ background: `${color}12`, border: `1px solid ${color}20` }}
           >
-            <Icon className="h-4 w-4" style={{ color }} />
+            <Icon className="h-[18px] w-[18px] sm:h-4 sm:w-4" style={{ color }} />
           </div>
           {alert && (
-            <div className="h-2 w-2 rounded-full bg-status-negative animate-pulse" />
+            <div className="h-2.5 w-2.5 rounded-full bg-status-negative animate-pulse" />
           )}
         </div>
 
-        <p className="text-xl sm:text-2xl font-bold tracking-tight mb-0.5" style={{ color }}>
+        <p className="text-2xl sm:text-2xl font-bold tracking-tight mb-0.5" style={{ color }}>
           <AnimatedNumber value={value} format={format} />
         </p>
 
-        <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary">
+        <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary">
           {label}
         </p>
 
         {subtitle && (
-          <p className="text-[10px] sm:text-xs text-text-muted mt-1">{subtitle}</p>
+          <p className="text-[10px] sm:text-xs text-text-muted mt-1 leading-relaxed">{subtitle}</p>
         )}
       </div>
     </StaggerItem>
@@ -114,12 +120,18 @@ interface QuickStatProps {
 }
 
 function QuickStat({ icon: Icon, label, value, color }: QuickStatProps) {
+  const c = normalizeColor(color)
   return (
-    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-2.5 px-2 sm:px-4 py-2.5 sm:py-2.5 bg-white/40 sm:bg-transparent">
-      <Icon className="h-4 w-4 shrink-0" style={{ color: normalizeColor(color) }} />
+    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-2.5 px-2 sm:px-4 py-3 sm:py-2.5 bg-white sm:bg-transparent">
+      <div
+        className="h-8 w-8 sm:h-auto sm:w-auto rounded-lg sm:rounded-none flex items-center justify-center sm:block"
+        style={{ background: `${c}10` }}
+      >
+        <Icon className="h-4 w-4 shrink-0" style={{ color: c }} />
+      </div>
       <div className="text-center sm:text-left min-w-0">
-        <p className="text-lg sm:text-sm font-bold text-text-primary leading-none sm:order-2">{value}</p>
-        <p className="text-[9px] sm:text-xs text-text-muted leading-none mt-0.5 whitespace-nowrap">{label}</p>
+        <p className="text-base sm:text-sm font-bold text-text-primary leading-none">{value}</p>
+        <p className="text-[10px] sm:text-xs text-text-muted leading-tight mt-0.5 whitespace-nowrap">{label}</p>
       </div>
     </div>
   )
@@ -200,14 +212,14 @@ interface SectionHeaderProps {
 
 function SectionHeader({ icon: Icon, title, iconBg, iconColor, badge }: SectionHeaderProps) {
   return (
-    <div className="flex items-center gap-2 mb-4">
+    <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
       <div
-        className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0"
+        className="h-8 w-8 sm:h-7 sm:w-7 rounded-lg flex items-center justify-center shrink-0"
         style={{ background: iconBg ?? 'rgba(0,191,255,0.12)' }}
       >
-        <Icon className="h-3.5 w-3.5" style={{ color: iconColor ?? '#00BFFF' }} />
+        <Icon className="h-4 w-4 sm:h-3.5 sm:w-3.5" style={{ color: iconColor ?? '#00BFFF' }} />
       </div>
-      <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
+      <h3 className="text-[15px] sm:text-sm font-semibold text-text-primary">{title}</h3>
       {badge && <div className="ml-auto">{badge}</div>}
     </div>
   )
@@ -249,19 +261,19 @@ function EmptyState({
   accentColor?: string
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-10 text-center gap-4">
+    <div className="flex flex-col items-center justify-center py-6 sm:py-10 text-center gap-3">
       <div
-        className="h-16 w-16 rounded-2xl flex items-center justify-center"
+        className="h-12 w-12 sm:h-16 sm:w-16 rounded-xl sm:rounded-2xl flex items-center justify-center"
         style={{
-          background: `${accentColor}08`,
-          border: `1px dashed ${accentColor}30`,
+          background: `${accentColor}0C`,
+          border: `1.5px solid ${accentColor}20`,
         }}
       >
-        <Icon className="h-6 w-6 opacity-50" style={{ color: accentColor }} />
+        <Icon className="h-5 w-5 sm:h-6 sm:w-6 opacity-60" style={{ color: accentColor }} />
       </div>
-      <div className="space-y-1">
+      <div className="space-y-0.5 sm:space-y-1">
         <p className="text-sm font-semibold text-text-secondary">{title}</p>
-        <p className="text-xs text-text-muted max-w-[200px] leading-relaxed">{subtitle}</p>
+        <p className="text-[11px] sm:text-xs text-text-muted max-w-[220px] leading-relaxed">{subtitle}</p>
       </div>
     </div>
   )
@@ -334,16 +346,16 @@ export default function DashboardPage() {
         {/* ── Header ──────────────────────────────────────────────────────── */}
         <div className="flex items-start justify-between gap-3">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="h-4 w-4 text-brand-cyan opacity-70" />
+            <div className="flex items-center gap-1.5 mb-0.5 sm:mb-1">
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-cyan opacity-70" />
               <span className="text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-widest">
                 {greeting}
               </span>
             </div>
-            <h1 className="text-lg sm:text-2xl font-bold text-text-primary tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
               Painel de Controle CTO
             </h1>
-            <p className="text-xs sm:text-sm text-text-secondary mt-0.5 hidden sm:block">
+            <p className="text-[11px] sm:text-sm text-text-secondary mt-0.5 hidden sm:block">
               Visao estrategica em tempo real dos projetos e entregas
             </p>
           </div>
@@ -393,17 +405,15 @@ export default function DashboardPage() {
                 <QuickStat icon={AlertTriangle} label="Atrasados"      value={String(kpis.atrasados)}             color="#EF4444" />
               )}
             </div>
-            {/* Mobile: grid */}
-            <div className="grid grid-cols-3 gap-px sm:hidden bg-slate-100 rounded-xl overflow-hidden">
+            {/* Mobile: horizontal scroll */}
+            <div className="flex sm:hidden gap-0 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
               <QuickStat icon={BarChart3}  label="Total"          value={String(totalProjetos)}            color="#00BFFF" />
               <QuickStat icon={Rocket}     label="Ativos"         value={String(kpis.projetosAtivos)}      color="#1A6AAA" />
               <QuickStat icon={Target}     label="Entregas"       value={String(kpis.entreguesMes)}        color="#10B981" />
               <QuickStat icon={Timer}      label="Proximas"       value={String(proximasEntregas.length)}  color="#F59E0B" />
               <QuickStat icon={Users}      label="Milestones"     value={String(proximosMilestones.length)}color="#94A3B8" />
-              {kpis.atrasados > 0 ? (
+              {kpis.atrasados > 0 && (
                 <QuickStat icon={AlertTriangle} label="Atrasados" value={String(kpis.atrasados)}          color="#EF4444" />
-              ) : (
-                <div />
               )}
             </div>
           </div>
@@ -447,7 +457,7 @@ export default function DashboardPage() {
         </StaggerContainer>
 
         {/* ── Middle row ──────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 [&>*]:min-w-0">
 
           {/* ── Status Donut ─────────────────────────────────────────────── */}
           <StaggerItem>
@@ -461,15 +471,15 @@ export default function DashboardPage() {
               />
 
               {/* Donut chart */}
-              <div className="relative mb-4">
-                <ResponsiveContainer width="100%" height={190}>
+              <div className="relative mb-3 sm:mb-4">
+                <ResponsiveContainer width="100%" height={160}>
                   <PieChart>
                     <Pie
                       data={statusDistribuicao}
                       cx="50%"
                       cy="50%"
-                      innerRadius={58}
-                      outerRadius={82}
+                      innerRadius={48}
+                      outerRadius={68}
                       dataKey="value"
                       paddingAngle={4}
                       strokeWidth={0}
@@ -489,23 +499,22 @@ export default function DashboardPage() {
                 {/* Center text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                   <span
-                    className="text-3xl font-black leading-none text-brand-cyan"
+                    className="text-2xl sm:text-3xl font-black leading-none text-brand-cyan"
                   >
                     {totalProjetos}
                   </span>
-                  <span className="text-xs text-text-muted mt-0.5 font-medium uppercase tracking-widest">
+                  <span className="text-[10px] sm:text-xs text-text-muted mt-0.5 font-medium uppercase tracking-widest">
                     projetos
                   </span>
                 </div>
               </div>
 
               {/* Legend */}
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
                 {statusDistribuicao.map((s: StatusEntry) => (
-                  <motion.div
+                  <div
                     key={s.name}
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl"
+                    className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-2 rounded-lg sm:rounded-xl"
                     style={{
                       background: `${normalizeColor(s.color)}0A`,
                       border: `1px solid ${normalizeColor(s.color)}18`,
@@ -515,14 +524,14 @@ export default function DashboardPage() {
                       className="h-2 w-2 shrink-0 fill-current"
                       style={{ color: normalizeColor(s.color) }}
                     />
-                    <span className="text-xs text-text-secondary truncate flex-1">{s.name}</span>
+                    <span className="text-[11px] sm:text-xs text-text-secondary truncate flex-1">{s.name}</span>
                     <span
-                      className="text-xs font-black ml-auto"
+                      className="text-[11px] sm:text-xs font-black ml-auto"
                       style={{ color: normalizeColor(s.color) }}
                     >
                       {s.value}
                     </span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -708,17 +717,14 @@ export default function DashboardPage() {
         <StaggerItem>
           <div className="card-glass">
 
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-4 sm:mb-5">
               <SectionHeader
                 icon={Zap}
                 title="Atividade Recente"
                 iconBg="rgba(0,191,255,0.12)"
                 iconColor="#00BFFF"
               />
-              <span
-                className="text-xs font-medium text-text-muted hidden sm:block"
-                style={{ marginTop: '-20px' }}
-              >
+              <span className="text-[11px] sm:text-xs font-medium text-text-muted hidden sm:block -mt-3">
                 Ultimas {recentUpdates?.length ?? 0} atualizacoes
               </span>
             </div>

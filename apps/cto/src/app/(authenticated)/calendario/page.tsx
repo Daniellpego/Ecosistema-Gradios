@@ -101,7 +101,7 @@ export default function CalendarioPage() {
       <div className="space-y-3 sm:space-y-5">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="section-header-icon" style={{ background: 'rgba(0,200,240,0.12)', border: '1px solid rgba(0,200,240,0.2)' }}>
+            <div className="h-8 w-8 sm:h-7 sm:w-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(0,200,240,0.12)', border: '1px solid rgba(0,200,240,0.2)' }}>
               <CalIcon className="h-4 w-4 text-brand-cyan" />
             </div>
             <div>
@@ -113,7 +113,7 @@ export default function CalendarioPage() {
             <Button variant="ghost" size="icon" onClick={() => { setCurrentDate(new Date(year, month - 1, 1)); setSelectedDay(null) }} className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg">
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <span className="text-xs sm:text-sm font-bold text-text-primary min-w-[120px] sm:min-w-[160px] text-center px-2 sm:px-3 py-1.5 rounded-lg" style={{ background: 'rgba(21,59,95,0.3)' }}>
+            <span className="text-xs sm:text-sm font-bold text-brand-blue min-w-[120px] sm:min-w-[160px] text-center px-2.5 sm:px-3 py-1.5 rounded-lg border border-brand-cyan/20" style={{ background: 'rgba(0,191,255,0.06)' }}>
               {MONTHS[month]} {year}
             </span>
             <Button variant="ghost" size="icon" onClick={() => { setCurrentDate(new Date(year, month + 1, 1)); setSelectedDay(null) }} className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg">
@@ -126,7 +126,7 @@ export default function CalendarioPage() {
           {/* Calendar grid */}
           <StaggerItem className="flex-1 min-w-0">
             <div className="card-glass !p-0 overflow-hidden">
-              <div className="grid grid-cols-7 border-b border-brand-blue-deep/20">
+              <div className="grid grid-cols-7 border-b border-slate-200/60">
                 {WEEKDAYS.map((day) => (
                   <div key={day} className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-text-muted py-2 sm:py-3">
                     {day.slice(0, 1)}<span className="hidden sm:inline">{day.slice(1)}</span>
@@ -144,8 +144,8 @@ export default function CalendarioPage() {
                       key={i}
                       onClick={() => day.isCurrentMonth && setSelectedDay(day.date === selectedDay ? null : day.date)}
                       className={cn(
-                        'min-h-[44px] sm:min-h-[90px] border-b border-r border-brand-blue-deep/12 p-0.5 sm:p-1.5 text-left transition-all',
-                        day.isCurrentMonth ? 'hover:bg-brand-cyan/[0.04] cursor-pointer' : 'bg-bg-navy/40 cursor-default',
+                        'min-h-[44px] sm:min-h-[90px] border-b border-r border-slate-100 p-0.5 sm:p-1.5 text-left transition-all',
+                        day.isCurrentMonth ? 'hover:bg-brand-cyan/[0.04] cursor-pointer bg-white' : 'bg-slate-50/80 cursor-default',
                         todayMatch && 'bg-brand-cyan/[0.04]',
                         isSelected && 'ring-2 ring-brand-cyan/40 bg-brand-cyan/[0.06]'
                       )}
@@ -172,9 +172,9 @@ export default function CalendarioPage() {
                         ))}
                         {/* Mobile: just show dots */}
                         {dayEvents.length > 0 && (
-                          <div className="flex gap-0.5 sm:hidden justify-center">
+                          <div className="flex gap-0.5 sm:hidden justify-center mt-0.5">
                             {dayEvents.slice(0, 3).map((evt) => (
-                              <div key={evt.id} className="h-1 w-1 rounded-full" style={{ background: evt.color }} />
+                              <div key={evt.id} className="h-1.5 w-1.5 rounded-full" style={{ background: evt.color }} />
                             ))}
                           </div>
                         )}

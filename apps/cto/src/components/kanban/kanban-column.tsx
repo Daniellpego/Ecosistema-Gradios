@@ -24,9 +24,9 @@ export function KanbanColumn({ id, label, color, bgColor, projetos }: KanbanColu
       <SortableContext items={projetos.map((p) => p.id)} strategy={verticalListSortingStrategy}>
         <div className="space-y-2 min-h-[120px]">
           {projetos.length === 0 ? (
-            <div className={cn('flex flex-col items-center justify-center min-h-[120px] rounded-xl border-2 border-dashed', isOver ? 'border-brand-cyan/50 bg-brand-cyan/5' : 'border-slate-200')}>
-              <LayoutGrid className="h-6 w-6 mb-2" style={{ color: isOver ? color : '#64748B' }} />
-              <span className="text-xs text-text-muted">{isOver ? 'Soltar aqui' : 'Nenhum projeto'}</span>
+            <div className={cn('flex flex-col items-center justify-center min-h-[100px] rounded-xl border border-dashed transition-colors', isOver ? 'border-brand-cyan/50 bg-brand-cyan/5' : 'border-slate-200/80 bg-white/40')}>
+              <LayoutGrid className="h-5 w-5 mb-1.5 opacity-40" style={{ color: isOver ? color : '#94A3B8' }} />
+              <span className="text-[11px] text-text-muted">{isOver ? 'Soltar aqui' : 'Nenhum projeto'}</span>
             </div>
           ) : projetos.map((p) => <KanbanCard key={p.id} projeto={p} />)}
         </div>
