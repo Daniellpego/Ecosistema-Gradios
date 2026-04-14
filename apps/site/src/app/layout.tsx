@@ -9,6 +9,8 @@ import { Footer } from "@/components/Footer";
 const ScrollProgress = dynamic(() => import("@/components/ScrollProgress").then(m => m.ScrollProgress), { ssr: false });
 const SmoothScrollProvider = dynamic(() => import("@/providers/smooth-scroll").then(m => m.SmoothScrollProvider), { ssr: false });
 const WhatsAppFloat = dynamic(() => import("@/components/WhatsAppFloat").then(m => m.WhatsAppFloat), { ssr: false });
+const StickyCtaBar = dynamic(() => import("@/components/StickyCtaBar").then(m => m.StickyCtaBar), { ssr: false });
+const CookieBanner = dynamic(() => import("@/components/CookieBanner").then(m => m.CookieBanner), { ssr: false });
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,59 +29,14 @@ export const metadata: Metadata = {
   title: 'Gradios | Automação de Processos B2B e Software Sob Medida',
   description: 'Automação de processos B2B e software sob medida. Elimine 40h/mês de retrabalho manual com integrações, dashboards e IA. Diagnóstico gratuito.',
   keywords: [
-    "automação b2b", "automação de processos", "automação de processos Londrina", "desenvolvimento de software sob medida", "software sob medida Londrina",
-    "integração de sistemas", "dashboards empresariais", "ia para negócios", "software empresarial", "automação Londrina", "empresa de software Londrina",
-    "automação empresarial Paraná", "sistema personalizado para empresa",
-    // Serviços gerais + Londrina
-    "criação de site Londrina", "criação de sistema Londrina", "criação de software Londrina", "criação de painel Londrina",
-    "criação de dashboard Londrina", "desenvolvimento de aplicativo Londrina", "empresa de tecnologia Londrina", "empresa de IA Londrina",
-    "inteligência artificial para empresas Londrina", "dashboard empresarial Londrina", "painel de gestão Londrina",
-    "site institucional Londrina", "landing page Londrina", "sistema de gestão Londrina",
-    // Saúde
-    "automação clínica Londrina", "sistema para clínica Londrina", "site para clínica Londrina", "dashboard clínica Londrina",
-    "software clínica Londrina", "IA para clínica Londrina", "agendamento automático clínica Londrina",
-    // Contabilidade
-    "automação contabilidade Londrina", "sistema contábil Londrina", "site escritório contabilidade Londrina",
-    "dashboard contábil Londrina", "software contabilidade Londrina", "IA contabilidade Londrina",
-    // Imobiliárias
-    "automação imobiliária Londrina", "sistema imobiliária Londrina", "site imobiliária Londrina",
-    "dashboard imobiliário Londrina", "software imobiliária Londrina", "CRM imobiliário Londrina",
-    // Indústria
-    "automação indústria Londrina", "sistema industrial Londrina", "dashboard industrial Londrina",
-    "software indústria Londrina", "painel de produção Londrina", "IA para indústria Londrina",
-    // Varejo
-    "automação varejo Londrina", "sistema para loja Londrina", "site para loja Londrina",
-    "dashboard varejo Londrina", "software varejo Londrina",
-    // Atacado e Distribuidoras
-    "automação atacado Londrina", "sistema distribuidora Londrina", "dashboard distribuidora Londrina",
-    "software distribuidora Londrina", "catálogo digital Londrina",
-    // Logística
-    "automação logística Londrina", "sistema transportadora Londrina", "dashboard logística Londrina",
-    "software logística Londrina", "painel de frotas Londrina",
-    // Agronegócio
-    "automação agronegócio Londrina", "sistema agro Londrina", "dashboard agronegócio Londrina",
-    "software agro Londrina", "IA agronegócio Londrina",
-    // Restaurantes
-    "automação restaurante Londrina", "sistema restaurante Londrina", "site restaurante Londrina",
-    "cardápio digital Londrina", "software restaurante Londrina",
-    // Academias
-    "automação academia Londrina", "sistema academia Londrina", "site academia Londrina",
-    "dashboard academia Londrina", "software academia Londrina",
-    // Advocacia
-    "automação escritório advocacia Londrina", "sistema jurídico Londrina", "site escritório advocacia Londrina",
-    "dashboard jurídico Londrina", "software advocacia Londrina",
-    // Construtoras
-    "automação construtora Londrina", "sistema construtora Londrina", "dashboard obra Londrina",
-    "software construtora Londrina", "painel de obras Londrina",
-    // Oficinas
-    "automação oficina mecânica Londrina", "sistema oficina Londrina", "site oficina Londrina",
-    "software oficina Londrina",
-    // Educação
-    "automação escola Londrina", "sistema educação Londrina", "site escola Londrina",
-    "dashboard escolar Londrina", "software escola Londrina",
-    // Barbearias e Salões
-    "automação salão beleza Londrina", "automação barbearia Londrina", "sistema barbearia Londrina",
-    "site barbearia Londrina", "agendamento online barbearia Londrina",
+    "automação de processos B2B",
+    "software sob medida",
+    "integração ERP CRM",
+    "automação Londrina",
+    "dashboard empresarial",
+    "n8n make automação",
+    "desenvolvimento sob medida",
+    "IA aplicada ao negócio",
   ],
   authors: [{ name: "Gradios Soluções em Tecnologia" }],
   metadataBase: new URL("https://gradios.co"),
@@ -466,12 +423,14 @@ fbq('track', 'PageView');
             Pular para o conteúdo principal
           </a>
           <ScrollProgress />
+          <StickyCtaBar />
           <Navbar />
           <main id="conteudo-principal" className="min-h-screen pt-20">
             {children}
           </main>
           <Footer />
           <WhatsAppFloat />
+          <CookieBanner />
         </SmoothScrollProvider>
       </body>
     </html>
