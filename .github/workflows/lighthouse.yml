@@ -1,13 +1,24 @@
 name: Lighthouse CI
 
-# Roda Lighthouse contra o preview da Vercel em todo PR pra main.
-# Não precisa de URL hardcoded: wait-for-vercel-preview descobre via
-# deployment_status events que a integração Vercel <> GitHub emite.
-# Requer apenas GITHUB_TOKEN (nativo do Actions) — nenhum secret extra.
+# Auditoria Lighthouse no preview Vercel do site em todo PR pra main.
+#
+# Monorepo: o repo tem 4 projetos Vercel (site-principal, painel-cfo,
+# painel-crm, painel-cto). Este workflow audita APENAS site-principal.
+#
+# Estratégia: em vez de confiar em `wait-for-vercel-preview` (que pega o
+# primeiro deployment_status e não distingue projetos), parseamos o
+# comentário que o vercel[bot] posta no PR — ele tem uma linha por projeto
+# com status e URL, então extraímos determinísticamente a URL de
+# site-principal quando estiver "Ready".
 
 on:
   pull_request:
     branches: [main]
+    # Só roda quando o site (ou o próprio workflow) muda — evita gastar
+    # minutes auditando PRs de painel-*.
+    paths:
+      - 'apps/site/**'
+      - '.github/workflows/lighthouse.yml'
 
 concurrency:
   group: lighthouse-${{ github.ref }}
@@ -20,19 +31,53 @@ jobs:
     permissions:
       pull-requests: write
       issues: write
-      deployments: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Aguardar preview da Vercel
+      - name: Resolver URL do preview site-principal
         id: vercel
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.2
+        uses: actions/github-script@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 600
-          check_interval: 15
-          environment: Preview
+          script: |
+            const project = 'site-principal';
+            const timeoutMs = 10 * 60 * 1000;
+            const intervalMs = 15 * 1000;
+            const deadline = Date.now() + timeoutMs;
+
+            const findRow = (body) => body.split('\n').find(l =>
+              l.includes(`[${project}]`) && l.includes('[Preview](')
+            );
+            const extractUrl = (row) => {
+              const m = row.match(/\[Preview\]\((https:\/\/[^\s)]+)\)/);
+              return m ? m[1] : null;
+            };
+
+            while (Date.now() < deadline) {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                per_page: 100,
+              });
+              const vercelComment = comments.find(c => c.user?.login === 'vercel[bot]');
+              if (vercelComment?.body) {
+                const row = findRow(vercelComment.body);
+                if (row && row.includes('[Ready](')) {
+                  const url = extractUrl(row);
+                  if (url) {
+                    core.setOutput('url', url);
+                    core.info(`✔ ${project} Ready → ${url}`);
+                    return;
+                  }
+                }
+                core.info(`… ${project} ainda não está Ready — aguardando ${intervalMs/1000}s`);
+              } else {
+                core.info(`… comentário do vercel[bot] ainda não postado — aguardando ${intervalMs/1000}s`);
+              }
+              await new Promise(r => setTimeout(r, intervalMs));
+            }
+            core.setFailed(`Timeout (${timeoutMs/1000}s) aguardando preview Ready de ${project}.`);
 
       - name: Rodar Lighthouse
         id: lighthouse
@@ -44,6 +89,7 @@ jobs:
           runs: 1
 
       - name: Comentar scores no PR
+        if: always() && steps.lighthouse.outcome == 'success'
         uses: actions/github-script@v7
         env:
           MANIFEST: ${{ steps.lighthouse.outputs.manifest }}
@@ -64,7 +110,7 @@ jobs:
             const marker = '<!-- lighthouse-ci-comment -->';
             const body = [
               marker,
-              '## 🚦 Lighthouse — Preview Vercel',
+              '## 🚦 Lighthouse — Preview Vercel (site-principal)',
               '',
               `**URL auditada:** ${previewUrl}`,
               '',
