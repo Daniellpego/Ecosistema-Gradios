@@ -16,6 +16,7 @@ import {
 } from "./_lib/data";
 import IntroPhase from "./_components/intro-phase";
 import QuizPhase from "./_components/quiz-phase";
+import EmailGatePhase from "./_components/email-gate-phase";
 import CapturePhase from "./_components/capture-phase";
 import LoadingPhase from "./_components/loading-phase";
 import ResultPhase from "./_components/result-phase";
@@ -49,6 +50,8 @@ export default function DiagnosticoPage() {
   const [aiText, setAiText] = useState("");
   const [score, setScore] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // T1 — email capturado no gate após Q6. Marca se o gate foi exibido (com ou sem email).
+  const [emailGatePassed, setEmailGatePassed] = useState(false);
   const streamRef = useRef<boolean>(false);
   const leadRowIdRef = useRef<string | null>(null);
   const diagSavedRef = useRef<boolean>(false);
@@ -100,13 +103,37 @@ export default function DiagnosticoPage() {
     });
   }
 
+  // Índice da Q6 (sistemas) = 5 no array 0-based. Gate aparece logo após.
+  const EMAIL_GATE_AFTER_Q = 5;
+
   function nextQuestion() {
+    // T1 — após Q6, injeta o gate de email (1x por sessão)
+    if (currentQ === EMAIL_GATE_AFTER_Q && !emailGatePassed) {
+      setPhase("email-gate");
+      trackEvent("email_gate_shown");
+      return;
+    }
     if (currentQ < QUESTIONS.length - 1) {
       setCurrentQ((p) => p + 1);
     } else {
       setPhase("capture");
       trackEvent("quiz_completed", { questions_answered: Object.keys(answers).length });
     }
+  }
+
+  function handleEmailGateSubmit(email: string) {
+    setLead((p) => ({ ...p, email }));
+    setEmailGatePassed(true);
+    setPhase("quiz");
+    setCurrentQ((p) => Math.max(p, EMAIL_GATE_AFTER_Q) + 1);
+    trackEvent("email_gate_submitted", { provided: true });
+  }
+
+  function handleEmailGateSkip() {
+    setEmailGatePassed(true);
+    setPhase("quiz");
+    setCurrentQ((p) => Math.max(p, EMAIL_GATE_AFTER_Q) + 1);
+    trackEvent("email_gate_submitted", { provided: false });
   }
 
   function prevQuestion() {
@@ -450,6 +477,14 @@ Nos próximos dias nossa equipe vai entrar em contato para uma conversa rápida 
             onMultiToggle={handleMultiToggle}
             onNext={nextQuestion}
             onPrev={prevQuestion}
+          />
+        )}
+
+        {phase === "email-gate" && (
+          <EmailGatePhase
+            initialEmail={lead.email}
+            onSubmit={handleEmailGateSubmit}
+            onSkip={handleEmailGateSkip}
           />
         )}
 

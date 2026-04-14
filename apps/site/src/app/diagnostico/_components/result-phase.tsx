@@ -89,7 +89,10 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
   );
 
   return (
-    <div className="result-container print-area">
+    <section
+      className="result-container print-area"
+      aria-label="Diagnóstico gerado pela Gradios"
+    >
       {/* ── HERO ── */}
       <div className="result-hero animate-fade-slide-up" style={{ animationDelay: "0s" }}>
         <div className="absolute inset-0 overflow-hidden">
@@ -268,7 +271,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
         </div>
 
         {aiText ? (
-          <div className="space-y-3">
+          <div className="space-y-3" aria-live="polite" aria-atomic="false">
             {aiBlocks.length > 1 ? (
               aiBlocks.map((block, i) => {
                 const isClosing = i === aiBlocks.length - 1;
@@ -468,7 +471,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
 
       {/* ── WHATSAPP PDF OPT-IN (post-result, low friction) ── */}
       <WhatsAppPdfOptIn />
-    </div>
+    </section>
   );
 }
 

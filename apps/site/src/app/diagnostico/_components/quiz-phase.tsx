@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   QUESTIONS,
   CATEGORY_TRANSITIONS,
-  calculatePartialScore,
   type CategoryTransition,
 } from "../_lib/data";
 
@@ -63,7 +62,6 @@ export default function QuizPhase({
   const [showTransition, setShowTransition] = useState(false);
   const [activeTransition, setActiveTransition] = useState<CategoryTransition | null>(null);
   const [reaction, setReaction] = useState<string | null>(null);
-  const [phaseKey, setPhaseKey] = useState(0);
   const [autoAdvancing, setAutoAdvancing] = useState(false);
   const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -89,7 +87,10 @@ export default function QuizPhase({
   useEffect(() => {
     setReaction(null);
     setAutoAdvancing(false);
-    setPhaseKey((k) => k + 1);
+    // T7b — scroll to top on question change (smooth)
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
     return () => {
       if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
     };
@@ -139,7 +140,6 @@ export default function QuizPhase({
   }, [currentQ, q, answers]);
 
   const canAdvance = (answers[q.id]?.length ?? 0) > 0;
-  const partialScore = calculatePartialScore(answers);
   const progress = ((currentQ + 1) / QUESTIONS.length) * 100;
   const answeredCount = Object.keys(answers).length;
   const useGrid = GRID_QUESTIONS.has(q.id);
@@ -191,7 +191,7 @@ export default function QuizPhase({
      MAIN RENDER — DARK MODE
      ═══════════════════════════════════════════════════════════ */
   return (
-    <div key={phaseKey} className="animate-fade-slide-up">
+    <div style={{ paddingBottom: "env(safe-area-inset-bottom, 24px)" }}>
       {/* Progress bar */}
       <div className="mb-6">
         <div className="flex justify-between items-center text-xs mb-2">
@@ -203,20 +203,7 @@ export default function QuizPhase({
               {currentQ + 1}/{QUESTIONS.length}
             </span>
           </div>
-
-          {answeredCount >= 2 && (
-            <div className="flex items-center gap-1.5">
-              <div className="w-16 h-1.5 bg-[#1E293B] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-[#2546BD] to-[#00BFFF] rounded-full transition-all duration-700"
-                  style={{ width: `${Math.min(partialScore, 100)}%` }}
-                />
-              </div>
-              <span className="text-[#64748B] font-medium text-[10px]">
-                {partialScore}
-              </span>
-            </div>
-          )}
+          {/* T5 — score parcial removido pra não induzir respostas estratégicas. */}
         </div>
 
         <div className="w-full h-1.5 bg-[#1E293B] rounded-full overflow-hidden">
@@ -227,95 +214,128 @@ export default function QuizPhase({
         </div>
       </div>
 
-      {/* Question */}
-      <h2
-        className="text-2xl sm:text-3xl font-bold text-white"
-        style={{ letterSpacing: "-0.02em" }}
-      >
-        {q.pergunta}
-      </h2>
-      <p className="mt-2 text-[#94A3B8]">{q.sub}</p>
+      {/* T8a — AnimatePresence entre perguntas */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentQ}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* Question */}
+          <h2
+            className="text-2xl sm:text-3xl font-bold text-white"
+            style={{ letterSpacing: "-0.02em" }}
+          >
+            {q.pergunta}
+          </h2>
+          <p className="mt-2 text-[#94A3B8]">{q.sub}</p>
 
-      {q.tipo === "multi" && (
-        <p className="mt-1 text-xs text-[#00BFFF] font-medium">
-          Selecione uma ou mais opções · <span className="text-[#64748B]">Enter para avançar</span>
-        </p>
-      )}
+          {q.tipo === "multi" && (
+            <p className="mt-1 text-xs text-[#00BFFF] font-medium">
+              Selecione uma ou mais opções · <span className="text-[#64748B]">Enter para avançar</span>
+            </p>
+          )}
 
-      {/* Keyboard hint */}
-      <p className="mt-1 text-[10px] text-[#475569] hidden sm:block">
-        Teclas A-{KEY_LABELS[q.opcoes.length - 1]} para selecionar
-      </p>
+          {/* Keyboard hint */}
+          <p className="mt-1 text-[10px] text-[#475569] hidden sm:block">
+            Teclas A-{KEY_LABELS[q.opcoes.length - 1]} para selecionar
+          </p>
 
-      {/* Options — DARK MODE */}
-      <div className={`mt-5 ${
-        useGrid ? "grid grid-cols-2 gap-2.5" : "flex flex-col gap-2.5"
-      }`}>
-        {q.opcoes.map((opt, idx) => {
-          const selected = answers[q.id]?.includes(idx);
-          const icon = icons?.[idx];
+          {/* Options — DARK MODE */}
+          <div
+            className={`mt-5 ${
+              useGrid ? "grid grid-cols-2 gap-2.5" : "flex flex-col gap-2.5"
+            }`}
+          >
+            {q.opcoes.map((opt, idx) => {
+              const selected = answers[q.id]?.includes(idx);
+              const icon = icons?.[idx];
 
-          return (
-            <motion.button
-              key={idx}
-              onClick={() => handleSelect(idx)}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              className={`quiz-option w-full text-left rounded-card transition-all duration-200 text-base group min-h-[56px] ${
-                useGrid ? "px-4 py-4" : "px-5 py-4"
-              } ${
-                selected
-                  ? "border border-[#00BFFF] bg-[#00BFFF]/10 text-[#00BFFF] font-medium shadow-sm shadow-[#00BFFF]/10"
-                  : "bg-[#0F1D32] border border-[#1E293B] hover:border-[#00BFFF]/30 hover:bg-[#131F35] text-[#CBD5E1]"
-              }`}
-              style={{ animationDelay: `${idx * 0.04}s` }}
-            >
-              <span className="flex items-center gap-3">
-                {/* Keyboard label */}
-                <span className={`hidden sm:flex flex-shrink-0 w-6 h-6 rounded-md text-[10px] font-bold items-center justify-center transition-all ${
-                  selected
-                    ? "bg-[#00BFFF] text-white"
-                    : "bg-[#1E293B] text-[#64748B] group-hover:bg-[#00BFFF]/10 group-hover:text-[#00BFFF]"
-                }`}>
-                  {KEY_LABELS[idx]}
-                </span>
-
-                {/* Icon */}
-                {icon && (
-                  <svg
-                    className={`flex-shrink-0 w-5 h-5 transition-colors ${
-                      selected ? "text-[#00BFFF]" : "text-[#475569] group-hover:text-[#00BFFF]/60"
-                    }`}
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-                  >
-                    <path d={icon} />
-                  </svg>
-                )}
-
-                {/* Radio/Checkbox mobile */}
-                <span
-                  className={`sm:hidden flex-shrink-0 w-5 h-5 ${
-                    q.tipo === "multi" ? "rounded-md" : "rounded-full"
-                  } border-2 flex items-center justify-center transition-all ${
+              return (
+                <motion.button
+                  key={idx}
+                  onClick={() => handleSelect(idx)}
+                  whileTap={{ scale: 0.97 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={selected ? { opacity: 1, y: 0, scale: [1, 1.02, 1] } : { opacity: 1, y: 0 }}
+                  transition={{
+                    delay: idx * 0.04,
+                    duration: selected ? 0.25 : 0.3,
+                    type: selected ? "tween" : "spring",
+                    stiffness: 400,
+                    damping: 17,
+                  }}
+                  className={`quiz-option w-full text-left rounded-card transition-colors duration-200 text-base group ${
+                    useGrid ? "min-h-[80px] px-4 py-4" : "min-h-[60px] px-5 py-4"
+                  } ${
                     selected
-                      ? "border-[#00BFFF] bg-[#00BFFF]"
-                      : "border-[#334155] group-hover:border-[#00BFFF]/40"
+                      ? "border border-[#00BFFF] bg-[#00BFFF]/10 text-[#00BFFF] font-medium shadow-sm shadow-[#00BFFF]/10"
+                      : "bg-[#0F1D32] border border-[#1E293B] hover:border-[#00BFFF]/30 hover:bg-[#131F35] text-[#CBD5E1]"
                   }`}
                 >
-                  {selected && (
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </span>
+                  <span className="flex items-center gap-3">
+                    {/* Keyboard label */}
+                    <span
+                      className={`hidden sm:flex flex-shrink-0 w-6 h-6 rounded-md text-[10px] font-bold items-center justify-center transition-all ${
+                        selected
+                          ? "bg-[#00BFFF] text-white"
+                          : "bg-[#1E293B] text-[#64748B] group-hover:bg-[#00BFFF]/10 group-hover:text-[#00BFFF]"
+                      }`}
+                    >
+                      {KEY_LABELS[idx]}
+                    </span>
 
-                <span className={useGrid ? "text-sm leading-snug" : ""}>{opt}</span>
-              </span>
-            </motion.button>
-          );
-        })}
-      </div>
+                    {/* Icon */}
+                    {icon && (
+                      <svg
+                        className={`flex-shrink-0 w-5 h-5 transition-colors ${
+                          selected ? "text-[#00BFFF]" : "text-[#475569] group-hover:text-[#00BFFF]/60"
+                        }`}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d={icon} />
+                      </svg>
+                    )}
+
+                    {/* Radio/Checkbox mobile */}
+                    <span
+                      className={`sm:hidden flex-shrink-0 w-5 h-5 ${
+                        q.tipo === "multi" ? "rounded-md" : "rounded-full"
+                      } border-2 flex items-center justify-center transition-all ${
+                        selected
+                          ? "border-[#00BFFF] bg-[#00BFFF]"
+                          : "border-[#334155] group-hover:border-[#00BFFF]/40"
+                      }`}
+                    >
+                      {selected && (
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      )}
+                    </span>
+
+                    <span className={useGrid ? "text-sm leading-snug" : ""}>{opt}</span>
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
+
+          {/* T6 — helper de mínimo 1 seleção em multi */}
+          {q.tipo === "multi" && !canAdvance && (
+            <p className="text-xs text-[#475569] text-center mt-2">
+              Selecione ao menos uma opção para continuar
+            </p>
+          )}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Contextual reaction */}
       <AnimatePresence>
@@ -370,7 +390,7 @@ export default function QuizPhase({
         <button
           onClick={onPrev}
           disabled={currentQ === 0}
-          className="text-sm font-medium text-[#64748B] hover:text-[#00BFFF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="py-3 px-4 text-sm font-medium text-[#64748B] hover:text-[#00BFFF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           ← Voltar
         </button>

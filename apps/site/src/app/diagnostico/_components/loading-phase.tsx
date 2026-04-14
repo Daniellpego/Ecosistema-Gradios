@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 interface LoadingPhaseProps {
   empresa: string;
   city: string;
@@ -67,11 +69,16 @@ export default function LoadingPhase({ empresa, city, loadingStep, gargalosCount
                 }`}
               >
                 {loadingStep > idx ? (
-                  <div className="w-7 h-7 rounded-full bg-[#10B981] flex items-center justify-center flex-shrink-0">
+                  <motion.div
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                    className="w-7 h-7 rounded-full bg-[#10B981] flex items-center justify-center flex-shrink-0"
+                  >
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                       <path d="M3 7L6 10L11 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                  </div>
+                  </motion.div>
                 ) : loadingStep === idx ? (
                   <div className="w-7 h-7 rounded-full border-2 border-[#00BFFF] border-t-transparent animate-spin flex-shrink-0" />
                 ) : (

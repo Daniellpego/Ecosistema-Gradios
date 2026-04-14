@@ -2,7 +2,7 @@
    TYPES
    ════════════════════════════════════════════════════════════ */
 
-export type Phase = "intro" | "quiz" | "capture" | "loading" | "result";
+export type Phase = "intro" | "quiz" | "email-gate" | "capture" | "loading" | "result";
 
 export interface Question {
   id: string;
@@ -53,6 +53,7 @@ export const QUESTIONS: Question[] = [
     reactions: {
       0: "Quem decide está respondendo. O diagnóstico vai direto ao ponto.",
       1: "Perfil decisor. Vamos focar em números e impacto financeiro.",
+      4: "Diagnóstico completo. Na tela de resultado, você vai receber um resumo executivo para apresentar ao decisor da empresa.",
     },
   },
   {
@@ -291,8 +292,8 @@ export function calculateScore(answers: Record<string, number[]>): number {
 
   let score = Math.min(100, Math.round((raw / 127) * 100));
 
-  // Soft penalty: Analista/Operação → -15 pontos (mas ainda pode atingir Tier A com urgência alta)
-  if (answers.cargo?.[0] === 4) score = Math.max(0, score - 15);
+  // Analista/Operação recebe roteamento de champion no resultado (ResultPhase)
+  // em vez de penalização invisível no score. Removida a penalidade de -15 pts.
   // Urgência imediata garante mínimo Tier B
   if (answers.urgencia?.[0] === 4) score = Math.max(score, 55);
   // Budget alto + urgência alta garante Tier A (microempreendedor com dor real = cliente válido)
