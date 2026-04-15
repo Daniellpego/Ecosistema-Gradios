@@ -50,6 +50,10 @@ const nextConfig: NextConfig = {
         { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         {
           key: 'Content-Security-Policy',
+          // Next.js requires 'unsafe-inline' for its runtime CSS-in-JS and
+          // 'unsafe-eval' for its dev/HMR tooling (stripped in production builds
+          // by Webpack, but kept here for parity across envs). Tighten with
+          // nonces once the app adopts Next.js 15 strict-mode CSP support.
           value: [
             "default-src 'self'",
             "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
