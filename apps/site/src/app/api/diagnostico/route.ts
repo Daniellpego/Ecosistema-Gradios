@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { QUESTIONS, SECTOR_CONTEXT, getTier } from "../diagnostico/_lib/data";
+import { QUESTIONS, SECTOR_CONTEXT, getTier } from "../../diagnostico/_lib/data";
 
 export const runtime = "edge";
 

@@ -212,7 +212,7 @@ export default function DiagnosticoPage() {
   /* ── AI streaming call ── */
 
   const startAiStream = useCallback(
-    async (finalScore: number) => {
+    async (finalScore: number, honeypot: string) => {
       if (streamRef.current) return;
       streamRef.current = true;
 
@@ -360,7 +360,7 @@ export default function DiagnosticoPage() {
     setPhase("loading");
 
     // Start AI stream in parallel
-    startAiStream(finalScore);
+    startAiStream(finalScore, honeypot);
 
     // Animated loading steps
     const stepTimings = [800, 1100, 900, 1000, 1200];
