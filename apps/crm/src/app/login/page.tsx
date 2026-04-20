@@ -60,7 +60,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg-navy px-4">
+    <main className="min-h-screen flex items-center justify-center bg-bg-navy px-4">
       <div className="w-full max-w-sm space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center gap-4">
@@ -75,7 +75,7 @@ export default function LoginPage() {
           </div>
           <div className="text-center">
             <h1 className="text-xl font-bold text-text-primary">Gradios</h1>
-            <p className="text-xs font-semibold text-brand-cyan tracking-widest uppercase mt-1">
+            <p className="text-xs font-semibold text-brand-blue tracking-widest uppercase mt-1">
               Painel CRM
             </p>
           </div>
@@ -115,9 +115,11 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-dark hover:text-text-secondary transition-colors"
+                  aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                  aria-pressed={showPassword}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 p-2 rounded text-text-dark hover:text-text-secondary transition-colors"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
                 </button>
               </div>
             </div>
@@ -151,7 +153,7 @@ export default function LoginPage() {
           </button>
         </form>
       </div>
-    </div>
+    </main>
   )
 }
 
