@@ -1,9 +1,18 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
+import { Poppins } from 'next/font/google'
 import { QueryProvider } from '@/providers/query-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { Toaster } from 'sonner'
 import './globals.css'
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-poppins',
+  adjustFontFallback: true,
+})
 
 export const metadata: Metadata = {
   title: 'Gradios — CFO',
@@ -39,19 +48,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={poppins.variable}>
       <head>
         {/* iOS Splash Screens */}
         <link rel="apple-touch-startup-image" href="/splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
         <link rel="apple-touch-startup-image" href="/splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)" />
         <link rel="apple-touch-startup-image" href="/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
         <link rel="apple-touch-startup-image" href="/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
         {supabaseUrl && (
           <>
             <link rel="preconnect" href={supabaseUrl} />
@@ -59,7 +62,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </>
         )}
       </head>
-      <body>
+      <body className="font-sans">
         <QueryProvider>
           <TooltipProvider delayDuration={200}>
             {children}

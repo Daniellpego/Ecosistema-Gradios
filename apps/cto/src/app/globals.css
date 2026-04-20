@@ -13,7 +13,7 @@
   }
 
   body {
-    @apply text-text-primary font-inter antialiased;
+    @apply text-text-primary font-sans antialiased;
     background: #f7f9fb;
     /* Prevent overscroll bounce showing white behind */
     overscroll-behavior: none;
