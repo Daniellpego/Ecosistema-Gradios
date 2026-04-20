@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useState, useMemo, useEffect } from 'react'
-import { Receipt, Plus, DollarSign, TrendingDown, TrendingUp, Megaphone, Target } from 'lucide-react'
+import { Plus, DollarSign, TrendingDown, TrendingUp, Megaphone, Target } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { createClient } from '@/lib/supabase/client'
 import { usePeriod } from '@/providers/period-provider'

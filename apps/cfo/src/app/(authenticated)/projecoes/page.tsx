@@ -18,7 +18,6 @@ import {
   Trash2,
 } from 'lucide-react'
 import {
-  LineChart,
   Line,
   AreaChart,
   Area,
@@ -37,7 +36,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formatCurrency } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import { PageTransition } from '@/components/motion'
-import { EmptyState } from '@/components/ui/empty-state'
 import type { Projecao } from '@/types/database'
 
 const SCENARIO_CONFIG: Record<string, { emoji: string; color: string; chartColor: string }> = {

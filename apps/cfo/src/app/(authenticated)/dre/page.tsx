@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useMemo, useEffect } from 'react'
-import { FileText, TrendingUp, TrendingDown, Activity } from 'lucide-react'
+import { TrendingUp, TrendingDown, Activity } from 'lucide-react'
 import { useDRE, type DRELine } from '@/hooks/use-dre'
 import { useTax } from '@/providers/tax-provider'
 import { Skeleton } from '@/components/ui/skeleton'

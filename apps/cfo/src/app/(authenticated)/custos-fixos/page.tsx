@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useState, useMemo, useEffect } from 'react'
-import { Wallet, Plus, DollarSign, Calendar, Percent, Flame, Users, Save } from 'lucide-react'
+import { Plus, DollarSign, Calendar, Percent, Flame, Users, Save } from 'lucide-react'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import { useCustosFixos } from '@/hooks/use-custos-fixos'
 import { useReceitas } from '@/hooks/use-receitas'

@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { GraduationCap, HelpCircle, TrendingUp, DollarSign, BarChart3, Target, AlertTriangle, Calculator, Shield, Lightbulb, Send, Loader2, Bot, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react'
+import { HelpCircle, TrendingUp, DollarSign, BarChart3, Target, AlertTriangle, Calculator, Shield, Lightbulb, Send, Loader2, Bot, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useGroqAnalysis } from '@/hooks/use-groq'

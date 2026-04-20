@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useState, useEffect } from 'react'
-import { CalendarRange, TrendingUp, TrendingDown, DollarSign, ChevronDown, ChevronUp } from 'lucide-react'
+import { TrendingUp, TrendingDown, DollarSign, ChevronDown, ChevronUp } from 'lucide-react'
 import { useBalanco } from '@/hooks/use-balanco'
 import { usePeriod } from '@/providers/period-provider'
 import { useTax } from '@/providers/tax-provider'

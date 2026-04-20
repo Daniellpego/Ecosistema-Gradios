@@ -43,3 +43,6 @@ supabase/.temp/
 **/public/swe-worker-*.js
 **/public/workbox-*.js
 **/public/workbox-*.js.map
+
+# Lighthouse / audit artifacts
+reports/
