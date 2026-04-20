@@ -35,6 +35,7 @@ const config: Config = {
         },
       },
       fontFamily: {
+        sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
       },
       fontWeight: {
