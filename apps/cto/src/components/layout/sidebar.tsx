@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion'
 import {
   LayoutDashboard, Kanban, GanttChart, Calendar,
@@ -28,7 +28,6 @@ const SIDEBAR_WIDTH = 260
 
 export function Sidebar() {
   const pathname = usePathname()
-  const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const { user } = useCurrentUser()
@@ -52,7 +51,9 @@ export function Sidebar() {
   async function handleLogout() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push('/login')
+    // Full-page navigation para nao racar com a escrita dos cookies no iOS
+    // Safari / PWA standalone (mesma classe de bug do login, PR #97).
+    window.location.assign('/login')
   }
 
   const sidebarContent = (

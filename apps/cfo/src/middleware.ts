@@ -29,8 +29,12 @@ export async function middleware(request: NextRequest) {
   return response
 }
 
+// Exclui do middleware: internals do Next, PWA (service worker + workbox +
+// manifest + splash/icones), arquivos de raiz (robots, sitemap) e qualquer
+// asset estatico por extensao. Durante o incidente de 23/04 o /sw.js caiu no
+// middleware e estourou 504 junto com o auth, deixando o PWA travado offline.
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|_next/data|favicon\\.ico|sw\\.js|workbox-|fallback-|manifest\\.json|manifest\\.webmanifest|offline\\.html|robots\\.txt|sitemap\\.xml|splash-|icons?/|apple-touch-icon|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|otf|map)$).*)',
   ],
 }

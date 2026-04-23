@@ -3,8 +3,12 @@ import withPWAInit from '@ducanh2912/next-pwa'
 
 const withPWA = withPWAInit({
   dest: 'public',
+  // cacheOnFrontEndNav cacheia rotas ja visitadas para navegacao offline.
+  // aggressiveFrontEndNavCaching (removido em 23/04) tambem cacheava
+  // prefetches, combinando com `force-dynamic` em todas as paginas e
+  // podendo servir HTML antigo com chunks JS novos apos deploy — foi uma
+  // das causas da tela branca + "Sem conexao" no incidente.
   cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
   disable: process.env.NODE_ENV === 'development',
   workboxOptions: {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard,
@@ -43,7 +43,6 @@ function preloadCharts() {
 
 export function Sidebar() {
   const pathname = usePathname()
-  const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -54,7 +53,12 @@ export function Sidebar() {
   async function handleLogout() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push('/login')
+    // Full-page navigation garante que os cookies limpos pelo signOut sejam
+    // committed antes do middleware reavaliar. router.push() racava com a
+    // escrita de cookies no iOS Safari / PWA standalone e podia jogar o
+    // usuario de volta no /dashboard via middleware (mesma classe de bug do
+    // login, corrigida no PR #97).
+    window.location.assign('/login')
   }
 
   const sidebarContent = (
