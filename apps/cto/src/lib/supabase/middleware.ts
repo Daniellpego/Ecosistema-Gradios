@@ -1,8 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const AUTH_TIMEOUT_MS = 3000
-
 export async function updateSession(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -31,15 +29,13 @@ export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname
   const isLoginPage = path === '/login'
 
-  // Auth lookup protegido (ver comentário no painel CFO): se o Supabase não
-  // responder em AUTH_TIMEOUT_MS, tratamos como não autenticado em vez de
-  // deixar a exception derrubar a edge function com 504.
+  // Auth lookup protegido (ver comentario no painel CFO): try/catch para
+  // que qualquer falha do Supabase nao derrube a edge function. Sem
+  // Promise.race com setTimeout aqui — causou vazamento de conexoes e
+  // "DNS cache overflow" no Edge Runtime (incidente 23/04, hotfix-pos-PR98).
   let user: Awaited<ReturnType<typeof supabase.auth.getUser>>['data']['user'] = null
   try {
-    const timeout = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('auth_timeout')), AUTH_TIMEOUT_MS)
-    )
-    const result = await Promise.race([supabase.auth.getUser(), timeout])
+    const result = await supabase.auth.getUser()
     user = result.data.user
   } catch {
     // silently fall through: user permanece null
