@@ -12,7 +12,7 @@ export function useDashboardCTO() {
   const allProjetos = projetos.data ?? []
   const ativos = allProjetos.filter((p) => ['backlog', 'em_andamento', 'revisao'].includes(p.status))
   const now = new Date(); const currentMonth = now.getMonth(); const currentYear = now.getFullYear()
-  const entreguesMes = allProjetos.filter((p) => { if (p.status !== 'entregue') return false; const d = new Date(p.updated_at); return d.getMonth() === currentMonth && d.getFullYear() === currentYear })
+  const entreguesMes = allProjetos.filter((p) => { if (p.status !== 'entregue') return false; const entregaDate = p.data_entrega ?? p.updated_at; const d = new Date(entregaDate); return d.getMonth() === currentMonth && d.getFullYear() === currentYear })
   const today = new Date().toISOString().split('T')[0]!
   const atrasados = allProjetos.filter((p) => { const entrega = getProjetoEntrega(p); return entrega && entrega < today && !['entregue', 'cancelado'].includes(p.status) })
   const valorPipeline = ativos.reduce((sum, p) => sum + (p.valor ?? 0), 0)

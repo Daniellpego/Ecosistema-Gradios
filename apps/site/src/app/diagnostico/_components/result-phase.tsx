@@ -7,6 +7,7 @@ import {
   formatBRL,
   getTier,
   isAnalista,
+  safeIdx,
   type LeadData,
 } from "../_lib/data";
 
@@ -37,13 +38,13 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
     return () => clearInterval(interval);
   }, [score]);
 
-  const setor = answers.setor?.[0] != null ? QUESTIONS[2].opcoes[answers.setor[0]] : "Não informado";
-  const gargalosTexts = answers.gargalos?.map((i) => QUESTIONS[3].opcoes[i]) || [];
-  const impactosTexts = answers.impactos?.map((i) => QUESTIONS[7].opcoes[i]) || [];
-  const horasMes = answers.tempo?.[0] != null ? ["~20h", "~40-60h", "~65-160h", "+160h"][answers.tempo[0]] : null;
-  const sistemasLabel = answers.sistemas?.[0] != null ? QUESTIONS[5].opcoes[answers.sistemas[0]] : null;
-  const processosLabel = answers.processos?.[0] != null ? QUESTIONS[4].opcoes[answers.processos[0]] : null;
-  const prioridadeLabel = answers.prioridade?.[0] != null ? QUESTIONS[9].opcoes[answers.prioridade[0]] : null;
+  const setor = answers.setor?.[0] != null ? (QUESTIONS[2].opcoes[answers.setor[0]] ?? "Não informado") : "Não informado";
+  const gargalosTexts = (answers.gargalos ?? []).filter((i) => i >= 0 && i < QUESTIONS[3].opcoes.length).map((i) => QUESTIONS[3].opcoes[i]);
+  const impactosTexts = (answers.impactos ?? []).filter((i) => i >= 0 && i < QUESTIONS[7].opcoes.length).map((i) => QUESTIONS[7].opcoes[i]);
+  const horasMes = answers.tempo?.[0] != null ? safeIdx(["~20h", "~40-60h", "~65-160h", "+160h"], answers.tempo[0], null) : null;
+  const sistemasLabel = answers.sistemas?.[0] != null ? (QUESTIONS[5].opcoes[answers.sistemas[0]] ?? null) : null;
+  const processosLabel = answers.processos?.[0] != null ? (QUESTIONS[4].opcoes[answers.processos[0]] ?? null) : null;
+  const prioridadeLabel = answers.prioridade?.[0] != null ? (QUESTIONS[9].opcoes[answers.prioridade[0]] ?? null) : null;
   const circumference = 2 * Math.PI * 54;
   const strokeOffset = circumference - (circumference * animatedScore) / 100;
   const roi = calculateROI(answers);
@@ -80,10 +81,10 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
     }
   }
 
-  const cargoLabel = answers.cargo?.[0] != null ? QUESTIONS[0].opcoes[answers.cargo[0]] : "profissional";
-  const tamanhoLabel = answers.tamanho?.[0] != null ? QUESTIONS[1].opcoes[answers.tamanho[0]] : "vários";
+  const cargoLabel = answers.cargo?.[0] != null ? (QUESTIONS[0].opcoes[answers.cargo[0]] ?? "profissional") : "profissional";
+  const tamanhoLabel = answers.tamanho?.[0] != null ? (QUESTIONS[1].opcoes[answers.tamanho[0]] ?? "vários") : "vários";
   const gargaloPrincipal = gargalosTexts.length > 0 ? gargalosTexts[0].split(" — ")[0] : null;
-  const horasSemana = answers.tempo?.[0] != null ? ["~3h", "~10h", "~28h", "50+"][answers.tempo[0]] : null;
+  const horasSemana = answers.tempo?.[0] != null ? safeIdx(["~3h", "~10h", "~28h", "50+"], answers.tempo[0], null) : null;
   const whatsAppMsg = encodeURIComponent(
     `Oi! Acabei de fazer o diagnóstico da Gradios. Sou ${cargoLabel} de uma empresa de ${setor} com ${tamanhoLabel} funcionários.${gargaloPrincipal ? ` Nosso maior gargalo é ${gargaloPrincipal.toLowerCase()}` : ""}${horasSemana ? ` e perdemos cerca de ${horasSemana} horas por semana com retrabalho manual` : ""}. Recebi resultado ${tierInfo.tier} e quero entender como resolver isso.`
   );
@@ -156,7 +157,7 @@ export default function ResultPhase({ lead, answers, score, city, aiText }: Resu
           {/* Hours lost per week */}
           <div className="bg-[#0F172A] border border-[#EF4444]/20 rounded-2xl p-5 sm:p-6 text-center">
             <p className="text-5xl sm:text-6xl font-black text-white leading-none mb-2">
-              {["~3h", "~10h", "~28h", "50h+"][answers.tempo[0]]}
+              {safeIdx(["~3h", "~10h", "~28h", "50h+"], answers.tempo[0], "—")}
             </p>
             <p className="text-[#EF4444] text-xs font-semibold tracking-wider uppercase">
               perdidas por semana

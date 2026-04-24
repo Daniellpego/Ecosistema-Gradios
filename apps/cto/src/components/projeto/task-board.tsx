@@ -33,7 +33,7 @@ export function TaskBoard({ projetoId }: { projetoId: string }) {
       data_limite: null,
       estimativa_horas: null,
       horas_gastas: null,
-      ordem: (tarefas?.filter((t) => t.status === status).length ?? 0) + 1,
+      ordem: Math.max(0, ...(tarefas?.filter((t) => t.status === status).map((t) => t.ordem ?? 0) ?? [0])) + 1,
     })
     setNewTaskTitle('')
     setAddingTo(null)

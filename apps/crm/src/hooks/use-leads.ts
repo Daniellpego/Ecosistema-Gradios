@@ -39,7 +39,7 @@ export function useLeads(filters?: {
         .from('leads')
         .select('*')
         .gte('created_at', startDate)
-        .lte('created_at', endDate + 'T23:59:59')
+        .lte('created_at', endDate + 'T23:59:59.999Z')
         .order('created_at', { ascending: false })
 
       if (filters?.status && filters.status.length > 0) {

@@ -222,7 +222,7 @@ interface SummaryBarProps {
 
 function SummaryBar({ leads, stageGroups }: SummaryBarProps) {
   const totalValue = useMemo(
-    () => leads.reduce((sum, l) => sum + l.valor_estimado, 0),
+    () => leads.reduce((sum, l) => sum + (l.valor_estimado || 0), 0),
     [leads]
   )
 
@@ -313,7 +313,7 @@ export default function PipelinePage() {
   const stageTotals = useMemo(() => {
     const totals = new Map<LeadStatus, number>()
     for (const [stage, stageLeads] of stageGroups) {
-      totals.set(stage, stageLeads.reduce((sum, l) => sum + l.valor_estimado, 0))
+      totals.set(stage, stageLeads.reduce((sum, l) => sum + (l.valor_estimado || 0), 0))
     }
     return totals
   }, [stageGroups])

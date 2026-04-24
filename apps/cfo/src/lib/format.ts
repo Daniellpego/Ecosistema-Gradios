@@ -2,6 +2,7 @@ import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 export function formatCurrency(value: number): string {
+  if (!Number.isFinite(value)) return 'R$ 0,00'
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
@@ -11,6 +12,7 @@ export function formatCurrency(value: number): string {
 }
 
 export function formatPercent(value: number, decimals = 1): string {
+  if (!Number.isFinite(value)) return '—'
   return `${value >= 0 ? '+' : ''}${value.toFixed(decimals)}%`
 }
 

@@ -1,4 +1,13 @@
 /* ════════════════════════════════════════════════════════════
+   SAFE INDEXING HELPER
+   ════════════════════════════════════════════════════════════ */
+
+/** Safe array index access — returns fallback when index is out of bounds */
+export function safeIdx<T>(arr: T[], idx: number, fallback: T): T {
+  return idx >= 0 && idx < arr.length ? arr[idx] : fallback;
+}
+
+/* ════════════════════════════════════════════════════════════
    TYPES
    ════════════════════════════════════════════════════════════ */
 
@@ -279,16 +288,16 @@ export function multiScore(count: number): number {
 export function calculateScore(answers: Record<string, number[]>): number {
   let raw = 0;
 
-  if (answers.cargo?.[0] != null) raw += [10, 10, 8, 5, 0, 3][answers.cargo[0]];
-  if (answers.tamanho?.[0] != null) raw += [2, 5, 12, 18, 20][answers.tamanho[0]];
-  if (answers.setor?.[0] != null) raw += [8, 10, 9, 12, 15, 18, 7, 5][answers.setor[0]];
+  if (answers.cargo?.[0] != null) raw += safeIdx([10, 10, 8, 5, 0, 3], answers.cargo[0], 0);
+  if (answers.tamanho?.[0] != null) raw += safeIdx([2, 5, 12, 18, 20], answers.tamanho[0], 0);
+  if (answers.setor?.[0] != null) raw += safeIdx([8, 10, 9, 12, 15, 18, 7, 5], answers.setor[0], 0);
   if (answers.gargalos) raw += multiScore(answers.gargalos.length);
-  if (answers.processos?.[0] != null) raw += [0, 5, 12, 18, 20][answers.processos[0]];
-  if (answers.sistemas?.[0] != null) raw += [3, 8, 13, 15][answers.sistemas[0]];
-  if (answers.tempo?.[0] != null) raw += [3, 8, 13, 15][answers.tempo[0]];
+  if (answers.processos?.[0] != null) raw += safeIdx([0, 5, 12, 18, 20], answers.processos[0], 0);
+  if (answers.sistemas?.[0] != null) raw += safeIdx([3, 8, 13, 15], answers.sistemas[0], 0);
+  if (answers.tempo?.[0] != null) raw += safeIdx([3, 8, 13, 15], answers.tempo[0], 0);
   if (answers.impactos) raw += multiScore(answers.impactos.length);
-  if (answers.urgencia?.[0] != null) raw += [1, 4, 7, 9, 10][answers.urgencia[0]];
-  if (answers.budget?.[0] != null) raw += [0, 5, 10, 13, 15][answers.budget[0]];
+  if (answers.urgencia?.[0] != null) raw += safeIdx([1, 4, 7, 9, 10], answers.urgencia[0], 0);
+  if (answers.budget?.[0] != null) raw += safeIdx([0, 5, 10, 13, 15], answers.budget[0], 0);
 
   let score = Math.min(100, Math.round((raw / 127) * 100));
 
@@ -316,14 +325,14 @@ export function calculatePartialScore(answers: Record<string, number[]>): number
   let answeredScored = 0;
   let raw = 0;
 
-  if (answers.cargo?.[0] != null) { raw += [10, 10, 8, 5, 0, 3][answers.cargo[0]]; answeredScored++; }
-  if (answers.tamanho?.[0] != null) { raw += [2, 5, 12, 18, 20][answers.tamanho[0]]; answeredScored++; }
-  if (answers.setor?.[0] != null) { raw += [8, 10, 9, 12, 15, 18, 7, 5][answers.setor[0]]; answeredScored++; }
-  if (answers.processos?.[0] != null) { raw += [0, 5, 12, 18, 20][answers.processos[0]]; answeredScored++; }
-  if (answers.sistemas?.[0] != null) { raw += [3, 8, 13, 15][answers.sistemas[0]]; answeredScored++; }
-  if (answers.tempo?.[0] != null) { raw += [3, 8, 13, 15][answers.tempo[0]]; answeredScored++; }
-  if (answers.urgencia?.[0] != null) { raw += [1, 4, 7, 9, 10][answers.urgencia[0]]; answeredScored++; }
-  if (answers.budget?.[0] != null) { raw += [0, 5, 10, 13, 15][answers.budget[0]]; answeredScored++; }
+  if (answers.cargo?.[0] != null) { raw += safeIdx([10, 10, 8, 5, 0, 3], answers.cargo[0], 0); answeredScored++; }
+  if (answers.tamanho?.[0] != null) { raw += safeIdx([2, 5, 12, 18, 20], answers.tamanho[0], 0); answeredScored++; }
+  if (answers.setor?.[0] != null) { raw += safeIdx([8, 10, 9, 12, 15, 18, 7, 5], answers.setor[0], 0); answeredScored++; }
+  if (answers.processos?.[0] != null) { raw += safeIdx([0, 5, 12, 18, 20], answers.processos[0], 0); answeredScored++; }
+  if (answers.sistemas?.[0] != null) { raw += safeIdx([3, 8, 13, 15], answers.sistemas[0], 0); answeredScored++; }
+  if (answers.tempo?.[0] != null) { raw += safeIdx([3, 8, 13, 15], answers.tempo[0], 0); answeredScored++; }
+  if (answers.urgencia?.[0] != null) { raw += safeIdx([1, 4, 7, 9, 10], answers.urgencia[0], 0); answeredScored++; }
+  if (answers.budget?.[0] != null) { raw += safeIdx([0, 5, 10, 13, 15], answers.budget[0], 0); answeredScored++; }
   if (answers.gargalos) raw += multiScore(answers.gargalos.length);
   if (answers.impactos) raw += multiScore(answers.impactos.length);
 
@@ -409,19 +418,22 @@ export function isMicroEmpresa(answers: Record<string, number[]>): boolean {
 export function getOptionText(questionId: string, answerIndex: number | undefined): string {
   if (answerIndex == null) return "Não informado";
   const q = QUESTIONS.find((q) => q.id === questionId);
-  return q?.opcoes[answerIndex] ?? "Não informado";
+  if (!q || answerIndex < 0 || answerIndex >= q.opcoes.length) return "Não informado";
+  return q.opcoes[answerIndex];
 }
 
 export function getMultiOptionTexts(questionId: string, answerIndexes: number[] | undefined): string[] {
   if (!answerIndexes || answerIndexes.length === 0) return [];
   const q = QUESTIONS.find((q) => q.id === questionId);
   if (!q) return [];
-  return answerIndexes.map((i) => q.opcoes[i]).filter(Boolean);
+  return answerIndexes
+    .filter((i) => i >= 0 && i < q.opcoes.length)
+    .map((i) => q.opcoes[i]);
 }
 
 export function getHorasMes(tempoIndex: number | undefined): string {
   if (tempoIndex == null) return "Não informado";
-  return ["~20h/mês", "~40-60h/mês", "~65-160h/mês", "+160h/mês"][tempoIndex] ?? "Não informado";
+  return safeIdx(["~20h/mês", "~40-60h/mês", "~65-160h/mês", "+160h/mês"], tempoIndex, "Não informado");
 }
 
 export function formatBRL(value: number): string {

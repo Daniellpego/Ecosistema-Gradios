@@ -362,7 +362,7 @@ export default function DashboardPage() {
     )
   }
 
-  const totalProjetos = statusDistribuicao.reduce((s: number, d: StatusEntry) => s + d.value, 0)
+  const totalProjetos = statusDistribuicao.reduce((s: number, d: StatusEntry) => s + (Number(d.value) || 0), 0)
   const urgentCount = proximasEntregas.filter((p) =>
     p.data_entrega ? daysUntil(p.data_entrega) <= 1 : false
   ).length

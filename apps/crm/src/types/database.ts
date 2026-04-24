@@ -133,6 +133,7 @@ export const LEAD_STATUS_COLORS: Record<LeadStatus, string> = {
 
 export const PIPELINE_STAGES: LeadStatus[] = [
   'novo',
+  'contatado',
   'qualificado',
   'reuniao',
   'proposta',

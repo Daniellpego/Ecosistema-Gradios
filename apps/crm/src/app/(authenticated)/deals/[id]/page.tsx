@@ -135,6 +135,7 @@ export default function DealDetailPage() {
         id: deal.id,
         status: 'perdido' as DealStatus,
         probabilidade: 0,
+        motivo_perda: motivoPerda.trim(),
       },
       {
         onSuccess: () => {
@@ -168,10 +169,15 @@ export default function DealDetailPage() {
     e.preventDefault()
     if (!deal || !activityDescricao.trim()) return
 
+    if (!deal.lead_id) {
+      addToast('Este deal não tem um lead associado. Associe um lead antes de registrar atividades.', 'error')
+      return
+    }
+
     setActivitySubmitting(true)
     createActivity.mutate(
       {
-        lead_id: deal.lead_id ?? dealId,
+        lead_id: deal.lead_id,
         deal_id: dealId,
         tipo: activityTipo,
         descricao: activityDescricao.trim(),

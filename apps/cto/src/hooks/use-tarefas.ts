@@ -38,6 +38,7 @@ export function useTarefaCount(projetoId: string) {
       return { total, done }
     },
     enabled: !!projetoId,
+    staleTime: 5 * 60 * 1000,
   })
 }
 

@@ -50,7 +50,7 @@ export function UserAvatar({ size = 'md', editable = false, className }: UserAva
     setUploading(true)
     try {
       const supabase = createClient()
-      const ext = file.name.split('.').pop()
+      const ext = file.name.split('.').pop() || 'png'
       const path = `avatars/${user.id}.${ext}`
 
       const { error: uploadError } = await supabase.storage

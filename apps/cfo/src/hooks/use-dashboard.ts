@@ -277,7 +277,7 @@ export function useDashboard(): DashboardData {
 
     // Receita Bruta (valor_bruto) — mesma base da DRE
     const receitaTotal = receitas.reduce((s, r) => s + Number(r.valor_bruto || 0), 0)
-    const mrr = receitas.filter(r => r.recorrente).reduce((s, r) => s + Number(r.valor_bruto || 0), 0)
+    const mrr = receitas.filter(r => r.recorrente && r.tipo !== 'setup').reduce((s, r) => s + Number(r.valor_bruto || 0), 0)
     const totalCustosFixos = custosFixos.reduce((s, c) => s + Number(c.valor_mensal || 0), 0)
     
     // Gastos variáveis SEM impostos (consistente com DRE)
@@ -293,7 +293,12 @@ export function useDashboard(): DashboardData {
     const totalGastos3m = gastos3m.reduce((s, g) => s + Number(g.valor || 0), 0)
     const avgGastosVar3m = totalGastos3m / 3
 
-    const burnRate = totalCustosFixos + avgGastosVar3m
+    // Burn rate inclui impostos (Simples Nacional sobre faturamento)
+    const gastos3mSemImpostos = gastos3m.filter(g => g.tipo !== 'impostos')
+    const impostos3m = gastos3m.filter(g => g.tipo === 'impostos')
+    const avgGastosVar3mSemImp = gastos3mSemImpostos.reduce((s, g) => s + Number(g.valor || 0), 0) / 3
+    const avgImpostos3m = impostos3m.reduce((s, g) => s + Number(g.valor || 0), 0) / 3
+    const burnRate = totalCustosFixos + avgGastosVar3mSemImp + avgImpostos3m
     // DRE cascade: Receita - CV - CF - Impostos
     const margemBrutaVal = receitaTotal - totalGastosVar
     const resultadoOperacional = margemBrutaVal - totalCustosFixos
@@ -304,7 +309,7 @@ export function useDashboard(): DashboardData {
     const breakEven = cvRatio < 1 ? totalCustosFixos / (1 - cvRatio) : 0
     const margemBruta = receitaTotal > 0 ? ((receitaTotal - totalGastosVar) / receitaTotal) * 100 : 0
     const caixaDisponivel = caixaEntries.length > 0 ? Number(caixaEntries[0]?.saldo || 0) : 0
-    const runway = burnRate > 0 ? caixaDisponivel / burnRate : caixaDisponivel > 0 ? 99 : 0
+    const runway = burnRate > 0 ? caixaDisponivel / burnRate : 0
     const margem = receitaTotal > 0 ? (resultadoLiquido / receitaTotal) * 100 : 0
 
     const kpis: DashboardKPIs = {
@@ -323,7 +328,7 @@ export function useDashboard(): DashboardData {
 
     // Previous month KPIs for variation
     const prevReceitaTotal = receitasPrev.reduce((s, r) => s + Number(r.valor_bruto || 0), 0)
-    const prevMrr = receitasPrev.filter(r => r.recorrente).reduce((s, r) => s + Number(r.valor_bruto || 0), 0)
+    const prevMrr = receitasPrev.filter(r => r.recorrente && r.tipo !== 'setup').reduce((s, r) => s + Number(r.valor_bruto || 0), 0)
     const prevGastosVarSemImp = gastosPrev.filter(g => g.tipo !== 'impostos')
     const prevGastosVar = prevGastosVarSemImp.reduce((s, g) => s + Number(g.valor || 0), 0)
     const prevImpostos = gastosPrev.filter(g => g.tipo === 'impostos').reduce((s, g) => s + Number(g.valor || 0), 0)

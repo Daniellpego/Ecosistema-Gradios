@@ -1,4 +1,5 @@
 export function formatCurrency(value: number): string {
+  if (!Number.isFinite(value)) return 'R$ 0,00'
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
@@ -6,11 +7,13 @@ export function formatCurrency(value: number): string {
 }
 
 export function formatPercent(value: number): string {
+  if (!Number.isFinite(value)) return '0%'
   return `${Math.round(value)}%`
 }
 
 export function formatDate(date: string | Date): string {
   const d = typeof date === 'string' ? new Date(date + 'T00:00:00') : date
+  if (isNaN(d.getTime())) return ''
   return new Intl.DateTimeFormat('pt-BR', {
     day: '2-digit',
     month: '2-digit',

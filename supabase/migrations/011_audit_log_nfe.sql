@@ -2,7 +2,7 @@
 -- Date: 2026-04-03
 
 -- Audit log table
-CREATE TABLE IF NOT EXISTS audit_log (
+CREATE TABLE IF NOT EXISTS public.audit_log (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   user_email text,
   action text NOT NULL,
@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS audit_log (
   created_at timestamptz DEFAULT now()
 );
 
-ALTER TABLE audit_log ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Authenticated users can read audit log" ON audit_log FOR SELECT USING (auth.role() = 'authenticated');
-CREATE POLICY "Authenticated users can insert audit log" ON audit_log FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+ALTER TABLE public.audit_log ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Authenticated users can read audit log" ON public.audit_log FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "Authenticated users can insert audit log" ON public.audit_log FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
 -- NF-e fields on receitas
 ALTER TABLE receitas ADD COLUMN IF NOT EXISTS nf_numero text;

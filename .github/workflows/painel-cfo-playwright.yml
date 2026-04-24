@@ -1,11 +1,8 @@
 name: CI — Painel CFO Playwright
 
+# DISABLED: apps/cfo/tests/ directory does not exist. Unit tests are in
+# apps/cfo/src/__tests__/ (vitest). Re-enable when Playwright E2E is set up.
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'apps/cfo/**'
-      - '.github/workflows/painel-cfo-playwright.yml'
   workflow_dispatch:
 
 jobs:

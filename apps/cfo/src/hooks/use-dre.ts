@@ -297,7 +297,13 @@ export function useDRE() {
         const monthGastos = allGastos.filter(
           (g) => g.data >= range.start && g.data <= range.end
         )
-        const dre = computeMonthDRE(monthReceitas, allCustos, monthGastos)
+        // Filtrar custos fixos ativos neste mês (considerar data_inicio)
+        const activeCustosForMonth = allCustos.filter((c) => {
+          if (c.status !== 'ativo') return false
+          if (!c.data_inicio) return true
+          return c.data_inicio <= range.end
+        })
+        const dre = computeMonthDRE(monthReceitas, activeCustosForMonth, monthGastos)
 
         months.push({
           month: `${range.y}-${String(range.m).padStart(2, '0')}`,
@@ -333,37 +339,54 @@ export function useDRE() {
 
     const current = computeMonthDRE(receitas, custosFixos, gastosVariaveis)
     const ytdRaw = computeMonthDRE(receitasYtd, custosFixos, gastosVariaveisYtd)
-    // YTD custos fixos: multiply by number of months elapsed
+
+    // YTD custos fixos: considerar data_inicio de cada custo
+    const activeCustos = custosFixos.filter((c) => c.status === 'ativo')
+    function calcYtdCF(items: typeof activeCustos): number {
+      return items.reduce((sum, c) => {
+        const valor = Number(c.valor_mensal)
+        const inicio = c.data_inicio ? new Date(c.data_inicio) : null
+        let mesesAtivos = month
+        if (inicio) {
+          const inicioMes = inicio.getFullYear() === year
+            ? inicio.getMonth() + 1
+            : inicio.getFullYear() < year ? 1 : 13
+          mesesAtivos = Math.max(0, month - inicioMes + 1)
+        }
+        return sum + valor * mesesAtivos
+      }, 0)
+    }
+
+    const ytdCfTotal = calcYtdCF(activeCustos)
+    const ytdCfFerramentas = calcYtdCF(activeCustos.filter((c) => c.categoria === 'ferramentas'))
+    const ytdCfContabilidade = calcYtdCF(activeCustos.filter((c) => c.categoria === 'contabilidade'))
+    const ytdCfMarketing = calcYtdCF(activeCustos.filter((c) => c.categoria === 'marketing'))
+    const ytdCfInfra = calcYtdCF(activeCustos.filter((c) => c.categoria === 'infraestrutura'))
+    const ytdCfAdmin = calcYtdCF(activeCustos.filter((c) => c.categoria === 'administrativo'))
+    const ytdCfProLabore = calcYtdCF(activeCustos.filter((c) => c.categoria === 'pro_labore'))
+    const ytdCfImpostosFixos = calcYtdCF(activeCustos.filter((c) => c.categoria === 'impostos_fixos'))
+    const ytdCfOutro = calcYtdCF(activeCustos.filter((c) => c.categoria === 'outro'))
+
+    const ytdMargemBruta = ytdRaw.receitaBruta - ytdRaw.custosVariaveisTotal
+    const ytdResultadoOp = ytdMargemBruta - ytdCfTotal
+    const ytdResultadoLiq = ytdResultadoOp - ytdRaw.impostos
+
     const ytd = {
       ...ytdRaw,
-      cfTotal: ytdRaw.cfTotal * month,
-      cfFerramentas: ytdRaw.cfFerramentas * month,
-      cfContabilidade: ytdRaw.cfContabilidade * month,
-      cfMarketing: ytdRaw.cfMarketing * month,
-      cfInfra: ytdRaw.cfInfra * month,
-      cfAdmin: ytdRaw.cfAdmin * month,
-      cfProLabore: ytdRaw.cfProLabore * month,
-      cfImpostosFixos: ytdRaw.cfImpostosFixos * month,
-      cfOutro: ytdRaw.cfOutro * month,
-      margemBruta: ytdRaw.receitaBruta - ytdRaw.custosVariaveisTotal,
-      resultadoOperacional:
-        ytdRaw.receitaBruta - ytdRaw.custosVariaveisTotal - ytdRaw.cfTotal * month,
-      resultadoLiquido:
-        ytdRaw.receitaBruta -
-        ytdRaw.custosVariaveisTotal -
-        ytdRaw.cfTotal * month -
-        ytdRaw.impostos,
-      pctMargemBruta: pct(
-        ytdRaw.receitaBruta - ytdRaw.custosVariaveisTotal,
-        ytdRaw.receitaBruta
-      ),
-      pctMargemLiquida: pct(
-        ytdRaw.receitaBruta -
-          ytdRaw.custosVariaveisTotal -
-          ytdRaw.cfTotal * month -
-          ytdRaw.impostos,
-        ytdRaw.receitaBruta
-      ),
+      cfTotal: ytdCfTotal,
+      cfFerramentas: ytdCfFerramentas,
+      cfContabilidade: ytdCfContabilidade,
+      cfMarketing: ytdCfMarketing,
+      cfInfra: ytdCfInfra,
+      cfAdmin: ytdCfAdmin,
+      cfProLabore: ytdCfProLabore,
+      cfImpostosFixos: ytdCfImpostosFixos,
+      cfOutro: ytdCfOutro,
+      margemBruta: ytdMargemBruta,
+      resultadoOperacional: ytdResultadoOp,
+      resultadoLiquido: ytdResultadoLiq,
+      pctMargemBruta: pct(ytdMargemBruta, ytdRaw.receitaBruta),
+      pctMargemLiquida: pct(ytdResultadoLiq, ytdRaw.receitaBruta),
     }
     return { current, ytd }
   }, [
@@ -621,6 +644,14 @@ export function useDRE() {
     ]
   }, [current, ytd, isLoading])
 
+  const error =
+    (receitasQuery.error ??
+      custosFixosQuery.error ??
+      gastosVariaveisQuery.error ??
+      receitasYtdQuery.error ??
+      gastosVariaveisYtdQuery.error ??
+      chartQuery.error) as Error | null
+
   return {
     lines,
     current,
@@ -628,5 +659,6 @@ export function useDRE() {
     chartData: chartQuery.data ?? [],
     isLoading,
     isChartLoading: chartQuery.isLoading,
+    error,
   }
 }

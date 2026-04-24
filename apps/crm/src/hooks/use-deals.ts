@@ -101,7 +101,7 @@ export function useUpdateDeal() {
   const supabase = createClient()
 
   return useMutation({
-    mutationFn: async ({ id, ...updates }: Partial<DealInsert> & { id: string }) => {
+    mutationFn: async ({ id, ...updates }: Partial<Omit<Deal, 'id' | 'created_at' | 'updated_at'>> & { id: string }) => {
       const { data, error } = await supabase
         .from('deals')
         .update(updates as unknown as Record<string, unknown>)
