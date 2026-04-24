@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import dynamic from "next/dynamic";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-
-// Non-critical UX enhancements — lazy load to reduce initial JS bundle
-const ScrollProgress = dynamic(() => import("@/components/ScrollProgress").then(m => m.ScrollProgress), { ssr: false });
-const SmoothScrollProvider = dynamic(() => import("@/providers/smooth-scroll").then(m => m.SmoothScrollProvider), { ssr: false });
-const WhatsAppFloat = dynamic(() => import("@/components/WhatsAppFloat").then(m => m.WhatsAppFloat), { ssr: false });
-const StickyCtaBar = dynamic(() => import("@/components/StickyCtaBar").then(m => m.StickyCtaBar), { ssr: false });
-const CookieBanner = dynamic(() => import("@/components/CookieBanner").then(m => m.CookieBanner), { ssr: false });
+import { ClientShell } from "@/components/ClientShell";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -415,23 +408,13 @@ fbq('track', 'PageView');
         />
       </head>
       <body className={`${inter.variable} font-sans`}>
-        <SmoothScrollProvider>
-          <a
-            href="#conteudo-principal"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-bold"
-          >
-            Pular para o conteúdo principal
-          </a>
-          <ScrollProgress />
-          <StickyCtaBar />
+        <ClientShell>
           <Navbar />
           <main id="conteudo-principal" className="min-h-screen pt-20">
             {children}
           </main>
           <Footer />
-          <WhatsAppFloat />
-          <CookieBanner />
-        </SmoothScrollProvider>
+        </ClientShell>
       </body>
     </html>
   );
