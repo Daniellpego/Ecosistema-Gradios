@@ -9,18 +9,161 @@
 .about-v2-p {
   font-size: 17px;
   line-height: 28px;
-  color: var(--text-muted);
+  color: #2D3B57;
   margin: 0 0 16px;
-  max-width: 520px;
+  max-width: 540px;
 }
+.about-v2-p strong { color: var(--text); font-weight: 700; }
+
+/* ===== Foto da equipe — slot premium com fallback elegante ===== */
+.about-v2-photo {
+  position: relative;
+  margin: 28px 0 32px;
+  aspect-ratio: 16 / 9;
+  max-width: 540px;
+  border-radius: 16px;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(135deg, #0E1B36 0%, #0A152B 60%, #08153F 100%);
+  border: 1px solid rgba(10,27,61,0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 12px 32px -12px rgba(8, 21, 63, 0.18),
+    0 32px 80px -24px rgba(8, 21, 63, 0.22),
+    0 50px 120px -30px rgba(0, 184, 255, 0.10);
+  transition: transform 320ms var(--ease-standard), box-shadow 320ms;
+}
+.about-v2-photo:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 18px 40px -12px rgba(8, 21, 63, 0.22),
+    0 44px 100px -28px rgba(8, 21, 63, 0.28),
+    0 60px 140px -36px rgba(0, 184, 255, 0.16);
+}
+.about-v2-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 2;
+  /* fusão navy: contraste alto + saturação reduzida + hue-rotate cool */
+  filter: contrast(1.08) saturate(0.85) hue-rotate(-8deg) brightness(0.92);
+}
+/* overlay navy translúcido por cima da foto pra unidade visual com o site */
+.about-v2-photo.photo-loaded::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(10,27,61,0.18) 60%, rgba(8,21,63,0.40) 100%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(0,184,255,0.12), transparent 70%);
+  z-index: 3;
+  pointer-events: none;
+}
+/* grid técnico de fundo (visível só no placeholder) */
+.about-v2-photo-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 30%, transparent 90%);
+          mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 30%, transparent 90%);
+  pointer-events: none;
+  z-index: 1;
+}
+.about-v2-photo-glow {
+  position: absolute;
+  top: -30%; right: -10%;
+  width: 60%; height: 80%;
+  background: radial-gradient(closest-side, rgba(0,184,255,0.18), transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+.about-v2-photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  z-index: 1;
+  padding: 24px;
+}
+.about-v2-photo-placeholder i {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(37,70,189,0.40) 0%, rgba(0,200,255,0.30) 100%);
+  border: 1px solid rgba(0,200,255,0.32);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 4px 12px -4px rgba(0,184,255,0.40);
+}
+.about-v2-photo-pl-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.about-v2-photo-pl-line {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(245,247,252,0.80);
+  letter-spacing: -0.005em;
+}
+/* legenda inferior (sempre visível, sobre a foto ou placeholder) */
+.about-v2-photo-cap {
+  position: absolute;
+  left: 16px; bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.85);
+  background: rgba(8, 21, 63, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 5px 10px 5px 8px;
+  border-radius: 999px;
+  z-index: 3;
+}
+.about-v2-photo-cap i { color: var(--accent); }
+/* quando a foto carrega: esconde o placeholder, mantém só legenda */
+.about-v2-photo.photo-loaded .about-v2-photo-grid,
+.about-v2-photo.photo-loaded .about-v2-photo-glow,
+.about-v2-photo.photo-loaded .about-v2-photo-placeholder {
+  display: none;
+}
+/* quando img falha (404): placeholder permanece, mas escondemos qualquer img quebrada */
+.about-v2-photo.photo-empty img { display: none; }
+
+/* ===== Manifesto refinado: glassmorphism + barra cyan ===== */
 .about-v2-manifesto {
   position: relative;
   margin: 32px 0 32px;
-  padding: 18px 22px 18px 28px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 4%, #fff) 0%, color-mix(in srgb, var(--brand) 7%, #fff) 100%);
-  border: 1px solid color-mix(in srgb, var(--brand) 16%, var(--divider));
-  border-radius: 12px;
+  padding: 20px 24px 20px 30px;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(10px) saturate(1.05);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05);
+  border: 1px solid rgba(0,184,255,0.18);
+  border-radius: 14px;
   max-width: 540px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    0 1px 2px rgba(10,27,61,0.04),
+    0 14px 32px -16px rgba(0,184,255,0.18);
 }
 .about-v2-manifesto p {
   margin: 0;
@@ -36,7 +179,8 @@
   top: 14px; bottom: 14px; left: 12px;
   width: 3px;
   border-radius: 2px;
-  background: linear-gradient(180deg, var(--brand) 0%, var(--accent) 100%);
+  background: linear-gradient(180deg, var(--accent) 0%, #00C8FF 100%);
+  box-shadow: 0 0 8px rgba(0,184,255,0.55);
 }
 
 /* Right card */
@@ -111,6 +255,25 @@
   opacity: 0;
   transform: translateY(6px);
   animation: aboutBlockIn 540ms var(--ease-standard) forwards;
+  transition: border-color 240ms var(--ease-standard);
+  cursor: default;
+}
+.about-v2-block:hover {
+  border-bottom-color: rgba(0,184,255,0.40);
+  box-shadow: 0 1px 0 rgba(0,184,255,0.40);
+}
+.about-v2-block-num,
+.about-v2-block-label,
+.about-v2-block-title,
+.about-v2-block-body p {
+  transition: color 240ms var(--ease-standard);
+}
+.about-v2-block:hover .about-v2-block-num {
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(0,184,255,0.55);
+}
+.about-v2-block:hover .about-v2-block-label {
+  color: rgba(0,184,255,0.85);
 }
 .about-v2-block:nth-child(1) { animation-delay: 180ms; }
 .about-v2-block:nth-child(2) { animation-delay: 280ms; }

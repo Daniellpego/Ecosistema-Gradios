@@ -28,16 +28,20 @@ form[data-contact] .error {
 
 /* Hero: micro-bloco discreto com cidade — abaixo dos trust pills */
 .hero-locale {
-  margin: 18px 0 0;
-  font-size: 13px;
-  line-height: 18px;
-  color: var(--text-soft);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  margin: 28px 0 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: #2D3B57;
+  font-weight: 500;
+  max-width: 540px;
 }
-.hero-locale strong { color: var(--text-muted); font-weight: 600; }
-.hero-locale i { color: var(--brand); flex-shrink: 0; }
+.hero-locale strong { color: var(--text); font-weight: 700; }
+.hero-locale i {
+  color: var(--brand);
+  display: inline-block;
+  vertical-align: -2px;
+  margin-right: 4px;
+}
 
 /* Footer: NAP block (Name · Address · Phone) — endereço estruturado */
 .footer-nap {

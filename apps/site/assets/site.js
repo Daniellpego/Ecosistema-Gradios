@@ -64,7 +64,8 @@
   });
   const close = document.querySelector('.tweaks-close');
   if (close) close.addEventListener('click', () => {
-    document.querySelector('.tweaks-panel').classList.remove('open');
+    const panelEl = document.querySelector('.tweaks-panel');
+    if (panelEl) panelEl.classList.remove('open');
     window.parent && window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
   });
 
@@ -101,9 +102,50 @@
     (typeof window !== 'undefined' && window.GRADIOS_LEAD_ENDPOINT) ||
     'https://urpuiznydrlwmaqhdids.supabase.co/functions/v1/site-lead-submit';
 
+  // ---------- marquee setores: touch pause (mobile equivalente ao hover desktop)
+  document.querySelectorAll('.segments-marquee').forEach((m) => {
+    let pauseTimer = null;
+    const track = m.querySelector('.segments-track');
+    if (!track) return;
+    m.addEventListener('touchstart', () => {
+      track.style.animationPlayState = 'paused';
+      if (pauseTimer) clearTimeout(pauseTimer);
+      pauseTimer = setTimeout(() => { track.style.animationPlayState = ''; }, 3000);
+    }, { passive: true });
+  });
+
   document.querySelectorAll('form[data-contact]').forEach((form) => {
     const submitBtn = form.querySelector('button[type="submit"]');
     const submitOriginalHTML = submitBtn ? submitBtn.innerHTML : '';
+
+    // ---------- form auto-save (preserva valores em refresh ou erro de submit)
+    const STORAGE_KEY = 'gradios-contact-draft-' + (form.id || 'home');
+    const persistableFields = form.querySelectorAll('input:not([type="hidden"]):not([name="website"]), select, textarea');
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (saved) {
+        persistableFields.forEach((f) => {
+          if (saved[f.name] && !f.value) f.value = saved[f.name];
+        });
+      }
+    } catch (_) { /* localStorage indisponível — silent */ }
+    const saveDraft = () => {
+      try {
+        const data = {};
+        persistableFields.forEach((f) => { if (f.name) data[f.name] = f.value; });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (_) { /* silent */ }
+    };
+    persistableFields.forEach((f) => f.addEventListener('input', saveDraft));
+    form.addEventListener('submit', () => {
+      // limpa draft só após sucesso visível (delay pra não apagar antes do envio)
+      setTimeout(() => {
+        const success = form.parentElement && form.parentElement.querySelector('[data-success]');
+        if (success && success.style.display !== 'none') {
+          try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+        }
+      }, 2000);
+    });
     let errorBox = form.querySelector('[data-form-error]');
     if (!errorBox) {
       errorBox = document.createElement('div');
@@ -145,9 +187,17 @@
         return;
       }
 
+      // Compat: home tem email+whatsapp separados; contato.html tem campo único "contato"
+      const emailField = form.querySelector('[name="email"]')?.value.trim() ?? '';
+      const whatsField = form.querySelector('[name="whatsapp"]')?.value.trim() ?? '';
+      const contatoLegacy = form.querySelector('[name="contato"]')?.value.trim() ?? '';
+      const contatoCombined = [emailField, whatsField].filter(Boolean).join(' · ') || contatoLegacy;
+
       const data = {
         nome: form.querySelector('[name="nome"]')?.value.trim() ?? '',
-        contato: form.querySelector('[name="contato"]')?.value.trim() ?? '',
+        contato: contatoCombined,
+        email: emailField || null,
+        whatsapp: whatsField || null,
         empresa: form.querySelector('[name="empresa"]')?.value.trim() || null,
         tipo: form.querySelector('[name="tipo"]')?.value.trim() ?? '',
         mensagem: form.querySelector('[name="mensagem"]')?.value.trim() ?? '',
@@ -225,41 +275,133 @@
     setInterval(cycle, 2400);
   }
 
-  // ---------- process timeline scroll reveal + rail fill
+  // ---------- process timeline: scroll-driven sync (rail + active step + side card)
   const tlist = document.querySelector('.timeline-list');
-  if (tlist && 'IntersectionObserver' in window) {
-    const rail = tlist.querySelector('.tline-rail-fill');
-    const activeIdx = parseInt(tlist.dataset.activeStep || '3', 10);
-    const steps = tlist.querySelectorAll('.tline-step');
-    const tio = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting) {
-          tlist.classList.add('is-revealed');
-          if (rail && steps.length) {
-            // fill up to active step
-            const pct = ((activeIdx - 0.5) / steps.length) * 100;
-            rail.style.height = pct + '%';
+  if (tlist) {
+    const rail   = tlist.querySelector('.tline-rail-fill');
+    const steps  = Array.from(tlist.querySelectorAll('.tline-step'));
+    const total  = steps.length;
+    const panel  = document.querySelector('.process-panel');
+    const cardName = panel && panel.querySelector('.proc-status-name');
+    const cardMeta = panel && panel.querySelector('.proc-status-meta');
+    const progress = panel && panel.querySelector('.proc-progress-fill');
+
+    // reveal-stagger inicial via IntersectionObserver
+    if ('IntersectionObserver' in window) {
+      const tio = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            tlist.classList.add('is-revealed');
+            tio.unobserve(tlist);
           }
-          tio.unobserve(tlist);
-        }
+        });
+      }, { threshold: 0.18 });
+      tio.observe(tlist);
+    }
+
+    // sync contínuo conforme o scroll passa pela timeline
+    let lastIdx = -1;
+    let ticking = false;
+
+    const sync = () => {
+      ticking = false;
+      const rect = tlist.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const focusY = vh * 0.4; // linha de foco a 40% do topo da viewport
+
+      // progresso vertical dentro da lista (0..1) baseado em quanto a focusY entrou na lista
+      const listTop = rect.top;
+      const listHeight = rect.height;
+      let p = (focusY - listTop) / listHeight;
+      p = Math.max(0, Math.min(1, p));
+
+      // rail fill contínuo
+      if (rail) rail.style.height = (p * 100) + '%';
+
+      // qual step está mais perto da linha de foco
+      let bestIdx = 0;
+      let bestDist = Infinity;
+      steps.forEach((s, i) => {
+        const r = s.getBoundingClientRect();
+        const center = r.top + r.height / 2;
+        const dist = Math.abs(center - focusY);
+        if (dist < bestDist) { bestDist = dist; bestIdx = i; }
       });
-    }, { threshold: 0.18 });
-    tio.observe(tlist);
+
+      // só atualiza se o step ativo mudou
+      if (bestIdx !== lastIdx) {
+        lastIdx = bestIdx;
+        steps.forEach((s, i) => s.classList.toggle('is-active', i === bestIdx));
+
+        // atualiza o card lateral
+        const active = steps[bestIdx];
+        const name = active.dataset.cardName || (active.querySelector('h3') || {}).textContent || '';
+        const stepNum = parseInt(active.dataset.step, 10) || (bestIdx + 1);
+
+        if (cardName) {
+          // fade rápido na troca de texto
+          cardName.style.opacity = '0';
+          setTimeout(() => {
+            cardName.textContent = name;
+            cardName.style.opacity = '1';
+          }, 140);
+        }
+        if (cardMeta) cardMeta.textContent = `${stepNum} de ${total} etapas`;
+        if (progress) progress.style.width = ((stepNum / total) * 100) + '%';
+      }
+    };
+
+    // CSS auxiliar pro fade do nome
+    if (cardName) {
+      cardName.style.transition = 'opacity 220ms cubic-bezier(.2,.7,0,1)';
+    }
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(sync);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    sync(); // estado inicial
   }
 
-  // ---------- progress bar fill in process panel
-  const progressEls = document.querySelectorAll('.proc-progress-fill[data-progress]');
-  if (progressEls.length && 'IntersectionObserver' in window) {
-    const pio = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting) {
-          const pct = parseInt(en.target.dataset.progress, 10) || 0;
-          requestAnimationFrame(() => { en.target.style.width = pct + '%'; });
-          pio.unobserve(en.target);
+  // ---------- solutions tabs (substitui o grid de 6 cards) — WAI-ARIA compliant
+  const solTabs = Array.from(document.querySelectorAll('.solutions-tab'));
+  const solPanels = Array.from(document.querySelectorAll('.solutions-panel'));
+  if (solTabs.length && solPanels.length) {
+    const activateTab = (tab, focus = false) => {
+      const target = tab.dataset.target;
+      solTabs.forEach(t => {
+        const active = t === tab;
+        t.classList.toggle('is-active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+        t.setAttribute('tabindex', active ? '0' : '-1');
+      });
+      solPanels.forEach(p => {
+        const active = p.dataset.tab === target;
+        p.classList.toggle('is-active', active);
+        if (active) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+      });
+      if (focus) tab.focus();
+      if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    };
+    solTabs.forEach((tab, idx) => {
+      tab.addEventListener('click', () => activateTab(tab));
+      tab.addEventListener('keydown', (e) => {
+        let nextIdx = null;
+        if (e.key === 'ArrowRight') nextIdx = (idx + 1) % solTabs.length;
+        else if (e.key === 'ArrowLeft') nextIdx = (idx - 1 + solTabs.length) % solTabs.length;
+        else if (e.key === 'Home') nextIdx = 0;
+        else if (e.key === 'End') nextIdx = solTabs.length - 1;
+        if (nextIdx !== null) {
+          e.preventDefault();
+          activateTab(solTabs[nextIdx], true);
         }
       });
-    }, { threshold: 0.4 });
-    progressEls.forEach(el => pio.observe(el));
+    });
   }
 
   // ---------- generic stagger reveal (.reveal-stagger)
@@ -276,29 +418,57 @@
     revealEls.forEach(el => rio.observe(el));
   }
 
-  // ---------- diff feature mini-flow animated highlight
+  // ---------- diff feature mini-flow + card hover sync
   const flow = document.querySelector('.diff-flow');
-  if (flow && 'IntersectionObserver' in window) {
+  const diffFeature = document.querySelector('.diff-feature');
+  const diffCards = document.querySelectorAll('.diff-card[data-flow-target]');
+  if (flow) {
     const fill = flow.querySelector('.diff-flow-line-fill');
-    const steps = flow.querySelectorAll('.diff-flow-step');
-    let started = false;
-    const fio = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting && !started) {
-          started = true;
-          if (fill) fill.style.width = '100%';
-          let i = 0;
-          const cycle = () => {
-            steps.forEach((s, idx) => s.classList.toggle('is-on', idx <= i % steps.length));
-            i++;
-          };
-          cycle();
-          setInterval(cycle, 1300);
-          fio.unobserve(flow);
-        }
-      });
-    }, { threshold: 0.35 });
-    fio.observe(flow);
+    const steps = Array.from(flow.querySelectorAll('.diff-flow-step'));
+
+    // reveal: linha preenche e todos os nodes ficam ligados em estado idle
+    if ('IntersectionObserver' in window) {
+      let started = false;
+      const fio = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting && !started) {
+            started = true;
+            if (fill) fill.style.width = '100%';
+            // todos os steps em idle "is-on" pra mostrar o caminho completo
+            steps.forEach(s => s.classList.add('is-on'));
+            fio.unobserve(flow);
+          }
+        });
+      }, { threshold: 0.35 });
+      fio.observe(flow);
+    } else {
+      if (fill) fill.style.width = '100%';
+      steps.forEach(s => s.classList.add('is-on'));
+    }
+
+    // hover dos cards → spotlight cyan no step correspondente do flow
+    const setPin = (idx) => {
+      steps.forEach((s, i) => s.classList.toggle('is-pinned', i === idx));
+      if (diffFeature) diffFeature.classList.toggle('has-pin', idx !== -1);
+    };
+    const isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    diffCards.forEach(card => {
+      const target = parseInt(card.dataset.flowTarget, 10);
+      if (isNaN(target)) return;
+      card.addEventListener('mouseenter', () => setPin(target));
+      card.addEventListener('focusin',    () => setPin(target));
+      card.addEventListener('mouseleave', () => setPin(-1));
+      card.addEventListener('focusout',   () => setPin(-1));
+      // mobile/touch: tap acende o flow por 2s (compensa ausência de hover)
+      if (isCoarsePointer) {
+        let pinTimer = null;
+        card.addEventListener('click', () => {
+          setPin(target);
+          if (pinTimer) clearTimeout(pinTimer);
+          pinTimer = setTimeout(() => setPin(-1), 2000);
+        });
+      }
+    });
   }
 
   // ---------- year

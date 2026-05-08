@@ -49,3 +49,6 @@ reports/
 
 # Next.js generated
 next-env.d.ts
+
+# Legacy site backup (Next.js antigo, mantido localmente fora do controle de versão)
+apps/site_legacy_backup/

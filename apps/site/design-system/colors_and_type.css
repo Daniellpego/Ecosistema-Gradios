@@ -14,9 +14,15 @@
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 700; src: url("fonts/Inter-Bold.otf")    format("opentype"); font-display: swap; }
 
 :root {
+  /* ---- Layout tokens ------------------------------------------------ */
+  --max-w:              1280px;  /* container principal */
+  --section-pad:        120px;   /* padding vertical de section */
+  --section-pad-mobile: 80px;
+  --section-head-gap:   48px;    /* margin-bottom padronizado de .section-head */
+
   /* ---- Color: Neutrals (the spine of the system) -------------------- */
   --bg:           #FFFFFF;   /* primary surface */
-  --bg-subtle:    #F5F5F7;   /* perceptible off-white panel */
+  --bg-subtle:    #F1F5F9;   /* off-white com mais peso (era #F5F5F7) */
   --bg-muted:     #EBEBEF;   /* recessed field / hover surface */
   --bg-inset:     #E0E0E4;   /* deeper inset / pressed */
   --border:       #D1D1D6;   /* hairlines, field borders */
@@ -26,7 +32,7 @@
   /* Text — never pure black. */
   --text:         #1D1D1F;   /* primary copy */
   --text-muted:   #5C5C61;   /* secondary — bumped from #6E6E73 */
-  --text-soft:    #8E8E93;   /* placeholders, captions */
+  --text-soft:    #6E7480;   /* contraste 5.5:1 (era #8E8E93 / 4.4:1) */
   --text-faint:   #B0B0B5;   /* disabled (use sparingly) */
   --text-invert:  #FFFFFF;
 

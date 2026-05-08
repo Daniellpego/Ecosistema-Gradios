@@ -6,7 +6,7 @@
 
   <!-- Primary SEO -->
   <title>Gradios · Software, sites, automações e IA em Londrina</title>
-  <meta name="description" content="A Gradios é uma empresa de tecnologia em Londrina/PR. Criamos sites, sistemas, apps, automações, dashboards e soluções com IA para empresas que querem operar melhor.">
+  <meta name="description" content="Empresa de tecnologia em Londrina/PR. Criamos sites, sistemas, automações, dashboards e IA para empresas que querem operar melhor.">
   <meta name="author" content="Gradios">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://gradios.co/">
@@ -100,7 +100,8 @@
     },
     "areaServed": [
       { "@type": "City", "name": "Londrina" },
-      { "@type": "State", "name": "Paraná" }
+      { "@type": "State", "name": "Paraná" },
+      { "@type": "Country", "name": "Brasil" }
     ],
     "knowsAbout": [
       "Desenvolvimento de software sob medida",
@@ -194,6 +195,9 @@
 </head>
 <body data-screen-label="Home — Gradios" data-primary="neutral">
 
+  <!-- Skip-to-content (a11y WCAG 2.1) -->
+  <a href="#main" class="skip-link">Pular para o conteúdo</a>
+
   <!-- ============== HEADER ============== -->
   <header class="site-header" data-screen-label="Header">
     <div class="container">
@@ -230,7 +234,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="main">
 
     <!-- ============== HERO ============== -->
     <section class="hero" data-screen-label="Hero">
@@ -243,9 +247,9 @@
               Tecnologia sob medida · 2026
             </div>
             <h1 class="hero-title">
-              <span class="hero-line">Tecnologia <em>sob medida</em></span>
-              <span class="hero-line">para empresas que</span>
-              <span class="hero-line">querem operar melhor.</span>
+              <span class="hero-line">Tecnologia <em>sob medida</em> para</span>
+              <span class="hero-line">empresas que querem</span>
+              <span class="hero-line">operar melhor.</span>
             </h1>
             <p class="hero-lead">
               Criamos sites, sistemas, apps, automações e soluções com IA para organizar processos, acelerar atendimento e dar mais controle à sua operação.
@@ -383,7 +387,7 @@
                   <div class="ava">G</div>
                   <div class="meta">
                     <b>Gradios · atendimento</b>
-                    <span>● online</span>
+                    <span>online</span>
                   </div>
                 </div>
                 <div class="wa-msgs">
@@ -431,19 +435,28 @@
           </div>
         </div>
 
-        <!-- segments row -->
+        <!-- segments marquee -->
         <div class="segments">
           <div class="segments-head">
             <span class="segments-eyebrow">PARA OPERAÇÕES EXIGENTES</span>
             <h3 class="segments-title">Atendemos diferentes tipos de operação.</h3>
           </div>
-          <div class="segments-row">
-            <div class="seg"><i data-lucide="stethoscope" style="width:18px;height:18px"></i><span>Clínicas</span></div>
-            <div class="seg"><i data-lucide="factory" style="width:18px;height:18px"></i><span>Indústria</span></div>
-            <div class="seg"><i data-lucide="store" style="width:18px;height:18px"></i><span>Varejo</span></div>
-            <div class="seg"><i data-lucide="briefcase" style="width:18px;height:18px"></i><span>Serviços</span></div>
-            <div class="seg"><i data-lucide="truck" style="width:18px;height:18px"></i><span>Logística</span></div>
-            <div class="seg"><i data-lucide="heart-pulse" style="width:18px;height:18px"></i><span>Saúde</span></div>
+          <div class="segments-marquee" aria-hidden="false" role="list" aria-label="Setores atendidos">
+            <div class="segments-track">
+              <div class="seg" role="listitem"><i data-lucide="stethoscope" style="width:18px;height:18px"></i><span>Clínicas</span></div>
+              <div class="seg" role="listitem"><i data-lucide="factory" style="width:18px;height:18px"></i><span>Indústria</span></div>
+              <div class="seg" role="listitem"><i data-lucide="store" style="width:18px;height:18px"></i><span>Varejo</span></div>
+              <div class="seg" role="listitem"><i data-lucide="briefcase" style="width:18px;height:18px"></i><span>Serviços</span></div>
+              <div class="seg" role="listitem"><i data-lucide="truck" style="width:18px;height:18px"></i><span>Logística</span></div>
+              <div class="seg" role="listitem"><i data-lucide="heart-pulse" style="width:18px;height:18px"></i><span>Saúde</span></div>
+              <!-- Duplicata pro loop infinito -->
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="stethoscope" style="width:18px;height:18px"></i><span>Clínicas</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="factory" style="width:18px;height:18px"></i><span>Indústria</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="store" style="width:18px;height:18px"></i><span>Varejo</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="briefcase" style="width:18px;height:18px"></i><span>Serviços</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="truck" style="width:18px;height:18px"></i><span>Logística</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="heart-pulse" style="width:18px;height:18px"></i><span>Saúde</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -489,63 +502,237 @@
             <p>Sem painel claro, a gestão perde visibilidade. A decisão vira percepção, e o número certo quase sempre chega tarde.</p>
           </article>
         </div>
-        <p class="problem-bridge">É exatamente para resolver esse tipo de fricção que a Gradios cria sites, sistemas, automações e soluções com IA.</p>
+      </div>
+      <div class="problem-bridge-wrap">
+        <div class="problem-bridge-bg" aria-hidden="true"></div>
+        <div class="container">
+          <p class="problem-bridge">
+            É exatamente para resolver esse tipo de fricção que a <strong>Gradios</strong> cria sites, sistemas, automações e <em>soluções com IA</em>.
+          </p>
+        </div>
       </div>
     </section>
 
     <!-- ============== SOLUTIONS ============== -->
-    <section class="section section-subtle" id="solucoes" data-screen-label="Soluções">
+    <section class="section solutions-dark" id="solucoes" data-screen-label="Soluções">
+      <div class="solutions-bg" aria-hidden="true"></div>
       <div class="container">
         <div class="section-head">
           <span class="section-eyebrow brand">O QUE FAZEMOS</span>
           <h2 class="section-title">Soluções digitais sob medida para presença, operação e crescimento.</h2>
           <p class="section-lead">Criamos sites, sistemas, apps, automações, IA e dashboards conectados à rotina real da sua empresa, sem template genérico, sem excesso de ferramenta e sem complexidade desnecessária.</p>
         </div>
-        <div class="cards-grid solutions-grid">
-          <article class="card card-solution">
-            <div class="card-glyph brand"><i data-lucide="layout" style="width:20px;height:20px"></i></div>
-            <span class="microtag">Presença digital</span>
-            <h3>Sites profissionais</h3>
-            <p>Sites modernos, rápidos e bem estruturados para apresentar sua empresa com autoridade, aparecer melhor nas buscas e transformar visitantes em oportunidades reais.</p>
-            <a href="sites.html" class="card-link">Ver detalhes <span class="arr">→</span></a>
-          </article>
-          <article class="card card-solution">
-            <div class="card-glyph brand"><i data-lucide="cpu" style="width:20px;height:20px"></i></div>
-            <span class="microtag">Operação</span>
-            <h3>Sistemas personalizados</h3>
-            <p>Sistemas criados para o jeito que sua empresa opera, centralizando informações, padronizando fluxos e reduzindo retrabalho entre equipes.</p>
-            <a href="sistemas.html" class="card-link">Ver detalhes <span class="arr">→</span></a>
-          </article>
-          <article class="card card-solution">
-            <div class="card-glyph brand"><i data-lucide="smartphone" style="width:20px;height:20px"></i></div>
-            <span class="microtag">Experiência</span>
-            <h3>Aplicativos</h3>
-            <p>Aplicativos web ou mobile para aproximar clientes, equipes e processos em uma experiência simples, segura e pensada para uso real.</p>
-            <a href="solucoes.html#apps" class="card-link">Ver detalhes <span class="arr">→</span></a>
-          </article>
-          <article class="card card-solution">
-            <div class="card-glyph brand"><i data-lucide="workflow" style="width:20px;height:20px"></i></div>
-            <span class="microtag">Produtividade</span>
-            <h3>Automações</h3>
-            <p>Automações para eliminar tarefas repetitivas, acelerar respostas, integrar ferramentas e liberar sua equipe para o que realmente exige decisão humana.</p>
-            <a href="automacoes.html" class="card-link">Ver detalhes <span class="arr">→</span></a>
-          </article>
-          <article class="card card-solution">
-            <div class="card-glyph brand"><i data-lucide="sparkles" style="width:20px;height:20px"></i></div>
-            <span class="microtag">IA aplicada</span>
-            <h3>Inteligência Artificial</h3>
-            <p>IA aplicada a processos reais: atendimento, análise de dados, suporte, produtividade e decisões mais rápidas com menos trabalho manual.</p>
-            <a href="ia.html" class="card-link">Ver detalhes <span class="arr">→</span></a>
-          </article>
-          <article class="card card-solution">
-            <div class="card-glyph brand"><i data-lucide="bar-chart-3" style="width:20px;height:20px"></i></div>
-            <span class="microtag">Gestão</span>
-            <h3>Dashboards e painéis</h3>
-            <p>Painéis para transformar dados espalhados em visão clara: clientes, agenda, pedidos, indicadores, operação e resultados em um só lugar.</p>
-            <a href="solucoes.html#dashboards" class="card-link">Ver detalhes <span class="arr">→</span></a>
-          </article>
+        <div class="solutions-tabs reveal-stagger" style="--rd:1">
+          <div class="solutions-tabs-list" role="tablist" aria-label="Soluções Gradios">
+            <button class="solutions-tab is-active" role="tab" aria-selected="true" id="tab-sites" aria-controls="panel-sites" data-target="sites">
+              <span class="solutions-tab-ico"><i data-lucide="layout" style="width:18px;height:18px;stroke-width:2"></i></span>
+              <span class="solutions-tab-lab">Sites</span>
+            </button>
+            <button class="solutions-tab" role="tab" aria-selected="false" tabindex="-1" id="tab-sistemas" aria-controls="panel-sistemas" data-target="sistemas">
+              <span class="solutions-tab-ico"><i data-lucide="cpu" style="width:18px;height:18px;stroke-width:2"></i></span>
+              <span class="solutions-tab-lab">Sistemas</span>
+            </button>
+            <button class="solutions-tab" role="tab" aria-selected="false" tabindex="-1" id="tab-apps" aria-controls="panel-apps" data-target="apps">
+              <span class="solutions-tab-ico"><i data-lucide="smartphone" style="width:18px;height:18px;stroke-width:2"></i></span>
+              <span class="solutions-tab-lab">Aplicativos</span>
+            </button>
+            <button class="solutions-tab" role="tab" aria-selected="false" tabindex="-1" id="tab-automacoes" aria-controls="panel-automacoes" data-target="automacoes">
+              <span class="solutions-tab-ico"><i data-lucide="workflow" style="width:18px;height:18px;stroke-width:2"></i></span>
+              <span class="solutions-tab-lab">Automações</span>
+            </button>
+            <button class="solutions-tab" role="tab" aria-selected="false" tabindex="-1" id="tab-ia" aria-controls="panel-ia" data-target="ia">
+              <span class="solutions-tab-ico"><i data-lucide="sparkles" style="width:18px;height:18px;stroke-width:2"></i></span>
+              <span class="solutions-tab-lab">IA</span>
+            </button>
+            <button class="solutions-tab" role="tab" aria-selected="false" tabindex="-1" id="tab-dashboards" aria-controls="panel-dashboards" data-target="dashboards">
+              <span class="solutions-tab-ico"><i data-lucide="bar-chart-3" style="width:18px;height:18px;stroke-width:2"></i></span>
+              <span class="solutions-tab-lab">Dashboards</span>
+            </button>
+          </div>
+
+          <div class="solutions-tabs-stage">
+            <article class="solutions-panel is-active" data-tab="sites" id="panel-sites" role="tabpanel" aria-labelledby="tab-sites">
+              <div class="solutions-panel-visual" aria-hidden="true">
+                <div class="sp-browser">
+                  <div class="sp-browser-bar"><i></i><i></i><i></i><span>seusite.com.br</span></div>
+                  <div class="sp-browser-body">
+                    <div class="sp-hero-block">
+                      <span class="sp-tag">Operação · 2026</span>
+                      <div class="sp-line sp-line-h1"></div>
+                      <div class="sp-line sp-line-h2"></div>
+                      <div class="sp-cta">Conhecer →</div>
+                    </div>
+                    <div class="sp-grid-3">
+                      <div class="sp-card-mini"></div>
+                      <div class="sp-card-mini"></div>
+                      <div class="sp-card-mini"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="solutions-panel-info">
+                <span class="microtag">Presença digital</span>
+                <h3>Sites profissionais</h3>
+                <p>Sites modernos, rápidos e bem estruturados para apresentar sua empresa com autoridade, aparecer melhor nas buscas e transformar visitantes em oportunidades reais.</p>
+                <ul class="solutions-panel-features">
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>SEO técnico + GEO para IA</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Performance e Core Web Vitals</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Design responsivo sob medida</li>
+                </ul>
+                <a href="sites.html" class="solutions-panel-link">Ver detalhes <span class="arr">→</span></a>
+              </div>
+            </article>
+
+            <article class="solutions-panel" data-tab="sistemas" id="panel-sistemas" role="tabpanel" aria-labelledby="tab-sistemas" hidden>
+              <div class="solutions-panel-visual" aria-hidden="true">
+                <div class="sp-system">
+                  <div class="sp-system-bar"><span class="sp-dot live"></span>Painel · Operação<span class="sp-system-meta">v2.4</span></div>
+                  <div class="sp-system-kpis">
+                    <div class="sp-kpi"><span>Pipeline</span><b>2.847</b></div>
+                    <div class="sp-kpi featured"><span>Convertidos</span><b>341</b></div>
+                    <div class="sp-kpi"><span>SLA</span><b>98%</b></div>
+                  </div>
+                  <div class="sp-system-rows">
+                    <div class="sp-row"><span class="sp-dot ok"></span>Sincronia ERP · OK</div>
+                    <div class="sp-row"><span class="sp-dot ok"></span>Pagamentos · OK</div>
+                    <div class="sp-row"><span class="sp-dot warn"></span>Estoque · revisar</div>
+                  </div>
+                </div>
+              </div>
+              <div class="solutions-panel-info">
+                <span class="microtag">Operação</span>
+                <h3>Sistemas personalizados</h3>
+                <p>Sistemas criados para o jeito que sua empresa opera, centralizando informações, padronizando fluxos e reduzindo retrabalho entre equipes.</p>
+                <ul class="solutions-panel-features">
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Integração com ERP, CRM e WhatsApp</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Permissões e auditoria por equipe</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Painéis de KPI em tempo real</li>
+                </ul>
+                <a href="sistemas.html" class="solutions-panel-link">Ver detalhes <span class="arr">→</span></a>
+              </div>
+            </article>
+
+            <article class="solutions-panel" data-tab="apps" id="panel-apps" role="tabpanel" aria-labelledby="tab-apps" hidden>
+              <div class="solutions-panel-visual" aria-hidden="true">
+                <div class="sp-phone">
+                  <div class="sp-phone-island"></div>
+                  <div class="sp-phone-screen">
+                    <div class="sp-phone-row sp-phone-title">Hoje</div>
+                    <div class="sp-phone-card"><span>FATURAMENTO</span><b>R$ 84.220</b><i class="sp-phone-bar" style="--w:78%"></i></div>
+                    <div class="sp-phone-card"><span>PEDIDOS</span><b>182 / 230</b><i class="sp-phone-bar" style="--w:79%"></i></div>
+                    <div class="sp-phone-card"><span>ATENDIMENTOS</span><b>47 abertos</b><i class="sp-phone-bar accent" style="--w:42%"></i></div>
+                  </div>
+                </div>
+              </div>
+              <div class="solutions-panel-info">
+                <span class="microtag">Experiência</span>
+                <h3>Aplicativos</h3>
+                <p>Aplicativos web ou mobile para aproximar clientes, equipes e processos em uma experiência simples, segura e pensada para uso real.</p>
+                <ul class="solutions-panel-features">
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>iOS, Android ou PWA</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Notificações e fluxos offline</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Conectados ao seu sistema</li>
+                </ul>
+                <a href="solucoes.html#apps" class="solutions-panel-link">Ver detalhes <span class="arr">→</span></a>
+              </div>
+            </article>
+
+            <article class="solutions-panel" data-tab="automacoes" id="panel-automacoes" role="tabpanel" aria-labelledby="tab-automacoes" hidden>
+              <div class="solutions-panel-visual" aria-hidden="true">
+                <div class="sp-flow">
+                  <div class="sp-flow-node"><i data-lucide="message-circle" style="width:14px;height:14px;stroke-width:2"></i><span>WhatsApp</span></div>
+                  <div class="sp-flow-arrow"><span></span></div>
+                  <div class="sp-flow-node sp-flow-mid"><i data-lucide="zap" style="width:14px;height:14px;stroke-width:2"></i><span>Qualifica</span></div>
+                  <div class="sp-flow-arrow"><span></span></div>
+                  <div class="sp-flow-node"><i data-lucide="users" style="width:14px;height:14px;stroke-width:2"></i><span>CRM</span></div>
+                </div>
+                <div class="sp-flow-meta">3 etapas · 47 leads/mês · sem operação manual</div>
+              </div>
+              <div class="solutions-panel-info">
+                <span class="microtag">Produtividade</span>
+                <h3>Automações</h3>
+                <p>Automações para eliminar tarefas repetitivas, acelerar respostas, integrar ferramentas e liberar sua equipe para o que realmente exige decisão humana.</p>
+                <ul class="solutions-panel-features">
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>WhatsApp · qualificação automática</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Integrações entre ERP / CRM / agenda</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>n8n, webhooks e APIs sob medida</li>
+                </ul>
+                <a href="automacoes.html" class="solutions-panel-link">Ver detalhes <span class="arr">→</span></a>
+              </div>
+            </article>
+
+            <article class="solutions-panel" data-tab="ia" id="panel-ia" role="tabpanel" aria-labelledby="tab-ia" hidden>
+              <div class="solutions-panel-visual" aria-hidden="true">
+                <div class="sp-ia">
+                  <div class="sp-ia-head"><span class="sp-dot live"></span>IA · análise em curso<span class="sp-ia-meta">claude-sonnet-4.6</span></div>
+                  <div class="sp-ia-prompt">› Como aumentar conversão da Filial Centro?<span class="sp-ia-cursor" aria-hidden="true"></span></div>
+                  <div class="sp-ia-output">
+                    <div class="sp-ia-line"><b>Diagnóstico:</b> queda de 18% no SLA de atendimento</div>
+                    <div class="sp-ia-line"><b>Ação:</b> reroteamento + alerta automático</div>
+                    <div class="sp-ia-line"><b>Impacto:</b> +12% conversão estimada</div>
+                    <div class="sp-ia-progress" aria-hidden="true">
+                      <span class="sp-ia-progress-fill"></span>
+                      <span class="sp-ia-progress-meta">Processando · 87%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="solutions-panel-info">
+                <span class="microtag">IA aplicada</span>
+                <h3>Inteligência Artificial</h3>
+                <p>IA aplicada a processos reais: atendimento, análise de dados, suporte, produtividade e decisões mais rápidas com menos trabalho manual.</p>
+                <ul class="solutions-panel-features">
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Atendentes inteligentes (Groq · Claude · GPT)</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Análise de dados e classificação automática</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>RAG sobre dados internos da empresa</li>
+                </ul>
+                <a href="ia.html" class="solutions-panel-link">Ver detalhes <span class="arr">→</span></a>
+              </div>
+            </article>
+
+            <article class="solutions-panel" data-tab="dashboards" id="panel-dashboards" role="tabpanel" aria-labelledby="tab-dashboards" hidden>
+              <div class="solutions-panel-visual" aria-hidden="true">
+                <div class="sp-dash">
+                  <div class="sp-dash-head"><span class="sp-dot live"></span>Operação · tempo real</div>
+                  <div class="sp-dash-kpis">
+                    <div class="sp-kpi"><span>Receita</span><b>R$ 184k</b></div>
+                    <div class="sp-kpi"><span>+ MRR</span><b>+12%</b></div>
+                    <div class="sp-kpi"><span>NPS</span><b>62</b></div>
+                  </div>
+                  <div class="sp-dash-chart" aria-hidden="true">
+                    <svg viewBox="0 0 240 70" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="sp-grad-d" x1="0" x2="0" y1="0" y2="1">
+                          <stop offset="0" stop-color="#2546BD" stop-opacity="0.22"/>
+                          <stop offset="1" stop-color="#2546BD" stop-opacity="0"/>
+                        </linearGradient>
+                      </defs>
+                      <path d="M0 55 L24 48 L48 52 L72 38 L96 42 L120 28 L144 32 L168 18 L192 22 L216 12 L240 16 L240 70 L0 70 Z" fill="url(#sp-grad-d)"/>
+                      <path d="M0 55 L24 48 L48 52 L72 38 L96 42 L120 28 L144 32 L168 18 L192 22 L216 12 L240 16" fill="none" stroke="#2546BD" stroke-width="1.6" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="solutions-panel-info">
+                <span class="microtag">Gestão</span>
+                <h3>Dashboards e painéis</h3>
+                <p>Painéis para transformar dados espalhados em visão clara: clientes, agenda, pedidos, indicadores, operação e resultados em um só lugar.</p>
+                <ul class="solutions-panel-features">
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>KPIs e gráficos em tempo real</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Drill-down por filial, equipe, período</li>
+                  <li><i data-lucide="check" style="width:14px;height:14px;stroke-width:3"></i>Alertas automáticos de gargalos</li>
+                </ul>
+                <a href="solucoes.html#dashboards" class="solutions-panel-link">Ver detalhes <span class="arr">→</span></a>
+              </div>
+            </article>
+          </div>
         </div>
-        <p class="solutions-bridge">Cada solução pode funcionar sozinha. Mas o <strong>maior ganho</strong> acontece quando site, sistema, automação e dados trabalham juntos.</p>
+        <div class="solutions-bridge-wrap reveal-stagger" style="--rd:7">
+          <div class="solutions-bridge-card">
+            <i data-lucide="git-merge" class="solutions-bridge-icon" style="width:18px;height:18px"></i>
+            <p class="solutions-bridge">Cada solução pode funcionar sozinha. Mas o <strong>maior ganho</strong> acontece quando site, sistema, automação e dados trabalham juntos.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -560,42 +747,42 @@
         <div class="timeline">
           <div class="timeline-list" data-active-step="3">
             <div class="tline-rail"><span class="tline-rail-fill"></span></div>
-            <div class="tline-step" data-step="1">
+            <div class="tline-step" data-step="1" data-card-name="Diagnóstico inicial">
               <div class="num">01</div>
               <div class="tline-body">
                 <h3>Diagnóstico</h3>
                 <p>Mapeamos o cenário atual, entendemos os gargalos e identificamos onde a tecnologia pode gerar mais impacto.</p>
               </div>
             </div>
-            <div class="tline-step" data-step="2">
+            <div class="tline-step" data-step="2" data-card-name="Estratégia de produto">
               <div class="num">02</div>
               <div class="tline-body">
                 <h3>Estratégia</h3>
                 <p>Definimos a solução ideal, priorizando o que resolve o problema de negócio antes de pensar em telas ou código.</p>
               </div>
             </div>
-            <div class="tline-step is-active" data-step="3">
+            <div class="tline-step is-active" data-step="3" data-card-name="Design e protótipo">
               <div class="num">03</div>
               <div class="tline-body">
                 <h3>Protótipo</h3>
                 <p>Criamos a estrutura visual e os fluxos principais para validar a experiência antes do desenvolvimento.</p>
               </div>
             </div>
-            <div class="tline-step" data-step="4">
+            <div class="tline-step" data-step="4" data-card-name="Desenvolvimento">
               <div class="num">04</div>
               <div class="tline-body">
                 <h3>Desenvolvimento</h3>
                 <p>Construímos a solução com foco em performance, segurança, escalabilidade e facilidade de uso.</p>
               </div>
             </div>
-            <div class="tline-step" data-step="5">
+            <div class="tline-step" data-step="5" data-card-name="Implantação e treinamento">
               <div class="num">05</div>
               <div class="tline-body">
                 <h3>Implantação</h3>
                 <p>Colocamos a solução em funcionamento, treinamos o time e ajustamos conforme o uso real.</p>
               </div>
             </div>
-            <div class="tline-step" data-step="6">
+            <div class="tline-step" data-step="6" data-card-name="Evolução contínua">
               <div class="num">06</div>
               <div class="tline-body">
                 <h3>Evolução</h3>
@@ -678,33 +865,33 @@
           </article>
 
           <div class="diff-grid">
-            <article class="diff-card reveal-stagger" style="--rd:1">
-              <i data-lucide="ruler" class="diff-ico" style="width:20px;height:20px;stroke-width:1.6"></i>
+            <article class="diff-card reveal-stagger" style="--rd:1" data-flow-target="0">
+              <span class="diff-ico"><i data-lucide="ruler" style="width:25px;height:25px;stroke-width:2"></i></span>
               <h4>Soluções sob medida</h4>
               <p>Projetos desenhados para a sua operação, não para encaixar sua empresa em um modelo genérico.</p>
             </article>
-            <article class="diff-card reveal-stagger" style="--rd:2">
-              <i data-lucide="palette" class="diff-ico" style="width:20px;height:20px;stroke-width:1.6"></i>
+            <article class="diff-card reveal-stagger" style="--rd:2" data-flow-target="1">
+              <span class="diff-ico"><i data-lucide="palette" style="width:25px;height:25px;stroke-width:2"></i></span>
               <h4>Design que facilita o uso</h4>
               <p>Interfaces claras, bonitas e funcionais, com hierarquia, ritmo visual e foco em uso real.</p>
             </article>
-            <article class="diff-card reveal-stagger" style="--rd:3">
-              <i data-lucide="plug" class="diff-ico" style="width:20px;height:20px;stroke-width:1.6"></i>
+            <article class="diff-card reveal-stagger" style="--rd:3" data-flow-target="2">
+              <span class="diff-ico"><i data-lucide="plug" style="width:25px;height:25px;stroke-width:2"></i></span>
               <h4>Integração entre ferramentas</h4>
               <p>CRM, ERP, agenda, WhatsApp, formulários e dados trabalhando juntos, sem retrabalho manual.</p>
             </article>
-            <article class="diff-card reveal-stagger" style="--rd:4">
-              <i data-lucide="workflow" class="diff-ico" style="width:20px;height:20px;stroke-width:1.6"></i>
+            <article class="diff-card reveal-stagger" style="--rd:4" data-flow-target="2">
+              <span class="diff-ico"><i data-lucide="workflow" style="width:25px;height:25px;stroke-width:2"></i></span>
               <h4>Automação de processos</h4>
               <p>Tudo que é repetitivo, previsível e operacional pode virar fluxo automatizado.</p>
             </article>
-            <article class="diff-card reveal-stagger" style="--rd:5">
-              <i data-lucide="message-square" class="diff-ico" style="width:20px;height:20px;stroke-width:1.6"></i>
+            <article class="diff-card reveal-stagger" style="--rd:5" data-flow-target="3">
+              <span class="diff-ico"><i data-lucide="message-square" style="width:25px;height:25px;stroke-width:2"></i></span>
               <h4>Comunicação clara</h4>
               <p>Você acompanha escopo, evolução e decisões sem precisar traduzir jargão técnico.</p>
             </article>
-            <article class="diff-card reveal-stagger" style="--rd:6">
-              <i data-lucide="git-branch" class="diff-ico" style="width:20px;height:20px;stroke-width:1.6"></i>
+            <article class="diff-card reveal-stagger" style="--rd:6" data-flow-target="4">
+              <span class="diff-ico"><i data-lucide="git-branch" style="width:25px;height:25px;stroke-width:2"></i></span>
               <h4>Evolução contínua</h4>
               <p>Código limpo, documentação e estrutura preparada para crescer junto com a empresa.</p>
             </article>
@@ -729,7 +916,7 @@
           <article class="proj-card proj-v2 proj-feature reveal-stagger" style="--rd:0">
             <div class="proj-feature-art art-clinica-v2">
               <!-- Modo real: screenshot do site público dentro de browser frame premium.
-                   Coloque a imagem em Site 2/cases/clinica-nelson-shirabe.png (e .webp opcional).
+                   Coloque a imagem em cases/clinica-nelson-shirabe.png (e .webp opcional).
                    Sem o arquivo, o mockup CSS abaixo segue como fallback (sem flash). -->
               <div class="pa-browser-real">
                 <div class="pa-browser-real-bar" aria-hidden="true">
@@ -750,33 +937,41 @@
                 </div>
               </div>
 
-              <!-- Fallback: mockup CSS (visível por padrão; ocultado quando .img-loaded) -->
+              <!-- Fallback: mockup CSS hi-fi (visível por padrão; ocultado quando .img-loaded) -->
               <div class="pa-browser" aria-hidden="true">
                 <div class="pa-browser-bar"><i></i><i></i><i></i><span class="pa-browser-url">clinicanelsonshirabe.com.br</span></div>
                 <div class="pa-browser-body">
-                  <div class="pa-hero">
-                    <span class="pa-pill">Fisioterapia</span>
-                    <div class="pa-h1"></div>
-                    <div class="pa-h2"></div>
-                    <div class="pa-cta"></div>
+                  <div class="pa-site-nav">
+                    <div class="pa-site-brand"><span class="pa-site-logo">N</span>Nelson Shirabe</div>
+                    <div class="pa-site-links"><span>Sobre</span><span>Especialidades</span><span class="active">Agendar</span></div>
                   </div>
-                  <div class="pa-cards-row">
-                    <div class="pa-mini"></div>
-                    <div class="pa-mini"></div>
-                    <div class="pa-mini"></div>
+                  <div class="pa-hero-hifi">
+                    <span class="pa-pill">Clínica de Fisioterapia · Londrina/PR</span>
+                    <div class="pa-headline">Fisioterapia que devolve o movimento</div>
+                    <div class="pa-sub">Avaliação com fisioterapeutas especializados em ortopedia, esportiva e RPG.</div>
+                    <div class="pa-cta-row">
+                      <span class="pa-cta-btn">Agendar avaliação <span>→</span></span>
+                      <span class="pa-cta-link">Ver especialidades</span>
+                    </div>
+                  </div>
+                  <div class="pa-services-row">
+                    <div class="pa-service">
+                      <div class="pa-service-ico"><i data-lucide="activity" style="width:11px;height:11px;stroke-width:2"></i></div>
+                      <span class="pa-service-tit">Ortopedia</span>
+                      <span class="pa-service-sub">Lesões e pós-operatório</span>
+                    </div>
+                    <div class="pa-service">
+                      <div class="pa-service-ico"><i data-lucide="zap" style="width:11px;height:11px;stroke-width:2"></i></div>
+                      <span class="pa-service-tit">Esportiva</span>
+                      <span class="pa-service-sub">Performance e atletas</span>
+                    </div>
+                    <div class="pa-service">
+                      <div class="pa-service-ico"><i data-lucide="heart-pulse" style="width:11px;height:11px;stroke-width:2"></i></div>
+                      <span class="pa-service-tit">RPG · Postura</span>
+                      <span class="pa-service-sub">Dores e reabilitação</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="pa-whats" aria-hidden="true">
-                <div class="pa-whats-head"><span class="pa-whats-dot"></span>WhatsApp · automação</div>
-                <div class="pa-whats-msg pa-whats-bot">Olá! Sobre qual atendimento posso ajudar?</div>
-                <div class="pa-whats-msg pa-whats-user">Quero agendar fisioterapia</div>
-                <div class="pa-whats-msg pa-whats-bot">Perfeito. Qual o melhor turno?</div>
-              </div>
-              <div class="pa-panel" aria-hidden="true">
-                <div class="pa-panel-row"><span class="pa-dot ok"></span>Agenda · 14:00</div>
-                <div class="pa-panel-row"><span class="pa-dot warn"></span>Confirmar · 15:30</div>
-                <div class="pa-panel-row"><span class="pa-dot ok"></span>Retorno · 16:00</div>
               </div>
             </div>
             <div class="proj-body proj-feature-body">
@@ -1000,32 +1195,32 @@
           <div class="seo-v2-right">
             <div class="seo-v2-cards">
               <div class="seo-v2-card reveal-stagger" style="--rd:0">
-                <div class="seo-v2-card-ico"><i data-lucide="search" style="width:18px;height:18px;stroke-width:1.6"></i></div>
+                <div class="seo-v2-card-ico"><i data-lucide="search" style="width:22px;height:22px;stroke-width:2"></i></div>
                 <h4>SEO técnico</h4>
                 <p>Estrutura correta de títulos, páginas, URLs e indexação para o Google rastrear, entender e exibir seu site com mais clareza.</p>
               </div>
               <div class="seo-v2-card reveal-stagger" style="--rd:1">
-                <div class="seo-v2-card-ico"><i data-lucide="layout-list" style="width:18px;height:18px;stroke-width:1.6"></i></div>
+                <div class="seo-v2-card-ico"><i data-lucide="layout-list" style="width:22px;height:22px;stroke-width:2"></i></div>
                 <h4>Conteúdo estruturado</h4>
                 <p>Blocos de conteúdo que respondem às perguntas certas sobre sua empresa, seus serviços, diferenciais e formas de atendimento.</p>
               </div>
               <div class="seo-v2-card reveal-stagger" style="--rd:2">
-                <div class="seo-v2-card-ico"><i data-lucide="zap" style="width:18px;height:18px;stroke-width:1.6"></i></div>
+                <div class="seo-v2-card-ico"><i data-lucide="zap" style="width:22px;height:22px;stroke-width:2"></i></div>
                 <h4>Performance</h4>
                 <p>Páginas rápidas, imagens otimizadas e carregamento eficiente para melhorar experiência, conversão e sinais técnicos do site.</p>
               </div>
               <div class="seo-v2-card reveal-stagger" style="--rd:3">
-                <div class="seo-v2-card-ico"><i data-lucide="database" style="width:18px;height:18px;stroke-width:1.6"></i></div>
+                <div class="seo-v2-card-ico"><i data-lucide="database" style="width:22px;height:22px;stroke-width:2"></i></div>
                 <h4>Dados organizados</h4>
                 <p>Schema, FAQ, serviços, breadcrumbs e informações estruturadas para mecanismos de busca interpretarem melhor cada página.</p>
               </div>
               <div class="seo-v2-card reveal-stagger" style="--rd:4">
-                <div class="seo-v2-card-ico"><i data-lucide="sparkles" style="width:18px;height:18px;stroke-width:1.6"></i></div>
+                <div class="seo-v2-card-ico"><i data-lucide="sparkles" style="width:22px;height:22px;stroke-width:2"></i></div>
                 <h4>GEO para IA</h4>
                 <p>Conteúdo preparado para assistentes de IA entenderem sua empresa, seus serviços e quando citá-los em respostas.</p>
               </div>
               <div class="seo-v2-card reveal-stagger" style="--rd:5">
-                <div class="seo-v2-card-ico"><i data-lucide="git-fork" style="width:18px;height:18px;stroke-width:1.6"></i></div>
+                <div class="seo-v2-card-ico"><i data-lucide="git-fork" style="width:22px;height:22px;stroke-width:2"></i></div>
                 <h4>Arquitetura</h4>
                 <p>Hierarquia de páginas, links internos e organização de conteúdo para o site crescer sem virar um labirinto digital.</p>
               </div>
@@ -1042,10 +1237,28 @@
           <div class="about-v2-left">
             <span class="section-eyebrow brand reveal-stagger" style="--rd:0">SOBRE</span>
             <h2 class="section-title reveal-stagger" style="--rd:1">A Gradios cria tecnologia para empresas que precisam operar melhor.</h2>
-            <p class="about-v2-p reveal-stagger" style="--rd:2">A Gradios nasceu em <strong>Londrina/PR</strong> e atende empresas, clínicas, comércios, prestadores de serviço e indústrias que precisam profissionalizar a operação com tecnologia sob medida, em Londrina, na região norte do Paraná e em projetos remotos pelo Brasil.</p>
-            <p class="about-v2-p reveal-stagger" style="--rd:2">Unimos design, desenvolvimento, automação e inteligência artificial para transformar processos manuais em sites, sistemas, painéis e fluxos digitais que funcionam na rotina real da empresa.</p>
-            <p class="about-v2-p reveal-stagger" style="--rd:3">Cada projeto nasce de uma pergunta simples: onde a operação está perdendo tempo, clareza ou oportunidade? A partir disso, desenhamos tecnologia sob medida para organizar atendimento, gestão, dados e experiência digital.</p>
-            <p class="about-v2-p reveal-stagger" style="--rd:4">Atendemos empresas, clínicas, prestadores de serviço, indústrias, comércios e operações que querem sair do improviso e construir uma base digital mais profissional.</p>
+            <p class="about-v2-p reveal-stagger" style="--rd:2">Empresa de tecnologia em <strong>Londrina/PR</strong>. Atendemos operações reais do norte do Paraná ao Brasil todo.</p>
+            <p class="about-v2-p reveal-stagger" style="--rd:3">Unimos design, desenvolvimento, automação e IA para transformar planilhas e processos manuais em sistemas que funcionam na rotina.</p>
+
+            <figure class="about-v2-photo reveal-stagger" style="--rd:4">
+              <img src="cases/equipe-gradios.jpg"
+                   alt="Equipe Gradios no escritório de Londrina"
+                   loading="lazy"
+                   onload="this.parentElement.classList.add('photo-loaded')"
+                   onerror="this.parentElement.classList.add('photo-empty'); this.remove();">
+              <span class="about-v2-photo-grid" aria-hidden="true"></span>
+              <span class="about-v2-photo-glow" aria-hidden="true"></span>
+              <div class="about-v2-photo-placeholder" aria-hidden="true">
+                <i data-lucide="users" style="width:22px;height:22px;stroke-width:1.8"></i>
+                <span class="about-v2-photo-pl-eyebrow">EQUIPE GRADIOS</span>
+                <span class="about-v2-photo-pl-line">Time multidisciplinar focado em operação</span>
+              </div>
+              <figcaption class="about-v2-photo-cap">
+                <i data-lucide="map-pin" style="width:11px;height:11px;stroke-width:2"></i>
+                Londrina/PR · atendimento em todo Brasil
+              </figcaption>
+            </figure>
+
             <blockquote class="about-v2-manifesto reveal-stagger" style="--rd:5">
               <span class="about-v2-manifesto-bar" aria-hidden="true"></span>
               <p>Não começamos pelo código. Começamos pelo problema certo.</p>
@@ -1108,26 +1321,39 @@
           <h2 class="section-title">Sem burocracia, sem caixa-preta.</h2>
           <p class="section-lead" style="margin-left:auto; margin-right:auto;">O básico que você precisa saber antes de falar com a Gradios.</p>
         </div>
-        <div class="pre-grid">
-          <div class="pre-card reveal-stagger" style="--rd:0">
-            <div class="pre-ico"><i data-lucide="settings-2" style="width:18px;height:18px;stroke-width:1.6"></i></div>
-            <h4>Projeto sob medida</h4>
-            <p>Cada solução é desenhada conforme a operação, o problema e o objetivo da empresa.</p>
-          </div>
-          <div class="pre-card reveal-stagger" style="--rd:1">
-            <div class="pre-ico"><i data-lucide="calendar-clock" style="width:18px;height:18px;stroke-width:1.6"></i></div>
-            <h4>Prazo claro</h4>
-            <p>O cronograma depende do escopo, mas você recebe uma visão clara das etapas desde o início.</p>
-          </div>
-          <div class="pre-card reveal-stagger" style="--rd:2">
-            <div class="pre-ico"><i data-lucide="message-circle" style="width:18px;height:18px;stroke-width:1.6"></i></div>
-            <h4>Contato direto</h4>
-            <p>Sem formulário interminável, sem follow-up artificial e sem enrolação comercial.</p>
-          </div>
-          <div class="pre-card reveal-stagger" style="--rd:3">
-            <div class="pre-ico"><i data-lucide="building-2" style="width:18px;height:18px;stroke-width:1.6"></i></div>
-            <h4>Atendimento a diferentes setores</h4>
-            <p>Clínicas, varejo, serviços, indústria e outras operações que precisam ganhar clareza e eficiência.</p>
+        <ol class="pre-stepper" aria-label="Compromissos da Gradios">
+          <li class="pre-step reveal-stagger" style="--rd:0">
+            <span class="pre-step-num">01</span>
+            <div class="pre-step-body">
+              <h4>Projeto sob medida</h4>
+              <p>Cada solução é desenhada conforme a operação, o problema e o objetivo da empresa.</p>
+            </div>
+          </li>
+          <li class="pre-step reveal-stagger" style="--rd:1">
+            <span class="pre-step-num">02</span>
+            <div class="pre-step-body">
+              <h4>Prazo claro</h4>
+              <p>O cronograma depende do escopo, mas você recebe uma visão clara das etapas desde o início.</p>
+            </div>
+          </li>
+          <li class="pre-step reveal-stagger" style="--rd:2">
+            <span class="pre-step-num">03</span>
+            <div class="pre-step-body">
+              <h4>Contato direto</h4>
+              <p>Sem formulário interminável, sem follow-up artificial e sem enrolação comercial.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="pre-cta reveal-stagger" style="--rd:3">
+          <div class="pre-cta-bg" aria-hidden="true"></div>
+          <div class="pre-cta-content">
+            <div class="pre-cta-text">
+              <span class="pre-cta-eyebrow"><span class="pre-cta-dot"></span>PRÓXIMO PASSO</span>
+              <h3>Pronto pra conversar sobre a sua operação?</h3>
+              <p>Conta o cenário em poucas linhas. A gente responde em até 24h com direcionamento claro.</p>
+            </div>
+            <a href="#contato" class="btn btn-primary btn-lg pre-cta-btn">Falar com a Gradios <span class="btn-arrow">→</span></a>
           </div>
         </div>
       </div>
@@ -1149,9 +1375,9 @@
                 <div class="field"><label for="hf-name">Nome</label><input id="hf-name" name="nome" type="text" required autocomplete="name" placeholder="Como te chamamos"></div>
                 <div class="field"><label for="hf-empresa">Empresa <span class="field-optional">(opcional)</span></label><input id="hf-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Nome da empresa"></div>
               </div>
-              <div class="field">
-                <label for="hf-contato">Email ou WhatsApp</label>
-                <input id="hf-contato" name="contato" type="text" required autocomplete="email" placeholder="seu@email.com ou (00) 00000-0000">
+              <div class="field-row">
+                <div class="field"><label for="hf-email">Email</label><input id="hf-email" name="email" type="email" required autocomplete="email" placeholder="seu@email.com"></div>
+                <div class="field"><label for="hf-whats">WhatsApp</label><input id="hf-whats" name="whatsapp" type="tel" required autocomplete="tel" inputmode="tel" placeholder="(00) 00000-0000"></div>
               </div>
               <div class="field"><label for="hf-tipo">O que você precisa?</label>
                 <select id="hf-tipo" name="tipo" required>
@@ -1186,19 +1412,21 @@
             <div class="contact-home-card contact-home-card-direct">
               <span class="section-eyebrow brand">DIRETO</span>
               <h3>Prefere falar agora?</h3>
-              <a href="https://wa.me/5543988372540?text=Ol%C3%A1%2C%20quero%20conversar%20com%20a%20Gradios%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital%20para%20minha%20empresa.%20O%20que%20est%C3%A1%20travando%20hoje%20%C3%A9%3A" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:10px;"><i data-lucide="message-circle" style="width:18px;height:18px"></i> WhatsApp</a>
-              <a href="mailto:contato@gradios.com.br" class="btn btn-secondary" style="width:100%; justify-content:center;"><i data-lucide="mail" style="width:18px;height:18px"></i> contato@gradios.com.br</a>
+              <a href="https://wa.me/5543988372540?text=Ol%C3%A1%2C%20quero%20conversar%20com%20a%20Gradios%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital%20para%20minha%20empresa.%20O%20que%20est%C3%A1%20travando%20hoje%20%C3%A9%3A" target="_blank" rel="noopener" class="btn btn-secondary contact-side-wa" style="width:100%; justify-content:center; margin-bottom:10px;"><i data-lucide="message-circle" style="width:18px;height:18px"></i> WhatsApp</a>
+              <a href="mailto:contato@gradios.com.br" class="btn btn-ghost contact-side-mail" style="width:100%; justify-content:center;"><i data-lucide="mail" style="width:18px;height:18px"></i> contato@gradios.com.br</a>
             </div>
-            <div class="contact-home-card">
+
+            <div class="contact-home-block">
               <span class="section-eyebrow">O QUE ESPERAR</span>
               <ul class="contact-home-list">
-                <li><i data-lucide="clock" style="width:18px;height:18px;color:var(--brand);flex-shrink:0;margin-top:2px"></i><span>Resposta em até <b>24h úteis</b>.</span></li>
-                <li><i data-lucide="file-text" style="width:18px;height:18px;color:var(--brand);flex-shrink:0;margin-top:2px"></i><span>Conversa rápida para entender o cenário.</span></li>
-                <li><i data-lucide="map" style="width:18px;height:18px;color:var(--brand);flex-shrink:0;margin-top:2px"></i><span>Plano com escopo, prazo e investimento.</span></li>
-                <li><i data-lucide="shield-check" style="width:18px;height:18px;color:var(--brand);flex-shrink:0;margin-top:2px"></i><span>NDA disponível se for necessário.</span></li>
+                <li><span class="contact-home-check"><i data-lucide="check" style="width:11px;height:11px;stroke-width:3"></i></span><span>Resposta em até <b>24h úteis</b>.</span></li>
+                <li><span class="contact-home-check"><i data-lucide="check" style="width:11px;height:11px;stroke-width:3"></i></span><span>Conversa rápida para entender o cenário.</span></li>
+                <li><span class="contact-home-check"><i data-lucide="check" style="width:11px;height:11px;stroke-width:3"></i></span><span>Plano com escopo, prazo e investimento.</span></li>
+                <li><span class="contact-home-check"><i data-lucide="check" style="width:11px;height:11px;stroke-width:3"></i></span><span>NDA disponível se for necessário.</span></li>
               </ul>
             </div>
-            <div class="contact-home-card">
+
+            <div class="contact-home-block">
               <span class="section-eyebrow">DÚVIDAS RÁPIDAS</span>
               <div class="contact-home-qa">
                 <div class="contact-home-qa-item">

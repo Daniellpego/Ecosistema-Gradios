@@ -80,9 +80,13 @@
   gap: 8px;
   transition: color 200ms var(--ease-standard);
 }
-.cta-v2-link:hover { color: var(--accent); }
-.cta-v2-link .btn-arrow { transition: transform 200ms var(--ease-standard); }
-.cta-v2-link:hover .btn-arrow { transform: translateX(3px); }
+.cta-v2-link { transition: color 200ms var(--ease-standard); }
+.cta-v2-link:hover { color: #fff; }
+.cta-v2-link .btn-arrow {
+  display: inline-block;
+  transition: transform 220ms var(--ease-standard);
+}
+.cta-v2-link:hover .btn-arrow { transform: translateX(5px); }
 
 /* flow */
 .cta-v2-right { display: flex; justify-content: flex-end; }
@@ -137,33 +141,50 @@
   letter-spacing: -0.005em;
 }
 .cta-v2-node-dot {
-  width: 7px; height: 7px;
+  width: 8px; height: 8px;
   border-radius: 999px;
-  background: #34C759;
-  box-shadow: 0 0 0 0 rgba(52,199,89,0.40);
+  background: var(--accent);
+  box-shadow:
+    0 0 0 0 rgba(0,184,255,0.55),
+    0 0 8px rgba(0,184,255,0.65);
   animation: ctaV2DotPulse 2.4s ease-out infinite;
 }
 .cta-v2-node-2 .cta-v2-node-dot { animation-delay: 0.4s; }
 .cta-v2-node-3 .cta-v2-node-dot { animation-delay: 0.8s; }
 @keyframes ctaV2DotPulse {
-  0% { box-shadow: 0 0 0 0 rgba(52,199,89,0.40); }
-  100% { box-shadow: 0 0 0 6px rgba(52,199,89,0); }
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(0,184,255,0.55),
+      0 0 8px rgba(0,184,255,0.65);
+  }
+  100% {
+    box-shadow:
+      0 0 0 8px rgba(0,184,255,0),
+      0 0 12px rgba(0,184,255,0.30);
+  }
 }
 
+/* connector: linha pontilhada cyan que liga as bordas dos cards */
 .cta-v2-arrow {
-  height: 14px;
+  height: 24px;
+  margin: -6px 0;
   position: relative;
-  display: flex;
-  align-items: center;
-  padding-left: 16px;
+  pointer-events: none;
 }
 .cta-v2-arrow span {
   display: block;
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 31px;
   width: 2px;
-  height: 14px;
-  background: linear-gradient(180deg, rgba(0,191,255,0.7) 0%, rgba(0,191,255,0.15) 100%);
-  border-radius: 2px;
-  margin-left: 15px;
+  height: auto;
+  background: none;
+  background-image: linear-gradient(180deg, rgba(0,184,255,0.55) 50%, transparent 50%);
+  background-size: 2px 5px;
+  background-repeat: repeat-y;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: 0 0 6px rgba(0,184,255,0.30);
 }
 
 /* responsive */
