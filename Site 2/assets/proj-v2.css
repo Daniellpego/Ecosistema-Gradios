@@ -237,6 +237,67 @@
 }
 .pa-panel-row:last-child { border-bottom: 0; }
 
+/* ─── CASE REAL: screenshot do site público da Clínica ───────
+   Estado padrão: mockup CSS (browser pequeno + WhatsApp + Painel).
+   Quando o <img> em .pa-browser-real-img carrega com sucesso,
+   JS adiciona `.img-loaded` ao .proj-feature-art → mockup oculta
+   e browser frame premium full-size com a imagem aparece.
+   Se a imagem 404, `onerror` esconde o <img>, mockup permanece. */
+.art-clinica-v2 .pa-browser-real {
+  position: absolute;
+  inset: 22px;
+  background: #fff;
+  border: 1px solid var(--divider);
+  border-radius: 12px;
+  box-shadow:
+    0 22px 48px -16px rgba(10,27,61,0.22),
+    0 4px 12px rgba(10,27,61,0.06);
+  overflow: hidden;
+  display: none;            /* default: oculto até img carregar */
+  flex-direction: column;
+  z-index: 3;
+}
+.art-clinica-v2 .pa-browser-real-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px;
+  background: #F8FAFC;
+  border-bottom: 1px solid var(--divider);
+  flex-shrink: 0;
+}
+.art-clinica-v2 .pa-browser-real-bar i {
+  width: 9px; height: 9px; border-radius: 999px;
+  background: #E2E8F0;
+}
+.art-clinica-v2 .pa-browser-real-bar i:nth-child(1) { background: #FCA5A5; }
+.art-clinica-v2 .pa-browser-real-bar i:nth-child(2) { background: #FCD34D; }
+.art-clinica-v2 .pa-browser-real-bar i:nth-child(3) { background: #86EFAC; }
+.art-clinica-v2 .pa-browser-real-url {
+  margin-left: 12px;
+  font-size: 11px;
+  color: var(--text-soft);
+  font-feature-settings: 'tnum';
+  font-weight: 500;
+}
+.art-clinica-v2 .pa-browser-real-body {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+.art-clinica-v2 .pa-browser-real-body picture { display: contents; }
+.art-clinica-v2 .pa-browser-real-body img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+/* Quando img carrega OK: mostra browser real, esconde mockup */
+.art-clinica-v2.img-loaded .pa-browser-real { display: flex; }
+.art-clinica-v2.img-loaded > .pa-browser,
+.art-clinica-v2.img-loaded > .pa-whats,
+.art-clinica-v2.img-loaded > .pa-panel { display: none; }
+
 /* CARD 02 — Dashboard varejo */
 .art-varejo-v2 {
   background: linear-gradient(180deg, #F4F8FC 0%, #EEF3F9 100%);
@@ -516,7 +577,92 @@
   background: var(--brand);
 }
 
+/* ─── Spotlight + grid-3 (1 case real + N estudos) ──────────── */
+.proj-spotlight { margin-bottom: 28px; }
+.proj-grid.proj-grid-3 { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+/* Featured card: mockup horizontal à esquerda, conteúdo à direita */
+.proj-card.proj-v2.proj-feature {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+}
+.proj-card.proj-v2.proj-feature .proj-feature-art {
+  position: relative;
+  min-height: 420px;
+  height: auto;
+  border-bottom: none;
+  border-right: 1px solid var(--divider);
+  background: var(--bg-subtle);
+  overflow: hidden;
+  isolation: isolate;
+}
+.proj-card.proj-v2.proj-feature .proj-feature-body {
+  padding: 40px 40px 36px;
+  display: flex;
+  flex-direction: column;
+}
+.proj-card.proj-v2.proj-feature h3 {
+  font-size: 24px;
+  line-height: 32px;
+  margin-bottom: 12px;
+}
+.proj-card.proj-v2.proj-feature > .proj-feature-body > p {
+  font-size: 15.5px;
+  line-height: 25px;
+  color: var(--text-muted);
+}
+.proj-card.proj-v2.proj-feature .proj-meta { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--divider); }
+
+/* Quando houver screenshot real (img substitui o mockup CSS) */
+.proj-feature-art .proj-art-img,
+.proj-art-v2 .proj-art-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  z-index: 2;  /* fica sobre o mockup CSS quando presente */
+}
+
+/* ─── Badges: case real vs estudo representativo ─────────────── */
+.proj-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.proj-badge.real {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(16,185,129,0.30), 0 1px 3px rgba(16,185,129,0.18);
+}
+.proj-badge.real::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.45);
+}
+.proj-badge.demo {
+  background: var(--bg-subtle);
+  color: var(--text-soft);
+  border-color: var(--divider);
+}
+
 /* mobile */
+@media (max-width: 1024px) {
+  .proj-grid.proj-grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 880px) {
   .proj-grid-v2 { grid-template-columns: 1fr; gap: 20px; }
   .proj-art-v2 { height: 240px; }
@@ -524,4 +670,13 @@
   .pa-whats { width: 60%; left: 20%; bottom: 16px; }
   .pa-panel { width: 50%; right: 16px; top: 36%; }
   .pa-phone { width: 180px; height: 220px; }
+  .proj-card.proj-v2.proj-feature { grid-template-columns: 1fr; }
+  .proj-card.proj-v2.proj-feature .proj-feature-art {
+    border-right: none;
+    border-bottom: 1px solid var(--divider);
+    min-height: 280px;
+  }
+  .proj-card.proj-v2.proj-feature .proj-feature-body { padding: 28px 24px 24px; }
+  .proj-card.proj-v2.proj-feature h3 { font-size: 21px; line-height: 28px; }
+  .proj-grid.proj-grid-3 { grid-template-columns: 1fr; }
 }

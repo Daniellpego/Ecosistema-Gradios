@@ -1,0 +1,13 @@
+# Configuração local da CLI Supabase.
+# Documentação: https://supabase.com/docs/guides/cli/config
+#
+# `project_id` é populado automaticamente quando você roda
+# `supabase link --project-ref urpuiznydrlwmaqhdids`.
+
+[functions.site-lead-submit]
+# A função recebe POST público do formulário de contato do site (gradios.co).
+# O frontend não envia Authorization Bearer, portanto a verificação de JWT
+# precisa ficar desabilitada para esta function específica. As outras
+# funções do projeto (ex.: groq-analysis) seguem o default seguro de
+# `verify_jwt = true` por não terem bloco aqui.
+verify_jwt = false
