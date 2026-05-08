@@ -94,23 +94,110 @@
     countUpEls.forEach(el => io.observe(el));
   }
 
-  // ---------- contact form (simple validation)
-  const form = document.querySelector('form[data-contact]');
-  if (form) {
-    form.addEventListener('submit', (e) => {
+  // ---------- contact form (real submit → Supabase Edge Function)
+  // Defina LEAD_ENDPOINT no <script> da página ou via window.GRADIOS_LEAD_ENDPOINT.
+  // Fallback: usa o projeto Supabase oficial da Gradios.
+  const LEAD_ENDPOINT =
+    (typeof window !== 'undefined' && window.GRADIOS_LEAD_ENDPOINT) ||
+    'https://urpuiznydrlwmaqhdids.supabase.co/functions/v1/site-lead-submit';
+
+  document.querySelectorAll('form[data-contact]').forEach((form) => {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitOriginalHTML = submitBtn ? submitBtn.innerHTML : '';
+    let errorBox = form.querySelector('[data-form-error]');
+    if (!errorBox) {
+      errorBox = document.createElement('div');
+      errorBox.setAttribute('data-form-error', '');
+      errorBox.setAttribute('role', 'alert');
+      errorBox.style.cssText =
+        'display:none;margin-top:12px;padding:12px 14px;border-radius:8px;background:#FEE2E2;border:1px solid #FCA5A5;color:#991B1B;font-size:14px;line-height:20px;';
+      form.appendChild(errorBox);
+    }
+
+    function showError(message) {
+      errorBox.innerHTML =
+        message +
+        ' <a href="mailto:contato@gradios.com.br" style="color:inherit;text-decoration:underline;font-weight:600;">Enviar por email</a>.';
+      errorBox.style.display = 'block';
+    }
+
+    function getParam(name) {
+      try {
+        return new URLSearchParams(window.location.search).get(name) || undefined;
+      } catch (_) {
+        return undefined;
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      errorBox.style.display = 'none';
+
       let valid = true;
-      form.querySelectorAll('[required]').forEach(f => {
-        const ok = f.value.trim().length > 0 && (f.type !== 'email' || /\S+@\S+\.\S+/.test(f.value));
+      form.querySelectorAll('[required]').forEach((f) => {
+        const v = f.value.trim();
+        const ok = v.length > 0 && (f.type !== 'email' || /\S+@\S+\.\S+/.test(v));
         f.classList.toggle('error', !ok);
         if (!ok) valid = false;
       });
-      if (!valid) return;
-      form.style.display = 'none';
-      const ok = form.parentElement.querySelector('[data-success]');
-      if (ok) ok.style.display = 'block';
+      if (!valid) {
+        showError('Preencha os campos obrigatórios.');
+        return;
+      }
+
+      const data = {
+        nome: form.querySelector('[name="nome"]')?.value.trim() ?? '',
+        contato: form.querySelector('[name="contato"]')?.value.trim() ?? '',
+        empresa: form.querySelector('[name="empresa"]')?.value.trim() || null,
+        tipo: form.querySelector('[name="tipo"]')?.value.trim() ?? '',
+        mensagem: form.querySelector('[name="mensagem"]')?.value.trim() ?? '',
+        website: form.querySelector('[name="website"]')?.value.trim() ?? '', // honeypot
+        origem: window.location.pathname,
+        utm_source: getParam('utm_source'),
+        utm_medium: getParam('utm_medium'),
+        utm_campaign: getParam('utm_campaign'),
+      };
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Enviando…';
+      }
+
+      try {
+        const res = await fetch(LEAD_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (res.status === 429) {
+          showError('Muitas tentativas em pouco tempo. Tente novamente em alguns minutos.');
+          return;
+        }
+        if (!res.ok) {
+          let detail = '';
+          try { detail = (await res.json()).error || ''; } catch (_) {}
+          showError(
+            detail === 'tipo_invalido' || detail === 'mensagem_invalida' || detail === 'nome_invalido' || detail === 'contato_invalido'
+              ? 'Algum campo não passou na validação. Revise e envie novamente.'
+              : 'Não conseguimos enviar agora. Tente de novo em instantes ou'
+          );
+          return;
+        }
+
+        form.style.display = 'none';
+        const ok = form.parentElement.querySelector('[data-success]');
+        if (ok) ok.style.display = 'block';
+      } catch (_) {
+        showError('Sem conexão com o servidor. Tente novamente ou');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = submitOriginalHTML;
+        }
+      }
     });
-  }
+  });
 
   // ---------- live dashboard tabs (hero)
   const tabs = document.querySelectorAll('[data-dash-tab]');

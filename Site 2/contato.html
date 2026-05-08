@@ -3,19 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contato — Gradios</title>
-  <meta name="description" content="Fale com a Gradios. Conte sua operação, o gargalo e o que você precisa resolver. Resposta em até 24h.">
-  <link rel="canonical" href="https://gradios.com.br/contato.html">
+  <title>Fale com a Gradios · Tecnologia em Londrina e remoto</title>
+  <meta name="description" content="Atendemos empresas de Londrina, região norte do Paraná e projetos remotos no Brasil. Resposta em até 24h, sem formulário longo.">
+  <link rel="canonical" href="https://gradios.co/contato.html">
   <meta name="robots" content="index, follow">
-  <meta property="og:title" content="Contato — Gradios">
-  <meta property="og:description" content="Resposta em até 24h, sem formulário de 12 campos.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Gradios">
+  <meta property="og:url" content="https://gradios.co/contato.html">
+  <meta property="og:title" content="Fale com a Gradios · Tecnologia em Londrina e remoto">
+  <meta property="og:description" content="Atendimento para empresas de Londrina, região norte do Paraná e projetos remotos. Resposta em até 24h, sem formulário longo.">
+  <meta property="og:image" content="https://gradios.co/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Gradios: Tecnologia sob medida para empresas que querem operar melhor.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fale com a Gradios · Tecnologia em Londrina e remoto">
+  <meta name="twitter:description" content="Atendimento para empresas de Londrina e região. Resposta em até 24h, sem follow-up automático.">
+  <meta name="twitter:image" content="https://gradios.co/og-cover.png">
   <link rel="icon" type="image/png" href="design-system/assets/logo-mark.png">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/extras.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script type="application/ld+json">
-  { "@context": "https://schema.org", "@type": "ContactPage", "name": "Contato — Gradios", "url": "https://gradios.com.br/contato.html",
-    "mainEntity": { "@type": "Organization", "name": "Gradios", "email": "contato@gradios.com.br" } }
+  {"@context":"https://schema.org","@type":"ContactPage","name":"Contato — Gradios","description":"Atendimento para empresas de Londrina, região norte do Paraná e projetos remotos no Brasil.","url":"https://gradios.co/contato.html","mainEntity":{"@id":"https://gradios.co/#localbusiness"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://gradios.co/"},{"@type":"ListItem","position":2,"name":"Contato","item":"https://gradios.co/contato.html"}]}
   </script>
 </head>
 <body data-screen-label="Contato" data-primary="neutral">
@@ -34,7 +48,8 @@
       <div class="container">
         <span class="section-eyebrow eyebrow-tag brand">CONTATO</span>
         <h1>Conta o que tá travando.</h1>
-        <p>Explique o cenário, o gargalo ou a ideia. A gente responde em até 24h com direcionamento claro — seja para avançar, ajustar ou dizer com honestidade que não faz sentido.</p>
+        <p>Explique o cenário, o gargalo ou a ideia. A gente responde em até 24h com direcionamento claro: seja para avançar, ajustar ou dizer com honestidade que não faz sentido.</p>
+        <p style="margin-top:8px;font-size:14.5px;color:var(--text-soft);">Atendimento para empresas de <strong>Londrina</strong>, região norte do Paraná e projetos remotos em todo o Brasil.</p>
       </div>
     </section>
 
@@ -42,25 +57,35 @@
       <div class="container">
         <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:64px; align-items:start;" class="contact-grid">
           <div style="background:#fff; border:1px solid var(--border); border-radius:16px; padding:40px;">
-            <form data-contact>
+            <form data-contact novalidate>
               <div class="field-row">
-                <div class="field"><label for="f-name">Nome</label><input id="f-name" type="text" required placeholder="Como te chamamos"></div>
-                <div class="field"><label for="f-empresa">Empresa</label><input id="f-empresa" type="text" placeholder="Nome da empresa"></div>
-              </div>
-              <div class="field-row">
-                <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" required placeholder="seu@email.com"></div>
-                <div class="field"><label for="f-tel">WhatsApp</label><input id="f-tel" type="tel" placeholder="(00) 00000-0000"></div>
-              </div>
-              <div class="field"><label for="f-segmento">Segmento</label>
-                <select id="f-segmento"><option value="">Selecione…</option><option>Saúde / Clínicas</option><option>Indústria</option><option>Varejo / Comércio</option><option>Serviços</option><option>Educação</option><option>Tecnologia</option><option>Outro</option></select>
-              </div>
-              <div class="field"><label for="f-tipo">O que você precisa?</label>
-                <select id="f-tipo"><option value="">Selecione…</option><option>Site profissional</option><option>Sistema personalizado</option><option>Aplicativo</option><option>Automação</option><option>Automação WhatsApp</option><option>Inteligência Artificial</option><option>Dashboard / Painel</option><option>Ainda não sei — quero conversar</option></select>
+                <div class="field"><label for="f-name">Nome</label><input id="f-name" name="nome" type="text" required autocomplete="name" placeholder="Como te chamamos"></div>
+                <div class="field"><label for="f-empresa">Empresa <span class="field-optional">(opcional)</span></label><input id="f-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Nome da empresa"></div>
               </div>
               <div class="field">
-                <label for="f-msg">Onde tá travando?</label>
-                <textarea id="f-msg" rows="5" required placeholder="Conta a operação, o gargalo, o time. Sem cerimônia."></textarea>
+                <label for="f-contato">Email ou WhatsApp</label>
+                <input id="f-contato" name="contato" type="text" required autocomplete="email" placeholder="seu@email.com ou (00) 00000-0000">
+              </div>
+              <div class="field"><label for="f-tipo">O que você precisa?</label>
+                <select id="f-tipo" name="tipo" required>
+                  <option value="">Selecione…</option>
+                  <option>Site profissional</option>
+                  <option>Sistema personalizado</option>
+                  <option>Automação</option>
+                  <option>Aplicativo</option>
+                  <option>Dashboard / painel</option>
+                  <option>Solução com IA</option>
+                  <option>Ainda não sei, preciso de diagnóstico</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="f-msg">Onde está travando?</label>
+                <textarea id="f-msg" name="mensagem" rows="5" required placeholder="Conta a operação, o gargalo, o time ou a ideia. Sem cerimônia."></textarea>
                 <span class="field-help">Não usamos para newsletter. Resposta direta de gente real.</span>
+              </div>
+              <div class="field-honeypot" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+                <label for="f-website">Site</label>
+                <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
               </div>
               <button type="submit" class="btn btn-primary btn-lg" style="width:100%; padding:14px;">Enviar mensagem <span class="btn-arrow">→</span></button>
             </form>
@@ -75,7 +100,7 @@
             <div style="background:var(--bg-subtle); border:1px solid var(--divider); border-radius:14px; padding:28px; margin-bottom:16px;">
               <span class="section-eyebrow brand">DIRETO</span>
               <h3 style="margin:8px 0 16px; font-size:20px; font-weight:600; letter-spacing:-0.014em;">Prefere falar agora?</h3>
-              <a href="https://wa.me/" class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:10px;"><i data-lucide="message-circle" style="width:18px;height:18px"></i> WhatsApp</a>
+              <a href="https://wa.me/5543988372540?text=Ol%C3%A1%2C%20quero%20conversar%20com%20a%20Gradios%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital%20para%20minha%20empresa.%20O%20que%20est%C3%A1%20travando%20hoje%20%C3%A9%3A" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:10px;"><i data-lucide="message-circle" style="width:18px;height:18px"></i> WhatsApp</a>
               <a href="mailto:contato@gradios.com.br" class="btn btn-secondary" style="width:100%; justify-content:center;"><i data-lucide="mail" style="width:18px;height:18px"></i> contato@gradios.com.br</a>
             </div>
             <div style="background:#fff; border:1px solid var(--divider); border-radius:14px; padding:28px; margin-bottom:16px;">
@@ -113,13 +138,13 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><div style="display:flex; align-items:center; gap:10px;"><img src="design-system/assets/logo-mark.png" alt="" width="28" height="28" style="filter:saturate(0.85)"><span style="color:#F5F5F7; font-weight:700; font-size:18px; letter-spacing:-0.024em;">Gradios</span></div><p>Softwares, sites, apps, automações e soluções de IA para empresas que querem operar melhor.</p></div>
+        <div class="footer-brand"><div style="display:flex; align-items:center; gap:10px;"><img src="design-system/assets/logo-mark.png" alt="" width="28" height="28" style="filter:saturate(0.85)"><span style="color:#F5F5F7; font-weight:700; font-size:18px; letter-spacing:-0.024em;">Gradios</span></div><p>Softwares, sites, apps, automações e soluções de IA para empresas que querem operar melhor.</p><address class="footer-nap"><span>Londrina, PR · Atendimento Brasil</span><a href="https://wa.me/5543988372540?text=Ol%C3%A1%2C%20quero%20conversar%20com%20a%20Gradios%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital%20para%20minha%20empresa.%20O%20que%20est%C3%A1%20travando%20hoje%20%C3%A9%3A" target="_blank" rel="noopener">WhatsApp +55 43 98837-2540</a><a href="mailto:contato@gradios.com.br">contato@gradios.com.br</a><span>CNPJ 65.663.208/0001-36</span></address></div>
         <div><div class="footer-label">Soluções</div><a href="sites.html" class="footer-link">Sites profissionais</a><a href="sistemas.html" class="footer-link">Sistemas personalizados</a><a href="automacoes.html" class="footer-link">Automações</a><a href="ia.html" class="footer-link">Inteligência Artificial</a></div>
-        <div><div class="footer-label">Empresa</div><a href="sobre.html" class="footer-link">Sobre</a><a href="projetos.html" class="footer-link">Projetos</a><a href="index.html#processo" class="footer-link">Como funciona</a><a href="index.html#faq" class="footer-link">FAQ</a></div>
-        <div><div class="footer-label">Contato</div><a href="contato.html" class="footer-link">Falar com a Gradios</a><a href="mailto:contato@gradios.com.br" class="footer-link">contato@gradios.com.br</a></div>
-        <div><div class="footer-label">Redes</div><a href="#" class="footer-link">LinkedIn</a><a href="#" class="footer-link">Instagram</a></div>
+        <div><div class="footer-label">Empresa</div><a href="sobre.html" class="footer-link">Sobre</a><a href="projetos.html" class="footer-link">Projetos</a><a href="index.html#processo" class="footer-link">Como funciona</a></div>
+        <div><div class="footer-label">Contato</div><a href="contato.html" class="footer-link">Falar com a Gradios</a><a href="mailto:contato@gradios.com.br" class="footer-link">contato@gradios.com.br</a><a href="https://wa.me/5543988372540?text=Ol%C3%A1%2C%20quero%20conversar%20com%20a%20Gradios%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital%20para%20minha%20empresa.%20O%20que%20est%C3%A1%20travando%20hoje%20%C3%A9%3A" target="_blank" rel="noopener" class="footer-link">WhatsApp</a></div>
+        <div><div class="footer-label">Redes</div><a href="https://www.linkedin.com/company/gradios/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a><a href="https://www.instagram.com/gradios.ai/" target="_blank" rel="noopener" class="footer-link">Instagram</a></div>
       </div>
-      <div class="footer-bottom"><span>© <span data-year>2026</span> Gradios. Todos os direitos reservados.</span><div style="display:flex; gap:24px;"><a href="#">Privacidade</a><a href="#">Termos</a><a href="#">LGPD</a></div></div>
+      <div class="footer-bottom"><span>© <span data-year>2026</span> Gradios · CNPJ 65.663.208/0001-36 · Todos os direitos reservados.</span><div style="display:flex; gap:24px;"><a href="privacidade.html">Privacidade</a><a href="termos.html">Termos</a><a href="privacidade.html#lgpd">LGPD</a></div></div>
     </div>
   </footer>
 
