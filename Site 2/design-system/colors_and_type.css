@@ -1,0 +1,220 @@
+/* ============================================================
+   GRADIOS — Colors & Type
+   Foundations for a quiet, precise, Apple/Linear/Stripe-grade UI.
+   ============================================================ */
+
+/* ---- Fonts ------------------------------------------------- */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 200; src: url("fonts/Inter-ExtraLight.otf") format("opentype"); font-display: swap; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 300; src: url("fonts/Inter-Light.otf") format("opentype"); font-display: swap; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; src: url("fonts/Inter-Regular.otf") format("opentype"); font-display: swap; }
+@font-face { font-family: "Inter"; font-style: italic;  font-weight: 400; src: url("fonts/Inter-Italic.otf")  format("opentype"); font-display: swap; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; src: url("fonts/Inter-Medium.otf")  format("opentype"); font-display: swap; }
+@font-face { font-family: "Inter"; font-style: italic;  font-weight: 500; src: url("fonts/Inter-MediumItalic.otf") format("opentype"); font-display: swap; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; src: url("fonts/Inter-SemiBold.otf") format("opentype"); font-display: swap; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 700; src: url("fonts/Inter-Bold.otf")    format("opentype"); font-display: swap; }
+
+:root {
+  /* ---- Color: Neutrals (the spine of the system) -------------------- */
+  --bg:           #FFFFFF;   /* primary surface */
+  --bg-subtle:    #F5F5F7;   /* perceptible off-white panel */
+  --bg-muted:     #EBEBEF;   /* recessed field / hover surface */
+  --bg-inset:     #E0E0E4;   /* deeper inset / pressed */
+  --border:       #D1D1D6;   /* hairlines, field borders */
+  --border-strong:#B8B8BD;   /* emphasis hairline */
+  --divider:      #E5E5E7;   /* low-contrast separators */
+
+  /* Text — never pure black. */
+  --text:         #1D1D1F;   /* primary copy */
+  --text-muted:   #5C5C61;   /* secondary — bumped from #6E6E73 */
+  --text-soft:    #8E8E93;   /* placeholders, captions */
+  --text-faint:   #B0B0B5;   /* disabled (use sparingly) */
+  --text-invert:  #FFFFFF;
+
+  /* ---- Color: Brand (used with restraint) --------------------------- */
+  --brand:        #1E3D8A;   /* signature blue — links, key accents only */
+  --brand-strong: #16306E;   /* hover for blue link */
+  --brand-soft:   #EEF2FE;   /* tint, slightly bluer */
+  --accent:       #00B8FF;   /* cyan — for highlights / focus / chart lift */
+  --accent-soft:  #E6F8FF;   /* cyan tint, aligned with scale */
+
+  /* ---- Color: Semantic (functional) --------------------------------- */
+  --success:      #207A4B;
+  --success-soft: #E6F4EC;
+  --warning:      #8A4A0A;
+  --warning-soft: #FBEEDC;
+  --danger:       #9E2A24;
+  --danger-soft:  #FCEAE8;
+  --info:         var(--brand);
+  --info-soft:    var(--brand-soft);
+
+  /* Live dot — same family as success (no second green) */
+  --dot-live:     #2E9A5C;
+
+  /* Solid action surfaces (primary button is BLACK, no gradient) */
+  --action:       #1D1D1F;
+  --action-hover: #2C2C2E;
+  --action-press: #000000;
+
+  /* ---- Type ---------------------------------------------------------- */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Base is 17px — Apple-like. Scale is intentionally compact. */
+  --fs-display:   84px;  --lh-display:   84px;  --tr-display: -0.042em;
+  --fs-h1:        44px;  --lh-h1:        50px;  --tr-h1:      -0.026em;  /* lighter weight (medium) for contrast vs display */
+  --fs-h2:        32px;  --lh-h2:        38px;  --tr-h2:      -0.020em;
+  --fs-h3:        22px;  --lh-h3:        28px;  --tr-h3:      -0.014em;
+  --fs-body:      17px;  --lh-body:      26px;  --tr-body:    -0.005em;
+  --fs-small:     14px;  --lh-small:     20px;  --tr-small:    0;
+  --fs-caption:   12px;  --lh-caption:   16px;  --tr-caption:  0.01em;
+  --fs-eyebrow:   13px;  --lh-eyebrow:   18px;  --tr-eyebrow:  0.14em;  /* uppercase tracking — strong entry point */
+  --fs-mono:      13px;  --lh-mono:      20px;
+
+  --fw-light:     300;
+  --fw-regular:   400;
+  --fw-medium:    500;
+  --fw-semibold:  600;
+  --fw-bold:      700;
+
+  /* ---- Spacing (4 / 8 grid) ----------------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* ---- Radii --------------------------------------------------------- */
+  --radius-xs: 4px;
+  --radius-sm: 4px;   /* deprecated alias — use xs */
+  --radius-md: 8px;   /* default control radius (buttons/fields) */
+  --radius-lg: 10px;  /* cards */
+  --radius-xl: 12px;  /* large surfaces (hero card, modal) */
+  --radius-2xl: 16px;
+  --radius-full: 999px;
+
+  /* ---- Shadows (very restrained) ------------------------------------ */
+  --shadow-none:   none;
+  --shadow-hairline: 0 0 0 1px var(--border);
+  --shadow-xs:     0 1px 1px rgba(17, 17, 19, 0.02);
+  --shadow-sm:     0 1px 2px rgba(17, 17, 19, 0.025);
+  --shadow-md:     0 2px 6px rgba(17, 17, 19, 0.035), 0 1px 1px rgba(17, 17, 19, 0.02);
+  --shadow-lg:     0 6px 18px rgba(17, 17, 19, 0.05), 0 1px 2px rgba(17, 17, 19, 0.025);
+  --shadow-pop:    0 12px 32px rgba(17, 17, 19, 0.08), 0 2px 6px rgba(17, 17, 19, 0.035);
+  --ring-focus:    0 0 0 2px rgba(0, 184, 255, 0.18);     /* cyan focus ring — soft */
+  --ring-focus-brand: 0 0 0 2px rgba(30, 61, 138, 0.16);
+
+  /* ---- Motion -------------------------------------------------------- */
+  --ease-standard: cubic-bezier(0.2, 0.0, 0, 1.0);   /* Apple-ish */
+  --ease-emphasize: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-fast:   120ms;
+  --dur-base:   180ms;
+  --dur-slow:   320ms;
+
+  /* ---- Layout -------------------------------------------------------- */
+  --container:   1200px;
+  --container-narrow: 880px;
+  --gutter:      var(--space-6);
+}
+
+/* ============================================================
+   Semantic element styles
+   Apply by adding html5 elements OR these classes.
+   ============================================================ */
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--tr-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.display, h1.display {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+
+h1, .h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--tr-h1);
+  font-weight: var(--fw-medium);  /* medium creates contrast vs display-bold */
+  color: var(--text);
+}
+
+h2, .h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--tr-h2);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+
+h3, .h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  letter-spacing: var(--tr-h3);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+
+p, .body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--tr-body);
+  color: var(--text);
+}
+
+.muted    { color: var(--text-muted); }
+.soft     { color: var(--text-soft); }
+
+.small    { font-size: var(--fs-small); line-height: var(--lh-small); color: var(--text); }
+.caption  { font-size: var(--fs-caption); line-height: var(--lh-caption); color: #4A4A4F; }
+
+.eyebrow {
+  font-size: var(--fs-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--tr-eyebrow);
+  text-transform: uppercase;
+  font-weight: var(--fw-semibold);
+  color: var(--brand);  /* brand blue — eyebrows are entry points */
+}
+
+code, kbd, samp, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  line-height: var(--lh-mono);
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+a:hover { color: var(--brand-strong); }
+
+hr { border: 0; border-top: 1px solid var(--divider); margin: var(--space-8) 0; }
+
+::selection { background: rgba(0, 184, 255, 0.22); color: var(--text); }
+
+/* Focus — cyan ring, never a hard outline */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+  border-radius: var(--radius-sm);
+}

@@ -1,0 +1,6 @@
+/* small extras for the live hero */
+.dash-row.tick-on {
+  background: var(--accent-soft) !important;
+  border-color: var(--accent);
+}
+.dash-row.tick-on .stat { color: var(--brand); font-weight: 600; }

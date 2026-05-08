@@ -1,0 +1,54 @@
+/* ANTES DE COMEÇAR — compact 4-card support block */
+.pre-section .section-head { margin-bottom: 48px; }
+.pre-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.pre-card {
+  background: #fff;
+  border: 1px solid var(--divider);
+  border-radius: 14px;
+  padding: 26px 22px;
+  transition: border-color 220ms var(--ease-standard), transform 220ms var(--ease-standard), box-shadow 220ms var(--ease-standard);
+}
+.pre-card:hover {
+  border-color: color-mix(in srgb, var(--brand) 28%, var(--border));
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -22px rgba(10,27,61,0.14);
+}
+.pre-ico {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--divider);
+  color: var(--brand);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: background 220ms var(--ease-standard), border-color 220ms var(--ease-standard);
+}
+.pre-card:hover .pre-ico {
+  background: color-mix(in srgb, var(--brand) 8%, #fff);
+  border-color: color-mix(in srgb, var(--brand) 22%, var(--divider));
+}
+.pre-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.008em;
+  margin: 0 0 8px;
+}
+.pre-card p {
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--text-muted);
+  margin: 0;
+}
+@media (max-width: 980px) {
+  .pre-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+  .pre-grid { grid-template-columns: 1fr; }
+}
