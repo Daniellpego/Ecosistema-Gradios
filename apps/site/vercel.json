@@ -5,6 +5,17 @@
   "outputDirectory": ".",
   "trailingSlash": false,
   "cleanUrls": false,
+  "redirects": [
+    { "source": "/diagnostico", "destination": "/contato.html?from=diagnostico", "permanent": true },
+    { "source": "/diagnostico-rapido", "destination": "/contato.html?from=diagnostico-rapido", "permanent": true },
+    { "source": "/respostas", "destination": "/contato.html?from=respostas", "permanent": true },
+    { "source": "/sobre", "destination": "/sobre.html", "permanent": true },
+    { "source": "/termos", "destination": "/termos.html", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/servicos", "destination": "https://bio-instagram-iota.vercel.app/servicos" },
+    { "source": "/servicos/:path*", "destination": "https://bio-instagram-iota.vercel.app/servicos/:path*" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -42,6 +53,13 @@
     {
       "source": "/robots.txt",
       "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/llms.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
         { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
     }
