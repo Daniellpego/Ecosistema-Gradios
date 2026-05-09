@@ -112,8 +112,25 @@ a:focus-visible { outline-offset: 3px; }
   }
 }
 .section { padding: var(--section-pad, 120px) 0; }
+/* Desktop ≥1280px: reduzir padding-block ~22% para evitar sensação de página esticada
+   nas transições mais marcantes (Hero→Atendemos, Soluções→Processo, Processo→Diferenciais,
+   SEO/GEO→Sobre). Mobile/tablet mantêm o ritmo atual. */
+@media (min-width: 1280px) {
+  .section { padding: 96px 0; }
+}
 @media (max-width: 768px) {
   .section { padding: var(--section-pad-mobile, 80px) 0; }
+}
+
+/* Sticky header (64px) corta títulos quando seções são alcançadas via âncora
+   ou scroll rápido. Reservar offset acima de qualquer alvo com id. */
+:where(section, article, h1, h2, h3, h4, [data-anchor])[id] {
+  scroll-margin-top: 96px;
+}
+@media (max-width: 768px) {
+  :where(section, article, h1, h2, h3, h4, [data-anchor])[id] {
+    scroll-margin-top: 80px;
+  }
 }
 /* Sem border-top: usar bg contrast (subtle alternado) como divisor visual */
 /* Section com bridge navy ocupa o espaço inferior — sem padding-bottom nem border na próxima */

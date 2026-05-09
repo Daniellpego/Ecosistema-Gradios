@@ -62,9 +62,9 @@
                 <div class="field"><label for="f-name">Nome</label><input id="f-name" name="nome" type="text" required autocomplete="name" placeholder="Como te chamamos"></div>
                 <div class="field"><label for="f-empresa">Empresa <span class="field-optional">(opcional)</span></label><input id="f-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Nome da empresa"></div>
               </div>
-              <div class="field">
-                <label for="f-contato">Email ou WhatsApp</label>
-                <input id="f-contato" name="contato" type="text" required autocomplete="email" placeholder="seu@email.com ou (00) 00000-0000">
+              <div class="field-row">
+                <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required autocomplete="email" placeholder="seu@email.com"></div>
+                <div class="field"><label for="f-whats">WhatsApp</label><input id="f-whats" name="whatsapp" type="tel" required autocomplete="tel" inputmode="tel" placeholder="(00) 00000-0000"></div>
               </div>
               <div class="field"><label for="f-tipo">O que você precisa?</label>
                 <select id="f-tipo" name="tipo" required>
