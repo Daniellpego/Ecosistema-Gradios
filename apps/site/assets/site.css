@@ -521,11 +521,11 @@ a:focus-visible { outline-offset: 3px; }
 @keyframes floatB { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) translateX(2px) } }
 @keyframes floatC { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-10px) } }
 
-/* segments marquee */
+/* segments marquee — clean, sempre profissional em qualquer modo */
 .segments {
   position: relative;
-  margin-top: 96px;
-  padding: 56px 0 24px;
+  margin-top: 64px;
+  padding: 40px 0 16px;
   border-top: 1px solid var(--divider);
 }
 .segments::before {
@@ -540,25 +540,28 @@ a:focus-visible { outline-offset: 3px; }
   z-index: 0;
 }
 .segments > * { position: relative; z-index: 1; }
-.segments-head { text-align: center; margin-bottom: 40px; }
+.segments-head { text-align: center; margin-bottom: 24px; }
 .segments-eyebrow {
-  font-size: 12px; font-weight: 700; letter-spacing: 0.2em;
-  text-transform: uppercase; color: #64748B; opacity: 0.8;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: #64748B;
 }
 .segments-title {
-  margin: 14px 0 0; font-size: 30px; font-weight: 800;
-  letter-spacing: -0.022em; color: #0F172A;
+  margin: 10px 0 0;
+  font-size: 26px;
+  line-height: 1.18;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  color: #0F172A;
 }
 @media (min-width: 768px) {
-  .segments-title { font-size: 34px; }
+  .segments-title { font-size: 30px; }
 }
 .segments-marquee {
-  margin-top: 32px;
   position: relative;
   overflow: hidden;
-  /* fade nas bordas — 15% / 85% como no design React */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent 100%);
-          mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent 100%);
+  /* fade lateral suave */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
   -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;
 }
@@ -566,85 +569,75 @@ a:focus-visible { outline-offset: 3px; }
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   width: max-content;
-  padding: 22px 8px;
+  padding: 14px 0;
   will-change: transform;
-  animation: segmentsMarquee 24s linear infinite;
+  animation: segmentsMarquee 28s linear infinite;
 }
 .segments-marquee:hover .segments-track { animation-play-state: paused; }
 @keyframes segmentsMarquee {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-50%, 0, 0); }
 }
-/* Reduced-motion: para a animação. Esconde duplicatas pra não aparecer "Clínicas Clínicas". */
+/* Reduced-motion / cache antigo: grid balanceado 4 colunas (4+4) ao invés de flex-wrap caótico */
 @media (prefers-reduced-motion: reduce) {
+  .segments-marquee {
+    overflow: visible;
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
   .segments-track {
     animation: none;
     transform: none;
     width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px 14px;
+    padding: 4px 0 0;
   }
-  .segments-track .seg { animation: none !important; }
+  .segments-track .seg { justify-content: center; }
   .segments-track .seg[aria-hidden="true"] { display: none; }
-  .segments-marquee {
-    -webkit-mask-image: none;
-            mask-image: none;
-  }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 720px) {
+  .segments-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .seg {
   display: inline-flex; align-items: center; justify-content: center;
-  gap: 12px; padding: 14px 24px;
-  background: rgba(255,255,255,0.8);
-  -webkit-backdrop-filter: blur(12px);
-          backdrop-filter: blur(12px);
-  border: 1px solid rgba(226,232,240,0.6);
+  gap: 10px; padding: 11px 20px;
+  background: rgba(255,255,255,0.85);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border: 1px solid rgba(226,232,240,0.7);
   border-radius: 999px;
-  font-size: 15px; font-weight: 600; color: #1E293B;
+  font-size: 14.5px; font-weight: 600; color: #1E293B;
   white-space: nowrap;
   flex: 0 0 auto;
-  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px -2px rgba(15,23,42,0.05);
   cursor: pointer;
-  transform: translateY(0) scale(1);
-  transition: box-shadow 260ms cubic-bezier(.2,.7,0,1),
-              border-color 260ms ease,
-              color 220ms ease,
-              transform 260ms cubic-bezier(.2,.7,0,1);
-  animation: segFloat 5.4s ease-in-out infinite;
+  transition:
+    box-shadow 260ms cubic-bezier(.2,.7,0,1),
+    border-color 240ms ease,
+    color 200ms ease,
+    background 200ms ease,
+    transform 280ms cubic-bezier(.34,1.56,.64,1);
 }
-/* float sutil — cada pill respira em fase diferente, compõe com o slide horizontal */
-@keyframes segFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-3px); }
-}
-.segments-track .seg:nth-child(1) { animation-delay: 0s; }
-.segments-track .seg:nth-child(2) { animation-delay: -0.7s; }
-.segments-track .seg:nth-child(3) { animation-delay: -1.4s; }
-.segments-track .seg:nth-child(4) { animation-delay: -2.1s; }
-.segments-track .seg:nth-child(5) { animation-delay: -2.8s; }
-.segments-track .seg:nth-child(6) { animation-delay: -3.5s; }
-.segments-track .seg:nth-child(7) { animation-delay: -4.2s; }
-.segments-track .seg:nth-child(8) { animation-delay: -4.9s; }
-/* hover: levanta + escala + brand outline + glow azul
-   !important porque CSS animations vencem cascading normal — preciso forçar o transform fora da keyframe segFloat */
 .seg:hover {
+  transform: translateY(-3px);
   border-color: rgba(37,99,235,0.45);
-  box-shadow:
-    0 14px 28px -10px rgba(37,99,235,0.32),
-    0 4px 10px -2px rgba(15,23,42,0.08);
+  background: rgba(255,255,255,0.96);
   color: #1D4ED8;
-  background: rgba(255,255,255,0.95);
-  animation-play-state: paused;
-  transform: translateY(-5px) scale(1.05) !important;
+  box-shadow:
+    0 10px 24px -8px rgba(37,99,235,0.28),
+    0 3px 8px -3px rgba(15,23,42,0.08);
 }
 .seg i {
   color: #475569;
-  width: 20px; height: 20px;
+  width: 18px; height: 18px;
   flex-shrink: 0;
-  transition: color 220ms ease, transform 320ms cubic-bezier(.34,1.56,.64,1);
+  transition: color 200ms ease, transform 280ms cubic-bezier(.34,1.56,.64,1);
 }
-.seg:hover i { color: #2563EB; transform: scale(1.18) rotate(-3deg); }
+.seg:hover i { color: #2563EB; transform: scale(1.12); }
 
 /* hero visual: stack of floating screens */
 .hero-visual {
