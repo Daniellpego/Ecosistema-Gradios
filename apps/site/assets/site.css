@@ -568,9 +568,9 @@ a:focus-visible { outline-offset: 3px; }
   align-items: center;
   gap: 16px;
   width: max-content;
-  padding: 16px 8px;
+  padding: 22px 8px;
   will-change: transform;
-  animation: segmentsMarquee 30s linear infinite;
+  animation: segmentsMarquee 24s linear infinite;
 }
 .segments-marquee:hover .segments-track { animation-play-state: paused; }
 @keyframes segmentsMarquee {
@@ -586,6 +586,7 @@ a:focus-visible { outline-offset: 3px; }
     flex-wrap: wrap;
     justify-content: center;
   }
+  .segments-track .seg { animation: none !important; }
   .segments-track .seg[aria-hidden="true"] { display: none; }
   .segments-marquee {
     -webkit-mask-image: none;
@@ -605,20 +606,45 @@ a:focus-visible { outline-offset: 3px; }
   flex: 0 0 auto;
   box-shadow: 0 4px 12px -4px rgba(0,0,0,0.05);
   cursor: pointer;
-  transition: box-shadow 220ms ease, border-color 220ms ease, color 220ms ease;
+  transform: translateY(0) scale(1);
+  transition: box-shadow 260ms cubic-bezier(.2,.7,0,1),
+              border-color 260ms ease,
+              color 220ms ease,
+              transform 260ms cubic-bezier(.2,.7,0,1);
+  animation: segFloat 5.4s ease-in-out infinite;
 }
+/* float sutil — cada pill respira em fase diferente, compõe com o slide horizontal */
+@keyframes segFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+.segments-track .seg:nth-child(1) { animation-delay: 0s; }
+.segments-track .seg:nth-child(2) { animation-delay: -0.7s; }
+.segments-track .seg:nth-child(3) { animation-delay: -1.4s; }
+.segments-track .seg:nth-child(4) { animation-delay: -2.1s; }
+.segments-track .seg:nth-child(5) { animation-delay: -2.8s; }
+.segments-track .seg:nth-child(6) { animation-delay: -3.5s; }
+.segments-track .seg:nth-child(7) { animation-delay: -4.2s; }
+.segments-track .seg:nth-child(8) { animation-delay: -4.9s; }
+/* hover: levanta + escala + brand outline + glow azul
+   !important porque CSS animations vencem cascading normal — preciso forçar o transform fora da keyframe segFloat */
 .seg:hover {
-  border-color: #CBD5E1;
-  box-shadow: 0 8px 20px -6px rgba(0,0,0,0.1);
+  border-color: rgba(37,99,235,0.45);
+  box-shadow:
+    0 14px 28px -10px rgba(37,99,235,0.32),
+    0 4px 10px -2px rgba(15,23,42,0.08);
   color: #1D4ED8;
+  background: rgba(255,255,255,0.95);
+  animation-play-state: paused;
+  transform: translateY(-5px) scale(1.05) !important;
 }
 .seg i {
   color: #475569;
   width: 20px; height: 20px;
   flex-shrink: 0;
-  transition: color 220ms ease;
+  transition: color 220ms ease, transform 320ms cubic-bezier(.34,1.56,.64,1);
 }
-.seg:hover i { color: #2563EB; }
+.seg:hover i { color: #2563EB; transform: scale(1.18) rotate(-3deg); }
 
 /* hero visual: stack of floating screens */
 .hero-visual {
