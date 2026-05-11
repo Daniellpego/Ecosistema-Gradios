@@ -89,35 +89,67 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   text-align: center;
   z-index: 1;
-  padding: 24px;
+  padding: 28px 28px 56px;
 }
-.about-v2-photo-placeholder i {
-  width: 48px; height: 48px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(37,70,189,0.40) 0%, rgba(0,200,255,0.30) 100%);
-  border: 1px solid rgba(0,200,255,0.32);
+.about-v2-team-tiles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 18px;
+}
+.about-v2-team-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 6px 9px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 11px;
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  transition: transform 240ms var(--ease-standard, ease), border-color 240ms ease, background 240ms ease;
+}
+.about-v2-team-tile:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0,200,255,0.34);
+  background: linear-gradient(180deg, rgba(0,200,255,0.10) 0%, rgba(37,70,189,0.06) 100%);
+}
+.about-v2-team-tile-ico {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(37,70,189,0.42) 0%, rgba(0,200,255,0.28) 100%);
+  border: 1px solid rgba(0,200,255,0.34);
   color: var(--accent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4px;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.18),
-    0 4px 12px -4px rgba(0,184,255,0.40);
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    0 4px 10px -4px rgba(0,184,255,0.42);
+}
+.about-v2-team-tile-lab {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(245,247,252,0.88);
+  white-space: nowrap;
 }
 .about-v2-photo-pl-eyebrow {
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   color: var(--accent);
 }
 .about-v2-photo-pl-line {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
-  color: rgba(245,247,252,0.80);
+  color: rgba(245,247,252,0.85);
   letter-spacing: -0.005em;
 }
 /* legenda inferior (sempre visível, sobre a foto ou placeholder) */
@@ -329,4 +361,9 @@
 @media (max-width: 560px) {
   .about-v2-block { grid-template-columns: 28px 1fr; gap: 12px; padding: 16px 0; }
   .about-v2-block-title { font-size: 17px; line-height: 22px; }
+  .about-v2-photo-placeholder { padding: 22px 16px 52px; }
+  .about-v2-team-tiles { gap: 6px; margin-bottom: 14px; }
+  .about-v2-team-tile { padding: 8px 4px 7px; gap: 5px; border-radius: 9px; }
+  .about-v2-team-tile-ico { width: 26px; height: 26px; border-radius: 7px; }
+  .about-v2-team-tile-lab { font-size: 9.5px; white-space: normal; line-height: 12px; }
 }

@@ -45,7 +45,7 @@
   <link rel="stylesheet" href="assets/pre-section.css">
   <link rel="stylesheet" href="assets/cta-v2.css">
   <link rel="stylesheet" href="assets/contact-home.css">
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 
   <!-- JSON-LD: Organization -->
   <script type="application/ld+json">
@@ -443,19 +443,23 @@
           </div>
           <div class="segments-marquee" aria-hidden="false" role="list" aria-label="Setores atendidos">
             <div class="segments-track">
-              <div class="seg" role="listitem"><i data-lucide="stethoscope" style="width:18px;height:18px"></i><span>Clínicas</span></div>
+              <div class="seg" role="listitem"><i data-lucide="map-pin" style="width:18px;height:18px"></i><span>Clínicas</span></div>
               <div class="seg" role="listitem"><i data-lucide="factory" style="width:18px;height:18px"></i><span>Indústria</span></div>
-              <div class="seg" role="listitem"><i data-lucide="store" style="width:18px;height:18px"></i><span>Varejo</span></div>
+              <div class="seg" role="listitem"><i data-lucide="shopping-bag" style="width:18px;height:18px"></i><span>Varejo</span></div>
               <div class="seg" role="listitem"><i data-lucide="briefcase" style="width:18px;height:18px"></i><span>Serviços</span></div>
               <div class="seg" role="listitem"><i data-lucide="truck" style="width:18px;height:18px"></i><span>Logística</span></div>
-              <div class="seg" role="listitem"><i data-lucide="heart-pulse" style="width:18px;height:18px"></i><span>Saúde</span></div>
+              <div class="seg" role="listitem"><i data-lucide="heart" style="width:18px;height:18px"></i><span>Saúde</span></div>
+              <div class="seg" role="listitem"><i data-lucide="book-open" style="width:18px;height:18px"></i><span>Educação</span></div>
+              <div class="seg" role="listitem"><i data-lucide="cpu" style="width:18px;height:18px"></i><span>Tecnologia</span></div>
               <!-- Duplicata pro loop infinito -->
-              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="stethoscope" style="width:18px;height:18px"></i><span>Clínicas</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="map-pin" style="width:18px;height:18px"></i><span>Clínicas</span></div>
               <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="factory" style="width:18px;height:18px"></i><span>Indústria</span></div>
-              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="store" style="width:18px;height:18px"></i><span>Varejo</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="shopping-bag" style="width:18px;height:18px"></i><span>Varejo</span></div>
               <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="briefcase" style="width:18px;height:18px"></i><span>Serviços</span></div>
               <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="truck" style="width:18px;height:18px"></i><span>Logística</span></div>
-              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="heart-pulse" style="width:18px;height:18px"></i><span>Saúde</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="heart" style="width:18px;height:18px"></i><span>Saúde</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="book-open" style="width:18px;height:18px"></i><span>Educação</span></div>
+              <div class="seg" role="presentation" aria-hidden="true"><i data-lucide="cpu" style="width:18px;height:18px"></i><span>Tecnologia</span></div>
             </div>
           </div>
         </div>
@@ -761,7 +765,7 @@
                 <p>Definimos a solução ideal, priorizando o que resolve o problema de negócio antes de pensar em telas ou código.</p>
               </div>
             </div>
-            <div class="tline-step is-active" data-step="3" data-card-name="Design e protótipo">
+            <div class="tline-step" data-step="3" data-card-name="Design e protótipo">
               <div class="num">03</div>
               <div class="tline-body">
                 <h3>Protótipo</h3>
@@ -918,6 +922,8 @@
               <!-- Modo real: screenshot do site público dentro de browser frame premium.
                    Coloque a imagem em cases/clinica-nelson-shirabe.png (e .webp opcional).
                    Sem o arquivo, o mockup CSS abaixo segue como fallback (sem flash). -->
+              <!-- Real screenshot disabled until cases/clinica-nelson-shirabe.{png,webp} são adicionados.
+                   Quando estiverem prontos, reabilitar o <picture> abaixo para sobrepor o mockup CSS.
               <div class="pa-browser-real">
                 <div class="pa-browser-real-bar" aria-hidden="true">
                   <i></i><i></i><i></i>
@@ -936,6 +942,8 @@
                   </picture>
                 </div>
               </div>
+              -->
+              <div class="pa-browser-real" hidden></div>
 
               <!-- Fallback: mockup CSS hi-fi (visível por padrão; ocultado quando .img-loaded) -->
               <div class="pa-browser" aria-hidden="true">
@@ -1240,16 +1248,40 @@
             <p class="about-v2-p reveal-stagger" style="--rd:2">Empresa de tecnologia em <strong>Londrina/PR</strong>. Atendemos operações reais do norte do Paraná ao Brasil todo.</p>
             <p class="about-v2-p reveal-stagger" style="--rd:3">Unimos design, desenvolvimento, automação e IA para transformar planilhas e processos manuais em sistemas que funcionam na rotina.</p>
 
-            <figure class="about-v2-photo reveal-stagger" style="--rd:4">
+            <figure class="about-v2-photo photo-empty reveal-stagger" style="--rd:4">
+              <!-- Foto real desativada até cases/equipe-gradios.jpg existir.
+                   Quando estiver pronta, reabilitar o <img> abaixo (remover photo-empty da figure).
               <img src="cases/equipe-gradios.jpg"
                    alt="Equipe Gradios no escritório de Londrina"
                    loading="lazy"
                    onload="this.parentElement.classList.add('photo-loaded')"
                    onerror="this.parentElement.classList.add('photo-empty'); this.remove();">
+              -->
               <span class="about-v2-photo-grid" aria-hidden="true"></span>
               <span class="about-v2-photo-glow" aria-hidden="true"></span>
               <div class="about-v2-photo-placeholder" aria-hidden="true">
-                <i data-lucide="users" style="width:22px;height:22px;stroke-width:1.8"></i>
+                <div class="about-v2-team-tiles">
+                  <div class="about-v2-team-tile">
+                    <span class="about-v2-team-tile-ico"><i data-lucide="palette" style="width:14px;height:14px;stroke-width:2"></i></span>
+                    <span class="about-v2-team-tile-lab">Design</span>
+                  </div>
+                  <div class="about-v2-team-tile">
+                    <span class="about-v2-team-tile-ico"><i data-lucide="code-2" style="width:14px;height:14px;stroke-width:2"></i></span>
+                    <span class="about-v2-team-tile-lab">Dev</span>
+                  </div>
+                  <div class="about-v2-team-tile">
+                    <span class="about-v2-team-tile-ico"><i data-lucide="workflow" style="width:14px;height:14px;stroke-width:2"></i></span>
+                    <span class="about-v2-team-tile-lab">Automação</span>
+                  </div>
+                  <div class="about-v2-team-tile">
+                    <span class="about-v2-team-tile-ico"><i data-lucide="sparkles" style="width:14px;height:14px;stroke-width:2"></i></span>
+                    <span class="about-v2-team-tile-lab">IA</span>
+                  </div>
+                  <div class="about-v2-team-tile">
+                    <span class="about-v2-team-tile-ico"><i data-lucide="line-chart" style="width:14px;height:14px;stroke-width:2"></i></span>
+                    <span class="about-v2-team-tile-lab">Estratégia</span>
+                  </div>
+                </div>
                 <span class="about-v2-photo-pl-eyebrow">EQUIPE GRADIOS</span>
                 <span class="about-v2-photo-pl-line">Time multidisciplinar focado em operação</span>
               </div>

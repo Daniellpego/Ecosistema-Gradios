@@ -14,10 +14,27 @@
   const toggle = document.querySelector('.menu-toggle');
   const mnav = document.querySelector('.mobile-nav');
   if (toggle && mnav) {
-    toggle.addEventListener('click', () => mnav.classList.toggle('open'));
+    const setMenu = (open) => {
+      mnav.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    setMenu(false);
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setMenu(!mnav.classList.contains('open'));
+    });
     mnav.querySelectorAll('a').forEach(a =>
-      a.addEventListener('click', () => mnav.classList.remove('open'))
+      a.addEventListener('click', () => setMenu(false))
     );
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mnav.classList.contains('open')) setMenu(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (!mnav.classList.contains('open')) return;
+      if (mnav.contains(e.target) || toggle.contains(e.target)) return;
+      setMenu(false);
+    });
   }
 
   // ---------- tweaks panel
@@ -137,15 +154,7 @@
       } catch (_) { /* silent */ }
     };
     persistableFields.forEach((f) => f.addEventListener('input', saveDraft));
-    form.addEventListener('submit', () => {
-      // limpa draft só após sucesso visível (delay pra não apagar antes do envio)
-      setTimeout(() => {
-        const success = form.parentElement && form.parentElement.querySelector('[data-success]');
-        if (success && success.style.display !== 'none') {
-          try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
-        }
-      }, 2000);
-    });
+    const clearDraft = () => { try { localStorage.removeItem(STORAGE_KEY); } catch (_) {} };
     let errorBox = form.querySelector('[data-form-error]');
     if (!errorBox) {
       errorBox = document.createElement('div');
@@ -156,10 +165,10 @@
       form.appendChild(errorBox);
     }
 
-    function showError(message) {
-      errorBox.innerHTML =
-        message +
-        ' <a href="mailto:contato@gradios.com.br" style="color:inherit;text-decoration:underline;font-weight:600;">Enviar por email</a>.';
+    function showError(message, withMail = true) {
+      errorBox.innerHTML = withMail
+        ? message + ' <a href="mailto:contato@gradios.com.br" style="color:inherit;text-decoration:underline;font-weight:600;">Enviar por email</a>.'
+        : message;
       errorBox.style.display = 'block';
     }
 
@@ -183,7 +192,7 @@
         if (!ok) valid = false;
       });
       if (!valid) {
-        showError('Preencha os campos obrigatórios.');
+        showError('Preencha os campos obrigatórios.', false);
         return;
       }
 
@@ -221,25 +230,28 @@
         });
 
         if (res.status === 429) {
-          showError('Muitas tentativas em pouco tempo. Tente novamente em alguns minutos.');
+          showError('Muitas tentativas em pouco tempo. Tente novamente em alguns minutos.', false);
           return;
         }
         if (!res.ok) {
           let detail = '';
           try { detail = (await res.json()).error || ''; } catch (_) {}
+          const isValidation = detail === 'tipo_invalido' || detail === 'mensagem_invalida' || detail === 'nome_invalido' || detail === 'contato_invalido';
           showError(
-            detail === 'tipo_invalido' || detail === 'mensagem_invalida' || detail === 'nome_invalido' || detail === 'contato_invalido'
+            isValidation
               ? 'Algum campo não passou na validação. Revise e envie novamente.'
-              : 'Não conseguimos enviar agora. Tente de novo em instantes ou'
+              : 'Não conseguimos enviar agora. Tente de novo em instantes.',
+            !isValidation
           );
           return;
         }
 
         form.style.display = 'none';
-        const ok = form.parentElement.querySelector('[data-success]');
+        const ok = form.parentElement && form.parentElement.querySelector('[data-success]');
         if (ok) ok.style.display = 'block';
+        clearDraft();
       } catch (_) {
-        showError('Sem conexão com o servidor. Tente novamente ou');
+        showError('Sem conexão com o servidor. Tente novamente.');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -478,11 +490,15 @@
 })();
 
 
-// hero parallax (subtle)
+// hero parallax (subtle) — opt-out em reduced-motion e em ponteiros coarse (touch)
 (function(){
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  if (reduce || coarse) return;
   const el = document.querySelector('[data-parallax]');
   if (!el) return;
   const sec = el.closest('section') || el.parentElement;
+  if (!sec) return;
   let raf = 0;
   sec.addEventListener('mousemove', (e) => {
     const r = sec.getBoundingClientRect();

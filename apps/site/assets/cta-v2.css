@@ -69,7 +69,7 @@
   background: #fff;
   color: var(--text);
 }
-.cta-v2-actions .btn-primary:hover { background: #F4F6FA; transform: translateY(-1px); }
+.cta-v2-actions .btn-primary:hover { background: #F4F6FA; color: var(--text); transform: translateY(-1px); }
 .cta-v2-link {
   font-size: 15.5px;
   font-weight: 500;

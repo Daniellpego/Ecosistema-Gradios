@@ -28,7 +28,7 @@
 
 .proj-art-v2 {
   position: relative;
-  height: 280px;
+  height: 320px;
   background: var(--bg-subtle);
   border-bottom: 1px solid var(--divider);
   overflow: hidden;
@@ -412,14 +412,14 @@
 /* CARD 02 — Dashboard varejo */
 .art-varejo-v2 {
   background: linear-gradient(180deg, #F4F8FC 0%, #EEF3F9 100%);
-  padding: 26px;
+  padding: 22px;
 }
 .pa-dash {
   height: 100%;
   background: linear-gradient(180deg, #ffffff 0%, #FBFCFE 100%);
   border: 1px solid rgba(10,27,61,0.06);
   border-radius: 12px;
-  padding: 16px;
+  padding: 14px;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.9),
     0 1px 2px rgba(10,27,61,0.04),
@@ -427,7 +427,7 @@
     0 22px 48px -18px rgba(37,70,189,0.10);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 .pa-dash-head { display: flex; justify-content: space-between; align-items: center; }
 .pa-dash-title { width: 88px; height: 10px; background: var(--text); opacity: 0.85; border-radius: 3px; }
@@ -458,7 +458,7 @@
   letter-spacing: -0.012em;
   font-feature-settings: 'tnum';
 }
-.pa-chart { height: 56px; }
+.pa-chart { height: 48px; }
 .pa-chart svg { width: 100%; height: 100%; display: block; }
 .pa-table { display: flex; flex-direction: column; gap: 6px; }
 .pa-trow {
@@ -495,7 +495,7 @@
 }
 .pa-phone {
   width: 220px;
-  height: 240px;
+  height: 286px;
   /* bezel ultra-fino estilo iPhone Pro mais recente */
   background: linear-gradient(160deg, #353F58 0%, #18243C 40%, #0A1322 100%);
   border-radius: 32px;
@@ -524,10 +524,10 @@
   background: linear-gradient(180deg, #ffffff 0%, #F4F8FC 100%);
   border-radius: 30px;
   height: 100%;
-  padding: 26px 14px 14px;
+  padding: 24px 13px 13px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   box-shadow: inset 0 0 0 1px rgba(10,27,61,0.04);
   position: relative;
 }
@@ -562,7 +562,7 @@
 }
 .pa-stop-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 6px; }
 .pa-stop-tit { font-size: 11px; font-weight: 600; color: var(--text); }
-.pa-stop-row { font-size: 10px; color: var(--text-muted); padding: 2px 0; }
+.pa-stop-row { font-size: 10px; color: var(--text-muted); padding: 1px 0; line-height: 14px; }
 .pa-shifts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: auto; }
 .pa-shift {
   background: #fff;
@@ -953,8 +953,8 @@
 /* Mobile/tablet narrow: spotlight colapsa pra 1-col */
 @media (max-width: 900px) {
   .proj-grid-v2 { grid-template-columns: 1fr; gap: 20px; }
-  .proj-art-v2 { height: 240px; }
-  .pa-phone { width: 180px; height: 220px; }
+  .proj-art-v2 { height: 300px; }
+  .pa-phone { width: 200px; height: 268px; }
 
   .proj-card.proj-v2.proj-feature { grid-template-columns: 1fr; }
   .proj-card.proj-v2.proj-feature .proj-feature-art {
