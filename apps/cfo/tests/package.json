@@ -1,0 +1,15 @@
+{
+  "name": "painel-cfo-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playwright E2E tests for painel CFO. Standalone package (separate lockfile) — instalado só quando CI roda E2E.",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.0"
+  }
+}
