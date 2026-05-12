@@ -25,7 +25,7 @@ Tudo compartilha o mesmo banco de dados Supabase com RLS completo, autenticaçã
 
 | App | URL | Descrição |
 |-----|-----|-----------|
-| 🌐 **Site** | [gradios.co](https://www.gradios.co) | Landing page + Quiz de Diagnóstico com IA (Claude Sonnet) + Blog |
+| 🌐 **Site** | [gradios.co](https://www.gradios.co) | Site institucional estático (HTML/CSS/JS vanilla) + Quiz de Diagnóstico com IA (rota `/api/diagnostico` server-side, Claude Sonnet streaming). Detalhes em [`apps/site/CLAUDE.md`](apps/site/CLAUDE.md) |
 | 💰 **CFO** | painel interno | Dashboard financeiro: DRE, receitas, custos, projeções, balanço anual, IA financeira (Groq) |
 | 📊 **CRM** | painel interno | Pipeline de vendas B2B: leads, deals, Kanban drag-and-drop, analytics, IA por lead (Groq) |
 | ⚙️ **CTO** | painel interno | Gestão de projetos: Kanban, timeline, calendário, portal do cliente, relatórios |
@@ -209,4 +209,4 @@ Dark mode only. Paleta exclusiva:
 
 **Gradios** — Automação de processos e integrações sob medida
 
-📧 contato@gradios.co · 📱 (43) 98837-2540 · 🌐 [gradios.co](https://www.gradios.co)
+📧 contato@gradios.com.br · 📱 (43) 98837-2540 · 🌐 [gradios.co](https://www.gradios.co)

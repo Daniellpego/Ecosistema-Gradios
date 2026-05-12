@@ -45,6 +45,9 @@
   --action:        #2546BD;
   --action-hover:  #1B36A0;
   --action-press:  #14267A;
+
+  /* Gradient brand→cyan — signature da Gradios. Usado em CTAs, gradients de marca, ícones featured. */
+  --gradient-brand: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
 }
 
 /* Body text on premium light gray */
@@ -542,8 +545,8 @@ a:focus-visible { outline-offset: 3px; }
 .segments > * { position: relative; z-index: 1; }
 .segments-head { text-align: center; margin-bottom: 24px; }
 .segments-eyebrow {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
-  text-transform: uppercase; color: #64748B;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-muted);
 }
 .segments-title {
   margin: 10px 0 0;
@@ -828,7 +831,7 @@ a:focus-visible { outline-offset: 3px; }
 }
 .wa-head .ava {
   width: 32px; height: 32px; border-radius: 999px;
-  background: linear-gradient(135deg, #1E3D8A, #00B8FF);
+  background: var(--gradient-brand);
   display: inline-flex; align-items: center; justify-content: center;
   color: #fff; font-weight: 700; font-size: 13px;
   box-shadow: 0 2px 6px rgba(30,61,138,0.30);
@@ -1112,7 +1115,7 @@ a:focus-visible { outline-offset: 3px; }
   flex-shrink: 0;
   width: 22px; height: 22px;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--brand) 0%, #00A8FF 100%);
+  background: var(--gradient-brand);
   color: #fff;
   display: inline-flex;
   align-items: center;
@@ -1385,10 +1388,10 @@ a:focus-visible { outline-offset: 3px; }
   position: absolute;
   inset: 0 auto 0 0;
   width: var(--w, 60%);
-  background: linear-gradient(90deg, var(--brand), #00A8FF);
+  background: linear-gradient(90deg, var(--brand), var(--accent));
   border-radius: 999px;
 }
-.sp-phone-bar.accent::after { background: linear-gradient(90deg, var(--accent), #00A8FF); }
+.sp-phone-bar.accent::after { background: var(--accent); }
 
 /* --- Automações: flow horizontal --- */
 .sp-flow {
@@ -1423,7 +1426,7 @@ a:focus-visible { outline-offset: 3px; }
   border: 1px solid rgba(37,70,189,0.18);
 }
 .sp-flow-node.sp-flow-mid i {
-  background: linear-gradient(135deg, var(--brand) 0%, #00A8FF 100%);
+  background: var(--gradient-brand);
   color: #fff;
   border-color: transparent;
   box-shadow: 0 4px 12px -2px rgba(0,184,255,0.50);
@@ -1940,7 +1943,7 @@ a:focus-visible { outline-offset: 3px; }
   font-style: normal;
   font-weight: 700;
   color: var(--accent);
-  background: linear-gradient(90deg, #00C8FF 0%, #00A8FF 100%);
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -16,8 +16,8 @@
 :root {
   /* ---- Layout tokens ------------------------------------------------ */
   --max-w:              1280px;  /* container principal */
-  --section-pad:        120px;   /* padding vertical de section */
-  --section-pad-mobile: 80px;
+  --section-pad:        120px;   /* padding vertical de section (desktop ≥1280px usa 96px via override no site.css) */
+  --section-pad-mobile: 64px;    /* mobile (≤768px) — alinhado com regra real em site.css */
   --section-head-gap:   48px;    /* margin-bottom padronizado de .section-head */
 
   /* ---- Color: Neutrals (the spine of the system) -------------------- */

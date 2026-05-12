@@ -23,7 +23,7 @@ form[data-contact] button[type="submit"]:disabled {
 /* Form: estado de erro nos inputs */
 form[data-contact] .error {
   border-color: var(--danger) !important;
-  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.10);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 10%, transparent);
 }
 
 /* Hero: micro-bloco discreto com cidade — abaixo dos trust pills */

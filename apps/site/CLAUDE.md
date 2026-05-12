@@ -94,7 +94,7 @@ Abrir `http://localhost:8000/index.html`.
 
 ## Ícones
 
-Lucide via CDN, **pinado em versão estável** (não usar `@latest` em produção): `<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>`
+Lucide via CDN, **pinado em versão estável** (não usar `@latest` em produção): `<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>`
 Uso: `<i data-lucide="search" style="width:18px;height:18px;stroke-width:1.6"></i>`
 
 ## Notas de implementação
