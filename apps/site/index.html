@@ -45,7 +45,7 @@
   <link rel="stylesheet" href="assets/pre-section.css?v=20260511a">
   <link rel="stylesheet" href="assets/cta-v2.css?v=20260511a">
   <link rel="stylesheet" href="assets/contact-home.css?v=20260511a">
-  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
 
   <!-- JSON-LD: Organization -->
   <script type="application/ld+json">
@@ -215,15 +215,14 @@
           <a href="contato.html">Contato</a>
         </nav>
         <div class="header-cta">
-          <a href="solucoes.html" class="btn btn-ghost btn-sm" style="display:none">Soluções</a>
           <a href="contato.html" class="btn btn-primary btn-sm">Fale com a Gradios</a>
-          <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-nav">
             <i data-lucide="menu" style="width:22px;height:22px"></i>
           </button>
         </div>
       </div>
     </div>
-    <nav class="mobile-nav" aria-label="Navegação móvel">
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Navegação móvel">
       <a href="index.html">Início</a>
       <a href="solucoes.html">Soluções</a>
       <a href="index.html#processo">Como funciona</a>
@@ -311,13 +310,13 @@
                   <svg viewBox="0 0 360 120" preserveAspectRatio="none">
                     <defs>
                       <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stop-color="#1E3D8A" stop-opacity="0.18"/>
-                        <stop offset="100%" stop-color="#1E3D8A" stop-opacity="0"/>
+                        <stop offset="0%" stop-color="#2546BD" stop-opacity="0.18"/>
+                        <stop offset="100%" stop-color="#2546BD" stop-opacity="0"/>
                       </linearGradient>
                     </defs>
                     <path d="M0,90 L20,82 L40,86 L60,70 L80,72 L100,58 L120,62 L140,46 L160,52 L180,38 L200,44 L220,30 L240,38 L260,22 L280,28 L300,18 L320,24 L340,12 L360,16 L360,120 L0,120 Z" fill="url(#g1)"/>
-                    <path d="M0,90 L20,82 L40,86 L60,70 L80,72 L100,58 L120,62 L140,46 L160,52 L180,38 L200,44 L220,30 L240,38 L260,22 L280,28 L300,18 L320,24 L340,12 L360,16" fill="none" stroke="#1E3D8A" stroke-width="2" stroke-linejoin="round"/>
-                    <circle cx="340" cy="12" r="3" fill="#00B8FF"/>
+                    <path d="M0,90 L20,82 L40,86 L60,70 L80,72 L100,58 L120,62 L140,46 L160,52 L180,38 L200,44 L220,30 L240,38 L260,22 L280,28 L300,18 L320,24 L340,12 L360,16" fill="none" stroke="#2546BD" stroke-width="2" stroke-linejoin="round"/>
+                    <circle cx="340" cy="12" r="3" fill="#00BFFF"/>
                   </svg>
                 </div>
               </div>
@@ -441,7 +440,7 @@
             <span class="segments-eyebrow">PARA OPERAÇÕES EXIGENTES</span>
             <h3 class="segments-title">Atendemos diferentes tipos de operação.</h3>
           </div>
-          <div class="segments-marquee" aria-hidden="false" role="list" aria-label="Setores atendidos">
+          <div class="segments-marquee" role="list" aria-label="Setores atendidos">
             <div class="segments-track">
               <div class="seg" role="listitem"><i data-lucide="map-pin" style="width:18px;height:18px"></i><span>Clínicas</span></div>
               <div class="seg" role="listitem"><i data-lucide="factory" style="width:18px;height:18px"></i><span>Indústria</span></div>
@@ -526,7 +525,7 @@
           <h2 class="section-title">Soluções digitais sob medida para presença, operação e crescimento.</h2>
           <p class="section-lead">Criamos sites, sistemas, apps, automações, IA e dashboards conectados à rotina real da sua empresa, sem template genérico, sem excesso de ferramenta e sem complexidade desnecessária.</p>
         </div>
-        <div class="solutions-tabs reveal-stagger" style="--rd:1">
+        <div class="solutions-tabs reveal-stagger">
           <div class="solutions-tabs-list" role="tablist" aria-label="Soluções Gradios">
             <button class="solutions-tab is-active" role="tab" aria-selected="true" id="tab-sites" aria-controls="panel-sites" data-target="sites">
               <span class="solutions-tab-ico"><i data-lucide="layout" style="width:18px;height:18px;stroke-width:2"></i></span>
@@ -869,7 +868,7 @@
           </article>
 
           <div class="diff-grid">
-            <article class="diff-card reveal-stagger" style="--rd:1" data-flow-target="0">
+            <article class="diff-card reveal-stagger" data-flow-target="0">
               <span class="diff-ico"><i data-lucide="ruler" style="width:25px;height:25px;stroke-width:2"></i></span>
               <h4>Soluções sob medida</h4>
               <p>Projetos desenhados para a sua operação, não para encaixar sua empresa em um modelo genérico.</p>
@@ -1006,7 +1005,7 @@
 
         <!-- Estudos representativos: tipos de operação que a Gradios cuida -->
         <div class="proj-grid proj-grid-v2 proj-grid-3">
-          <article class="proj-card proj-v2 reveal-stagger" style="--rd:1">
+          <article class="proj-card proj-v2 reveal-stagger">
             <div class="proj-art proj-art-v2 art-varejo-v2" aria-hidden="true">
               <div class="pa-dash">
                 <div class="pa-dash-head">
@@ -1207,7 +1206,7 @@
                 <h4>SEO técnico</h4>
                 <p>Estrutura correta de títulos, páginas, URLs e indexação para o Google rastrear, entender e exibir seu site com mais clareza.</p>
               </div>
-              <div class="seo-v2-card reveal-stagger" style="--rd:1">
+              <div class="seo-v2-card reveal-stagger">
                 <div class="seo-v2-card-ico"><i data-lucide="layout-list" style="width:22px;height:22px;stroke-width:2"></i></div>
                 <h4>Conteúdo estruturado</h4>
                 <p>Blocos de conteúdo que respondem às perguntas certas sobre sua empresa, seus serviços, diferenciais e formas de atendimento.</p>
@@ -1244,7 +1243,7 @@
         <div class="about-v2">
           <div class="about-v2-left">
             <span class="section-eyebrow brand reveal-stagger" style="--rd:0">SOBRE</span>
-            <h2 class="section-title reveal-stagger" style="--rd:1">A Gradios cria tecnologia para empresas que precisam operar melhor.</h2>
+            <h2 class="section-title reveal-stagger">A Gradios cria tecnologia para empresas que precisam operar melhor.</h2>
             <p class="about-v2-p reveal-stagger" style="--rd:2">Empresa de tecnologia em <strong>Londrina/PR</strong>. Atendemos operações reais do norte do Paraná ao Brasil todo.</p>
             <p class="about-v2-p reveal-stagger" style="--rd:3">Unimos design, desenvolvimento, automação e IA para transformar planilhas e processos manuais em sistemas que funcionam na rotina.</p>
 
@@ -1297,7 +1296,7 @@
             </blockquote>
             <a href="sobre.html" class="btn btn-primary reveal-stagger" style="--rd:6">Conhecer a Gradios <span class="btn-arrow">→</span></a>
           </div>
-          <aside class="about-v2-card reveal-stagger" style="--rd:1">
+          <aside class="about-v2-card reveal-stagger">
             <div class="about-v2-card-bg" aria-hidden="true"></div>
             <div class="about-v2-card-head">
               <div class="about-v2-card-eyebrow">
@@ -1361,7 +1360,7 @@
               <p>Cada solução é desenhada conforme a operação, o problema e o objetivo da empresa.</p>
             </div>
           </li>
-          <li class="pre-step reveal-stagger" style="--rd:1">
+          <li class="pre-step reveal-stagger">
             <span class="pre-step-num">02</span>
             <div class="pre-step-body">
               <h4>Prazo claro</h4>
@@ -1435,7 +1434,7 @@
               <button type="submit" class="btn btn-primary btn-lg" style="width:100%; padding:14px;">Enviar mensagem <span class="btn-arrow">→</span></button>
             </form>
             <div data-success style="display:none; text-align:center; padding:32px 0;">
-              <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:999px; background:var(--success-soft, #E6F4EA); color:var(--success, #16A34A); margin-bottom:20px;"><i data-lucide="check" style="width:28px;height:28px;stroke-width:2"></i></div>
+              <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:999px; background:var(--success-soft, #DCFCE7); color:var(--success, #15803D); margin-bottom:20px;"><i data-lucide="check" style="width:28px;height:28px;stroke-width:2"></i></div>
               <h3 style="margin:0 0 8px; font-size:22px; font-weight:600; letter-spacing:-0.014em;">Recebido. Vamos voltar em até 24h.</h3>
               <p class="muted" style="margin:0; font-size:15px; color:var(--text-muted);">Sem newsletter. Sem follow-up automático.</p>
             </div>

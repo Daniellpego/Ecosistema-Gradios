@@ -86,15 +86,21 @@
     window.parent && window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
   });
 
-  // ---------- count-up on view
+  // ---------- count-up on view (respeita prefers-reduced-motion)
   const countUpEls = document.querySelectorAll('[data-count]');
   if (countUpEls.length && 'IntersectionObserver' in window) {
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const io = new IntersectionObserver((entries) => {
       entries.forEach(en => {
         if (en.isIntersecting && !en.target.dataset.counted) {
           en.target.dataset.counted = '1';
           const target = parseFloat(en.target.dataset.count);
           const suffix = en.target.dataset.suffix || '';
+          // Reduced motion: pular animação, mostrar valor final direto
+          if (reduceMotion) {
+            en.target.textContent = target.toLocaleString('pt-BR') + suffix;
+            return;
+          }
           const dur = 1200;
           const start = performance.now();
           const tick = (t) => {

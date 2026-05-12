@@ -211,7 +211,7 @@
   top: 14px; bottom: 14px; left: 12px;
   width: 3px;
   border-radius: 2px;
-  background: linear-gradient(180deg, var(--accent) 0%, #00C8FF 100%);
+  background: var(--accent);
   box-shadow: 0 0 8px rgba(0,184,255,0.55);
 }
 
